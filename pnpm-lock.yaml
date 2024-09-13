@@ -82,7 +82,7 @@ importers:
         version: 0.1.5(hardhat@2.22.10(ts-node@10.9.2(@types/node@20.16.5)(typescript@5.6.2))(typescript@5.6.2))
       tsup:
         specifier: ^8.2.4
-        version: 8.2.4(postcss@8.4.45)(typescript@5.6.2)
+        version: 8.2.4(postcss@8.4.45)(tsx@4.19.1)(typescript@5.6.2)
       viem:
         specifier: ^2.18.8
         version: 2.21.6(typescript@5.6.2)(zod@3.23.8)
@@ -100,6 +100,58 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0(@types/node@20.16.5)
 
+  packages/modules/uniswap-v3:
+    dependencies:
+      '@infinit-xyz/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@nomicfoundation/hardhat-viem':
+        specifier: ^2.0.3
+        version: 2.0.4(hardhat@2.22.10(ts-node@10.9.2(@types/node@20.16.5)(typescript@5.6.2))(typescript@5.6.2))(typescript@5.6.2)(viem@2.21.6(typescript@5.6.2)(zod@3.23.8))(zod@3.23.8)
+      '@openzeppelin/contracts@3.4.1-solc-0.7-2':
+        specifier: npm:@openzeppelin/contracts@3.4.1-solc-0.7-2
+        version: '@openzeppelin/contracts@3.4.1-solc-0.7-2'
+      '@openzeppelin/contracts@3.4.2-solc-0.7':
+        specifier: npm:@openzeppelin/contracts@3.4.2-solc-0.7
+        version: '@openzeppelin/contracts@3.4.2-solc-0.7'
+      '@openzeppelin/contracts@4.7.0':
+        specifier: npm:@openzeppelin/contracts@4.7.0
+        version: '@openzeppelin/contracts@4.7.0'
+      base64-sol:
+        specifier: 1.0.1
+        version: 1.0.1
+      hardhat-preprocessor:
+        specifier: ^0.1.5
+        version: 0.1.5(hardhat@2.22.10(ts-node@10.9.2(@types/node@20.16.5)(typescript@5.6.2))(typescript@5.6.2))
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      solmate:
+        specifier: git://github.com/transmissions11/solmate.git#8d910d876f51c3b2585c9109409d601f600e68e1
+        version: https://codeload.github.com/transmissions11/solmate/tar.gz/8d910d876f51c3b2585c9109409d601f600e68e1
+      tsup:
+        specifier: ^8.1.0
+        version: 8.2.4(postcss@8.4.45)(tsx@4.19.1)(typescript@5.6.2)
+      viem:
+        specifier: ^2.17.3
+        version: 2.21.6(typescript@5.6.2)(zod@3.23.8)
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
+    devDependencies:
+      '@types/lodash':
+        specifier: ^4.17.7
+        version: 4.17.7
+      hardhat:
+        specifier: ^2.22.5
+        version: 2.22.10(ts-node@10.9.2(@types/node@20.16.5)(typescript@5.6.2))(typescript@5.6.2)
+      tsx:
+        specifier: ^4.16.2
+        version: 4.19.1
+      typescript:
+        specifier: ^5.5.3
+        version: 5.6.2
+
   packages/test:
     dependencies:
       '@infinit-xyz/core':
@@ -107,7 +159,7 @@ importers:
         version: link:../core
       tsup:
         specifier: ^8.1.0
-        version: 8.2.4(postcss@8.4.45)(typescript@5.6.2)
+        version: 8.2.4(postcss@8.4.45)(tsx@4.19.1)(typescript@5.6.2)
       viem:
         specifier: 2.x
         version: 2.21.6(typescript@5.6.2)(zod@3.23.8)
@@ -951,6 +1003,15 @@ packages:
     resolution: {integrity: sha512-q4n32/FNKIhQ3zQGGw5CvPF6GTvDCpYwIf7bEY/dZTZbgfDsHyjJwURxUJf3VQuuJj+fDIFl4+KkBVbw4Ef6jA==}
     engines: {node: '>= 12'}
 
+  '@openzeppelin/contracts@3.4.1-solc-0.7-2':
+    resolution: {integrity: sha512-tAG9LWg8+M2CMu7hIsqHPaTyG4uDzjr6mhvH96LvOpLZZj6tgzTluBt+LsCf1/QaYrlis6pITvpIaIhE+iZB+Q==}
+
+  '@openzeppelin/contracts@3.4.2-solc-0.7':
+    resolution: {integrity: sha512-W6QmqgkADuFcTLzHL8vVoNBtkwjvQRpYIAom7KiUNoLKghyx3FgH0GBjt8NRvigV1ZmMOBllvE1By1C+bi8WpA==}
+
+  '@openzeppelin/contracts@4.7.0':
+    resolution: {integrity: sha512-52Qb+A1DdOss8QvJrijYYPSf32GUg2pGaG/yCxtaA3cu4jduouTdg4XZSMLW9op54m1jH7J8hoajhHKOPsoJFw==}
+
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
@@ -1141,6 +1202,9 @@ packages:
 
   '@types/glob@7.2.0':
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
+
+  '@types/lodash@4.17.7':
+    resolution: {integrity: sha512-8wTvZawATi/lsmNu10/j2hk1KEP0IvjubqPE3cu1Xz7xfXXt5oCq3SNUz4fMIP4XGF9Ky+Ue2tBA3hcS7LSBlA==}
 
   '@types/lru-cache@5.1.1':
     resolution: {integrity: sha512-ssE3Vlrys7sdIzs5LOxCzTVMsU7i9oa/IaW92wF32JFb3CVczqOkru2xspuKczHEbG3nvmPY7IFqVmGGHdNbYw==}
@@ -1413,6 +1477,9 @@ packages:
 
   base-x@3.0.10:
     resolution: {integrity: sha512-7d0s06rR9rYaIWHkpfLIFICM/tkSVdoPC9qYAQRpxn9DdKNWNsKC0uk++akckyLq16Tx2WIinnZ6WRriAt6njQ==}
+
+  base64-sol@1.0.1:
+    resolution: {integrity: sha512-ld3cCNMeXt4uJXmLZBHFGMvVpK9KsLVEhPpFRXnvSVAqABKbuNZg/+dsq3NuM+wxFLb/UrVkz7m1ciWmkMfTbg==}
 
   bech32@1.1.4:
     resolution: {integrity: sha512-s0IrSOzLlbvX7yp4WBfPITzpAU8sqQcpsmwXDiKwrG4r491vwCO/XpejasRNl0piBMe/DvP4Tz0mIS/X1DPJBQ==}
@@ -2058,6 +2125,9 @@ packages:
   get-stream@9.0.1:
     resolution: {integrity: sha512-kVCxPF3vQM/N0B1PmoqVUqgHP+EeVjmZSQn+1oCRPxd2P21P2F19lIgbR3HBosbB1PUhOAoctJnfEn2GbN2eZA==}
     engines: {node: '>=18'}
+
+  get-tsconfig@4.8.1:
+    resolution: {integrity: sha512-k9PN+cFBmaLWtVz29SkUoqU5O0slLuHJXt/2P+tMVFT+phsSGXGkp9t3rQIqdz0e+06EHNGs3oM6ZX1s2zHxRg==}
 
   ghost-testrpc@0.0.2:
     resolution: {integrity: sha512-i08dAEgJ2g8z5buJIrCTduwPIhih3DP+hOCTyyryikfV8T0bNvHnGXO67i0DD1H4GBDETTclPy9njZbfluQYrQ==}
@@ -3025,6 +3095,9 @@ packages:
     resolution: {integrity: sha512-qYg9KP24dD5qka9J47d0aVky0N+b4fTU89LN9iDnjB5waksiC49rvMB0PrUJQGoTmH50XPiqOvAjDfaijGxYZw==}
     engines: {node: '>=8'}
 
+  resolve-pkg-maps@1.0.0:
+    resolution: {integrity: sha512-seS2Tj26TBVOC2NIc2rOe2y2ZO7efxITtLZcGSOnHHNOQ7CkiUBfw0Iw2ck6xkIhPwLhKNLS8BO+hEpngQlqzw==}
+
   resolve@1.1.7:
     resolution: {integrity: sha512-9znBF0vBcaSN3W2j7wKvdERPwqTxSpCq+if5C0WoTCyV9n24rua28jeuQ2pL/HOf+yUe/Mef+H/5p60K0Id3bg==}
 
@@ -3163,6 +3236,10 @@ packages:
     hasBin: true
     peerDependencies:
       hardhat: ^2.11.0
+
+  solmate@https://codeload.github.com/transmissions11/solmate/tar.gz/8d910d876f51c3b2585c9109409d601f600e68e1:
+    resolution: {tarball: https://codeload.github.com/transmissions11/solmate/tar.gz/8d910d876f51c3b2585c9109409d601f600e68e1}
+    version: 6.6.2
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -3425,6 +3502,11 @@ packages:
         optional: true
       typescript:
         optional: true
+
+  tsx@4.19.1:
+    resolution: {integrity: sha512-0flMz1lh74BR4wOvBjuh9olbnwqCPc35OOlfyzHba0Dc+QNUeWX/Gq2YTbnwcWPO3BMd8fkzRVrHcsR+a7z7rA==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
 
   tweetnacl-util@0.15.1:
     resolution: {integrity: sha512-RKJBIj8lySrShN4w6i/BonWp2Z/uxwC3h4y7xsRrpP59ZboCd0GpEVsOnMDYLMmKBpYhb5TgHzZXy7wTfYFBRw==}
@@ -4775,6 +4857,12 @@ snapshots:
       '@nomicfoundation/solidity-analyzer-linux-x64-musl': 0.1.2
       '@nomicfoundation/solidity-analyzer-win32-x64-msvc': 0.1.2
 
+  '@openzeppelin/contracts@3.4.1-solc-0.7-2': {}
+
+  '@openzeppelin/contracts@3.4.2-solc-0.7': {}
+
+  '@openzeppelin/contracts@4.7.0': {}
+
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
@@ -4836,7 +4924,7 @@ snapshots:
 
   '@scure/bip32@1.4.0':
     dependencies:
-      '@noble/curves': 1.4.0
+      '@noble/curves': 1.4.2
       '@noble/hashes': 1.4.0
       '@scure/base': 1.1.8
 
@@ -4964,6 +5052,8 @@ snapshots:
     dependencies:
       '@types/minimatch': 5.1.2
       '@types/node': 20.16.5
+
+  '@types/lodash@4.17.7': {}
 
   '@types/lru-cache@5.1.1': {}
 
@@ -5248,6 +5338,8 @@ snapshots:
   base-x@3.0.10:
     dependencies:
       safe-buffer: 5.2.1
+
+  base64-sol@1.0.1: {}
 
   bech32@1.1.4: {}
 
@@ -6072,6 +6164,10 @@ snapshots:
     dependencies:
       '@sec-ant/readable-stream': 0.4.1
       is-stream: 4.0.1
+
+  get-tsconfig@4.8.1:
+    dependencies:
+      resolve-pkg-maps: 1.0.0
 
   ghost-testrpc@0.0.2:
     dependencies:
@@ -6903,11 +6999,12 @@ snapshots:
       mlly: 1.7.1
       pathe: 1.1.2
 
-  postcss-load-config@6.0.1(postcss@8.4.45):
+  postcss-load-config@6.0.1(postcss@8.4.45)(tsx@4.19.1):
     dependencies:
       lilconfig: 3.1.2
     optionalDependencies:
       postcss: 8.4.45
+      tsx: 4.19.1
 
   postcss@8.4.45:
     dependencies:
@@ -7040,6 +7137,8 @@ snapshots:
   resolve-from@4.0.0: {}
 
   resolve-from@5.0.0: {}
+
+  resolve-pkg-maps@1.0.0: {}
 
   resolve@1.1.7: {}
 
@@ -7229,6 +7328,8 @@ snapshots:
       semver: 7.6.3
       shelljs: 0.8.5
       web3-utils: 1.10.4
+
+  solmate@https://codeload.github.com/transmissions11/solmate/tar.gz/8d910d876f51c3b2585c9109409d601f600e68e1: {}
 
   source-map-js@1.2.1: {}
 
@@ -7468,7 +7569,7 @@ snapshots:
 
   tsort@0.0.1: {}
 
-  tsup@8.2.4(postcss@8.4.45)(typescript@5.6.2):
+  tsup@8.2.4(postcss@8.4.45)(tsx@4.19.1)(typescript@5.6.2):
     dependencies:
       bundle-require: 5.0.0(esbuild@0.23.1)
       cac: 6.7.14
@@ -7480,7 +7581,7 @@ snapshots:
       globby: 11.1.0
       joycon: 3.1.1
       picocolors: 1.1.0
-      postcss-load-config: 6.0.1(postcss@8.4.45)
+      postcss-load-config: 6.0.1(postcss@8.4.45)(tsx@4.19.1)
       resolve-from: 5.0.0
       rollup: 4.21.3
       source-map: 0.8.0-beta.0
@@ -7494,6 +7595,13 @@ snapshots:
       - supports-color
       - tsx
       - yaml
+
+  tsx@4.19.1:
+    dependencies:
+      esbuild: 0.23.1
+      get-tsconfig: 4.8.1
+    optionalDependencies:
+      fsevents: 2.3.3
 
   tweetnacl-util@0.15.1: {}
 
@@ -7657,8 +7765,8 @@ snapshots:
 
   webauthn-p256@0.0.5:
     dependencies:
-      '@noble/curves': 1.4.0
-      '@noble/hashes': 1.4.0
+      '@noble/curves': 1.4.2
+      '@noble/hashes': 1.5.0
 
   webidl-conversions@3.0.1: {}
 
