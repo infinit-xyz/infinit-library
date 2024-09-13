@@ -23,7 +23,6 @@
   "dependencies": {
     "tsup": "^8.1.0",
     "@infinit-xyz/core": "workspace:*",
-    "prool": "^0.0.4",
     "viem": "2.x"
   }
 }

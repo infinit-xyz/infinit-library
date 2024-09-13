@@ -30,11 +30,13 @@ describe('utils.ts', () => {
     })
 
     test('force local anvil', () => {
+      const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => undefined)
       vi.stubEnv('VITE_RUN_LOCAL_ANVIL', 'true')
 
       const result = getForkRpcUrl(TestChain.arbitrum)
 
       expect(result).toBe('http://127.0.0.1:8545')
+      expect(consoleLogSpy).toHaveBeenCalledWith('ℹ️ VITE_RUN_LOCAL_ANVIL is true')
     })
 
     test('snapshot arbitrum', () => {
