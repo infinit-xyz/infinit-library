@@ -1,0 +1,67 @@
+{
+  "name": "@infinit-xyz/core",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "/dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/exports/index.d.ts",
+      "default": "./dist/exports/index.js"
+    },
+    "./internal": {
+      "types": "./dist/exports/internal/index.d.ts",
+      "default": "./dist/exports/internal/index.js"
+    },
+    "./internal/hardhat-compile": {
+      "types": "./dist/exports/internal/hardhat-compile.d.ts",
+      "default": "./dist/exports/internal/hardhat-compile.js"
+    },
+    "./internal/hardhat-base-config": {
+      "types": "./dist/exports/internal/hardhat-base.config.d.ts",
+      "default": "./dist/exports/internal/hardhat-base.config.cjs"
+    },
+    "./errors": {
+      "types": "./dist/exports/errors.d.ts",
+      "default": "./dist/exports/errors.js"
+    },
+    "./types/action": {
+      "types": "./dist/types/action.d.ts",
+      "default": "./dist/types/action.js"
+    },
+    "./types/callback": {
+      "types": "./dist/types/callback.d.ts",
+      "default": "./dist/types/callback.js"
+    },
+    "./types/cache": {
+      "types": "./dist/types/cache.d.ts",
+      "default": "./dist/types/cache.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "clean": "rm -rf node_modules dist tsconfig.tsbuildinfo",
+    "typecheck": "tsc --noEmit"
+  },
+  "eslintConfig": {
+    "extends": "../../.eslintrc.js"
+  },
+  "dependencies": {
+    "@nomicfoundation/hardhat-toolbox-viem": "^3.0.0",
+    "hardhat": "^2.22.5",
+    "hardhat-preprocessor": "^0.1.5",
+    "tsup": "^8.2.4",
+    "viem": "^2.18.8",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4",
+    "vitest": "^1.6.0"
+  }
+}
