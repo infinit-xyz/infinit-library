@@ -6,7 +6,7 @@ const remappings = [
   `@uniswap/v2-core/contracts=v2-core`,
   `@uniswap/v3-core/contracts=v3-core`,
   `@uniswap/lib/contracts=uni-lib`,
-  `@openzeppelin/contracts=@openzeppelin/contracts@3.4.2-solc-0.7`,
+  `@openzeppelin/contracts=@openzeppelin/contracts-3.4.2-solc-0.7`,
 ]
 
 const LOW_OPTIMIZER_COMPILER_SETTINGS = {

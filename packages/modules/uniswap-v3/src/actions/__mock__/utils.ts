@@ -39,7 +39,7 @@ export const setupUniswapV3 = async (): Promise<UniswapV3Registry> => {
     to: weth,
     value: BigInt(20 * 10 ** 18),
   })
-  const erc20Artifact = await readArtifact('@openzeppelin/contracts@3.4.2-solc-0.7/token/ERC20/IERC20.sol:IERC20')
+  const erc20Artifact = await readArtifact('@openzeppelin/contracts-3.4.2-solc-0.7/token/ERC20/IERC20.sol:IERC20')
   // transfer 100 wei to the client
   const transferData = encodeFunctionData({
     abi: erc20Artifact.abi,
@@ -158,7 +158,7 @@ export const swap = async (client: InfinitWallet, router: Address, tokenIn: Addr
 }
 
 export const balanceOf = async (client: InfinitWallet, token: Address, owner: Address): Promise<bigint> => {
-  const erc20Artifact = await readArtifact('@openzeppelin/contracts@3.4.1-solc-0.7-2/token/ERC20/IERC20.sol:IERC20')
+  const erc20Artifact = await readArtifact('@openzeppelin/contracts-3.4.1-solc-0.7-2/token/ERC20/IERC20.sol:IERC20')
   return await client.publicClient.readContract({
     address: token,
     abi: erc20Artifact.abi,

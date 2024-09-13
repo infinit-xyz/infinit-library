@@ -80,7 +80,7 @@ export class CreateIncentiveTxBuilder extends TxBuilder {
     if (this.incentiveKey.endTime - this.incentiveKey.startTime > maxIncentiveDuration)
       throw new ContractValidateError('incentive duration too long')
     // get reward token balance
-    const ierc20Artifact = await readArtifact('@openzeppelin/contracts@3.4.1-solc-0.7-2/token/ERC20/IERC20.sol:IERC20')
+    const ierc20Artifact = await readArtifact('@openzeppelin/contracts-3.4.1-solc-0.7-2/token/ERC20/IERC20.sol:IERC20')
     const rewardTokenBalance = await this.client.publicClient.readContract({
       address: this.incentiveKey.rewardToken,
       abi: ierc20Artifact.abi,

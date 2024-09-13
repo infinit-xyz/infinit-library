@@ -7,7 +7,7 @@ const remappings = [
   `@uniswap/v2-core/contracts=v2-core`,
   `@uniswap/v3-core/contracts=v3-core`,
   `@uniswap/v3-periphery/contracts=v3-periphery`,
-  `@openzeppelin/contracts=@openzeppelin/contracts@4.7.0`,
+  `@openzeppelin/contracts=@openzeppelin/contracts-4.7.0`,
 ]
 
 const DEFAULT_COMPILER_SETTINGS = {

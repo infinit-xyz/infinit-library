@@ -108,13 +108,13 @@ importers:
       '@nomicfoundation/hardhat-viem':
         specifier: ^2.0.3
         version: 2.0.4(hardhat@2.22.10(ts-node@10.9.2(@types/node@20.16.5)(typescript@5.6.2))(typescript@5.6.2))(typescript@5.6.2)(viem@2.21.6(typescript@5.6.2)(zod@3.23.8))(zod@3.23.8)
-      '@openzeppelin/contracts@3.4.1-solc-0.7-2':
+      '@openzeppelin/contracts-3.4.1-solc-0.7-2':
         specifier: npm:@openzeppelin/contracts@3.4.1-solc-0.7-2
         version: '@openzeppelin/contracts@3.4.1-solc-0.7-2'
-      '@openzeppelin/contracts@3.4.2-solc-0.7':
+      '@openzeppelin/contracts-3.4.2-solc-0.7':
         specifier: npm:@openzeppelin/contracts@3.4.2-solc-0.7
         version: '@openzeppelin/contracts@3.4.2-solc-0.7'
-      '@openzeppelin/contracts@4.7.0':
+      '@openzeppelin/contracts-4.7.0':
         specifier: npm:@openzeppelin/contracts@4.7.0
         version: '@openzeppelin/contracts@4.7.0'
       base64-sol:
