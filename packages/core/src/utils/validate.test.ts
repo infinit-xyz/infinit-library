@@ -2,7 +2,7 @@ import { ValidateInputValueError } from '@/errors'
 import { InfinitWallet } from '@/infinit-wallet'
 import { validateActionData } from '@/utils/validate'
 import { zodAddress } from '@/utils/zod'
-import { TestChain, TestInfinitWallet } from '@infinit/test'
+import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 import { describe, expect, test } from 'vitest'
 import { ZodError, z } from 'zod'
 
