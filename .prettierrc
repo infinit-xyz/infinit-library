@@ -1,0 +1,25 @@
+{
+  "semi": false,
+  "trailingComma": "all",
+  "singleQuote": true,
+  "proseWrap": "always",
+  "tabWidth": 2,
+  "printWidth": 140,
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "importOrderCaseInsensitive": false,
+  "importOrder": [
+    "viem$",
+    "@infinit-xyz/core/(.*)$",
+    "base/(.*)$",
+    "^@contracts/(.*)$",
+    "^@actions/(.*)$",
+    "^@scripts/(.*)$",
+    "types(.*)$",
+    "^@/(.*)%"
+  ],
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-solidity"
+  ]
+}

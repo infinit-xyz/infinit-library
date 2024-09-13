@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/github-action.json
+
+name: 'Set up and Install'
+description: 'Set up repository and install all dependencies'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up pnpm
+      uses: pnpm/action-setup@v4
+
+    - name: Set up node
+      uses: actions/setup-node@v4
+      with:
+        cache: pnpm
+        node-version: 22
+
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install --ignore-scripts
+
+    - name: Build
+      shell: bash
+      run: pnpm run build
+
+    - name: Cache artifacts
+      id: cache-artifacts
+      uses: actions/cache@v4
+      env:
+        cache-name: cache-artifacts
+      with:
+        path: ./packages/modules/**/artifacts/**
+        key: ${{ env.cache-name }}-${{ hashFiles('./packages/modules/**/contracts/**/*') }}
+
+    - if: ${{ steps.cache-artifacts.outputs.cache-hit == 'true' }}
+      name: Artifacts cache hit
+      shell: bash
+      run: echo "👍 Artifacts Cache Hit"
+
+    - if: ${{ steps.cache-artifacts.outputs.cache-hit != 'true' }}
+      name: Compile contracts
+      shell: bash
+      run: echo "👎 Artifacts Cache Miss -> Compiling contracts..." && pnpm run compile
