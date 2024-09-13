@@ -1,9 +1,9 @@
 # INFINIT Library
 
-![Statements](https://img.shields.io/badge/statements-53.55%25-red.svg?style=flat)
-![Branches](https://img.shields.io/badge/branches-48.19%25-red.svg?style=flat)
-![Functions](https://img.shields.io/badge/functions-46.26%25-red.svg?style=flat)
-![Lines](https://img.shields.io/badge/lines-55.5%25-red.svg?style=flat)
+![Statements](https://img.shields.io/badge/statements-76%25-red.svg?style=flat)
+![Branches](https://img.shields.io/badge/branches-55.51%25-red.svg?style=flat)
+![Functions](https://img.shields.io/badge/functions-81.25%25-yellow.svg?style=flat)
+![Lines](https://img.shields.io/badge/lines-81.25%25-yellow.svg?style=flat)
 
 Launch and Scale any DeFi protocol in minutes
 
