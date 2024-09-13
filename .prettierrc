@@ -19,5 +19,8 @@
     "types(.*)$",
     "./(.*)$"
   ],
-  "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-solidity"]
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-solidity"
+  ]
 }
