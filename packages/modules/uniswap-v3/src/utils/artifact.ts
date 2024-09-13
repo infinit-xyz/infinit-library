@@ -1,9 +1,10 @@
-import { moduleDir } from '../constants'
-import { name } from '@/package.json'
-import { Artifacts as ArtifactsFromPath } from 'hardhat/internal/artifacts'
 import path from 'path'
 
 import type { Artifacts, ArtifactsMap } from 'hardhat/types/artifacts'
+
+import { moduleDir } from '../constants'
+import { name } from '@/package.json'
+import { Artifacts as ArtifactsFromPath } from 'hardhat/internal/artifacts'
 
 const readArtifact = async <ArgT extends keyof ArtifactsMap>(contractNameOrFullyQualifiedName: ArgT): Promise<ArtifactsMap[ArgT]> => {
   //Use moduleDir only when testing for vitest.
