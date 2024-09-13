@@ -10,7 +10,7 @@ import { setupUniswapV3 } from '@actions/__mock__/utils'
 import { DeployUniversalRouterAction } from '@actions/deployUniversalRouter'
 
 import { UniswapV3Registry } from '@/src/type'
-import { TestChain, getForkRpcUrl } from '@infinit/test'
+import { TestChain, getForkRpcUrl } from '@infinit-xyz/test'
 
 describe('deployUniversalRouterAction', () => {
   let registry: UniswapV3Registry

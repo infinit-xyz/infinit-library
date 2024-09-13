@@ -12,7 +12,7 @@ import { TransferProxyAdminOwnerAction } from '@actions/transferProxyAdminOwner'
 
 import { UniswapV3Registry } from '@/src/type'
 import { readArtifact } from '@/src/utils/artifact'
-import { TestChain, getForkRpcUrl } from '@infinit/test'
+import { TestChain, getForkRpcUrl } from '@infinit-xyz/test'
 
 describe('transferProxyAdminOwnerAction', () => {
   let registry: UniswapV3Registry

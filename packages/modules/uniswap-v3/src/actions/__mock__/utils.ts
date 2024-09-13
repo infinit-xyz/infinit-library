@@ -10,7 +10,7 @@ import { DeployUniswapV3Action } from '@actions/deployUniswapV3'
 
 import { UniswapV3Registry } from '@/src/type'
 import { readArtifact } from '@/src/utils/artifact'
-import { TestChain, TestInfinitWallet, getForkRpcUrl } from '@infinit/test'
+import { TestChain, TestInfinitWallet, getForkRpcUrl } from '@infinit-xyz/test'
 
 export const setupUniswapV3 = async (): Promise<UniswapV3Registry> => {
   const client = new InfinitWallet(arbitrum, getForkRpcUrl(TestChain.arbitrum), privateKeyToAccount(ANVIL_PRIVATE_KEY))

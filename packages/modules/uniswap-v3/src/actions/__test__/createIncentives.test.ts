@@ -13,7 +13,7 @@ import { CreateIncentivesAction } from '@actions/createIncentives'
 
 import { UniswapV3Registry } from '@/src/type'
 import { readArtifact } from '@/src/utils/artifact'
-import { TestChain, getForkRpcUrl } from '@infinit/test'
+import { TestChain, getForkRpcUrl } from '@infinit-xyz/test'
 
 describe('createIncentivesAction', () => {
   let registry: UniswapV3Registry

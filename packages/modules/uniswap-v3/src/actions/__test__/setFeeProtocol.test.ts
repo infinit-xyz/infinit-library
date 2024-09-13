@@ -12,7 +12,7 @@ import { SetFeeProtocolAction } from '@actions/setFeeProtocol'
 
 import { UniswapV3Registry } from '@/src/type'
 import { readArtifact } from '@/src/utils/artifact'
-import { TestChain, getForkRpcUrl } from '@infinit/test'
+import { TestChain, getForkRpcUrl } from '@infinit-xyz/test'
 
 describe('setFeeProtocolAction', () => {
   let registry: UniswapV3Registry

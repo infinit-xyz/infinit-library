@@ -11,7 +11,7 @@ import { EnableFeeAmountsAction } from '@actions/enableFeeAmounts'
 
 import { UniswapV3Registry } from '@/src/type'
 import { readArtifact } from '@/src/utils/artifact'
-import { TestChain, getForkRpcUrl } from '@infinit/test'
+import { TestChain, getForkRpcUrl } from '@infinit-xyz/test'
 
 describe('enableFeeAmountsAction', () => {
   let registry: UniswapV3Registry

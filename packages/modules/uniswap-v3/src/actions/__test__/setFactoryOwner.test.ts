@@ -12,7 +12,7 @@ import { SetFactoryOwnerAction } from '@actions/setFactoryOwner'
 
 import { UniswapV3Registry } from '@/src/type'
 import { readArtifact } from '@/src/utils/artifact'
-import { TestChain, getForkRpcUrl } from '@infinit/test'
+import { TestChain, getForkRpcUrl } from '@infinit-xyz/test'
 
 describe('setFactoryOwnerAction', () => {
   let registry: UniswapV3Registry

@@ -11,7 +11,7 @@ import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
 import { DeployUniswapV3Action } from '@actions/deployUniswapV3'
 
 import { readArtifact } from '@/src/utils/artifact'
-import { TestChain, getForkRpcUrl } from '@infinit/test'
+import { TestChain, getForkRpcUrl } from '@infinit-xyz/test'
 
 describe('deployUniswapV3Action', () => {
   let action: DeployUniswapV3Action
