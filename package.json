@@ -6,7 +6,6 @@
     "clean": "rm -rf node_modules && pnpm run --r --parallel clean",
     "compile": "pnpm run --r --parallel compile",
     "build": "pnpm run --r --sequential build",
-    "pre-release": "changeset pre enter alpha",
     "changeset:version": "changeset version && pnpm install --lockfile-only",
     "changeset:publish": "pnpm build && changeset publish",
     "preinstall": "npx only-allow pnpm",
