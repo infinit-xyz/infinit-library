@@ -1,5 +1,6 @@
-import { chains } from './chains.js'
 import { createServer } from 'prool'
+
+import { chains } from './chains.js'
 import { anvil } from 'prool/instances'
 
 export default async function () {

@@ -1,9 +1,9 @@
+import { SubAction } from '@base/subAction'
+
 import { MockTxBuilder } from './txBuilder.mock'
 import { MockRegistry, MockSubActionParams } from './type.mock'
 import { ValidateInputValueError } from '@/errors'
 import { InfinitWallet } from '@infinit-wallet/index'
-
-import { SubAction } from '@base/subAction'
 
 export class MockSubAction extends SubAction<MockSubActionParams, MockRegistry> {
   constructor(client: InfinitWallet, status: boolean) {

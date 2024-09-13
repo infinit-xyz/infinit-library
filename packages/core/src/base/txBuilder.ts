@@ -1,6 +1,6 @@
-import { InfinitWallet } from '@infinit-wallet/index'
-
 import { InfinitCallback, TransactionData } from '@/types'
+
+import { InfinitWallet } from '@infinit-wallet/index'
 
 /**
  * Abstract base class for constructing transaction builders.

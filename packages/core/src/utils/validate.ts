@@ -1,7 +1,8 @@
-import { ValidateInputValueError } from '@/errors'
 import { SomeZodObject, ZodError } from 'zod'
 
 import { ActionData } from '@base/action'
+
+import { ValidateInputValueError } from '@/errors'
 
 const validateActionData = (data: ActionData, schema: SomeZodObject, signers: string[]) => {
   // validate signers

@@ -1,5 +1,3 @@
-import { TransactionError } from '@/errors'
-
 import {
   Account,
   Chain,
@@ -15,6 +13,8 @@ import {
 } from 'viem'
 
 import { InfinitCallback, ToSendTransaction } from '@/types'
+
+import { TransactionError } from '@/errors'
 
 /**
  * A class that represents an Infinit Wallet, which allows interacting with blockchain accounts,

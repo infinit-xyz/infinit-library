@@ -1,6 +1,7 @@
+import { type Chain as viem_Chain, arbitrum as viem_arbitrum } from 'viem/chains'
+
 import { TestChain } from './constants.js'
 import { getRpcUrls } from './utils.js'
-import { type Chain as viem_Chain, arbitrum as viem_arbitrum } from 'viem/chains'
 
 type Compute<type> = { [key in keyof type]: type[key] } & unknown
 

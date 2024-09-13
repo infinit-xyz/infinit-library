@@ -1,10 +1,8 @@
-import { MOCK_PRIVATE_KEY } from '@infinit-wallet/__mock__/constants.mock'
-import { InfinitWallet } from '@infinit-wallet/index'
-import { privateKeyToAccount } from 'viem/accounts'
-import { linea } from 'viem/chains'
 import { beforeEach, describe, expect, test, vi } from 'vitest'
 
 import { Chain } from 'viem'
+import { privateKeyToAccount } from 'viem/accounts'
+import { linea } from 'viem/chains'
 
 import { MockSubAction } from '@/base/__mock__/subAction.mock'
 import { MockAction } from '@base/__mock__/action.mock'
@@ -12,6 +10,9 @@ import { MockActionData, MockRegistry } from '@base/__mock__/type.mock'
 import { Action } from '@base/action'
 
 import { InfinitCache } from 'src/types'
+
+import { MOCK_PRIVATE_KEY } from '@infinit-wallet/__mock__/constants.mock'
+import { InfinitWallet } from '@infinit-wallet/index'
 
 vi.mock('@base/__mock__/subAction.mock')
 

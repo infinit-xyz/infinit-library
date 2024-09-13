@@ -1,10 +1,11 @@
+import { describe, expect, test } from 'vitest'
+import { ZodError, z } from 'zod'
+
 import { ValidateInputValueError } from '@/errors'
 import { InfinitWallet } from '@/infinit-wallet'
 import { validateActionData } from '@/utils/validate'
 import { zodAddress } from '@/utils/zod'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
-import { describe, expect, test } from 'vitest'
-import { ZodError, z } from 'zod'
 
 describe('utils/validate.ts', () => {
   const bob = '0x0000000000000000000000000000000000000B0b'

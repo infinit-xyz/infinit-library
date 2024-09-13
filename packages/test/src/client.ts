@@ -1,8 +1,8 @@
+import { TestClient, createTestClient, http } from 'viem'
+
 import { chains } from './chains.js'
 import { TestChain } from './constants.js'
 import { getForkRpcUrl } from 'packages/test/src/utils.js'
-
-import { TestClient, createTestClient, http } from 'viem'
 
 const arbitrumTestClient = createTestClient({
   mode: 'anvil',

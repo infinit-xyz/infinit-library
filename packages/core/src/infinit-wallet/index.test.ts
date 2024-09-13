@@ -1,8 +1,10 @@
-import { BASE_TRANSACTION_RECEIPT, MOCK_PRIVATE_KEY } from './__mock__/constants.mock'
-import { InfinitWallet } from '@infinit-wallet/index'
+import { beforeEach, describe, expect, test, vi } from 'vitest'
+
 import { privateKeyToAccount } from 'viem/accounts'
 import { linea } from 'viem/chains'
-import { beforeEach, describe, expect, test, vi } from 'vitest'
+
+import { BASE_TRANSACTION_RECEIPT, MOCK_PRIVATE_KEY } from './__mock__/constants.mock'
+import { InfinitWallet } from '@infinit-wallet/index'
 
 const CHAIN = linea
 const rpcEndpoint = 'https://rpc.linea.build'

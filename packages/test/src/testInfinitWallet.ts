@@ -1,11 +1,13 @@
-import { InfinitWallet, ToSendTransaction } from '@infinit-xyz/core'
-import { TestChain, getForkRpcUrl, testClients } from '@infinit-xyz/test'
-import { privateKeyToAccount } from 'viem/accounts'
-
 import type { Address, Client, Hash, Hex, TestActions, TransactionReceipt, WalletActions } from 'viem'
 import { parseEther, walletActions } from 'viem'
+import { privateKeyToAccount } from 'viem/accounts'
 
+import { InfinitWallet, ToSendTransaction } from '@infinit-xyz/core'
 import { TransactionError } from '@infinit-xyz/core/errors'
+
+import { testClients } from './client.js'
+import { TestChain } from './constants.js'
+import { getForkRpcUrl } from './utils.js'
 
 export class TestInfinitWallet extends InfinitWallet {
   public testClient: Client & TestActions & WalletActions

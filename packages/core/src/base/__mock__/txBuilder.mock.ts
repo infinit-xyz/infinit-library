@@ -1,9 +1,9 @@
-import { ValidateInputValueError } from '@/errors'
-import { InfinitWallet } from '@infinit-wallet/index'
-
 import { TxBuilder } from '@base/txBuilder'
 
 import { InfinitCallback, TransactionData } from '@/types'
+
+import { ValidateInputValueError } from '@/errors'
+import { InfinitWallet } from '@infinit-wallet/index'
 
 export class MockTxBuilder extends TxBuilder {
   success: boolean

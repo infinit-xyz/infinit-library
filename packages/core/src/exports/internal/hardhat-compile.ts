@@ -1,6 +1,7 @@
-import { ContractProvider } from '@/contract-provider'
 import fs from 'fs'
 import path from 'path'
+
+import { ContractProvider } from '@/contract-provider'
 
 // get only arguments from argv
 const args = process.argv.slice(2)

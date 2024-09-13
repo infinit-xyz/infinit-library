@@ -1,13 +1,15 @@
-import { MOCK_PRIVATE_KEY } from '@infinit-wallet/__mock__/constants.mock'
-import { InfinitWallet } from '@infinit-wallet/index'
+import { beforeAll, describe, expect, test } from 'vitest'
+
 import { privateKeyToAccount } from 'viem/accounts'
 import { linea } from 'viem/chains'
-import { beforeAll, describe, expect, test } from 'vitest'
 
 import { MockTxBuilder } from '@base/__mock__/txBuilder.mock'
 import { TxBuilder } from '@base/txBuilder'
 
 import { TransactionData } from '../../types'
+
+import { MOCK_PRIVATE_KEY } from '@infinit-wallet/__mock__/constants.mock'
+import { InfinitWallet } from '@infinit-wallet/index'
 
 describe('txBuilder', () => {
   let txBuilder: TxBuilder

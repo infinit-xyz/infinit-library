@@ -1,6 +1,6 @@
-import { InfinitWallet } from '@infinit-wallet/index'
-
 import { Address } from 'viem'
+
+import { InfinitWallet } from '@infinit-wallet/index'
 
 type MockRegistry = {
   poolAddress?: Address

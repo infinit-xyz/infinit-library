@@ -1,8 +1,7 @@
-import { MOCK_PRIVATE_KEY } from '@infinit-wallet/__mock__/constants.mock'
-import { InfinitWallet } from '@infinit-wallet/index'
+import { beforeAll, beforeEach, describe, expect, test, vi } from 'vitest'
+
 import { privateKeyToAccount } from 'viem/accounts'
 import { linea } from 'viem/chains'
-import { beforeAll, beforeEach, describe, expect, test, vi } from 'vitest'
 
 import { MockSubAction } from '@base/__mock__/subAction.mock'
 import { SubAction, SubActionData } from '@base/subAction'
@@ -10,6 +9,9 @@ import { TxBuilder } from '@base/txBuilder'
 
 import { InfinitCallback } from '@/types'
 import { TransactionCache } from '@/types/cache'
+
+import { MOCK_PRIVATE_KEY } from '@infinit-wallet/__mock__/constants.mock'
+import { InfinitWallet } from '@infinit-wallet/index'
 
 const CHAIN = linea
 const rpcEndpoint = 'https://rpc.linea.build'

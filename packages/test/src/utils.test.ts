@@ -1,6 +1,7 @@
+import { afterEach, describe, expect, test, vi } from 'vitest'
+
 import { TestChain } from './constants'
 import { getForkRpcUrl, getRpcUrls } from './utils'
-import { afterEach, describe, expect, test, vi } from 'vitest'
 
 describe('utils.ts', () => {
   describe('getRpcUrls', () => {

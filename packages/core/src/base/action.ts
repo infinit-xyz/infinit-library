@@ -1,10 +1,10 @@
-import { IncorrectCacheError } from '@/errors'
-import { InfinitWallet } from '@infinit-wallet/index'
-
 import { SubAction } from '@base/subAction'
 
 import { CallbackParams } from '@/types/callback'
 import { InfinitCache, InfinitCallback } from 'src/types'
+
+import { IncorrectCacheError } from '@/errors'
+import { InfinitWallet } from '@infinit-wallet/index'
 
 /**
  * Represents the data associated with an action.
