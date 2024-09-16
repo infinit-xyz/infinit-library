@@ -100,6 +100,43 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0(@types/node@20.16.5)
 
+  packages/modules/aave-v3:
+    dependencies:
+      '@infinit-xyz/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@nomicfoundation/hardhat-viem':
+        specifier: ^2.0.3
+        version: 2.0.4(hardhat@2.22.10(ts-node@10.9.2(@types/node@20.16.5)(typescript@5.6.2))(typescript@5.6.2))(typescript@5.6.2)(viem@2.21.6(typescript@5.6.2)(zod@3.23.8))(zod@3.23.8)
+      hardhat-preprocessor:
+        specifier: ^0.1.5
+        version: 0.1.5(hardhat@2.22.10(ts-node@10.9.2(@types/node@20.16.5)(typescript@5.6.2))(typescript@5.6.2))
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      tsup:
+        specifier: ^8.1.0
+        version: 8.2.4(postcss@8.4.45)(tsx@4.19.1)(typescript@5.6.2)
+      viem:
+        specifier: ^2.17.3
+        version: 2.21.6(typescript@5.6.2)(zod@3.23.8)
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
+    devDependencies:
+      '@types/lodash':
+        specifier: ^4.17.7
+        version: 4.17.7
+      hardhat:
+        specifier: ^2.22.5
+        version: 2.22.10(ts-node@10.9.2(@types/node@20.16.5)(typescript@5.6.2))(typescript@5.6.2)
+      tsx:
+        specifier: ^4.16.2
+        version: 4.19.1
+      typescript:
+        specifier: ^5.5.3
+        version: 5.6.2
+
   packages/modules/uniswap-v3:
     dependencies:
       '@infinit-xyz/core':
