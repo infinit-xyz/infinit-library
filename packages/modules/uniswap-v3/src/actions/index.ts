@@ -58,8 +58,8 @@ export const actions = {
     name: 'Deploy Uniswap V3 Staker',
     actionClassName: DeployUniswapV3StakerAction.name,
     paramSchema: DeployUniswapV3StakerParamSchema,
-    signers: ['deployer']
-  }
+    signers: ['deployer'],
+  },
 } satisfies InfinitActionRecord
 
 export {
@@ -70,6 +70,5 @@ export {
   SetFactoryOwnerAction,
   SetFeeProtocolAction,
   TransferProxyAdminOwnerAction,
-  DeployUniswapV3StakerAction
+  DeployUniswapV3StakerAction,
 }
-

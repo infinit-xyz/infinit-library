@@ -1,3 +1,16 @@
+import { z } from 'zod'
+
+import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
+import { validateActionData, zodAddress } from '@infinit-xyz/core/internal'
+
+import {
+  DeployNonfungibleTokenPositionDescriptorMsg,
+  DeployNonfungibleTokenPositionDescriptorSubAction,
+} from '@actions/subactions/deployNonfungibleTokenPositionDescriptor'
+import { DeploySwapRouter02SubAction } from '@actions/subactions/deploySwapRouter02'
+import { DeployUniswapV3Contracts1SubAction, DeployUniswapV3Msg } from '@actions/subactions/deployUniswapV3Contracts1'
+import { DeployUniswapV3Contracts2SubAction, DeployUniswapV3Msg2 } from '@actions/subactions/deployUniswapV3Contracts2'
+
 import {
   DeployNonfungiblePositionManagerMsg,
   DeployNonfungiblePositionManagerSubAction,
@@ -5,18 +18,6 @@ import {
 import { SetFactoryOwnerSubAction } from '@/src/actions/subactions/setFactoryOwner'
 import { TransferProxyAdminOwnerSubAction } from '@/src/actions/subactions/transferProxyAdminOwner'
 import { UniswapV3Registry } from '@/src/type'
-import { DeploySwapRouter02SubAction } from '@actions/subactions/deploySwapRouter02'
-import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
-import { z } from 'zod'
-
-import { validateActionData, zodAddress } from '@infinit-xyz/core/internal'
-
-import {
-  DeployNonfungibleTokenPositionDescriptorMsg,
-  DeployNonfungibleTokenPositionDescriptorSubAction,
-} from '@actions/subactions/deployNonfungibleTokenPositionDescriptor'
-import { DeployUniswapV3Contracts1SubAction, DeployUniswapV3Msg } from '@actions/subactions/deployUniswapV3Contracts1'
-import { DeployUniswapV3Contracts2SubAction, DeployUniswapV3Msg2 } from '@actions/subactions/deployUniswapV3Contracts2'
 
 export const DeployUniswapV3ParamSchema = z.object({
   nativeCurrencyLabel: z.string().describe(`Native currency label (e.g., ETH)`),
@@ -80,7 +81,7 @@ export class DeployUniswapV3Action extends Action<DeployUniswapV3ActionData, Uni
           factoryV2: params.uniswapV2Factory,
           factoryV3: message.uniswapV3Factory,
           positionManager: message.nonfungiblePositionManager,
-          weth9: params.wrappedNativeToken
+          weth9: params.wrappedNativeToken,
         }),
 
       // step 6
