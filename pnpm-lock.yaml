@@ -140,8 +140,8 @@ importers:
         specifier: workspace:*
         version: link:../../core
       '@openzeppelin/contracts':
-        specifier: 5.0.0
-        version: 5.0.0
+        specifier: 5.0.2
+        version: 5.0.2
       '@openzeppelin/contracts-upgradeable':
         specifier: 4.9.3
         version: 4.9.3
@@ -1089,8 +1089,8 @@ packages:
   '@openzeppelin/contracts@4.7.0':
     resolution: {integrity: sha512-52Qb+A1DdOss8QvJrijYYPSf32GUg2pGaG/yCxtaA3cu4jduouTdg4XZSMLW9op54m1jH7J8hoajhHKOPsoJFw==}
 
-  '@openzeppelin/contracts@5.0.0':
-    resolution: {integrity: sha512-bv2sdS6LKqVVMLI5+zqnNrNU/CA+6z6CmwFXm/MzmOPBRSO5reEJN7z0Gbzvs0/bv/MZZXNklubpwy3v2+azsw==}
+  '@openzeppelin/contracts@5.0.2':
+    resolution: {integrity: sha512-ytPc6eLGcHHnapAZ9S+5qsdomhjo6QBHTDRRBFfTxXIpsicMhVPouPgmUPebZZZGX7vt9USA+Z+0M0dSVtSUEA==}
 
   '@openzeppelin/merkle-tree@1.0.7':
     resolution: {integrity: sha512-i93t0YYv6ZxTCYU3CdO5Q+DXK0JH10A4dCBOMlzYbX+ujTXm+k1lXiEyVqmf94t3sqmv8sm/XT5zTa0+efnPgQ==}
@@ -4948,7 +4948,7 @@ snapshots:
 
   '@openzeppelin/contracts@4.7.0': {}
 
-  '@openzeppelin/contracts@5.0.0': {}
+  '@openzeppelin/contracts@5.0.2': {}
 
   '@openzeppelin/merkle-tree@1.0.7':
     dependencies:
