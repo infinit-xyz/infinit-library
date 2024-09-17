@@ -7,6 +7,7 @@ import { SetFeeProtocolAction } from '@actions/setFeeProtocol'
 import { TransferProxyAdminOwnerAction, TransferProxyAdminOwnerActionParamsSchema } from '@actions/transferProxyAdminOwner'
 
 import { CollectProtocolAction, CollectProtocolActionParamsSchema } from './collectProtocol'
+import { CreateIncentivesAction, CreateIncentivesActionParamsSchema } from './createIncentives'
 import { DeployUniswapV3StakerAction, DeployUniswapV3StakerParamSchema } from './deployUniswapV3Staker'
 import { DeployUniversalRouterAction, DeployUniversalRouterParamSchema } from './deployUniversalRouter'
 
@@ -60,15 +61,22 @@ export const actions = {
     paramSchema: DeployUniswapV3StakerParamSchema,
     signers: ['deployer'],
   },
+  createIncentivesAction: {
+    name: 'Create Incentives',
+    actionClassName: CreateIncentivesAction.name,
+    paramSchema: CreateIncentivesActionParamsSchema,
+    signers: ['incentiveCreator'],
+  },
 } satisfies InfinitActionRecord
 
 export {
   CollectProtocolAction,
+  CreateIncentivesAction,
   DeployUniswapV3Action,
+  DeployUniswapV3StakerAction,
   DeployUniversalRouterAction,
   EnableFeeAmountsAction,
   SetFactoryOwnerAction,
   SetFeeProtocolAction,
   TransferProxyAdminOwnerAction,
-  DeployUniswapV3StakerAction,
 }
