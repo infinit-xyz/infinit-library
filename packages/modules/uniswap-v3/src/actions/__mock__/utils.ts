@@ -7,6 +7,7 @@ import { InfinitWallet, TransactionData } from '@infinit-xyz/core'
 import { ANVIL_PRIVATE_KEY } from '@actions/__mock__/account'
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
 import { DeployUniswapV3Action } from '@actions/deployUniswapV3'
+import { DeployUniswapV3StakerAction } from '@actions/deployUniswapV3Staker'
 
 import { UniswapV3Registry } from '@/src/type'
 import { readArtifact } from '@/src/utils/artifact'
@@ -23,8 +24,6 @@ export const setupUniswapV3 = async (): Promise<UniswapV3Registry> => {
       nativeCurrencyLabel: 'ETH',
       proxyAdminOwner: deployer,
       factoryOwner: deployer,
-      maxIncentiveStartLeadTime: 2592000n,
-      maxIncentiveDuration: 63072000n,
       wrappedNativeToken: weth,
       uniswapV2Factory: zeroAddress,
     },
@@ -33,7 +32,20 @@ export const setupUniswapV3 = async (): Promise<UniswapV3Registry> => {
     },
   })
 
-  const curRegistry = await deployUniswapV3Action.run({})
+  let curRegistry = await deployUniswapV3Action.run({})
+  // deploy staker
+  const deployUniswapV3StakerAction = new DeployUniswapV3StakerAction({
+    params: {
+      factory: curRegistry.uniswapV3Factory!,
+      nonfungiblePositionManager: curRegistry.nonfungiblePositionManager!,
+      maxIncentiveStartLeadTime: 2592000n,
+      maxIncentiveDuration: 63072000n,
+    },
+    signer: {
+      deployer: client,
+    },
+  })
+  curRegistry = await deployUniswapV3StakerAction.run(curRegistry)
   // mint token
   await client.walletClient.sendTransaction({
     to: weth,
