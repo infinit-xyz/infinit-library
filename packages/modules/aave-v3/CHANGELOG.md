@@ -1,5 +1,13 @@
 # @infinit-xyz/aave-v3
 
+## 0.0.0-alpha.2
+
+### Patch Changes
+
+- 2c5ac31: bump viem version
+- Updated dependencies [2c5ac31]
+  - @infinit-xyz/core@0.0.0-alpha.1
+
 ## 0.0.0-alpha.1
 
 ### Patch Changes
