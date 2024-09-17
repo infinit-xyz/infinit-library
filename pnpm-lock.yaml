@@ -108,9 +108,6 @@ importers:
       '@nomicfoundation/hardhat-viem':
         specifier: ^2.0.3
         version: 2.0.4(hardhat@2.22.10(ts-node@10.9.2(@types/node@20.16.5)(typescript@5.6.2))(typescript@5.6.2))(typescript@5.6.2)(viem@2.21.6(typescript@5.6.2)(zod@3.23.8))(zod@3.23.8)
-      hardhat-preprocessor:
-        specifier: ^0.1.5
-        version: 0.1.5(hardhat@2.22.10(ts-node@10.9.2(@types/node@20.16.5)(typescript@5.6.2))(typescript@5.6.2))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -119,6 +116,46 @@ importers:
         version: 8.2.4(postcss@8.4.45)(tsx@4.19.1)(typescript@5.6.2)
       viem:
         specifier: ^2.17.3
+        version: 2.21.6(typescript@5.6.2)(zod@3.23.8)
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
+    devDependencies:
+      '@types/lodash':
+        specifier: ^4.17.7
+        version: 4.17.7
+      hardhat:
+        specifier: ^2.22.5
+        version: 2.22.10(ts-node@10.9.2(@types/node@20.16.5)(typescript@5.6.2))(typescript@5.6.2)
+      tsx:
+        specifier: ^4.16.2
+        version: 4.19.1
+      typescript:
+        specifier: ^5.5.3
+        version: 5.6.2
+
+  packages/modules/token:
+    dependencies:
+      '@infinit-xyz/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@openzeppelin/contracts':
+        specifier: 5.0.0
+        version: 5.0.0
+      '@openzeppelin/contracts-upgradeable':
+        specifier: 4.9.3
+        version: 4.9.3
+      '@openzeppelin/merkle-tree':
+        specifier: ^1.0.7
+        version: 1.0.7
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      tsup:
+        specifier: ^8.2.4
+        version: 8.2.4(postcss@8.4.45)(tsx@4.19.1)(typescript@5.6.2)
+      viem:
+        specifier: ^2.20.1
         version: 2.21.6(typescript@5.6.2)(zod@3.23.8)
       zod:
         specifier: ^3.23.8
@@ -1040,6 +1077,9 @@ packages:
     resolution: {integrity: sha512-q4n32/FNKIhQ3zQGGw5CvPF6GTvDCpYwIf7bEY/dZTZbgfDsHyjJwURxUJf3VQuuJj+fDIFl4+KkBVbw4Ef6jA==}
     engines: {node: '>= 12'}
 
+  '@openzeppelin/contracts-upgradeable@4.9.3':
+    resolution: {integrity: sha512-jjaHAVRMrE4UuZNfDwjlLGDxTHWIOwTJS2ldnc278a0gevfXfPr8hxKEVBGFBE96kl2G3VHDZhUimw/+G3TG2A==}
+
   '@openzeppelin/contracts@3.4.1-solc-0.7-2':
     resolution: {integrity: sha512-tAG9LWg8+M2CMu7hIsqHPaTyG4uDzjr6mhvH96LvOpLZZj6tgzTluBt+LsCf1/QaYrlis6pITvpIaIhE+iZB+Q==}
 
@@ -1048,6 +1088,12 @@ packages:
 
   '@openzeppelin/contracts@4.7.0':
     resolution: {integrity: sha512-52Qb+A1DdOss8QvJrijYYPSf32GUg2pGaG/yCxtaA3cu4jduouTdg4XZSMLW9op54m1jH7J8hoajhHKOPsoJFw==}
+
+  '@openzeppelin/contracts@5.0.0':
+    resolution: {integrity: sha512-bv2sdS6LKqVVMLI5+zqnNrNU/CA+6z6CmwFXm/MzmOPBRSO5reEJN7z0Gbzvs0/bv/MZZXNklubpwy3v2+azsw==}
+
+  '@openzeppelin/merkle-tree@1.0.7':
+    resolution: {integrity: sha512-i93t0YYv6ZxTCYU3CdO5Q+DXK0JH10A4dCBOMlzYbX+ujTXm+k1lXiEyVqmf94t3sqmv8sm/XT5zTa0+efnPgQ==}
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -4894,11 +4940,22 @@ snapshots:
       '@nomicfoundation/solidity-analyzer-linux-x64-musl': 0.1.2
       '@nomicfoundation/solidity-analyzer-win32-x64-msvc': 0.1.2
 
+  '@openzeppelin/contracts-upgradeable@4.9.3': {}
+
   '@openzeppelin/contracts@3.4.1-solc-0.7-2': {}
 
   '@openzeppelin/contracts@3.4.2-solc-0.7': {}
 
   '@openzeppelin/contracts@4.7.0': {}
+
+  '@openzeppelin/contracts@5.0.0': {}
+
+  '@openzeppelin/merkle-tree@1.0.7':
+    dependencies:
+      '@ethersproject/abi': 5.7.0
+      '@ethersproject/bytes': 5.7.0
+      '@ethersproject/constants': 5.7.0
+      '@ethersproject/keccak256': 5.7.0
 
   '@pkgjs/parseargs@0.11.0':
     optional: true

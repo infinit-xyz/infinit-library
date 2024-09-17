@@ -1,0 +1,55 @@
+{
+  "name": "@infinit-xyz/token",
+  "version": "0.0.0-alpha",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./actions": {
+      "types": "./dist/actions/index.d.ts",
+      "default": "./dist/actions/index.js"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "default": "./dist/utils/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "clean": "rm -rf cache artifacts node_modules dist",
+    "typecheck_temp": "tsc --noEmit",
+    "compile": "ENABLE_HARDHAT_TOOLBOX=true node node_modules/@infinit-xyz/core/dist/exports/internal/hardhat-compile.js $PWD",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "files": [
+    "/dist",
+    "/contracts"
+  ],
+  "eslintConfig": {
+    "extends": "../../../.eslintrc.js"
+  },
+  "dependencies": {
+    "@infinit-xyz/core": "workspace:*",
+    "@openzeppelin/contracts": "5.0.0",
+    "@openzeppelin/contracts-upgradeable": "4.9.3",
+    "@openzeppelin/merkle-tree": "^1.0.7",
+    "lodash": "^4.17.21",
+    "tsup": "^8.2.4",
+    "viem": "^2.20.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.17.7",
+    "hardhat": "^2.22.5",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
