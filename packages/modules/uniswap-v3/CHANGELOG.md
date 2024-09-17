@@ -1,5 +1,13 @@
 # @infinit-xyz/uniswap-v3
 
+## 0.0.0-alpha.2
+
+### Minor Changes
+
+- [#8](https://github.com/infinit-xyz/infinit-library/pull/8)
+  [`99fcdb6`](https://github.com/infinit-xyz/infinit-library/commit/99fcdb697327237f69d7b0792348bdbdee90228d) Thanks
+  [@Kittikornl](https://github.com/Kittikornl)! - add createIncentivesAction
+
 ## 0.0.0-alpha.1
 
 ### Patch Changes
