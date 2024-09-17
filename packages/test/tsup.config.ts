@@ -7,4 +7,5 @@ export default defineConfig({
   sourcemap: false,
   clean: true,
   splitting: true,
+  keepNames: true,
 })

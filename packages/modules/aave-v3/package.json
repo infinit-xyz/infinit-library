@@ -36,7 +36,6 @@
   "dependencies": {
     "@infinit-xyz/core": "workspace:*",
     "@nomicfoundation/hardhat-viem": "^2.0.3",
-    "hardhat-preprocessor": "^0.1.5",
     "lodash": "^4.17.21",
     "tsup": "^8.1.0",
     "viem": "^2.17.3",
@@ -47,10 +46,6 @@
     "hardhat": "^2.22.5",
     "tsx": "^4.16.2",
     "typescript": "^5.5.3"
-  },
-  "peerDependencies": {
-    "@nomicfoundation/hardhat-viem": "^2.0.3",
-    "hardhat-preprocessor": "^0.1.5"
   },
   "engines": {
     "node": ">=20"

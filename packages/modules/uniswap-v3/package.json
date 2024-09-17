@@ -49,10 +49,6 @@
     "tsx": "^4.16.2",
     "typescript": "^5.5.3"
   },
-  "peerDependencies": {
-    "@nomicfoundation/hardhat-viem": "^2.0.3",
-    "hardhat-preprocessor": "^0.1.5"
-  },
   "engines": {
     "node": ">=20"
   }
