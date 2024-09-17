@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@infinit-xyz/core": "workspace:*",
-    "@openzeppelin/contracts": "5.0.0",
+    "@openzeppelin/contracts": "5.0.2",
     "@openzeppelin/contracts-upgradeable": "4.9.3",
     "@openzeppelin/merkle-tree": "^1.0.7",
     "lodash": "^4.17.21",
