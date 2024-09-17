@@ -9,7 +9,7 @@ import { ANVIL_PRIVATE_KEY } from '@actions/__mocks__/account'
 import { DeployAccumulativeMerkleDistributorProxyAction } from '@actions/deployAccumulativeMerkleDistributorProxy'
 import { DeployInfinitERC20Action } from '@actions/deployInfinitERC20'
 
-import { TestChain, getForkRpcUrl } from '@infinit/test'
+import { TestChain, getForkRpcUrl } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'
 
 describe('deployAccumulativeMerkleDistributorProxy', () => {

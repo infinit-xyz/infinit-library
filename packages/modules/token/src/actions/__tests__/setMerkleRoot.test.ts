@@ -13,7 +13,7 @@ import { DeployInfinitERC20Action } from '@actions/deployInfinitERC20'
 import { GetProofMerkleTreeAction } from '@actions/getProofMerkleTree'
 import { SetMerkleRootAction } from '@actions/setMerkleRoot'
 
-import { TestChain, getForkRpcUrl } from '@infinit/test'
+import { TestChain, getForkRpcUrl } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'
 
 describe('set merkle root', () => {

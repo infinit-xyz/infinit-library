@@ -1,7 +1,8 @@
-import { MerkleTree } from '@utils/merkleTree'
 import { describe, expect, test } from 'vitest'
 
 import { TEST_ADDRESSES } from '@actions/__mocks__/address'
+
+import { MerkleTree } from '@utils/merkleTree'
 
 describe('MerkleTree', () => {
   const userRewardMapping = {

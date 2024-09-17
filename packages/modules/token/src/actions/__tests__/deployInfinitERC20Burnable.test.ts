@@ -9,7 +9,7 @@ import { ANVIL_PRIVATE_KEY } from '@actions/__mocks__/account'
 import { TEST_ADDRESSES } from '@actions/__mocks__/address'
 import { DeployInfinitERC20BurnableAction } from '@actions/deployInfinitERC20Burnable'
 
-import { TestChain, TestInfinitWallet, getForkRpcUrl } from '@infinit/test'
+import { TestChain, TestInfinitWallet, getForkRpcUrl } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'
 
 describe('deployInfinitERC20BurnableBurnableAction', () => {

@@ -1,5 +1,6 @@
-import * as index from './index'
 import { describe, expect, test } from 'vitest'
+
+import * as index from './index'
 
 describe('actions/index.ts', () => {
   const exportedKeys = Object.keys(index)
