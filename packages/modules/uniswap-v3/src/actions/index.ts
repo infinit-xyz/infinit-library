@@ -7,6 +7,7 @@ import { SetFeeProtocolAction } from '@actions/setFeeProtocol'
 import { TransferProxyAdminOwnerAction, TransferProxyAdminOwnerActionParamsSchema } from '@actions/transferProxyAdminOwner'
 
 import { CollectProtocolAction, CollectProtocolActionParamsSchema } from './collectProtocol'
+import { DeployUniswapV3StakerAction, DeployUniswapV3StakerParamSchema } from './deployUniswapV3Staker'
 import { DeployUniversalRouterAction, DeployUniversalRouterParamSchema } from './deployUniversalRouter'
 
 // example of actions
@@ -53,6 +54,12 @@ export const actions = {
     paramSchema: DeployUniversalRouterParamSchema,
     signers: ['deployer'],
   },
+  deployUniswapV3StakerAction: {
+    name: 'Deploy Uniswap V3 Staker',
+    actionClassName: DeployUniswapV3StakerAction.name,
+    paramSchema: DeployUniswapV3StakerParamSchema,
+    signers: ['deployer']
+  }
 } satisfies InfinitActionRecord
 
 export {
@@ -63,4 +70,6 @@ export {
   SetFactoryOwnerAction,
   SetFeeProtocolAction,
   TransferProxyAdminOwnerAction,
+  DeployUniswapV3StakerAction
 }
+
