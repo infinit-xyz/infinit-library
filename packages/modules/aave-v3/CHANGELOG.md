@@ -1,5 +1,11 @@
 # @infinit-xyz/aave-v3
 
+## 0.0.0-alpha.1
+
+### Patch Changes
+
+- 486e8c7: update build config
+
 ## 0.0.0-alpha.0
 
 ### Patch Changes
