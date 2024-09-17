@@ -1,6 +1,7 @@
 import { defineConfig } from 'tsup'
 
 export default defineConfig({
+  name: 'core',
   entry: [
     'src/exports/index.ts',
     'src/exports/internal/index.ts',
@@ -16,4 +17,5 @@ export default defineConfig({
   sourcemap: false,
   clean: true,
   splitting: true,
+  keepNames: true,
 })

@@ -1,5 +1,5 @@
 {
-  "name": "@infinit-xyz/uniswap-v3",
+  "name": "@infinit-xyz/token",
   "version": "0.0.0-alpha",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,11 +12,15 @@
     "./actions": {
       "types": "./dist/actions/index.d.ts",
       "default": "./dist/actions/index.js"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "default": "./dist/utils/index.js"
     }
   },
   "scripts": {
     "build": "tsup",
-    "clean": "rm -rf cache artifacts node_modules dist tsconfig.tsbuildinfo",
+    "clean": "rm -rf cache artifacts node_modules dist",
     "typecheck_temp": "tsc --noEmit",
     "compile": "ENABLE_HARDHAT_TOOLBOX=true node node_modules/@infinit-xyz/core/dist/exports/internal/hardhat-compile.js $PWD",
     "typecheck": "tsc --noEmit",
@@ -31,17 +35,13 @@
   },
   "dependencies": {
     "@infinit-xyz/core": "workspace:*",
-    "@nomicfoundation/hardhat-viem": "^2.0.3",
-    "@openzeppelin/contracts-3.4.1-solc-0.7-2": "npm:@openzeppelin/contracts@3.4.1-solc-0.7-2",
-    "@openzeppelin/contracts-3.4.2-solc-0.7": "npm:@openzeppelin/contracts@3.4.2-solc-0.7",
-    "@openzeppelin/contracts-4.7.0": "npm:@openzeppelin/contracts@4.7.0",
-    "base64-sol": "1.0.1",
-    "hardhat-preprocessor": "^0.1.5",
+    "@openzeppelin/contracts": "5.0.0",
+    "@openzeppelin/contracts-upgradeable": "4.9.3",
+    "@openzeppelin/merkle-tree": "^1.0.7",
     "lodash": "^4.17.21",
-    "tsup": "^8.1.0",
-    "viem": "^2.17.3",
-    "zod": "^3.23.8",
-    "solmate": "git://github.com/transmissions11/solmate.git#8d910d876f51c3b2585c9109409d601f600e68e1"
+    "tsup": "^8.2.4",
+    "viem": "^2.20.1",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.7",
