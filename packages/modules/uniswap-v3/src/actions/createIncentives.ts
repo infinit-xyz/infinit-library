@@ -5,7 +5,7 @@ import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/interna
 
 import { CreateIncentivesSubAction, CreateIncentivesSubActionParams } from '@actions/subactions/createIncentive'
 
-import { UniswapV3Registry } from '../type'
+import { UniswapV3Registry } from '@/src/type'
 
 export const CreateIncentivesActionParamsSchema = z.object({
   uniswapV3Staker: zodAddressNonZero.describe('Address of the Uniswap V3 staker contract'),
@@ -31,18 +31,18 @@ export type CreateIncentivesActionParams = z.infer<typeof CreateIncentivesAction
 
 export type CreateIncentivesActionData = {
   params: CreateIncentivesActionParams
-  signer: Record<'factoryOwner', InfinitWallet>
+  signer: Record<'incentiveCreator', InfinitWallet>
 }
 
 export class CreateIncentivesAction extends Action<CreateIncentivesActionData, UniswapV3Registry> {
   constructor(data: CreateIncentivesActionData) {
-    validateActionData(data, CreateIncentivesActionParamsSchema, ['factoryOwner'])
+    validateActionData(data, CreateIncentivesActionParamsSchema, ['incentiveCreator'])
 
     super(CreateIncentivesAction.name, data)
   }
 
   protected getSubActions(): SubAction[] {
-    const owner = this.data.signer['factoryOwner']
+    const owner = this.data.signer['incentiveCreator']
     const params = this.data.params
     return [new CreateIncentivesSubAction(owner, params)]
   }
