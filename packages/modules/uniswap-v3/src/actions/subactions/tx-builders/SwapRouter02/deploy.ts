@@ -1,12 +1,12 @@
+import { readArtifact } from '@/src/utils/artifact'
+import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
+
 import { Address, Hex, encodeDeployData, getAddress, zeroAddress } from 'viem'
 
-import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 
-import { readArtifact } from '@/src/utils/artifact'
-
 export type DeploySwapRouter02TxBuilderParams = {
-  factoryV2: Address
+  factoryV2?: Address
   factoryV3: Address
   positionManager: Address
   weth9: Address
@@ -20,7 +20,8 @@ export class DeploySwapRouter02TxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: DeploySwapRouter02TxBuilderParams) {
     super(DeploySwapRouter02TxBuilder.name, client)
-    this.factoryV2 = getAddress(params.factoryV2)
+    this.factoryV2 = params.factoryV2 ?? zeroAddress
+    this.factoryV2 = getAddress(this.factoryV2)
     this.factoryV3 = getAddress(params.factoryV3)
     this.positionManager = getAddress(params.positionManager)
     this.weth9 = getAddress(params.weth9)

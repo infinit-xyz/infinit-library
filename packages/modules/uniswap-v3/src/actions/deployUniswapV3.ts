@@ -1,6 +1,14 @@
+import {
+  DeployNonfungiblePositionManagerMsg,
+  DeployNonfungiblePositionManagerSubAction,
+} from '@/src/actions/subactions/deployNonfungiblePositionManager'
+import { SetFactoryOwnerSubAction } from '@/src/actions/subactions/setFactoryOwner'
+import { TransferProxyAdminOwnerSubAction } from '@/src/actions/subactions/transferProxyAdminOwner'
+import { UniswapV3Registry } from '@/src/type'
+import { DeploySwapRouter02SubAction } from '@actions/subactions/deploySwapRouter02'
+import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
 import { z } from 'zod'
 
-import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
 import { validateActionData, zodAddress } from '@infinit-xyz/core/internal'
 
 import {
@@ -10,23 +18,12 @@ import {
 import { DeployUniswapV3Contracts1SubAction, DeployUniswapV3Msg } from '@actions/subactions/deployUniswapV3Contracts1'
 import { DeployUniswapV3Contracts2SubAction, DeployUniswapV3Msg2 } from '@actions/subactions/deployUniswapV3Contracts2'
 
-import {
-  DeployNonfungiblePositionManagerMsg,
-  DeployNonfungiblePositionManagerSubAction,
-} from '@/src/actions/subactions/deployNonfungiblePositionManager'
-import { DeployUniswapV3Contract3SubAction } from '@/src/actions/subactions/deployUniswapV3Contracts3'
-import { SetFactoryOwnerSubAction } from '@/src/actions/subactions/setFactoryOwner'
-import { TransferProxyAdminOwnerSubAction } from '@/src/actions/subactions/transferProxyAdminOwner'
-import { UniswapV3Registry } from '@/src/type'
-
 export const DeployUniswapV3ParamSchema = z.object({
   nativeCurrencyLabel: z.string().describe(`Native currency label (e.g., ETH)`),
   proxyAdminOwner: zodAddress.describe(`Address of the owner of the proxy admin`),
   factoryOwner: zodAddress.describe(`Address of the owner of factory`),
-  maxIncentiveStartLeadTime: z.bigint().describe(`The max amount of seconds into the future the incentive startTime can be set`),
-  maxIncentiveDuration: z.bigint().describe(`The max duration of an incentive in seconds`),
   wrappedNativeToken: zodAddress.describe(`Address of the wrapped native token (e.g., WETH)`),
-  uniswapV2Factory: zodAddress.describe(`Address of the Uniswap V2 factory`),
+  uniswapV2Factory: zodAddress.optional().describe(`Address of the Uniswap V2 factory (default: zeroAddress)`),
 })
 
 export type DeployUniswapV3Param = z.infer<typeof DeployUniswapV3ParamSchema>
@@ -79,13 +76,11 @@ export class DeployUniswapV3Action extends Action<DeployUniswapV3ActionData, Uni
           DeployNonfungibleTokenPositionDescriptorMsg &
           DeployNonfungiblePositionManagerMsg,
       ) =>
-        new DeployUniswapV3Contract3SubAction(deployer, {
-          uniswapV2Factory: params.uniswapV2Factory,
-          uniswapV3Factory: message.uniswapV3Factory,
-          nonfungiblePositionManager: message.nonfungiblePositionManager,
-          weth9: params.wrappedNativeToken,
-          maxIncentiveStartLeadTime: params.maxIncentiveStartLeadTime,
-          maxIncentiveDuration: params.maxIncentiveDuration,
+        new DeploySwapRouter02SubAction(deployer, {
+          factoryV2: params.uniswapV2Factory,
+          factoryV3: message.uniswapV3Factory,
+          positionManager: message.nonfungiblePositionManager,
+          weth9: params.wrappedNativeToken
         }),
 
       // step 6

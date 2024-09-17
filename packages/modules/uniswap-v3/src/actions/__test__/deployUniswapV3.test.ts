@@ -35,10 +35,7 @@ describe('deployUniswapV3Action', () => {
         nativeCurrencyLabel: 'ETH',
         proxyAdminOwner: oneAddress,
         factoryOwner: oneAddress,
-        maxIncentiveStartLeadTime: 0n,
-        maxIncentiveDuration: 0n,
         wrappedNativeToken: weth,
-        uniswapV2Factory: zeroAddress,
       },
       signer: {
         deployer: client,
