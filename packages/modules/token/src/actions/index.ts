@@ -43,4 +43,10 @@ export const actions = {
   },
 } satisfies InfinitActionRecord
 
-export { DeployAccumulativeMerkleDistributorAction, DeployInfinitERC20Action, DeployInfinitERC20BurnableAction, GetProofMerkleTreeAction }
+export {
+  DeployAccumulativeMerkleDistributorAction,
+  DeployInfinitERC20Action,
+  DeployInfinitERC20BurnableAction,
+  GetProofMerkleTreeAction,
+  SetMerkleRootAction,
+}
