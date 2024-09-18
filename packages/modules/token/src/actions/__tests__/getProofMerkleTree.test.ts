@@ -1,6 +1,5 @@
 import { describe, expect, test } from 'vitest'
 
-
 import { TEST_ADDRESSES } from '@actions/__mocks__/address'
 import { GetProofMerkleTreeAction } from '@actions/getProofMerkleTree'
 
