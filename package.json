@@ -2,15 +2,18 @@
   "name": "infinit-library",
   "version": "0.0.0",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "workspaces": [
+    "packages/core",
+    "packages/test",
+    "packages/modules/*"
+  ],
   "scripts": {
     "clean": "rm -rf node_modules && pnpm run --r --parallel clean",
     "compile": "pnpm run --r --parallel compile",
     "build": "pnpm run --r --sequential build",
     "changeset:version": "changeset version && pnpm install --lockfile-only",
     "changeset:publish": "pnpm build && changeset publish",
-    "preinstall": "npx only-allow pnpm",
     "lint": "pnpm prettier . --write --config .prettierrc",
     "lint:check": "pnpm prettier . --check --config .prettierrc",
     "format": "pnpm eslint . --fix",
@@ -43,7 +46,7 @@
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^1.6.0"
   },
-  "packageManager": "pnpm@9.10.0",
+  "packageManager": "bun@1.1.4",
   "engines": {
     "node": ">= 22"
   }
