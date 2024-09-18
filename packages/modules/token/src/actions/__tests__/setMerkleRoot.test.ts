@@ -8,7 +8,7 @@ import { InfinitWallet } from '@infinit-xyz/core'
 
 import { ANVIL_PRIVATE_KEY } from '@actions/__mocks__/account'
 import { TEST_ADDRESSES } from '@actions/__mocks__/address'
-import { DeployAccumulativeMerkleDistributorProxyAction } from '@actions/deployAccumulativeMerkleDistributorProxy'
+import { DeployAccumulativeMerkleDistributorAction } from '@actions/deployAccumulativeMerkleDistributor'
 import { DeployInfinitERC20Action } from '@actions/deployInfinitERC20'
 import { GetProofMerkleTreeAction } from '@actions/getProofMerkleTree'
 import { SetMerkleRootAction } from '@actions/setMerkleRoot'
@@ -46,7 +46,7 @@ describe('set merkle root', () => {
     })
     const reg0 = await deployTokenAction.run({}, undefined, undefined)
     const deployedTokens: Address[] = Object.values(reg0.tokens!).map((d) => d.tokenAddress)
-    const deployAccMerkProxyaction = new DeployAccumulativeMerkleDistributorProxyAction({
+    const deployAccMerkProxyaction = new DeployAccumulativeMerkleDistributorAction({
       params: {
         token: deployedTokens[0]!,
       },
