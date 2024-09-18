@@ -45,7 +45,7 @@ describe('set merkle root', () => {
       },
     })
     const reg0 = await deployTokenAction.run({}, undefined, undefined)
-    const deployedTokens: Address[] = Object.values(reg0.tokens!).map((d) => d.tokenAddress)
+    const deployedTokens: Address[] = Object.keys(reg0.tokens!) as Address[]
     const deployAccMerkProxyaction = new DeployAccumulativeMerkleDistributorAction({
       params: {
         token: deployedTokens[0]!,

@@ -5,7 +5,7 @@ export enum TokenType {
   'InfinitERC20Burnable' = 'InfinitERC20Burnable',
 }
 
-export type Token = { tokenAddress: Address; type: TokenType }
+export type Token = { type: TokenType }
 export type Proxy = { proxyAddress: Address; implementation: Address }
 
 export type TokenRegistry = {
