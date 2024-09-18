@@ -1,5 +1,18 @@
 # @infinit-xyz/token
 
+## 0.0.0-alpha.3
+
+### Minor Changes
+
+- [#16](https://github.com/infinit-xyz/infinit-library/pull/16)
+  [`c8a41ba`](https://github.com/infinit-xyz/infinit-library/commit/c8a41ba865ab2b6b91342971678129a14e0f73e5) Thanks
+  [@mintcnn](https://github.com/mintcnn)! - Update get merkle proof tree action
+
+### Patch Changes
+
+- Updated dependencies [[`82338d7`](https://github.com/infinit-xyz/infinit-library/commit/82338d7040567e936845efc3141a2139f4d8065f)]:
+  - @infinit-xyz/core@0.0.0-alpha.3
+
 ## 0.0.0-alpha.2
 
 ### Minor Changes

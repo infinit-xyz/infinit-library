@@ -1,5 +1,12 @@
 # @infinit-xyz/aave-v3
 
+## 0.0.0-alpha.4
+
+### Patch Changes
+
+- Updated dependencies [[`82338d7`](https://github.com/infinit-xyz/infinit-library/commit/82338d7040567e936845efc3141a2139f4d8065f)]:
+  - @infinit-xyz/core@0.0.0-alpha.3
+
 ## 0.0.0-alpha.3
 
 ### Minor Changes

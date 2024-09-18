@@ -1,5 +1,12 @@
 # @infinit-xyz/core
 
+## 0.0.0-alpha.3
+
+### Patch Changes
+
+- [`82338d7`](https://github.com/infinit-xyz/infinit-library/commit/82338d7040567e936845efc3141a2139f4d8065f) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - bump core version
+
 ## 0.0.0-alpha.2
 
 ### Minor Changes

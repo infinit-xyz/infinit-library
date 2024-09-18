@@ -5,18 +5,21 @@
     "@infinit-xyz/core": "0.0.0",
     "@infinit-xyz/uniswap-v3": "0.0.0",
     "@infinit-xyz/aave-v3": "0.0.0-alpha",
-    "@infinit-xyz/token": "0.0.0-alpha"
+    "@infinit-xyz/token": "0.0.0-alpha",
+    "@infinit-xyz/test": "0.0.0"
   },
   "changesets": [
     "blue-shirts-drop",
     "eight-cups-reply",
     "eight-feet-hammer",
+    "friendly-dancers-search",
     "great-coats-train",
     "modern-donuts-worry",
     "ninety-bags-grin",
     "pink-wasps-tap",
     "slimy-gorillas-play",
     "spotty-spies-watch",
+    "tidy-crews-run",
     "yellow-waves-smash"
   ]
 }
