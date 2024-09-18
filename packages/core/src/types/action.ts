@@ -15,7 +15,7 @@ type InfinitAction = {
   /**
    * Schema for the action parameters.
    */
-  paramSchema: ZodObject<any>
+  paramsSchema: ZodObject<any>
   /**
    * Signers for the action.
    */

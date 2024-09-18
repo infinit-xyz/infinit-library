@@ -19,7 +19,7 @@ import { SetFactoryOwnerSubAction } from '@/src/actions/subactions/setFactoryOwn
 import { TransferProxyAdminOwnerSubAction } from '@/src/actions/subactions/transferProxyAdminOwner'
 import { UniswapV3Registry } from '@/src/type'
 
-export const DeployUniswapV3ParamSchema = z.object({
+export const DeployUniswapV3ParamsSchema = z.object({
   nativeCurrencyLabel: z.string().describe(`Native currency label (e.g., ETH)`),
   proxyAdminOwner: zodAddress.describe(`Address of the owner of the proxy admin`),
   factoryOwner: zodAddress.describe(`Address of the owner of factory`),
@@ -27,16 +27,16 @@ export const DeployUniswapV3ParamSchema = z.object({
   uniswapV2Factory: zodAddress.optional().describe(`Address of the Uniswap V2 factory (default: zeroAddress)`),
 })
 
-export type DeployUniswapV3Param = z.infer<typeof DeployUniswapV3ParamSchema>
+export type DeployUniswapV3Params = z.infer<typeof DeployUniswapV3ParamsSchema>
 
 export type DeployUniswapV3ActionData = {
-  params: DeployUniswapV3Param
+  params: DeployUniswapV3Params
   signer: Record<'deployer', InfinitWallet>
 }
 
 export class DeployUniswapV3Action extends Action<DeployUniswapV3ActionData, UniswapV3Registry> {
   constructor(data: DeployUniswapV3ActionData) {
-    validateActionData(data, DeployUniswapV3ParamSchema, ['deployer'])
+    validateActionData(data, DeployUniswapV3ParamsSchema, ['deployer'])
     super(DeployUniswapV3Action.name, data)
   }
 

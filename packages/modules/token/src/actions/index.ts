@@ -14,31 +14,31 @@ export const actions = {
   init: {
     name: 'Deploy ERC20 Token',
     actionClassName: DeployInfinitERC20Action.name,
-    paramSchema: DeployInfinitERC20ActionParamsSchema,
+    paramsSchema: DeployInfinitERC20ActionParamsSchema,
     signers: ['deployer'],
   },
   getProofMerkleTree: {
     name: 'Generate Merkle Tree',
     actionClassName: GetProofMerkleTreeAction.name,
-    paramSchema: GetProofMerkleTreeActionParamsSchema,
+    paramsSchema: GetProofMerkleTreeActionParamsSchema,
     signers: [],
   },
   deployInfinitERC20Burnable: {
     name: 'Deploy ERC20 (Burnable) Token',
     actionClassName: DeployInfinitERC20BurnableAction.name,
-    paramSchema: DeployInfinitERC20BurnableActionParamsSchema,
+    paramsSchema: DeployInfinitERC20BurnableActionParamsSchema,
     signers: ['deployer'],
   },
   deployAccumulativeMerkleDistributorAction: {
     name: 'Deploy Accumulative Merkle Distributor',
     actionClassName: DeployAccumulativeMerkleDistributorAction.name,
-    paramSchema: DeployAccumulativeMerkleDistributorProxyActionParamsSchema,
+    paramsSchema: DeployAccumulativeMerkleDistributorProxyActionParamsSchema,
     signers: ['deployer'],
   },
   setMerkleRootAction: {
     name: 'Set Merkle Root',
     actionClassName: SetMerkleRootAction.name,
-    paramSchema: SetMerkleRootActionParamsSchema,
+    paramsSchema: SetMerkleRootActionParamsSchema,
     signers: ['owner'],
   },
 } satisfies InfinitActionRecord

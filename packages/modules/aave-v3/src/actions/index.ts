@@ -4,7 +4,7 @@ import { AddAssetListingAdminAction, AddAssetListingAdminActionParamsSchema } fr
 import { AddEmergencyAdminAction, AddEmergencyAdminActionParamsSchema } from '@actions/addEmergencyAdmin'
 import { AddPoolAdminAction, AddPoolAdminActionParamsSchema } from '@actions/addPoolAdmin'
 import { AddRiskAdminAction, AddRiskAdminActionParamsSchema } from '@actions/addRiskAdmin'
-import { DeployAaveV3Action, DeployAaveV3ParamSchema } from '@actions/deployAaveV3'
+import { DeployAaveV3Action, DeployAaveV3ParamsSchema } from '@actions/deployAaveV3'
 import {
   DeployDefaultReserveInterestRateStrategyAction,
   DeployDefaultReserveInterestRateStrategyActionParamsSchema,
@@ -25,97 +25,97 @@ export const actions = {
   init: {
     name: 'Deploy AaveV3',
     actionClassName: DeployAaveV3Action.name,
-    paramSchema: DeployAaveV3ParamSchema,
+    paramsSchema: DeployAaveV3ParamsSchema,
     signers: ['deployer'],
   },
   setLtvAction: {
     name: 'Set LTV',
     actionClassName: SetLtvAction.name,
-    paramSchema: SetLtvActionParamsSchema,
+    paramsSchema: SetLtvActionParamsSchema,
     signers: ['poolAdmin'],
   },
   setLiquidationThresholdAction: {
     name: 'Set Liquidation Threshold',
     actionClassName: SetLiquidationThresholdAction.name,
-    paramSchema: SetLiquidationThresholdActionParamsSchema,
+    paramsSchema: SetLiquidationThresholdActionParamsSchema,
     signers: ['poolAdmin'],
   },
   setLiquidationBonusAction: {
     name: 'Set Liquidation Bonus',
     actionClassName: SetLiquidationBonusAction.name,
-    paramSchema: SetLiquidationBonusActionParamsSchema,
+    paramsSchema: SetLiquidationBonusActionParamsSchema,
     signers: ['poolAdmin'],
   },
   setReservePauseAction: {
     name: 'Set Reserve Pause',
     actionClassName: SetReservePauseAction.name,
-    paramSchema: SetReservePauseActionParamsSchema,
+    paramsSchema: SetReservePauseActionParamsSchema,
     signers: ['poolAdmin'],
   },
   setReserveBorrowingAction: {
     name: 'Set Reserve Borrowing',
     actionClassName: SetReserveBorrowingAction.name,
-    paramSchema: SetReserveBorrowingActionParamsSchema,
+    paramsSchema: SetReserveBorrowingActionParamsSchema,
     signers: ['poolAdmin'],
   },
   deployDefaultReserveInterestRate: {
     name: 'Deploy Default Reserve Interest Rate Strategy',
     actionClassName: DeployDefaultReserveInterestRateStrategyAction.name,
-    paramSchema: DeployDefaultReserveInterestRateStrategyActionParamsSchema,
+    paramsSchema: DeployDefaultReserveInterestRateStrategyActionParamsSchema,
     signers: ['deployer'],
   },
   supportNewReserves: {
     name: 'Support New Reserves',
     actionClassName: SupportNewReserveAction.name,
-    paramSchema: SupportNewReserveActionParamsSchema,
+    paramsSchema: SupportNewReserveActionParamsSchema,
     signers: ['deployer', 'poolAdmin', 'aclAdmin'],
   },
   addAssetListingAdmin: {
     name: 'Add Asset Listing Admin',
     actionClassName: AddAssetListingAdminAction.name,
-    paramSchema: AddAssetListingAdminActionParamsSchema,
+    paramsSchema: AddAssetListingAdminActionParamsSchema,
     signers: ['aclAdmin'],
   },
   addEmergencyAdmin: {
     name: 'Add Emergency Admin',
     actionClassName: AddEmergencyAdminAction.name,
-    paramSchema: AddEmergencyAdminActionParamsSchema,
+    paramsSchema: AddEmergencyAdminActionParamsSchema,
     signers: ['aclAdmin'],
   },
   addPoolAdmin: {
     name: 'Add Pool Admin',
     actionClassName: AddPoolAdminAction.name,
-    paramSchema: AddPoolAdminActionParamsSchema,
+    paramsSchema: AddPoolAdminActionParamsSchema,
     signers: ['aclAdmin'],
   },
   addRiskAdmin: {
     name: 'Add Risk Admin',
     actionClassName: AddRiskAdminAction.name,
-    paramSchema: AddRiskAdminActionParamsSchema,
+    paramsSchema: AddRiskAdminActionParamsSchema,
     signers: ['aclAdmin'],
   },
   removeAssetListingAdmin: {
     name: 'Remove Asset Listing Admin',
     actionClassName: RemoveAssetListingAdminAction.name,
-    paramSchema: RemoveAssetListingAdminActionParamsSchema,
+    paramsSchema: RemoveAssetListingAdminActionParamsSchema,
     signers: ['aclAdmin'],
   },
   removeEmergencyAdmin: {
     name: 'Remove Emergency Admin',
     actionClassName: RemoveEmergencyAdminAction.name,
-    paramSchema: RemoveEmergencyAdminActionParamsSchema,
+    paramsSchema: RemoveEmergencyAdminActionParamsSchema,
     signers: ['aclAdmin'],
   },
   removePoolAdmin: {
     name: 'Remove Pool Admin',
     actionClassName: RemovePoolAdminAction.name,
-    paramSchema: RemovePoolAdminActionParamsSchema,
+    paramsSchema: RemovePoolAdminActionParamsSchema,
     signers: ['aclAdmin'],
   },
   removeRiskAdmin: {
     name: 'Remove Risk Admin',
     actionClassName: RemoveRiskAdminAction.name,
-    paramSchema: RemoveRiskAdminActionParamsSchema,
+    paramsSchema: RemoveRiskAdminActionParamsSchema,
     signers: ['aclAdmin'],
   },
 } satisfies InfinitActionRecord
