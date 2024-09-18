@@ -1,6 +1,6 @@
 import { InfinitActionRecord } from '@infinit-xyz/core'
 
-import { DeployUniswapV3Action, DeployUniswapV3ParamSchema } from '@actions/deployUniswapV3'
+import { DeployUniswapV3Action, DeployUniswapV3ParamsSchema } from '@actions/deployUniswapV3'
 import { EnableFeeAmountsAction, EnableFeeAmountsActionParamsSchema } from '@actions/enableFeeAmounts'
 import { SetFactoryOwnerAction, SetFactoryOwnerActionParamsSchema } from '@actions/setFactoryOwner'
 import { SetFeeProtocolAction } from '@actions/setFeeProtocol'
@@ -8,63 +8,63 @@ import { TransferProxyAdminOwnerAction, TransferProxyAdminOwnerActionParamsSchem
 
 import { CollectProtocolAction, CollectProtocolActionParamsSchema } from './collectProtocol'
 import { CreateIncentivesAction, CreateIncentivesActionParamsSchema } from './createIncentives'
-import { DeployUniswapV3StakerAction, DeployUniswapV3StakerParamSchema } from './deployUniswapV3Staker'
-import { DeployUniversalRouterAction, DeployUniversalRouterParamSchema } from './deployUniversalRouter'
+import { DeployUniswapV3StakerAction, DeployUniswapV3StakerParamsSchema } from './deployUniswapV3Staker'
+import { DeployUniversalRouterAction, DeployUniversalRouterParamsSchema } from './deployUniversalRouter'
 
 // example of actions
 export const actions = {
   init: {
     name: 'Deploy UniswapV3',
     actionClassName: DeployUniswapV3Action.name,
-    paramSchema: DeployUniswapV3ParamSchema,
+    paramsSchema: DeployUniswapV3ParamsSchema,
     signers: ['deployer'],
   },
   setFactoryOwnerAction: {
     name: 'Set Factory Owner',
     actionClassName: SetFactoryOwnerAction.name,
-    paramSchema: SetFactoryOwnerActionParamsSchema,
+    paramsSchema: SetFactoryOwnerActionParamsSchema,
     signers: ['factoryOwner'],
   },
   transferProxyAdminOwnerAction: {
     name: 'Transfer Proxy Admin Owner',
     actionClassName: TransferProxyAdminOwnerAction.name,
-    paramSchema: TransferProxyAdminOwnerActionParamsSchema,
+    paramsSchema: TransferProxyAdminOwnerActionParamsSchema,
     signers: ['proxyAdminOwner'],
   },
   enableFeeAmountsAction: {
     name: 'Enable Fee Amounts',
     actionClassName: EnableFeeAmountsAction.name,
-    paramSchema: EnableFeeAmountsActionParamsSchema,
+    paramsSchema: EnableFeeAmountsActionParamsSchema,
     signers: ['factoryOwner'],
   },
   setFeeProtocolAction: {
     name: 'Set Fee Protocol',
     actionClassName: SetFeeProtocolAction.name,
-    paramSchema: SetFactoryOwnerActionParamsSchema,
+    paramsSchema: SetFactoryOwnerActionParamsSchema,
     signers: ['factoryOwner'],
   },
   collectFeeProtocolAction: {
     name: 'Collect Fee Protocol',
     actionClassName: CollectProtocolAction.name,
-    paramSchema: CollectProtocolActionParamsSchema,
+    paramsSchema: CollectProtocolActionParamsSchema,
     signers: ['factoryOwner'],
   },
   deployUniversalRouterAction: {
     name: 'Deploy Universal Router',
     actionClassName: DeployUniversalRouterAction.name,
-    paramSchema: DeployUniversalRouterParamSchema,
+    paramsSchema: DeployUniversalRouterParamsSchema,
     signers: ['deployer'],
   },
   deployUniswapV3StakerAction: {
     name: 'Deploy Uniswap V3 Staker',
     actionClassName: DeployUniswapV3StakerAction.name,
-    paramSchema: DeployUniswapV3StakerParamSchema,
+    paramsSchema: DeployUniswapV3StakerParamsSchema,
     signers: ['deployer'],
   },
   createIncentivesAction: {
     name: 'Create Incentives',
     actionClassName: CreateIncentivesAction.name,
-    paramSchema: CreateIncentivesActionParamsSchema,
+    paramsSchema: CreateIncentivesActionParamsSchema,
     signers: ['incentiveCreator'],
   },
 } satisfies InfinitActionRecord
