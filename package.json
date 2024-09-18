@@ -1,6 +1,7 @@
 {
   "name": "infinit-library",
   "private": true,
+  "version": "0.0.0",
   "type": "module",
   "scripts": {
     "clean": "rm -rf node_modules && pnpm run --r --parallel clean",

@@ -1,6 +1,7 @@
 {
   "name": "@infinit-xyz/test",
   "description": "Test utils",
+  "version": "0.0.0",
   "private": true,
   "type": "module",
   "main": "dist/index.js",
