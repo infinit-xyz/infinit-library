@@ -1,5 +1,18 @@
 # @infinit-xyz/aave-v3
 
+## 0.0.0-alpha.3
+
+### Minor Changes
+
+- [#15](https://github.com/infinit-xyz/infinit-library/pull/15)
+  [`26516d1`](https://github.com/infinit-xyz/infinit-library/commit/26516d17b011bdbbd7de1f231a711f01a17d7630) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - update variable name
+
+### Patch Changes
+
+- Updated dependencies [[`26516d1`](https://github.com/infinit-xyz/infinit-library/commit/26516d17b011bdbbd7de1f231a711f01a17d7630)]:
+  - @infinit-xyz/core@0.0.0-alpha.2
+
 ## 0.0.0-alpha.2
 
 ### Patch Changes

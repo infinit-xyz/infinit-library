@@ -8,11 +8,15 @@
     "@infinit-xyz/token": "0.0.0-alpha"
   },
   "changesets": [
+    "blue-shirts-drop",
+    "eight-cups-reply",
     "eight-feet-hammer",
     "great-coats-train",
     "modern-donuts-worry",
     "ninety-bags-grin",
     "pink-wasps-tap",
+    "slimy-gorillas-play",
+    "spotty-spies-watch",
     "yellow-waves-smash"
   ]
 }
