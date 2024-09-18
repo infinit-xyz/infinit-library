@@ -49,7 +49,7 @@ describe('deployAccumulativeMerkleDistributorProxy', () => {
       },
     })
     const reg = await deployAccMerkProxyaction.run({}, undefined, undefined)
-    const deployedAccMerkle = Object.values(reg.accumulativeMerkleDistributors!).map((d) => d.proxyAddress)
+    const deployedAccMerkle: Address[] = Object.keys(reg.accumulativeMerkleDistributors!) as Address[]
     // read contract owner
     const merkleArtifact = await readArtifact('AccumulativeMerkleDistributor')
     const owner = await client.publicClient.readContract({

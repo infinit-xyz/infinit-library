@@ -7,7 +7,7 @@ import { ContractNotFoundError } from '@infinit-xyz/core/errors'
 
 import { DeployERC1967ProxyTxBuilder, DeployERC1967ProxyTxBuilderParams } from '@actions/subactions/txBuilders/ERC1967Proxy/deploy'
 
-import { Proxy, TokenRegistry } from '@/src/type'
+import { MerkleDistributor, TokenRegistry } from '@/src/type'
 
 export type DeployERC1967ProxyAndInitializeSubActionParams = DeployERC1967ProxyTxBuilderParams
 
@@ -34,11 +34,10 @@ export class DeployERC1967ProxyAndInitializeSubAction extends SubAction<DeployER
       throw new ContractNotFoundError(deployERC1967Hash, 'ERC1967')
     }
 
-    const proxy: Proxy = {
-      proxyAddress: erc1967Address,
+    const merkleDistributor: MerkleDistributor = {
       implementation: this.params.implementation,
     }
-    _.set(registry, ['accumulativeMerkleDistributors', erc1967Address], proxy)
+    _.set(registry, ['accumulativeMerkleDistributors', erc1967Address], merkleDistributor)
 
     return {
       newRegistry: registry,
