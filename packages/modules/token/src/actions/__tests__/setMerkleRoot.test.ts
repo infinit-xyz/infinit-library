@@ -18,7 +18,6 @@ import { readArtifact } from '@utils/artifact'
 
 describe('set merkle root', () => {
   let client: InfinitWallet
-  // let bobClient: InfinitWallet
 
   // anvil rpc endpoint
   const rpcEndpoint = getForkRpcUrl(TestChain.arbitrum)
@@ -27,7 +26,6 @@ describe('set merkle root', () => {
 
   beforeAll(() => {
     const account = privateKeyToAccount(privateKey)
-    // bobClient = new TestInfinitWallet(TestChain.arbitrum, bob)
     client = new InfinitWallet(arbitrum, rpcEndpoint, account)
   })
 
@@ -74,7 +72,6 @@ describe('set merkle root', () => {
           [TEST_ADDRESSES.bob]: '1',
           [TEST_ADDRESSES.tester2]: '2',
         },
-        userAddress: client.walletClient.account.address,
       },
       signer: {},
     })
