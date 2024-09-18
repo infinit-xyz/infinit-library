@@ -1,5 +1,15 @@
 # @infinit-xyz/token
 
+## 0.0.0-alpha.5
+
+### Patch Changes
+
+- [`d03953b`](https://github.com/infinit-xyz/infinit-library/commit/d03953b83232b1625782a3dca94801bd3c2d1fb8) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - bump viem version
+
+- Updated dependencies [[`d03953b`](https://github.com/infinit-xyz/infinit-library/commit/d03953b83232b1625782a3dca94801bd3c2d1fb8)]:
+  - @infinit-xyz/core@0.0.0-alpha.5
+
 ## 0.0.0-alpha.4
 
 ### Patch Changes
