@@ -45,7 +45,7 @@ describe('set merkle root', () => {
       },
     })
     const reg0 = await deployTokenAction.run({}, undefined, undefined)
-    const deployedTokens: Address[] = Object.values(reg0.tokens!).map((d) => d.tokenAddress)
+    const deployedTokens: Address[] = Object.keys(reg0.tokens!) as Address[]
     const deployAccMerkProxyaction = new DeployAccumulativeMerkleDistributorAction({
       params: {
         token: deployedTokens[0]!,
@@ -55,7 +55,7 @@ describe('set merkle root', () => {
       },
     })
     const reg = await deployAccMerkProxyaction.run({}, undefined, undefined)
-    const deployedAccMerkle = Object.values(reg.accumulativeMerkleDistributors!).map((d) => d.proxyAddress)
+    const deployedAccMerkle: Address[] = Object.keys(reg.accumulativeMerkleDistributors!) as Address[]
     // read contract owner
     const merkleArtifact = await readArtifact('AccumulativeMerkleDistributor')
     const owner = await client.publicClient.readContract({

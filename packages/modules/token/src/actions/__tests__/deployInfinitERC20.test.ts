@@ -48,7 +48,7 @@ describe('deployInfinitERC20Action', () => {
     expect(curRegistry.tokens).not.toBe({})
     expect(curRegistry.tokens).not.toBe(null)
     // get all values of curRegistry.tokens
-    const tokens: Address[] = Object.values(curRegistry.tokens!).map((v) => v.tokenAddress)
+    const tokens: Address[] = Object.keys(curRegistry.tokens!) as Address[]
     // for (const token of tokens) {
     const ttToken = tokens[0]
     expect(curRegistry.tokens![tokens[0]].type).toBe('InfinitERC20')
@@ -123,7 +123,7 @@ describe('deployInfinitERC20Action', () => {
     expect(curRegistry.tokens).not.toBe({})
     expect(curRegistry.tokens).not.toBe(null)
     // get all values of curRegistry.tokens
-    const tokens: Address[] = Object.values(curRegistry.tokens!).map((v) => v.tokenAddress)
+    const tokens: Address[] = Object.keys(curRegistry.tokens!) as Address[]
     // for (const token of tokens) {
     const ttToken = tokens[0]
     expect(curRegistry.tokens![tokens[0]].type).toBe('InfinitERC20')
@@ -179,7 +179,7 @@ describe('deployInfinitERC20Action', () => {
     })
     const curRegistry = await action.run({}, undefined, undefined)
 
-    const tokens: Address[] = Object.values(curRegistry.tokens!).map((v) => v.tokenAddress)
+    const tokens: Address[] = Object.keys(curRegistry.tokens!) as Address[]
     // owner mint tokens
     const ttToken = tokens[0]
     const infinitERC20 = await readArtifact('InfinitERC20')
