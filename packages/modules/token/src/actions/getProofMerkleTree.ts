@@ -1,9 +1,8 @@
 import { z } from 'zod'
 
-import { Address } from 'viem'
+import { Address, Hex } from 'viem'
 
 import { Action, SubAction } from '@infinit-xyz/core'
-import { ValidateInputValueError, ValueNotFoundError } from '@infinit-xyz/core/errors'
 import { validateActionData, zodAddress } from '@infinit-xyz/core/internal'
 
 import { TokenRegistry } from '@/src/type'
@@ -11,7 +10,6 @@ import { MerkleTree } from '@utils/merkleTree'
 
 export const GetProofMerkleTreeActionParamsSchema = z.object({
   userRewardMapping: z.record(zodAddress, z.string()),
-  userAddress: zodAddress,
 })
 
 export type GetProofMerkleTreeActionParams = z.infer<typeof GetProofMerkleTreeActionParamsSchema>
@@ -34,19 +32,22 @@ export class GetProofMerkleTreeAction extends Action<GetProofMerkleTreeActionDat
   public override async run(registry: TokenRegistry): Promise<TokenRegistry> {
     const params = this.data.params
 
-    // validate the action data
-    const userRewardAmount = params.userRewardMapping[params.userAddress]
-    if (userRewardAmount === undefined) {
-      throw new ValueNotFoundError(`${params.userAddress} not found in the reward list`)
-    }
-    if (Number(userRewardAmount) === 0) {
-      throw new ValidateInputValueError(`Reward of ${params.userAddress} is 0`)
-    }
-
     const merkleTree = new MerkleTree(params.userRewardMapping as Record<Address, string>)
-    const proofDetail = merkleTree.getProof(params.userAddress)
+
+    const merkleUserProofDetailMapping = Object.keys(params.userRewardMapping).reduce(
+      (acc, _userAddress) => {
+        const userAddress = _userAddress as Address
+        const reward = params.userRewardMapping[userAddress]
+        if (!reward || reward === '0') return acc
+
+        return { ...acc, [userAddress]: merkleTree.getProof(userAddress) }
+      },
+      {} as Record<Address, { amount: string; proof: Hex[] }>,
+    )
+
     const root = merkleTree.getRoot()
 
+    // all user
     const newRegistry: TokenRegistry = {
       ...registry,
       merkleTree: {
@@ -54,7 +55,7 @@ export class GetProofMerkleTreeAction extends Action<GetProofMerkleTreeActionDat
         root,
         merkle: {
           ...registry.merkleTree?.merkle,
-          [params.userAddress]: proofDetail,
+          ...merkleUserProofDetailMapping,
         },
       },
     }
