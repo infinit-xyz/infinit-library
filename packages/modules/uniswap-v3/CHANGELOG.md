@@ -1,5 +1,12 @@
 # @infinit-xyz/uniswap-v3
 
+## 0.0.0-alpha.5
+
+### Patch Changes
+
+- Updated dependencies [[`fe801a8`](https://github.com/infinit-xyz/infinit-library/commit/fe801a8accf1403764a6831c71a85ae7885276f8)]:
+  - @infinit-xyz/core@0.0.0-alpha.4
+
 ## 0.0.0-alpha.4
 
 ### Patch Changes
