@@ -4,6 +4,11 @@ import { DeployInfinitERC20Action, DeployInfinitERC20ActionParamsSchema } from '
 import { DeployInfinitERC20BurnableAction, DeployInfinitERC20BurnableActionParamsSchema } from '@actions/deployInfinitERC20Burnable'
 import { GetProofMerkleTreeAction, GetProofMerkleTreeActionParamsSchema } from '@actions/getProofMerkleTree'
 
+import {
+  DeployAccumulativeMerkleDistributorAction,
+  DeployAccumulativeMerkleDistributorProxyActionParamsSchema,
+} from './deployAccumulativeMerkleDistributor'
+
 export const actions = {
   init: {
     name: 'Deploy ERC20 Token',
@@ -23,6 +28,12 @@ export const actions = {
     paramSchema: DeployInfinitERC20BurnableActionParamsSchema,
     signers: ['deployer'],
   },
+  deployAccumulativeMerkleDistributorAction: {
+    name: 'Deploy Accumulative Merkle Distributor',
+    actionClassName: DeployAccumulativeMerkleDistributorAction.name,
+    paramSchema: DeployAccumulativeMerkleDistributorProxyActionParamsSchema,
+    signers: ['deployer'],
+  },
 } satisfies InfinitActionRecord
 
-export { DeployInfinitERC20Action, DeployInfinitERC20BurnableAction, GetProofMerkleTreeAction }
+export { DeployAccumulativeMerkleDistributorAction, DeployInfinitERC20Action, DeployInfinitERC20BurnableAction, GetProofMerkleTreeAction }
