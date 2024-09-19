@@ -27,10 +27,10 @@ jobs:
         uses: ./.github/actions/setup-and-install
 
       - name: Format and lint code
-        run: pnpm format && pnpm lint
+        run: bun run format && bun run lint
 
       - name: Check code types
-        run: pnpm typecheck
+        run: bun run typecheck
 
       - if: ${{ inputs.skip-test == false }}
         name: Set up foundry
@@ -38,13 +38,13 @@ jobs:
 
       - if: ${{ inputs.skip-test == false }}
         name: Run test
-        run: pnpm test:coverage
+        run: bun run test:coverage
         env:
           VITE_ARBITRUM_RPC_URL: ${{ secrets.VITE_ARBITRUM_RPC_URL }}
 
       - if: ${{ inputs.skip-test == false }}
         name: make coverage badges
-        run: pnpm run make-badges
+        run: bun run make-badges
 
       # Auto commit new changes from format, lint, and make-badges
       # ref: https://github.com/stefanzweifel/git-auto-commit-action

@@ -6,22 +6,18 @@ description: 'Set up repository and install all dependencies'
 runs:
   using: 'composite'
   steps:
-    - name: Set up pnpm
-      uses: pnpm/action-setup@v4
-
-    - name: Set up node
-      uses: actions/setup-node@v4
+    - name: Set up bun
+      uses: oven-sh/setup-bun@v2
       with:
-        cache: pnpm
-        node-version: 22
+        bun-version: latest
 
     - name: Install dependencies
       shell: bash
-      run: pnpm install --ignore-scripts
+      run: bun install --ignore-scripts
 
     - name: Build
       shell: bash
-      run: pnpm run build
+      run: bun run build
 
     - name: Cache artifacts
       id: cache-artifacts
@@ -40,4 +36,4 @@ runs:
     - if: ${{ steps.cache-artifacts.outputs.cache-hit != 'true' }}
       name: Compile contracts
       shell: bash
-      run: echo "👎 Artifacts Cache Miss -> Compiling contracts..." && pnpm run compile
+      run: echo "👎 Artifacts Cache Miss -> Compiling contracts..." && bun run compile
