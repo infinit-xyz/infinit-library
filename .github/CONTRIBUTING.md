@@ -8,7 +8,7 @@ consistent workflow.
 1. [Branch Naming Convention](#branch-naming-convention)
 2. [Commit Message Guidelines](#commit-message-guidelines)
 3. [Pull Request Checklist](#pull-request-checklist)
-4. Versioning
+4. [Versioning](#versioning)
 5. [Code of Conduct](#code-of-conduct)
 
 ## Branch Naming Convention
@@ -46,6 +46,8 @@ Before submitting a pull request, please ensure:
 - [ ] Documentation has been updated if necessary.
 - [ ] A changeset has been created if the changes affect the package version.
 
+NOTE: Always use **Squash and Merge** when merging PRs to maintain a clean and streamlined commit history.
+
 ## Versioning
 
 We use [Changesets](https://github.com/changesets/changesets) to help manage versioning and release.
@@ -53,7 +55,7 @@ We use [Changesets](https://github.com/changesets/changesets) to help manage ver
 Run the following command to create a changeset.
 
 ```
-pnpm changeset
+bun changeset
 ```
 
 Select the packages: Choose the packages affected by your changes.
@@ -61,3 +63,10 @@ Select the packages: Choose the packages affected by your changes.
 ## Code of Conduct
 
 Please read and follow our [Code of Conduct](./CODE_OF_CONDUCT.md) to ensure a welcoming and inclusive environment.
+
+## Summary
+
+Following these guidelines helps maintain a consistent and organized codebase, making collaboration smoother for everyone. Thank you for
+your contributions and commitment to improving the project!
+
+Happy coding! 🚀

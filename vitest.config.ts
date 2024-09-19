@@ -21,7 +21,7 @@ export default defineConfig({
     testTimeout: 25000,
     hookTimeout: 15000,
     globalSetup: [path.resolve(__dirname, 'packages/test/src/globalSetup.ts')],
-    setupFiles: ['./packages/test/src/setup.ts'],
+    setupFiles: [path.resolve(__dirname, 'packages/test/src/setup.ts')],
   },
   plugins: [tsconfigPaths()], // to resolve imports using Typescipt's path mapping
 })

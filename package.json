@@ -1,23 +1,30 @@
 {
   "name": "infinit-library",
-  "private": true,
   "version": "0.0.0",
+  "private": true,
   "type": "module",
+  "workspaces": [
+    "packages/core",
+    "packages/test",
+    "packages/modules/*"
+  ],
   "scripts": {
-    "clean": "rm -rf node_modules && pnpm run --r --parallel clean",
-    "compile": "pnpm run --r --parallel compile",
-    "build": "pnpm run --r --sequential build",
-    "changeset:version": "changeset version && pnpm install --lockfile-only",
-    "changeset:publish": "pnpm build && changeset publish",
-    "preinstall": "npx only-allow pnpm",
-    "lint": "pnpm prettier . --write --config .prettierrc",
-    "lint:check": "pnpm prettier . --check --config .prettierrc",
-    "format": "pnpm eslint . --fix",
+    "clean": "rm -rf node_modules && bun run --filter './packages/**' clean",
+    "compile": "bun run --filter './packages/**' compile",
+    "build": "bun run build:core && bun run build:test && bun run build:modules",
+    "build:core": "bun run --filter './packages/core' build",
+    "build:test": "bun run --filter './packages/test' build",
+    "build:modules": "bun run --filter './packages/modules/**' build",
+    "changeset:version": "changeset version && bun install --lockfile-only",
+    "changeset:publish": "bun run build && changeset publish",
+    "lint": "bun prettier . --write --config .prettierrc",
+    "lint:check": "bun prettier . --check --config .prettierrc",
+    "format": "bun eslint . --fix",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:typecheck": "vitest run --typecheck",
     "test:coverage": "vitest run --coverage",
-    "typecheck": "pnpm run --r --parallel typecheck",
+    "typecheck": "bun run --filter './packages/**' typecheck",
     "make-badges": "istanbul-badges-readme"
   },
   "devDependencies": {
@@ -42,7 +49,7 @@
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^1.6.0"
   },
-  "packageManager": "pnpm@9.10.0",
+  "packageManager": "bun@1.1.4",
   "engines": {
     "node": ">= 22"
   }
