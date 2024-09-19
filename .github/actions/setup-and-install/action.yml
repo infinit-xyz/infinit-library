@@ -14,7 +14,6 @@ runs:
     - name: Set up node
       uses: actions/setup-node@v4
       with:
-        cache: bun
         node-version: 22
 
     - name: Install dependencies
