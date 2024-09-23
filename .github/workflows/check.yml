@@ -26,10 +26,12 @@ jobs:
       - name: Set up and install
         uses: ./.github/actions/setup-and-install
 
-      - name: Format and lint code
+      - if: ${{ inputs.skip-test == false }}
+        name: Format and lint code
         run: bun run format && bun run lint
 
-      - name: Check code types
+      - if: ${{ inputs.skip-test == false }}
+        name: Check code types
         run: bun run typecheck
 
       - if: ${{ inputs.skip-test == false }}
@@ -43,16 +45,18 @@ jobs:
           VITE_ARBITRUM_RPC_URL: ${{ secrets.VITE_ARBITRUM_RPC_URL }}
 
       - if: ${{ inputs.skip-test == false }}
-        name: make coverage badges
-        run: bun run make-badges
+        name: Upload results to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
-      # Auto commit new changes from format, lint, and make-badges
+      # Auto commit new changes from format and lint
       # ref: https://github.com/stefanzweifel/git-auto-commit-action
       - name: Auto commit
         uses: stefanzweifel/git-auto-commit-action@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          commit_message: 'chore: format, lint, and coverage badges'
+          commit_message: 'chore: format and lint'
           commit_user_name: 'github-actions[bot]'
           commit_user_email: 'github-actions[bot]@users.noreply.github.com'
