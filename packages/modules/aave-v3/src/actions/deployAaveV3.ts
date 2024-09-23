@@ -31,17 +31,20 @@ export const DeployAaveV3ParamsSchema = z.object({
   addressesProviderOwner: zodAddress.describe(`Address of the owner managing the address provider e.g. '0x123...abc'`),
   addressesProviderRegistryOwner: zodAddress.describe(`Address of the owner managing the address provider registry e.g. '0x123...abc'`),
   wrappedTokenGatewayOwner: zodAddress.describe(`Address of the owner of the wrapped token gateway e.g. '0x123...abc'`),
+  emissionManagerOwner: zodAddress.describe(`Address of the owner managing the emission manager e.g. '0x123...abc'`),
   aclAdmin: zodAddress.describe(`Address of the Access Control List admin, managing protocol access e.g. '0x123...abc'`),
   fundsAdmin: zodAddress.describe(`Address of the funds admin, managing funds distribution e.g. '0x123...abc'`),
   poolAdmin: zodAddress.describe(`Address of the pool admin, managing lending pool settings e.g. '0x123...abc'`),
   emergencyAdmin: zodAddress.describe(`Address of the emergency admin, handling emergencies e.g. '0x123...abc'`),
+  rewardsAdmin: zodAddress.describe(`Address of the rewards admin, managing rewards distribution e.g. '0x123...abc'`),
+  rewardsHolder: zodAddress.describe(`Address of the rewards holder, e.g. '0x123...abc'`),
   flashloanPremiumsTotal: z.bigint().describe(`Total flash loan premium rate in bps e.g. 50n`),
   flashloanPremiumsProtocol: z.bigint().describe(`Portion of flash loan premium for the protocol in bps e.g. 50n`),
   chainlinkAggProxy: zodAddress.describe(`Address of the Chainlink aggregator proxy for price data e.g. '0x123...abc'`),
   chainlinkETHUSDAggProxy: zodAddress.describe(`Address of the Chainlink ETH/USD price feed proxy e.g. '0x123...abc'`),
   assets: z.array(zodAddress).describe(`List of supported asset addresses`),
   sources: z.array(zodAddress).describe(`List of price feed source addresses`),
-  fallbackOracle: zodAddress.describe(`Address of the fallback oracle for backup price feeds e.g. '0x123...abc'`),
+  fallbackOracle: zodAddress.optional().describe(`Address of the fallback oracle for backup price feeds e.g. '0x123...abc'`),
   baseCurrency: zodAddress.describe(`Base token address of the protocol e.g. '0x123...abc'`),
   baseCurrencyUnit: z.bigint().describe(`Smallest unit of the base currency e.g. 1n`),
   defaultReserveInterestRateStrategyConfigs: z
@@ -75,6 +78,7 @@ export class DeployAaveV3Action extends Action<DeployAaveV3ActionData, AaveV3Reg
           marketId: params.marketId,
           chainlinkAggProxy: params.chainlinkAggProxy,
           chainlinkETHUSDAggProxy: params.chainlinkETHUSDAggProxy,
+          emissionManagerOwner: params.emissionManagerOwner,
         }),
       // step 2
       (message: DeployAaveV3Contracts_1SubActionMsg) =>
@@ -89,7 +93,7 @@ export class DeployAaveV3Action extends Action<DeployAaveV3ActionData, AaveV3Reg
           fallbackOracle: params.fallbackOracle,
           baseCurrency: params.baseCurrency,
           baseCurrencyUnit: params.baseCurrencyUnit,
-
+          emissionManager: message.emissionManager,
           defaultReserveInterestRateStrategyConfigs: params.defaultReserveInterestRateStrategyConfigs.map(({ name, params }) => ({
             name,
             params: { ...params, poolAddressesProvider: message.poolAddressesProvider },
@@ -114,6 +118,7 @@ export class DeployAaveV3Action extends Action<DeployAaveV3ActionData, AaveV3Reg
           poolAddressesProvider: message.poolAddressesProvider,
           poolImpl: message.l2PoolImpl,
           poolConfiguratorImpl: message.poolConfiguratorImpl,
+          rewardsControllerImpl: message.rewardsControllerImpl,
         }),
 
       // step 5
@@ -128,6 +133,9 @@ export class DeployAaveV3Action extends Action<DeployAaveV3ActionData, AaveV3Reg
           wrappedNativeToken: params.wrappedNativeToken,
           wrappedTokenGatewayOwner: params.wrappedTokenGatewayOwner,
           poolProxy: message.poolProxy,
+          incentivesController: message.rewardsControllerProxy,
+          rewardsAdmin: params.rewardsAdmin,
+          rewardsHolder: params.rewardsHolder,
         }),
 
       // step 6
@@ -147,9 +155,12 @@ export class DeployAaveV3Action extends Action<DeployAaveV3ActionData, AaveV3Reg
           poolConfigurator: message.poolConfiguratorProxy,
           aclManager: message.aclManager,
           fundsAdmin: params.fundsAdmin,
+          emissionManager: message.emissionManager,
           treasury: message.aaveEcosystemReserveController,
           flashloanPremiumsTotal: params.flashloanPremiumsTotal,
           flashloanPremiumsProtocol: params.flashloanPremiumsProtocol,
+          rewardsController: message.rewardsControllerProxy,
+          rewardsControllerImpl: message.rewardsControllerImpl,
           aTokenInitializeParams: {
             aToken: message.aToken,
             pool: message.poolProxy,
@@ -203,12 +214,14 @@ export class DeployAaveV3Action extends Action<DeployAaveV3ActionData, AaveV3Reg
       (message: DeployAaveV3Contracts_1SubActionMsg & DeployAaveV3Contracts_2SubActionMsg) =>
         new DeployAaveV3_Setup2SubAction(deployer, {
           poolAddressesProviderRegistry: message.poolAddressesProviderRegistry,
-          addressesProviderRegistryOwner: params.addressesProviderRegistryOwner,
-          addressesProviderOwner: params.addressesProviderOwner,
           poolAddressesProvider: message.poolAddressesProvider,
           reservesSetupHelper: message.reservesSetupHelper,
-          aclAdmin: params.aclAdmin,
           aclManager: message.aclManager,
+          emissionManager: message.emissionManager,
+          emissionManagerOwner: params.emissionManagerOwner,
+          addressesProviderRegistryOwner: params.addressesProviderRegistryOwner,
+          addressesProviderOwner: params.addressesProviderOwner,
+          aclAdmin: params.aclAdmin,
           poolAdmin: params.poolAdmin,
           emergencyAdmin: params.emergencyAdmin,
           deployer: deployer.walletClient.account.address,
