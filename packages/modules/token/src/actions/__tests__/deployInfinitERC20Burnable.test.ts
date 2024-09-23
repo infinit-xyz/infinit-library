@@ -48,7 +48,7 @@ describe('deployInfinitERC20BurnableBurnableAction', () => {
     expect(curRegistry.tokens).not.toBe({})
     expect(curRegistry.tokens).not.toBe(null)
     // get all values of curRegistry.tokens
-    const tokens: Address[] = Object.values(curRegistry.tokens!).map((v) => v.tokenAddress)
+    const tokens: Address[] = Object.keys(curRegistry.tokens!) as Address[]
     const ttToken = tokens[0]
     expect(curRegistry.tokens![tokens[0]].type).toBe('InfinitERC20Burnable')
 
@@ -121,7 +121,7 @@ describe('deployInfinitERC20BurnableBurnableAction', () => {
     expect(curRegistry.tokens).not.toBe({})
     expect(curRegistry.tokens).not.toBe(null)
     // get all values of curRegistry.tokens
-    const tokens: Address[] = Object.values(curRegistry.tokens!).map((v) => v.tokenAddress)
+    const tokens: Address[] = Object.keys(curRegistry.tokens!) as Address[]
     const ttToken = tokens[0]
     expect(curRegistry.tokens![tokens[0]].type).toBe('InfinitERC20Burnable')
 
@@ -175,7 +175,7 @@ describe('deployInfinitERC20BurnableBurnableAction', () => {
     })
     const curRegistry = await action.run({}, undefined, undefined)
 
-    const tokens: Address[] = Object.values(curRegistry.tokens!).map((v) => v.tokenAddress)
+    const tokens: Address[] = Object.keys(curRegistry.tokens!) as Address[]
     // owner mint tokens
     const ttToken = tokens[0]
     const infinitERC20 = await readArtifact('InfinitERC20Burnable')
@@ -211,7 +211,7 @@ describe('deployInfinitERC20BurnableBurnableAction', () => {
     })
     const curRegistry = await action.run({}, undefined, undefined)
 
-    const tokens: Address[] = Object.values(curRegistry.tokens!).map((v) => v.tokenAddress)
+    const tokens: Address[] = Object.keys(curRegistry.tokens!) as Address[]
     // owner mint tokens
     const ttToken = tokens[0]
     const infinitERC20 = await readArtifact('InfinitERC20Burnable')

@@ -24,7 +24,7 @@ type DeployDefaultReserveInterestRateStrategyActionParams = Modify<
   }
 >
 
-export const DeployAaveV3ParamSchema = z.object({
+export const DeployAaveV3ParamsSchema = z.object({
   marketId: z.string().describe(`Unique identifier for the AAVE market e.g. 'INFINIT-LENDING'`),
   providerId: z.bigint().describe(`Unique identifier for the addresses provider e.g. 1n`),
   treasuryOwner: zodAddress.describe(`Address of the treasury owner, managing protocol funds e.g. '0x123...abc'`),
@@ -53,16 +53,16 @@ export const DeployAaveV3ParamSchema = z.object({
   wrappedNativeToken: zodAddress.describe(`Address of the wrapped native token e.g. '0x123...abc'`),
 })
 
-export type DeployAaveV3Param = z.infer<typeof DeployAaveV3ParamSchema>
+export type DeployAaveV3Params = z.infer<typeof DeployAaveV3ParamsSchema>
 
 export type DeployAaveV3ActionData = {
-  params: DeployAaveV3Param
+  params: DeployAaveV3Params
   signer: Record<'deployer', InfinitWallet>
 }
 
 export class DeployAaveV3Action extends Action<DeployAaveV3ActionData, AaveV3Registry> {
   constructor(data: DeployAaveV3ActionData) {
-    validateActionData(data, DeployAaveV3ParamSchema, ['deployer'])
+    validateActionData(data, DeployAaveV3ParamsSchema, ['deployer'])
     super(DeployAaveV3Action.name, data)
   }
 

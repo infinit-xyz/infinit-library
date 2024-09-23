@@ -18,22 +18,17 @@ export const DeployAccumulativeMerkleDistributorProxyActionParamsSchema = z.obje
   token: zodAddressNonZero.describe(`airdrop token`),
 })
 
-export type DeployAccumulativeMerkleDistributorProxyActionParams = z.infer<
-  typeof DeployAccumulativeMerkleDistributorProxyActionParamsSchema
->
+export type DeployAccumulativeMerkleDistributorActionParams = z.infer<typeof DeployAccumulativeMerkleDistributorProxyActionParamsSchema>
 
-export type DeployAccumulativeMerkleDistributorProxyActionData = {
-  params: DeployAccumulativeMerkleDistributorProxyActionParams
+export type DeployAccumulativeMerkleDistributorActionData = {
+  params: DeployAccumulativeMerkleDistributorActionParams
   signer: Record<'deployer', InfinitWallet>
 }
 
-export class DeployAccumulativeMerkleDistributorProxyAction extends Action<
-  DeployAccumulativeMerkleDistributorProxyActionData,
-  TokenRegistry
-> {
-  constructor(data: DeployAccumulativeMerkleDistributorProxyActionData) {
+export class DeployAccumulativeMerkleDistributorAction extends Action<DeployAccumulativeMerkleDistributorActionData, TokenRegistry> {
+  constructor(data: DeployAccumulativeMerkleDistributorActionData) {
     validateActionData(data, DeployAccumulativeMerkleDistributorProxyActionParamsSchema, ['deployer'])
-    super(DeployAccumulativeMerkleDistributorProxyAction.name, data)
+    super(DeployAccumulativeMerkleDistributorAction.name, data)
   }
 
   protected getSubActions(): ((message: any) => SubAction)[] {

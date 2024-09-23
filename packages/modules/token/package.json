@@ -1,6 +1,6 @@
 {
   "name": "@infinit-xyz/token",
-  "version": "0.0.0-alpha",
+  "version": "0.0.0-alpha.5",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
@@ -22,7 +22,7 @@
     "build": "tsup",
     "clean": "rm -rf cache artifacts node_modules dist",
     "typecheck_temp": "tsc --noEmit",
-    "compile": "ENABLE_HARDHAT_TOOLBOX=true node node_modules/@infinit-xyz/core/dist/exports/internal/hardhat-compile.js $PWD",
+    "compile": "ENABLE_HARDHAT_TOOLBOX=true bun ../../../node_modules/@infinit-xyz/core/dist/exports/internal/hardhat-compile.js $PWD",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },
@@ -40,7 +40,7 @@
     "@openzeppelin/merkle-tree": "^1.0.7",
     "lodash": "^4.17.21",
     "tsup": "^8.2.4",
-    "viem": "^2.20.1",
+    "viem": "2.21.9",
     "zod": "^3.23.8"
   },
   "devDependencies": {

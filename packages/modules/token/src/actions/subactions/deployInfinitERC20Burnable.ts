@@ -49,7 +49,6 @@ export class DeployInfinitERC20BurnableSubAction extends SubAction<DeployInfinit
     }
 
     const deployedToken: Token = {
-      tokenAddress: tokenAddr,
       type: TokenType.InfinitERC20Burnable,
     }
 

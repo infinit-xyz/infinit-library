@@ -9,7 +9,7 @@ import { DeployUnsupportedProtocolMsg, DeployUnsupportedProtocolSubAction } from
 
 import { UniswapV3Registry } from '@/src/type'
 
-export const DeployUniversalRouterParamSchema = z.object({
+export const DeployUniversalRouterParamsSchema = z.object({
   wrappedNativeToken: zodAddressNonZero.describe(`Address of the wrapped native token (e.g., WETH)`),
   seaportV1_5: zodAddressNonZero.optional().describe(`Address of the seaportV1_5 (optional)`),
   seaportV1_4: zodAddressNonZero.optional().describe(`Address of the seaportV1_4 (optional)`),
@@ -31,16 +31,16 @@ export const DeployUniversalRouterParamSchema = z.object({
   poolInitCodeHash: zodHex.describe(`Hash of creation bytecode for Uniswap V3 pool`),
 })
 
-export type DeployUniversalRouterParam = z.infer<typeof DeployUniversalRouterParamSchema>
+export type DeployUniversalRouterParams = z.infer<typeof DeployUniversalRouterParamsSchema>
 
 export type DeployUniversalRouterActionData = {
-  params: DeployUniversalRouterParam
+  params: DeployUniversalRouterParams
   signer: Record<'deployer', InfinitWallet>
 }
 
 export class DeployUniversalRouterAction extends Action<DeployUniversalRouterActionData, UniswapV3Registry> {
   constructor(data: DeployUniversalRouterActionData) {
-    validateActionData(data, DeployUniversalRouterParamSchema, ['deployer'])
+    validateActionData(data, DeployUniversalRouterParamsSchema, ['deployer'])
     super(DeployUniversalRouterAction.name, data)
   }
 

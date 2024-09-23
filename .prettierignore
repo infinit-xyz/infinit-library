@@ -1,5 +1,5 @@
 package.json
-pnpm-lock.yaml
+bun.lockb
 node_modules
 build
 dist
@@ -7,7 +7,6 @@ CHANGELOG.md
 README.md
 pre-commit
 .changeset/*
-.pnpm-store/*
 
 // Ignore all Solidity code except for some contracts that we write ourselves
 *.sol

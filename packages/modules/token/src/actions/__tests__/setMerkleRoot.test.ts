@@ -8,7 +8,7 @@ import { InfinitWallet } from '@infinit-xyz/core'
 
 import { ANVIL_PRIVATE_KEY } from '@actions/__mocks__/account'
 import { TEST_ADDRESSES } from '@actions/__mocks__/address'
-import { DeployAccumulativeMerkleDistributorProxyAction } from '@actions/deployAccumulativeMerkleDistributorProxy'
+import { DeployAccumulativeMerkleDistributorAction } from '@actions/deployAccumulativeMerkleDistributor'
 import { DeployInfinitERC20Action } from '@actions/deployInfinitERC20'
 import { GetProofMerkleTreeAction } from '@actions/getProofMerkleTree'
 import { SetMerkleRootAction } from '@actions/setMerkleRoot'
@@ -18,7 +18,6 @@ import { readArtifact } from '@utils/artifact'
 
 describe('set merkle root', () => {
   let client: InfinitWallet
-  // let bobClient: InfinitWallet
 
   // anvil rpc endpoint
   const rpcEndpoint = getForkRpcUrl(TestChain.arbitrum)
@@ -27,7 +26,6 @@ describe('set merkle root', () => {
 
   beforeAll(() => {
     const account = privateKeyToAccount(privateKey)
-    // bobClient = new TestInfinitWallet(TestChain.arbitrum, bob)
     client = new InfinitWallet(arbitrum, rpcEndpoint, account)
   })
 
@@ -45,8 +43,8 @@ describe('set merkle root', () => {
       },
     })
     const reg0 = await deployTokenAction.run({}, undefined, undefined)
-    const deployedTokens: Address[] = Object.values(reg0.tokens!).map((d) => d.tokenAddress)
-    const deployAccMerkProxyaction = new DeployAccumulativeMerkleDistributorProxyAction({
+    const deployedTokens: Address[] = Object.keys(reg0.tokens!) as Address[]
+    const deployAccMerkProxyaction = new DeployAccumulativeMerkleDistributorAction({
       params: {
         token: deployedTokens[0]!,
       },
@@ -55,7 +53,7 @@ describe('set merkle root', () => {
       },
     })
     const reg = await deployAccMerkProxyaction.run({}, undefined, undefined)
-    const deployedAccMerkle = Object.values(reg.accumulativeMerkleDistributors!).map((d) => d.proxyAddress)
+    const deployedAccMerkle: Address[] = Object.keys(reg.accumulativeMerkleDistributors!) as Address[]
     // read contract owner
     const merkleArtifact = await readArtifact('AccumulativeMerkleDistributor')
     const owner = await client.publicClient.readContract({
@@ -74,7 +72,6 @@ describe('set merkle root', () => {
           [TEST_ADDRESSES.bob]: '1',
           [TEST_ADDRESSES.tester2]: '2',
         },
-        userAddress: client.walletClient.account.address,
       },
       signer: {},
     })

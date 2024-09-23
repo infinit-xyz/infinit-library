@@ -47,7 +47,6 @@ export class DeployInfinitERC20SubAction extends SubAction<DeployInfinitERC20Sub
     }
 
     const deployedToken: Token = {
-      tokenAddress: tokenAddr,
       type: TokenType.InfinitERC20,
     }
 

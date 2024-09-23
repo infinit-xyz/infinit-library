@@ -15,6 +15,10 @@ jobs:
     name: Check
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    permissions:
+      issues: write
+      contents: write
+      pull-requests: write
 
     steps:
       - uses: actions/checkout@v4
@@ -22,14 +26,11 @@ jobs:
       - name: Set up and install
         uses: ./.github/actions/setup-and-install
 
-      # - name: Format and lint code
-      #   run: pnpm format && pnpm lint
-
-      - name: Check code linting
-        run: pnpm lint:check
+      - name: Format and lint code
+        run: bun run format && bun run lint
 
       - name: Check code types
-        run: pnpm typecheck
+        run: bun run typecheck
 
       - if: ${{ inputs.skip-test == false }}
         name: Set up foundry
@@ -37,21 +38,21 @@ jobs:
 
       - if: ${{ inputs.skip-test == false }}
         name: Run test
-        run: pnpm test:coverage
+        run: bun run test:coverage
         env:
           VITE_ARBITRUM_RPC_URL: ${{ secrets.VITE_ARBITRUM_RPC_URL }}
 
       - if: ${{ inputs.skip-test == false }}
         name: make coverage badges
-        run: pnpm run make-badges
+        run: bun run make-badges
 
       # Auto commit new changes from format, lint, and make-badges
       # ref: https://github.com/stefanzweifel/git-auto-commit-action
-      # - name: Auto commit (coverage badges)
-      #   uses: stefanzweifel/git-auto-commit-action@v5
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     commit_message: 'chore: format, lint, and coverage badges'
-      #     commit_user_name: 'github-actions[bot]'
-      #     commit_user_email: 'github-actions[bot]@users.noreply.github.com'
+      - name: Auto commit
+        uses: stefanzweifel/git-auto-commit-action@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          commit_message: 'chore: format, lint, and coverage badges'
+          commit_user_name: 'github-actions[bot]'
+          commit_user_email: 'github-actions[bot]@users.noreply.github.com'

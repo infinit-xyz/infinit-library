@@ -52,7 +52,7 @@ describe('createIncentivesAction', () => {
         ],
       },
       signer: {
-        factoryOwner: client,
+        incentiveCreator: client,
       },
     })
     // approve rewardToken
