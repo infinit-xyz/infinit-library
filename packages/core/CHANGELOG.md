@@ -1,5 +1,13 @@
 # @infinit-xyz/core
 
+## 0.0.0-alpha.7
+
+### Patch Changes
+
+- [#24](https://github.com/infinit-xyz/infinit-library/pull/24)
+  [`ea5e9fa`](https://github.com/infinit-xyz/infinit-library/commit/ea5e9fac2c1a172acb6ef4d9abdd7b054ecacf98) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - resolve workspace dependency issue
+
 ## 0.0.0-alpha.6
 
 ### Patch Changes
