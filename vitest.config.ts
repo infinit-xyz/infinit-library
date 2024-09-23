@@ -15,7 +15,7 @@ export default defineConfig({
     globals: true,
     coverage: {
       reporter: ['text', 'json', 'html', 'json-summary'],
-      provider: 'istanbul',
+      provider: 'v8',
       exclude: ['**/*.config.*'],
     },
     testTimeout: 25000,
