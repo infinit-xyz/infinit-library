@@ -13,6 +13,7 @@ import { DeployEModeLogicTxBuilder } from '@actions/subactions/tx-builders/deplo
 import { DeployLiquidationLogicTxBuilder } from '@actions/subactions/tx-builders/deploy/deployLiquidationLogic'
 import { DeployPoolLogicTxBuilder } from '@actions/subactions/tx-builders/deploy/deployPoolLogic'
 import { DeploySupplyLogicTxBuilder } from '@actions/subactions/tx-builders/deploy/deploySupplyLogic'
+import { DeployEmissionManagerTxBuilder } from '@actions/subactions/tx-builders/emissionManager/deploy'
 import { DeployPoolAddressProviderTxBuilder } from '@actions/subactions/tx-builders/poolAddressesProvider/deployPoolAddressesProvider'
 import { DeployPoolAddressesProviderRegistryTxBuilder } from '@actions/subactions/tx-builders/poolAddressesProviderRegistry/deployPoolAddressesProviderRegistry'
 import { DeployReservesSetupHelperTxBuilder } from '@actions/subactions/tx-builders/reservesSetupHelper/deployReservesSetupHelper'
@@ -24,6 +25,7 @@ import { AaveV3Registry } from '@/src/type'
 
 export type DeployAaveV3Contracts_1SubActionParams = {
   treasuryOwner: Address
+  emissionManagerOwner: Address
   marketId: string
   chainlinkAggProxy: Address
   chainlinkETHUSDAggProxy: Address
@@ -45,6 +47,7 @@ export type DeployAaveV3Contracts_1SubActionMsg = {
   walletBalanceProvider: Address
   uiIncentiveDataProvider: Address
   uiPoolDataProviderV3: Address
+  emissionManager: Address
 }
 export class DeployAaveV3Contracts_1SubAction extends SubAction<
   DeployAaveV3Contracts_1SubActionParams,
@@ -140,6 +143,12 @@ export class DeployAaveV3Contracts_1SubAction extends SubAction<
       marketReferenceCurrencyPriceInUsdProxyAggregator: this.params.chainlinkETHUSDAggProxy,
     })
     this.txBuilders.push(deployUiPoolDataProviderV3)
+
+    // incentives
+    const deployEmissionManager = new DeployEmissionManagerTxBuilder(this.client, {
+      owner: this.client.walletClient.account.address,
+    })
+    this.txBuilders.push(deployEmissionManager)
   }
 
   public async updateRegistryAndMessage(
@@ -167,6 +176,7 @@ export class DeployAaveV3Contracts_1SubAction extends SubAction<
       deployWalletBalanceProviderHash,
       deployUiIncentiveDataProviderV3Hash,
       deployUiPoolDataProviderV3Hash,
+      deployEmissionManagerHash,
     ] = txHashes
 
     const { contractAddress: poolAddressesProviderRegistry } = await this.client.publicClient.waitForTransactionReceipt({
@@ -287,6 +297,13 @@ export class DeployAaveV3Contracts_1SubAction extends SubAction<
     }
     registry['uiPoolDataProviderV3'] = uiPoolDataProviderV3
 
+    const { contractAddress: emissionManager } = await this.client.publicClient.waitForTransactionReceipt({
+      hash: deployEmissionManagerHash,
+    })
+    if (!emissionManager) {
+      throw new ContractNotFoundError(deployEmissionManagerHash, 'emissionManager')
+    }
+
     const newMessage: DeployAaveV3Contracts_1SubActionMsg = {
       poolAddressesProviderRegistry: poolAddressesProviderRegistry,
       poolAddressesProvider: poolAddressesProvider,
@@ -304,6 +321,7 @@ export class DeployAaveV3Contracts_1SubAction extends SubAction<
       walletBalanceProvider: walletBalanceProvider,
       uiIncentiveDataProvider: uiIncentiveDataProvider,
       uiPoolDataProviderV3: uiPoolDataProviderV3,
+      emissionManager: emissionManager,
     }
     return { newRegistry: registry, newMessage: newMessage }
   }

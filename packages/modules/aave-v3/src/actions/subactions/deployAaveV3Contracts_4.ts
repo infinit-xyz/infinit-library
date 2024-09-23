@@ -2,9 +2,11 @@ import { Address } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 
+import { SetAddressAsProxyTxBuilder } from '@actions/subactions/tx-builders/poolAddressesProvider/setAddressAsProxy'
 import { SetPoolConfiguratorImplTxBuilder } from '@actions/subactions/tx-builders/poolAddressesProvider/setPoolConfiguratorImpl'
 import { SetPoolImplTxBuilder } from '@actions/subactions/tx-builders/poolAddressesProvider/setPoolImpl'
 
+import { INCENTIVES_CONTROLLER_ID } from '@/src/constants'
 import { AaveV3Registry } from '@/src/type'
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -12,11 +14,13 @@ export type DeployAaveV3Contracts_4SubActionParams = {
   poolAddressesProvider: Address
   poolImpl: Address
   poolConfiguratorImpl: Address
+  rewardsControllerImpl: Address
 }
 
 export type DeployAaveV3Contracts_4SubActionMsg = {
   poolProxy: Address
   poolConfiguratorProxy: Address
+  rewardsControllerProxy: Address
 }
 
 export class DeployAaveV3Contracts_4SubAction extends SubAction<
@@ -42,6 +46,14 @@ export class DeployAaveV3Contracts_4SubAction extends SubAction<
       poolConfiguratorImpl: this.params.poolConfiguratorImpl,
     })
     this.txBuilders.push(setPoolConfiguratorImplSubAction)
+
+    // set rewards controller as proxy
+    const setRewardsControllerAsProxy = new SetAddressAsProxyTxBuilder(this.client, {
+      poolAddressesProvider: this.params.poolAddressesProvider,
+      id: INCENTIVES_CONTROLLER_ID,
+      implementationAddress: this.params.rewardsControllerImpl,
+    })
+    this.txBuilders.push(setRewardsControllerAsProxy)
   }
 
   public async updateRegistryAndMessage(
@@ -64,9 +76,18 @@ export class DeployAaveV3Contracts_4SubAction extends SubAction<
     })
     registry['poolConfiguratorProxy'] = poolConfiguratorProxy
 
+    const rewardsControllerProxy: Address = await this.client.publicClient.readContract({
+      address: this.params.poolAddressesProvider,
+      abi: poolAddressesProviderArtifact.abi,
+      functionName: 'getAddress',
+      args: [INCENTIVES_CONTROLLER_ID],
+    })
+    registry['rewardsControllerProxy'] = rewardsControllerProxy
+
     const newMessage = {
       poolProxy: poolProxy,
       poolConfiguratorProxy: poolConfiguratorProxy,
+      rewardsControllerProxy: rewardsControllerProxy,
     }
 
     return { newRegistry: registry, newMessage: newMessage }

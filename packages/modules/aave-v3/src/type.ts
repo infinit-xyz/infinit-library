@@ -33,6 +33,9 @@ export type AaveV3Registry = {
   stableDebtTokenImpl?: Address
   variableDebtTokenImpl?: Address
   poolConfiguratorProxy?: Address
+  rewardsControllerImpl?: Address
+  rewardsControllerProxy?: Address
+  pullRewardsTransferStrategy?: Address
 }
 
 export type LendingPool = {

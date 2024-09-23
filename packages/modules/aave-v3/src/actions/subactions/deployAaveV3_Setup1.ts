@@ -1,4 +1,4 @@
-import { Address } from 'viem'
+import { Address, zeroAddress } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 
@@ -9,6 +9,7 @@ import {
   DelegationAwareATokenInitializeParams,
   DelegationAwareATokenInitializeTxBuilder,
 } from '@actions/subactions/tx-builders/delegationAwareAToken/initialize'
+import { SetRewardsControllerTxBuilder } from '@actions/subactions/tx-builders/emissionManager/setRewardsController'
 import { InitializePool } from '@actions/subactions/tx-builders/pool/initialize'
 import { SetACLManagerTxBuilder } from '@actions/subactions/tx-builders/poolAddressesProvider/setACLManager'
 import { SetPoolDataProvider } from '@actions/subactions/tx-builders/poolAddressesProvider/setPoolDataProvider'
@@ -16,6 +17,7 @@ import { SetPriceOracleTxBuilder } from '@actions/subactions/tx-builders/poolAdd
 import { RegisterAddressProvider } from '@actions/subactions/tx-builders/poolAddressesProviderRegistry/registerAddressProvider'
 import { UpdateFlashloanPremiumToProtocolTxBuilder } from '@actions/subactions/tx-builders/poolConfigurator/updateFlashloanPremiumToProtocol'
 import { UpdateFlashloanPremiumTotalTxBuilder } from '@actions/subactions/tx-builders/poolConfigurator/updateFlashloanPremiumTotal'
+import { InitializeRewardsControllerTxBuilder } from '@actions/subactions/tx-builders/rewardsController/initialize'
 import {
   StableDebtTokenInitializeParams,
   StableDebtTokenInitializeTxBuilder,
@@ -48,6 +50,9 @@ export type DeployAaveV3_Setup1SubActionParams = {
   poolAddressesProviderRegistry: Address
   providerId: bigint
   priceOracle: Address
+  rewardsController: Address
+  rewardsControllerImpl: Address
+  emissionManager: Address
 }
 
 export class DeployAaveV3_Setup1SubAction extends SubAction<DeployAaveV3_Setup1SubActionParams, AaveV3Registry, {}> {
@@ -145,6 +150,20 @@ export class DeployAaveV3_Setup1SubAction extends SubAction<DeployAaveV3_Setup1S
       priceOracleSentinel: this.params.priceOracle,
     })
     this.txBuilders.push(setPriceOracle)
+
+    // initialize incentives implementation
+    const initializeIncentives = new InitializeRewardsControllerTxBuilder(this.client, {
+      rewardsController: this.params.rewardsControllerImpl,
+      emtyAddress: zeroAddress,
+    })
+    this.txBuilders.push(initializeIncentives)
+
+    // emission manager: set rewards controller
+    const setRewardsController = new SetRewardsControllerTxBuilder(this.client, {
+      emissionManager: this.params.emissionManager,
+      rewardsController: this.params.rewardsController,
+    })
+    this.txBuilders.push(setRewardsController)
   }
 
   public async updateRegistryAndMessage(registry: AaveV3Registry): Promise<SubActionExecuteResponse<AaveV3Registry, {}>> {

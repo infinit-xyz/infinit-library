@@ -40,8 +40,8 @@ export class DeployPullRewardsTransferStrategyTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.incentivesController !== zeroAddress) throw new ValidateInputValueError('incentivesController zero address')
-    if (this.rewardsAdmin !== zeroAddress) throw new ValidateInputValueError('rewrdsAdmin zero address')
-    if (this.rewardsVault !== zeroAddress) throw new ValidateInputValueError('rewrdsVault zero address')
+    if (this.incentivesController === zeroAddress) throw new ValidateInputValueError('incentivesController zero address')
+    if (this.rewardsAdmin === zeroAddress) throw new ValidateInputValueError('rewrdsAdmin zero address')
+    if (this.rewardsVault === zeroAddress) throw new ValidateInputValueError('rewrdsVault zero address')
   }
 }

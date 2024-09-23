@@ -13,6 +13,7 @@ import { DeployDefaultReserveInterestRateStrategyTxBuilder } from '@actions/suba
 import { DeployFlashLoanLogicTxBuilder } from '@actions/subactions/tx-builders/deploy/deployFlashloanLogic'
 import { SetACLAdminTxBuilder } from '@actions/subactions/tx-builders/poolAddressesProvider/setACLAdmin'
 import { DeployPoolConfiguratorTxBuilder } from '@actions/subactions/tx-builders/poolConfigurator/deployPoolConfigurator'
+import { DeployRewardsControllerTxBuilder } from '@actions/subactions/tx-builders/rewardsController/deploy'
 
 import { AaveV3Registry } from '@/src/type'
 
@@ -26,9 +27,12 @@ export type DeployAaveV3Contracts_2SubActionParams = {
   // oracle
   assets: Address[]
   sources: Address[]
-  fallbackOracle: Address
+  fallbackOracle?: Address
   baseCurrency: Address
   baseCurrencyUnit: bigint
+
+  // incentives
+  emissionManager: Address
 
   // DefaultReserveInterestRateStrategy
   defaultReserveInterestRateStrategyConfigs: DefaultReserveInterestRateStrategyConfig[]
@@ -40,6 +44,7 @@ export type DeployAaveV3Contracts_2SubActionMsg = {
   poolConfiguratorImpl: Address
   aclManager: Address
   aaveOracle: Address
+  rewardsControllerImpl: Address
 }
 
 export class DeployAaveV3Contracts_2SubAction extends SubAction<
@@ -90,6 +95,11 @@ export class DeployAaveV3Contracts_2SubAction extends SubAction<
     })
     this.txBuilders.push(deployOracleSubAction)
 
+    // deploy rewards controller implementation
+    const deployRewardsControllerImpl = new DeployRewardsControllerTxBuilder(this.client, {
+      emissionManager: this.params.emissionManager,
+    })
+    this.txBuilders.push(deployRewardsControllerImpl)
     // deploy reserve interest rate strategy
     for (const defaultReserveInterestRateStrategyConfig of this.params.defaultReserveInterestRateStrategyConfigs) {
       const txBuilder = new DeployDefaultReserveInterestRateStrategyTxBuilder(this.client, defaultReserveInterestRateStrategyConfig.params)
@@ -108,6 +118,7 @@ export class DeployAaveV3Contracts_2SubAction extends SubAction<
       deployPoolConfiguratorHash,
       deployACLManagerHash,
       deployOracleHash,
+      deployRewardsControllerImplHash,
       ...deployDefaultReserveIRSHashes
     ] = txHashes
     if (deployDefaultReserveIRSHashes.length != this.params.defaultReserveInterestRateStrategyConfigs.length) {
@@ -147,6 +158,13 @@ export class DeployAaveV3Contracts_2SubAction extends SubAction<
     }
     registry['aaveOracle'] = aaveOracle
 
+    const { contractAddress: rewardsControllerImpl } = await this.client.publicClient.waitForTransactionReceipt({
+      hash: deployRewardsControllerImplHash,
+    })
+    if (!rewardsControllerImpl) {
+      throw new ContractNotFoundError(deployRewardsControllerImplHash, 'rewardsControllerImpl')
+    }
+
     for (let i = 0; i < deployDefaultReserveIRSHashes.length; i++) {
       const { contractAddress: defaultReserveInterestRateStrategy } = await this.client.publicClient.waitForTransactionReceipt({
         hash: deployDefaultReserveIRSHashes[i],
@@ -168,6 +186,7 @@ export class DeployAaveV3Contracts_2SubAction extends SubAction<
       poolConfiguratorImpl: poolConfiguratorImpl,
       aclManager: aclManager,
       aaveOracle: aaveOracle,
+      rewardsControllerImpl: rewardsControllerImpl,
     }
     return { newRegistry: registry, newMessage: newMessage }
   }

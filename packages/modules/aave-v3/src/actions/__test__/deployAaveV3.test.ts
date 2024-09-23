@@ -7,7 +7,7 @@ import { arbitrum } from 'viem/chains'
 import { InfinitWallet, TransactionData } from '@infinit-xyz/core'
 
 import { ANVIL_PRIVATE_KEY } from '@actions/__mock__/account'
-import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
+import { ARBITRUM_TEST_ADDRESSES, TEST_ADDRESSES } from '@actions/__mock__/address'
 import { DeployAaveV3Action } from '@actions/deployAaveV3'
 import { SupportNewReserveAction } from '@actions/supportNewReserve'
 
@@ -44,10 +44,13 @@ describe('deployAaveV3Action', () => {
         addressesProviderRegistryOwner: deployer,
         addressesProviderOwner: deployer,
         wrappedTokenGatewayOwner: deployer,
+        emissionManagerOwner: deployer,
         aclAdmin: deployer,
         fundsAdmin: deployer,
         poolAdmin: deployer,
         emergencyAdmin: deployer,
+        rewardsAdmin: deployer,
+        rewardsHolder: deployer,
         marketId: '0',
         flashloanPremiumsTotal: 0n,
         flashloanPremiumsProtocol: 0n,
@@ -124,10 +127,13 @@ describe('deployAaveV3Action', () => {
         addressesProviderRegistryOwner: oneAddress,
         addressesProviderOwner: oneAddress,
         wrappedTokenGatewayOwner: oneAddress,
+        emissionManagerOwner: oneAddress,
         aclAdmin: aliceClient.walletClient.account.address,
         fundsAdmin: oneAddress,
         poolAdmin: oneAddress,
         emergencyAdmin: oneAddress,
+        rewardsAdmin: oneAddress,
+        rewardsHolder: TEST_ADDRESSES.bob,
         marketId: '0',
         flashloanPremiumsTotal: 0n,
         flashloanPremiumsProtocol: 0n,
@@ -223,10 +229,13 @@ describe('deployAaveV3Action', () => {
         addressesProviderRegistryOwner: deployer,
         addressesProviderOwner: deployer,
         wrappedTokenGatewayOwner: deployer,
+        emissionManagerOwner: deployer,
         aclAdmin: deployer,
         fundsAdmin: deployer,
         poolAdmin: deployer,
         emergencyAdmin: deployer,
+        rewardsAdmin: deployer,
+        rewardsHolder: deployer,
         marketId: '0',
         flashloanPremiumsTotal: 0n,
         flashloanPremiumsProtocol: 0n,
@@ -355,6 +364,7 @@ describe('deployAaveV3Action', () => {
       abi: poolArtifact.abi,
       functionName: 'borrow',
       args: [weth, BigInt(10 ** 16), BigInt(2), 0, aliceClient.walletClient.account.address],
+      gas: 10000000n,
     })
 
     // repay

@@ -34,6 +34,6 @@ export class DeployEmissionManagerTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.owner !== zeroAddress) throw new ValidateInputValueError('owner zero address')
+    if (this.owner === zeroAddress) throw new ValidateInputValueError('owner zero address')
   }
 }

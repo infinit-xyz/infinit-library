@@ -6,6 +6,7 @@ import { ContractNotFoundError } from '@infinit-xyz/core/errors'
 import { DeployATokenTxBuilder } from '@actions/subactions/tx-builders/aToken/deployAToken'
 import { DeployDelegationAwareATokenTxBuilder } from '@actions/subactions/tx-builders/delegationAwareAToken/deployDelegationAwareAToken'
 import { DeployL2EncoderTxBuilder } from '@actions/subactions/tx-builders/l2Encoder/deployL2Encoder'
+import { DeployPullRewardsTransferStrategyTxBuilder } from '@actions/subactions/tx-builders/pullRewardsTransferStrategy/deploy'
 import { DeployStableDebtTokenTxBuilder } from '@actions/subactions/tx-builders/stableDebtToken/deployStableDebtToken'
 import { DeployVariableDebtTokenTxBuilder } from '@actions/subactions/tx-builders/variableDebtToken/deployVariableDebtToken'
 import { DeployWrappedTokenGatewayV3TxBuilder } from '@actions/subactions/tx-builders/wrappedTokenGatewayV3/deployWrappedTokenGatewayV3'
@@ -17,6 +18,11 @@ export type DeployAaveV3Contracts_5SubActionParams = {
   wrappedNativeToken: Address
   wrappedTokenGatewayOwner: Address
   poolProxy: Address
+
+  // incentives
+  incentivesController: Address
+  rewardsAdmin: Address // EOA
+  rewardsHolder: Address // mostly EOA
 }
 
 export type DeployAaveV3Contracts_5SubActionMsg = {
@@ -26,6 +32,7 @@ export type DeployAaveV3Contracts_5SubActionMsg = {
   delegationAwareAToken: Address
   stableDebtToken: Address
   variableDebtToken: Address
+  pullRewardsTransferStrategy: Address
 }
 
 export class DeployAaveV3Contracts_5SubAction extends SubAction<
@@ -65,6 +72,14 @@ export class DeployAaveV3Contracts_5SubAction extends SubAction<
     // deploy stable variable token
     const deployVariableDebtToken = new DeployVariableDebtTokenTxBuilder(this.client, { pool: this.params.poolProxy })
     this.txBuilders.push(deployVariableDebtToken)
+
+    // deploy pull rewards transfer strategy
+    const deployPullRewardsTransferStrategy = new DeployPullRewardsTransferStrategyTxBuilder(this.client, {
+      incentivesController: this.params.incentivesController,
+      rewardsAdmin: this.params.rewardsAdmin,
+      rewardsVault: this.params.rewardsHolder,
+    })
+    this.txBuilders.push(deployPullRewardsTransferStrategy)
   }
 
   public async updateRegistryAndMessage(
@@ -78,6 +93,7 @@ export class DeployAaveV3Contracts_5SubAction extends SubAction<
       deployDelegationAwareAToken,
       deployStableDebtToken,
       deployVariableDebtToken,
+      deployPullRewardsTransferStrategy,
     ] = txHashes
     const { contractAddress: wrappedTokenGatewayV3 } = await this.client.publicClient.waitForTransactionReceipt({
       hash: deployWrappedTokenGatewayV3Hash,
@@ -121,6 +137,14 @@ export class DeployAaveV3Contracts_5SubAction extends SubAction<
     }
     registry['variableDebtTokenImpl'] = variableDebtToken
 
+    const { contractAddress: pullRewardsTransferStrategy } = await this.client.publicClient.waitForTransactionReceipt({
+      hash: deployPullRewardsTransferStrategy,
+    })
+    if (!pullRewardsTransferStrategy) {
+      throw new ContractNotFoundError(deployPullRewardsTransferStrategy, 'pullRewardsTransferStrategy')
+    }
+    registry['pullRewardsTransferStrategy'] = pullRewardsTransferStrategy
+
     const newMessage = {
       wrappedTokenGatewayV3: wrappedTokenGatewayV3,
       l2Encoder: l2Encoder,
@@ -128,6 +152,7 @@ export class DeployAaveV3Contracts_5SubAction extends SubAction<
       delegationAwareAToken: delegationAwareAToken,
       stableDebtToken: stableDebtToken,
       variableDebtToken: variableDebtToken,
+      pullRewardsTransferStrategy: pullRewardsTransferStrategy,
     }
 
     return { newRegistry: registry, newMessage: newMessage }

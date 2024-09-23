@@ -4,22 +4,24 @@ import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz
 
 import { AddEmergencyAdminACLManagerTxBuilder } from '@actions/subactions/tx-builders/aclManager/addEmergencyAdmin'
 import { AddPoolAdminACLManagerTxBuilder } from '@actions/subactions/tx-builders/aclManager/addPoolAdmin'
+import { GrantRoleTxBuilder } from '@actions/subactions/tx-builders/aclManager/grantRole'
 import { TransferOwnershipTxBuilder } from '@actions/subactions/tx-builders/ownable/transferOwnership'
 import { SetACLAdminTxBuilder } from '@actions/subactions/tx-builders/poolAddressesProvider/setACLAdmin'
 
-import { GrantRoleTxBuilder } from './tx-builders/aclManager/grantRole'
 import { AaveV3Registry } from '@/src/type'
 
 export type DeployAaveV3_Setup2SubActionParams = {
   poolAddressesProviderRegistry: Address
   poolAddressesProvider: Address
   reservesSetupHelper: Address
+  emissionManager: Address
   addressesProviderOwner: Address
   addressesProviderRegistryOwner: Address
   aclManager: Address
   aclAdmin: Address
   poolAdmin: Address
   emergencyAdmin: Address
+  emissionManagerOwner: Address
   deployer: Address
 }
 
@@ -85,6 +87,13 @@ export class DeployAaveV3_Setup2SubAction extends SubAction<DeployAaveV3_Setup2S
       newOwner: this.params.addressesProviderRegistryOwner,
     })
     this.txBuilders.push(poolAddressesProviderRegistryTransferOwnership)
+
+    // transfer ownership pool poolAddressesProvider
+    const emissionManagerTransferOwnership = new TransferOwnershipTxBuilder(this.client, {
+      ownableContract: this.params.emissionManager,
+      newOwner: this.params.emissionManagerOwner,
+    })
+    this.txBuilders.push(emissionManagerTransferOwnership)
   }
 
   public async updateRegistryAndMessage(registry: AaveV3Registry): Promise<SubActionExecuteResponse<AaveV3Registry, {}>> {

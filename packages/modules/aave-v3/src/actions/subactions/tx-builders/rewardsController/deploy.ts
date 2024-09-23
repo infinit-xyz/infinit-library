@@ -18,7 +18,7 @@ export class DeployRewardsControllerTxBuilder extends TxBuilder {
   }
 
   async buildTx(): Promise<TransactionData> {
-    const emissionManagerArtifact = await readArtifact('EmissionManager')
+    const emissionManagerArtifact = await readArtifact('RewardsController')
 
     const deployData: Hex = encodeDeployData({
       abi: emissionManagerArtifact.abi,
@@ -34,6 +34,6 @@ export class DeployRewardsControllerTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.emissionManager !== zeroAddress) throw new ValidateInputValueError('owner zero address')
+    if (this.emissionManager === zeroAddress) throw new ValidateInputValueError('owner zero address')
   }
 }
