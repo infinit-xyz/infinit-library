@@ -164,6 +164,7 @@ export class DeployAaveV3Contracts_2SubAction extends SubAction<
     if (!rewardsControllerImpl) {
       throw new ContractNotFoundError(deployRewardsControllerImplHash, 'rewardsControllerImpl')
     }
+    registry['rewardsControllerImpl'] = rewardsControllerImpl
 
     for (let i = 0; i < deployDefaultReserveIRSHashes.length; i++) {
       const { contractAddress: defaultReserveInterestRateStrategy } = await this.client.publicClient.waitForTransactionReceipt({

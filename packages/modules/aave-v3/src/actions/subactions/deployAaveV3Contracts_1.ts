@@ -303,6 +303,7 @@ export class DeployAaveV3Contracts_1SubAction extends SubAction<
     if (!emissionManager) {
       throw new ContractNotFoundError(deployEmissionManagerHash, 'emissionManager')
     }
+    registry['emissionManager'] = emissionManager
 
     const newMessage: DeployAaveV3Contracts_1SubActionMsg = {
       poolAddressesProviderRegistry: poolAddressesProviderRegistry,
