@@ -1,5 +1,17 @@
 # @infinit-xyz/core
 
+## 0.0.0-alpha.6
+
+### Patch Changes
+
+- [#19](https://github.com/infinit-xyz/infinit-library/pull/19)
+  [`6367547`](https://github.com/infinit-xyz/infinit-library/commit/6367547f5359baadd8eff39bcf390e011bed0c77) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - migrate from pnpm to bun
+
+- [#20](https://github.com/infinit-xyz/infinit-library/pull/20)
+  [`b0efef8`](https://github.com/infinit-xyz/infinit-library/commit/b0efef838c860eefd6a19565dde5e1ac60497501) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - update package json and readme
+
 ## 0.0.0-alpha.5
 
 ### Patch Changes
