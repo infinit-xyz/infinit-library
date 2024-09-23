@@ -1,9 +1,6 @@
 # INFINIT Library
 
-![Statements](https://img.shields.io/badge/statements-83.19%25-yellow.svg?style=flat)
-![Branches](https://img.shields.io/badge/branches-54.64%25-red.svg?style=flat)
-![Functions](https://img.shields.io/badge/functions-89.76%25-yellow.svg?style=flat)
-![Lines](https://img.shields.io/badge/lines-87.24%25-yellow.svg?style=flat)
+[![codecov](https://codecov.io/gh/infinit-xyz/infinit-library/graph/badge.svg?token=KOP4OKEB85)](https://codecov.io/gh/infinit-xyz/infinit-library)
 
 ## Contributing
 
