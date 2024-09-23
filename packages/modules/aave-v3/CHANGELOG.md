@@ -1,5 +1,44 @@
 # @infinit-xyz/aave-v3
 
+## 0.0.0-alpha.7
+
+### Minor Changes
+
+- [#21](https://github.com/infinit-xyz/infinit-library/pull/21)
+  [`d1ceb7f`](https://github.com/infinit-xyz/infinit-library/commit/d1ceb7fd04374361d6e61dd37fd1ca3e809f49fe) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - tx builders
+
+  - deployEmissionManager
+  - deployRewardsController
+  - setRewardsController
+  - setAddressAsProxy
+  - deployPullRewardsTransferStrategy
+  - initialize rewardsController
+
+  subactions
+
+  - update deployAave v3 subactions
+  - update deployAaveV3 action
+
+  registry
+
+  - update AaveV3Registry
+  - change fallbackOracle to optional
+
+### Patch Changes
+
+- [#19](https://github.com/infinit-xyz/infinit-library/pull/19)
+  [`6367547`](https://github.com/infinit-xyz/infinit-library/commit/6367547f5359baadd8eff39bcf390e011bed0c77) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - migrate from pnpm to bun
+
+- [#20](https://github.com/infinit-xyz/infinit-library/pull/20)
+  [`b0efef8`](https://github.com/infinit-xyz/infinit-library/commit/b0efef838c860eefd6a19565dde5e1ac60497501) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - update package json and readme
+
+- Updated dependencies [[`6367547`](https://github.com/infinit-xyz/infinit-library/commit/6367547f5359baadd8eff39bcf390e011bed0c77),
+  [`b0efef8`](https://github.com/infinit-xyz/infinit-library/commit/b0efef838c860eefd6a19565dde5e1ac60497501)]:
+  - @infinit-xyz/core@0.0.0-alpha.6
+
 ## 0.0.0-alpha.6
 
 ### Patch Changes
