@@ -37,10 +37,10 @@ export class SetRewardsControllerTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    const poolAddressesProviderArtifact = await readArtifact('PoolAddressesProvider')
+    const emissionManagerArtifact = await readArtifact('EmissionManager')
     const owner = await this.client.publicClient.readContract({
       address: this.emissionManager,
-      abi: poolAddressesProviderArtifact.abi,
+      abi: emissionManagerArtifact.abi,
       functionName: 'owner',
       args: [],
     })
