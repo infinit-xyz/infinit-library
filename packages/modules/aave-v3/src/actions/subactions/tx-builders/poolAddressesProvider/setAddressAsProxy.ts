@@ -6,19 +6,19 @@ import { ContractValidateError } from '@infinit-xyz/core/errors'
 import { readArtifact } from '@/src/utils/artifact'
 
 export type SetAddressAsProxyParams = {
-  poolAddressProvider: Address
+  poolAddressesProvider: Address
   id: Hex
   implementationAddress: Address
 }
 
 export class SetAddressAsProxyTxBuilder extends TxBuilder {
-  poolAddressProvider: Address
+  poolAddressesProvider: Address
   id: Hex
   implementationAddress: Address
 
   constructor(client: InfinitWallet, params: SetAddressAsProxyParams) {
     super(SetAddressAsProxyTxBuilder.name, client)
-    this.poolAddressProvider = params.poolAddressProvider
+    this.poolAddressesProvider = params.poolAddressesProvider
     this.id = params.id
     this.implementationAddress = params.implementationAddress
   }
@@ -28,13 +28,13 @@ export class SetAddressAsProxyTxBuilder extends TxBuilder {
 
     const callData = encodeFunctionData({
       abi: providerArtifact.abi,
-      functionName: 'SetAddressAsProxy',
-      args: [this.implementationAddress],
+      functionName: 'setAddressAsProxy',
+      args: [this.id, this.implementationAddress],
     })
 
     const tx: TransactionData = {
       data: callData,
-      to: this.poolAddressProvider,
+      to: this.poolAddressesProvider,
     }
     return tx
   }
@@ -42,7 +42,7 @@ export class SetAddressAsProxyTxBuilder extends TxBuilder {
   public async validate(): Promise<void> {
     const poolAddressesProviderArtifact = await readArtifact('PoolAddressesProvider')
     const owner = await this.client.publicClient.readContract({
-      address: this.poolAddressProvider,
+      address: this.poolAddressesProvider,
       abi: poolAddressesProviderArtifact.abi,
       functionName: 'owner',
       args: [],
