@@ -1,6 +1,11 @@
 {
   "name": "@infinit-xyz/token",
   "version": "0.0.0-alpha.5",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/infinit-xyz/infinit-library.git",
+    "directory": "packages/modules/token"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",

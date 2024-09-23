@@ -1,6 +1,11 @@
 {
   "name": "@infinit-xyz/aave-v3",
   "version": "0.0.0-alpha.6",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/infinit-xyz/infinit-library.git",
+    "directory": "packages/modules/aave-v3"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",

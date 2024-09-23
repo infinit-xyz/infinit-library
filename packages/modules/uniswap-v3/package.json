@@ -1,6 +1,11 @@
 {
   "name": "@infinit-xyz/uniswap-v3",
   "version": "0.0.0-alpha.6",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/infinit-xyz/infinit-library.git",
+    "directory": "packages/modules/uniswap-v3"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
