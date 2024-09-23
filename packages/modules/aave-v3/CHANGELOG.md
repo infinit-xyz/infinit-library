@@ -1,5 +1,12 @@
 # @infinit-xyz/aave-v3
 
+## 0.0.0-alpha.9
+
+### Patch Changes
+
+- [`86d54bf`](https://github.com/infinit-xyz/infinit-library/commit/86d54bfeeaa3391913ab9882cd0ac99b264f5d71) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - fix core version in workspace
+
 ## 0.0.0-alpha.8
 
 ### Patch Changes
