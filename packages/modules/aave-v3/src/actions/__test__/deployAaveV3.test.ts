@@ -364,7 +364,6 @@ describe('deployAaveV3Action', () => {
       abi: poolArtifact.abi,
       functionName: 'borrow',
       args: [weth, BigInt(10 ** 16), BigInt(2), 0, aliceClient.walletClient.account.address],
-      gas: 10000000n,
     })
 
     // repay
