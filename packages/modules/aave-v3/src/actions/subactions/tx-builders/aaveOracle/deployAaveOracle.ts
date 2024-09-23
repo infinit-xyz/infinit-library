@@ -1,4 +1,4 @@
-import { Address, Hex, encodeDeployData } from 'viem'
+import { Address, Hex, encodeDeployData, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
@@ -9,7 +9,7 @@ export type DeployAaveOracleParams = {
   poolAddressProvider: Address
   assets: Address[]
   sources: Address[]
-  fallbackOracle: Address
+  fallbackOracle?: Address
   baseCurrency: Address
   baseCurrencyUnit: bigint
 }
@@ -27,7 +27,7 @@ export class DeployAaveOracleTxBuilder extends TxBuilder {
     this.poolAddressProvider = params.poolAddressProvider
     this.assets = params.assets
     this.sources = params.sources
-    this.fallbackOracle = params.fallbackOracle
+    this.fallbackOracle = params.fallbackOracle ?? zeroAddress
     this.baseCurrency = params.baseCurrency
     this.baseCurrencyUnit = params.baseCurrencyUnit
   }
