@@ -2,7 +2,7 @@ import { SomeZodObject, ZodError } from 'zod'
 
 import { ActionData } from '@base/action'
 
-import { ValidateInputValueError } from '@/errors'
+import { ValidateInputValueError } from '@errors/index'
 
 const validateActionData = (data: ActionData, schema: SomeZodObject, signers: string[]) => {
   // validate signers

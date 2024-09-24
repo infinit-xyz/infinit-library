@@ -3,7 +3,7 @@ import { SubAction } from '@base/subAction'
 import { CallbackParams } from '@/types/callback'
 import { InfinitCache, InfinitCallback } from 'src/types'
 
-import { IncorrectCacheError } from '@/errors'
+import { IncorrectCacheError } from '@errors/index'
 import { InfinitWallet } from '@infinit-wallet/index'
 
 /**
