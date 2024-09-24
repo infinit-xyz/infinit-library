@@ -13,6 +13,7 @@ import { RemoveAssetListingAdminAction, RemoveAssetListingAdminActionParamsSchem
 import { RemoveEmergencyAdminAction, RemoveEmergencyAdminActionParamsSchema } from '@actions/removeEmergencyAdmin'
 import { RemovePoolAdminAction, RemovePoolAdminActionParamsSchema } from '@actions/removePoolAdmin'
 import { RemoveRiskAdminAction, RemoveRiskAdminActionParamsSchema } from '@actions/removeRiskAdmin'
+import { SetEmissionAdminAction, SetEmissionAdminActionParamsSchema } from '@actions/setEmissionAdmin'
 import { SetLiquidationBonusAction, SetLiquidationBonusActionParamsSchema } from '@actions/setLiquidationBonus'
 import { SetLiquidationThresholdAction, SetLiquidationThresholdActionParamsSchema } from '@actions/setLiquidationThreshold'
 import { SetLtvAction, SetLtvActionParamsSchema } from '@actions/setLtv'
@@ -118,6 +119,12 @@ export const actions = {
     paramsSchema: RemoveRiskAdminActionParamsSchema,
     signers: ['aclAdmin'],
   },
+  setEmissionAdmin: {
+    name: 'Set Emission Admin',
+    actionClassName: SetEmissionAdminAction.name,
+    paramsSchema: SetEmissionAdminActionParamsSchema,
+    signers: ['owner'],
+  },
 } satisfies InfinitActionRecord
 
 export {
@@ -131,6 +138,7 @@ export {
   RemoveEmergencyAdminAction,
   RemovePoolAdminAction,
   RemoveRiskAdminAction,
+  SetEmissionAdminAction,
   SetLiquidationBonusAction,
   SetLiquidationThresholdAction,
   SetLtvAction,
