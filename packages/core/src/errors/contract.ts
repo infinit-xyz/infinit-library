@@ -5,7 +5,7 @@ export type ContractValidateErrorType = ContractValidateError & {
 }
 export class ContractValidateError extends BaseError {
   constructor(extraMsg: string = '') {
-    super(['ContractValidateError:', extraMsg].join('\n'), {
+    super(extraMsg, {
       name: 'ContractValidateError',
     })
   }
