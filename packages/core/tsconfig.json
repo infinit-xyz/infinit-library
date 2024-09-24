@@ -24,7 +24,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@infinit-wallet/*": ["./src/infinit-wallet/*"],
-      "@base/*": ["./src/base/*"]
+      "@base/*": ["./src/base/*"],
+      "@errors/*": ["./src/errors/*"]
     }
   },
   "include": ["**/*.ts"],

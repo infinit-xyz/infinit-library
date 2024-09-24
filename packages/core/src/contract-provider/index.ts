@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import { DirectoryNotFoundError } from '@/errors/fs'
+import { DirectoryNotFoundError } from '@errors/index'
 import { runSpawn } from 'src/utils/child-process'
 
 export class ContractProvider {
