@@ -5,7 +5,7 @@ export type DirectoryNotFoundErrorType = DirectoryNotFoundError & {
 }
 export class DirectoryNotFoundError extends BaseError {
   constructor(path: string) {
-    super(['DirectoryNotFoundError:' + path + 'not found'].join('\n'), {
+    super(`${path} not found`, {
       name: 'DirectoryNotFoundError',
     })
   }

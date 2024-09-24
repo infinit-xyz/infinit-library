@@ -1,7 +1,12 @@
 // ref: https://github.com/wevm/viem/blob/main/src/errors/base.ts
-import { version } from 'package.json'
+import { name as coreName, version as coreVersion } from 'package.json'
 
 //TODO: add error code: eg. HH01: ...
+
+export type ProtocolModuleVersionDetail = {
+  name: string
+  version: string
+}
 
 type BaseErrorParameters = {
   cause?: BaseError | Error | undefined
@@ -25,13 +30,15 @@ export class BaseError extends Error {
       return args.details!
     })()
 
-    const message = [shortMessage || 'An error occurred.', ...(details ? [`Details: ${details}`] : []), `Version: ${version}`].join('\n')
+    const message = [shortMessage || 'An error occurred.', ...(details ? [`Details: ${details}`] : []), `${coreName}: ${coreVersion}`].join(
+      '\n',
+    )
 
     super(message, args.cause ? { cause: args.cause } : undefined)
 
     this.details = details
     this.name = args.name ?? this.name
     this.shortMessage = shortMessage
-    this.version = version
+    this.version = coreVersion
   }
 }

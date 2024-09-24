@@ -7,7 +7,7 @@ export type TransactionErrorType = TransactionError & {
 }
 export class TransactionError extends BaseError {
   constructor(txHash: Hex) {
-    super([`tx ${txHash} reverted`].join('\n'), {
+    super(`tx ${txHash} reverted`, {
       name: 'TransactionError',
     })
   }
@@ -18,7 +18,7 @@ export type ContractNotFoundErrorType = ContractNotFoundError & {
 }
 export class ContractNotFoundError extends BaseError {
   constructor(txHash: Hex, contractName: string = '') {
-    super([`Contract:${contractName} not found in ${txHash}.`].join('\n'), {
+    super(`Contract ${contractName} not found in ${txHash}`, {
       name: 'ContractNotFoundError',
     })
   }
@@ -29,7 +29,7 @@ export type TxNotFoundErrorType = TxNotFoundError & {
 }
 export class TxNotFoundError extends BaseError {
   constructor() {
-    super([`Transaction not found.`].join('\n'), {
+    super('Transaction not found', {
       name: 'TxNotFoundError',
     })
   }
