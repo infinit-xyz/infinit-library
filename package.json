@@ -44,7 +44,7 @@
     "prettier-plugin-solidity": "^1.4.1",
     "prool": "^0.0.4",
     "typescript": "^5.5.4",
-    "vite-tsconfig-paths": "^4.3.2",
+    "vite-tsconfig-paths": "^5.0.1",
     "vitest": "^2.1.1"
   },
   "packageManager": "bun@1.1.29",
