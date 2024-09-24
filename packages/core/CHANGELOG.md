@@ -1,5 +1,13 @@
 # @infinit-xyz/core
 
+## 0.0.0-alpha.8
+
+### Patch Changes
+
+- [#35](https://github.com/infinit-xyz/infinit-library/pull/35)
+  [`c957a1d`](https://github.com/infinit-xyz/infinit-library/commit/c957a1da4fe08b61d09056e9fea5aa42cc9fe47f) Thanks
+  [@mintcnn](https://github.com/mintcnn)! - Fix error messages
+
 ## 0.0.0-alpha.7
 
 ### Patch Changes
