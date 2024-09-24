@@ -30,9 +30,12 @@ export class BaseError extends Error {
       return args.details!
     })()
 
-    const message = [shortMessage || 'An error occurred.', ...(details ? [`Details: ${details}`] : []), `${coreName}: ${coreVersion}`].join(
-      '\n',
-    )
+    const message = [
+      shortMessage || 'An error occurred.',
+      '',
+      ...(details ? [`Details: ${details}`] : []),
+      `${coreName}: ${coreVersion}`,
+    ].join('\n')
 
     super(message, args.cause ? { cause: args.cause } : undefined)
 
