@@ -13,17 +13,17 @@ export const SetEmissionAdminActionParamsSchema = z.object({
 
 export type SetEmissionAdminData = {
   params: SetEmissionAdminSubActionParams
-  signer: Record<'owner', InfinitWallet>
+  signer: Record<'emissionManagerOwner', InfinitWallet>
 }
 
 export class SetEmissionAdminAction extends Action<SetEmissionAdminData> {
   constructor(data: SetEmissionAdminData) {
     console.log('data', data)
-    validateActionData(data, SetEmissionAdminActionParamsSchema, ['owner'])
+    validateActionData(data, SetEmissionAdminActionParamsSchema, ['emissionManagerOwner'])
     super(SetEmissionAdminAction.name, data)
   }
   protected getSubActions(): SubAction[] {
-    const owner = this.data.signer['owner']
+    const owner = this.data.signer['emissionManagerOwner']
     const params = this.data.params
 
     return [new SetEmissionAdminSubAction(owner, params)]

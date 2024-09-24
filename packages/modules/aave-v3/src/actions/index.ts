@@ -123,7 +123,7 @@ export const actions = {
     name: 'Set Emission Admin',
     actionClassName: SetEmissionAdminAction.name,
     paramsSchema: SetEmissionAdminActionParamsSchema,
-    signers: ['owner'],
+    signers: ['emissionManagerOwner'],
   },
 } satisfies InfinitActionRecord
 

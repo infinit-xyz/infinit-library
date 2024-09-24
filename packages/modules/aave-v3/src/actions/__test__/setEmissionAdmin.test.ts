@@ -35,7 +35,7 @@ describe('EmissionManager:SetEmissionAdminAction', () => {
         admin: ARBITRUM_TEST_ADDRESSES.tester,
       },
       signer: {
-        owner: bob,
+        emissionManagerOwner: bob,
       },
     })
     await expect(action.run(registry)).rejects.toThrowError('caller is not owner')
@@ -49,7 +49,7 @@ describe('EmissionManager:SetEmissionAdminAction', () => {
         admin: ARBITRUM_TEST_ADDRESSES.tester,
       },
       signer: {
-        owner: client,
+        emissionManagerOwner: client,
       },
     })
     await action.run(registry)
