@@ -1,6 +1,6 @@
 {
   "name": "@infinit-xyz/token",
-  "version": "0.0.0-alpha.7",
+  "version": "0.0.0-alpha.9",
   "homepage": "https://infinit.tech",
   "repository": {
     "type": "git",
@@ -43,7 +43,7 @@
     "extends": "../../../.eslintrc.js"
   },
   "dependencies": {
-    "@infinit-xyz/core": "workspace:*",
+    "@infinit-xyz/core": "^0.0.0-alpha.7",
     "@openzeppelin/contracts": "5.0.0",
     "@openzeppelin/contracts-upgradeable": "4.9.3",
     "@openzeppelin/merkle-tree": "^1.0.7",
