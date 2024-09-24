@@ -7,7 +7,7 @@ export type TransactionErrorType = TransactionError & {
 }
 export class TransactionError extends BaseError {
   constructor(txHash: Hex) {
-    super(`tx ${txHash} reverted`, {
+    super(`Transaction ${txHash} reverted`, {
       name: 'TransactionError',
     })
   }
