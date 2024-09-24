@@ -1,5 +1,47 @@
 # @infinit-xyz/token
 
+## 0.0.0-alpha.9
+
+### Patch Changes
+
+- [#32](https://github.com/infinit-xyz/infinit-library/pull/32)
+  [`f85de06`](https://github.com/infinit-xyz/infinit-library/commit/f85de06e08cb6a5bb4f11675f1dd4e74674007e7) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - fix core version
+
+## 0.0.0-alpha.8
+
+### Patch Changes
+
+- [`86d54bf`](https://github.com/infinit-xyz/infinit-library/commit/86d54bfeeaa3391913ab9882cd0ac99b264f5d71) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - fix core version in workspace
+
+## 0.0.0-alpha.7
+
+### Patch Changes
+
+- [#24](https://github.com/infinit-xyz/infinit-library/pull/24)
+  [`ea5e9fa`](https://github.com/infinit-xyz/infinit-library/commit/ea5e9fac2c1a172acb6ef4d9abdd7b054ecacf98) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - resolve workspace dependency issue
+
+- Updated dependencies [[`ea5e9fa`](https://github.com/infinit-xyz/infinit-library/commit/ea5e9fac2c1a172acb6ef4d9abdd7b054ecacf98)]:
+  - @infinit-xyz/core@0.0.0-alpha.7
+
+## 0.0.0-alpha.6
+
+### Patch Changes
+
+- [#19](https://github.com/infinit-xyz/infinit-library/pull/19)
+  [`6367547`](https://github.com/infinit-xyz/infinit-library/commit/6367547f5359baadd8eff39bcf390e011bed0c77) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - migrate from pnpm to bun
+
+- [#20](https://github.com/infinit-xyz/infinit-library/pull/20)
+  [`b0efef8`](https://github.com/infinit-xyz/infinit-library/commit/b0efef838c860eefd6a19565dde5e1ac60497501) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - update package json and readme
+
+- Updated dependencies [[`6367547`](https://github.com/infinit-xyz/infinit-library/commit/6367547f5359baadd8eff39bcf390e011bed0c77),
+  [`b0efef8`](https://github.com/infinit-xyz/infinit-library/commit/b0efef838c860eefd6a19565dde5e1ac60497501)]:
+  - @infinit-xyz/core@0.0.0-alpha.6
+
 ## 0.0.0-alpha.5
 
 ### Patch Changes
