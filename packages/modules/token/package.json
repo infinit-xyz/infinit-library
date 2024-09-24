@@ -43,7 +43,7 @@
     "extends": "../../../.eslintrc.js"
   },
   "dependencies": {
-    "@infinit-xyz/core": "workspace:0.0.0-alpha.7",
+    "@infinit-xyz/core": "^0.0.0-alpha.7",
     "@openzeppelin/contracts": "5.0.0",
     "@openzeppelin/contracts-upgradeable": "4.9.3",
     "@openzeppelin/merkle-tree": "^1.0.7",

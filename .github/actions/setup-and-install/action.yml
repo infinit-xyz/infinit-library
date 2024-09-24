@@ -31,7 +31,7 @@ runs:
         cache-name: cache-artifacts
       with:
         path: ./packages/modules/**/artifacts/**
-        key: ${{ env.cache-name }}-${{ hashFiles('./packages/modules/**/contracts/**/*') }}
+        key: ${{ env.cache-name }}-${{ hashFiles('**/package.json','**/bun.lockb','./packages/modules/**/contracts/**/*') }}
 
     - if: ${{ steps.cache-artifacts.outputs.cache-hit == 'true' }}
       name: Artifacts cache hit
