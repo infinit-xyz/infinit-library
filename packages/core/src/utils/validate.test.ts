@@ -1,10 +1,10 @@
 import { describe, expect, test } from 'vitest'
 import { ZodError, z } from 'zod'
 
-import { InfinitWallet } from '@/infinit-wallet'
 import { validateActionData } from '@/utils/validate'
 import { zodAddress } from '@/utils/zod'
 import { ValidateInputValueError } from '@errors/index'
+import { InfinitWallet } from '@infinit-wallet/index'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
 describe('utils/validate.ts', () => {

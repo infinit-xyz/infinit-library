@@ -14,7 +14,7 @@ import {
 
 import { InfinitCallback, ToSendTransaction } from '@/types'
 
-import { TransactionError } from '@/errors'
+import { TransactionError } from '@errors/index'
 
 /**
  * A class that represents an Infinit Wallet, which allows interacting with blockchain accounts,

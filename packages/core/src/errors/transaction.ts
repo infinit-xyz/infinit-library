@@ -1,6 +1,6 @@
 import { Hex } from 'viem'
 
-import { BaseError } from '@/errors/base.ts'
+import { BaseError } from '@errors/base.ts'
 
 export type TransactionErrorType = TransactionError & {
   name: 'TransactionError'

@@ -1,4 +1,4 @@
-import { BaseError } from '@/errors/base.ts'
+import { BaseError } from '@errors/base.ts'
 
 export type DirectoryNotFoundErrorType = DirectoryNotFoundError & {
   name: 'DirectoryNotFoundError'

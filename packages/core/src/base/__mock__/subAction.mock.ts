@@ -2,7 +2,7 @@ import { SubAction } from '@base/subAction'
 
 import { MockTxBuilder } from './txBuilder.mock'
 import { MockRegistry, MockSubActionParams } from './type.mock'
-import { ValidateInputValueError } from '@/errors'
+import { ValidateInputValueError } from '@errors/index'
 import { InfinitWallet } from '@infinit-wallet/index'
 
 export class MockSubAction extends SubAction<MockSubActionParams, MockRegistry> {

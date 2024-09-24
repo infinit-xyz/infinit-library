@@ -5,7 +5,7 @@ import { TxBuilder } from '@base/txBuilder'
 import { InfinitCallback, ToSendTransaction } from '@/types'
 import { SubActionCache, TransactionCache } from '@/types/cache'
 
-import { FoundInvalidCachedTxError, IncorrectCacheError, TxNotFoundError } from '@/errors'
+import { FoundInvalidCachedTxError, IncorrectCacheError, TxNotFoundError } from '@errors/index'
 import { InfinitWallet } from '@infinit-wallet/index'
 
 /**
