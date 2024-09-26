@@ -7,7 +7,10 @@ import { ValidateInputValueError } from '@errors/index'
 const formatZodError = (error: ZodError): string => {
   return error.issues
     .map((issue, idx) => {
-      return `${idx > 0 ? `\n` : ''}- Field: "${issue.path.join(', ')}"\n  Error: ${issue.message}`
+      // ['address', '0', 'test'] to 'address[0]["test"]'
+      const path = issue.path.map((p, idx) => (idx === 0 ? p : typeof p === 'number' ? `[${p}]` : `["${p}"]`)).join('')
+
+      return `${idx > 0 ? `\n` : ''}- Field: ${path}\n  Error: ${issue.message}`
     })
     .join(`\n`)
 }

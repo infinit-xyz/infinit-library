@@ -1,34 +1,12 @@
 import { describe, expect, test } from 'vitest'
 import { ZodError, z } from 'zod'
 
+import { MOCK_ZOD_ERROR, MOCK_ZOD_ERROR_UNDEFINED } from './__mocks__/validate.test.constant'
 import { formatZodError, validateActionData } from '@/utils/validate'
 import { zodAddress } from '@/utils/zod'
 import { ValidateInputValueError } from '@errors/index'
 import { InfinitWallet } from '@infinit-wallet/index'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
-
-const MOCK_ZOD_ERROR = new ZodError([
-  {
-    code: 'custom',
-    message: "'undefined' is not a valid address",
-    fatal: true,
-    path: ['address'],
-  },
-  {
-    code: 'invalid_type',
-    expected: 'bigint',
-    received: 'undefined',
-    path: ['bigint'],
-    message: 'Required',
-  },
-  {
-    code: 'invalid_type',
-    expected: 'string',
-    received: 'null',
-    path: ['string'],
-    message: 'Expected string, received null',
-  },
-])
 
 describe('utils/validate.ts', () => {
   const bob = '0x0000000000000000000000000000000000000B0b'
@@ -38,8 +16,9 @@ describe('utils/validate.ts', () => {
   describe('validateActionData', () => {
     const MockActionSchema = z.object({
       address: zodAddress,
-      bigint: z.bigint(),
-      string: z.string(),
+      decimals: z.bigint(),
+      symbol: z.string(),
+      fakeList: z.array(z.object({ isFake: z.boolean() })),
       array: z.array(
         z.object({
           boolean: z.boolean(),
@@ -57,8 +36,9 @@ describe('utils/validate.ts', () => {
     const data: MockData = {
       params: {
         address: bob,
-        bigint: 0n,
-        string: '',
+        decimals: 0n,
+        symbol: '',
+        fakeList: [{ isFake: true }],
         array: [{ boolean: true }, { boolean: false }],
       },
       signer: {
@@ -82,8 +62,9 @@ describe('utils/validate.ts', () => {
       const invalidData: MockData = {
         params: {
           address: undefined!,
-          bigint: undefined!,
-          string: null!,
+          decimals: undefined!,
+          symbol: null!,
+          fakeList: [{ isFake: undefined! }],
           array: [],
         },
         signer: {
@@ -93,16 +74,17 @@ describe('utils/validate.ts', () => {
         },
       }
       expect(() => validateActionData(invalidData, MockActionSchema, ['signer1', 'signer2', 'signer3'])).toThrowError(
-        new ValidateInputValueError(formatZodError(MOCK_ZOD_ERROR)),
+        new ValidateInputValueError(formatZodError(MOCK_ZOD_ERROR_UNDEFINED)),
       )
     })
 
     test('should failed validate address', () => {
-      const invalidData: MockData = {
+      const invalidData = {
         params: {
           address: '0xNOTADDRESS',
-          bigint: 0n,
-          string: '',
+          decimals: 0n,
+          symbol: '',
+          fakeList: [{ isFake: 'some text'! }],
           array: [{ boolean: true }, { boolean: false }],
         },
         signer: {
@@ -121,6 +103,13 @@ describe('utils/validate.ts', () => {
                 fatal: true,
                 path: ['address'],
               },
+              {
+                code: 'invalid_type',
+                expected: 'boolean',
+                received: 'string',
+                path: ['fakeList', 0, 'isFake'],
+                message: 'Expected boolean, received string',
+              },
             ]),
           ),
         ),
@@ -134,14 +123,17 @@ describe('formatZodError', () => {
     const formattedZodError = formatZodError(MOCK_ZOD_ERROR)
 
     expect(formattedZodError).toStrictEqual(
-      `- Field: "address"\n` +
+      `- Field: address\n` +
         `  Error: 'undefined' is not a valid address\n` +
         `\n` +
-        `- Field: "bigint"\n` +
+        `- Field: decimals\n` +
         `  Error: Required\n` +
         `\n` +
-        `- Field: "string"\n` +
-        `  Error: Expected string, received null`,
+        `- Field: symbol\n` +
+        `  Error: Expected string, received null\n` +
+        `\n` +
+        `- Field: fakeList[0]["isFake"]\n` +
+        `  Error: Expected boolean, received string`,
     )
   })
 })
