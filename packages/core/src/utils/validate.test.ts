@@ -1,11 +1,34 @@
 import { describe, expect, test } from 'vitest'
 import { ZodError, z } from 'zod'
 
-import { validateActionData } from '@/utils/validate'
+import { formatZodError, validateActionData } from '@/utils/validate'
 import { zodAddress } from '@/utils/zod'
 import { ValidateInputValueError } from '@errors/index'
 import { InfinitWallet } from '@infinit-wallet/index'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
+
+const MOCK_ZOD_ERROR = new ZodError([
+  {
+    code: 'custom',
+    message: "'undefined' is not a valid address",
+    fatal: true,
+    path: ['address'],
+  },
+  {
+    code: 'invalid_type',
+    expected: 'bigint',
+    received: 'undefined',
+    path: ['bigint'],
+    message: 'Required',
+  },
+  {
+    code: 'invalid_type',
+    expected: 'string',
+    received: 'null',
+    path: ['string'],
+    message: 'Expected string, received null',
+  },
+])
 
 describe('utils/validate.ts', () => {
   const bob = '0x0000000000000000000000000000000000000B0b'
@@ -70,30 +93,7 @@ describe('utils/validate.ts', () => {
         },
       }
       expect(() => validateActionData(invalidData, MockActionSchema, ['signer1', 'signer2', 'signer3'])).toThrowError(
-        new ValidateInputValueError(
-          new ZodError([
-            {
-              code: 'custom',
-              message: "'undefined' is not a valid address",
-              fatal: true,
-              path: ['address'],
-            },
-            {
-              code: 'invalid_type',
-              expected: 'bigint',
-              received: 'undefined',
-              path: ['bigint'],
-              message: 'Required',
-            },
-            {
-              code: 'invalid_type',
-              expected: 'string',
-              received: 'null',
-              path: ['string'],
-              message: 'Expected string, received null',
-            },
-          ]).message,
-        ),
+        new ValidateInputValueError(formatZodError(MOCK_ZOD_ERROR)),
       )
     })
 
@@ -113,16 +113,35 @@ describe('utils/validate.ts', () => {
       }
       expect(() => validateActionData(invalidData, MockActionSchema, ['signer1', 'signer2', 'signer3'])).toThrowError(
         new ValidateInputValueError(
-          new ZodError([
-            {
-              code: 'custom',
-              message: "'0xNOTADDRESS' is not a valid address",
-              fatal: true,
-              path: ['address'],
-            },
-          ]).message,
+          formatZodError(
+            new ZodError([
+              {
+                code: 'custom',
+                message: "'0xNOTADDRESS' is not a valid address",
+                fatal: true,
+                path: ['address'],
+              },
+            ]),
+          ),
         ),
       )
     })
+  })
+})
+
+describe('formatZodError', () => {
+  test('should format zod error', () => {
+    const formattedZodError = formatZodError(MOCK_ZOD_ERROR)
+
+    expect(formattedZodError).toStrictEqual(
+      `- Field: "address"\n` +
+        `  Error: 'undefined' is not a valid address\n` +
+        `\n` +
+        `- Field: "bigint"\n` +
+        `  Error: Required\n` +
+        `\n` +
+        `- Field: "string"\n` +
+        `  Error: Expected string, received null`,
+    )
   })
 })

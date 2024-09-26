@@ -54,6 +54,7 @@
   "scripts": {
     "build": "tsup",
     "test": "vitest run",
+    "test:watch": "vitest",
     "clean": "rm -rf node_modules dist tsconfig.tsbuildinfo",
     "typecheck": "tsc --noEmit"
   },
