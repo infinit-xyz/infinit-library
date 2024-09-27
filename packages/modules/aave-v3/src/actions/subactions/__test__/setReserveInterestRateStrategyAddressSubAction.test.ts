@@ -63,7 +63,7 @@ describe('SetInterestRateStrategyAddressSubAction', () => {
           interestRateStrategy: zeroAddress,
           aToken: zeroAddress,
           stableDebtToken: zeroAddress,
-          variableDebtToekn: zeroAddress,
+          variableDebtToken: zeroAddress,
         },
       },
     }
