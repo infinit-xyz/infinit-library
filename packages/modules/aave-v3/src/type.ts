@@ -44,7 +44,7 @@ export type LendingPool = {
   interestRateStrategy: Address
   aToken: Address
   stableDebtToken: Address
-  variableDebtToekn: Address
+  variableDebtToken: Address
 }
 
 export type Modify<T, R> = Omit<T, keyof R> & R

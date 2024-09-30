@@ -1,5 +1,13 @@
 # @infinit-xyz/uniswap-v3
 
+## 0.0.0-alpha.11
+
+### Patch Changes
+
+- [#38](https://github.com/infinit-xyz/infinit-library/pull/38)
+  [`cc92fa1`](https://github.com/infinit-xyz/infinit-library/commit/cc92fa13288982cc811359b242fb25d10ded0dc9) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - bump `@infinit-xyz/core@0.0.0-alpha.8`
+
 ## 0.0.0-alpha.10
 
 ### Patch Changes

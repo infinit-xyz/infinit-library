@@ -45,7 +45,7 @@ export class InitReserveSubAction extends SubAction<InitReserveSubActionParams, 
         interestRateStrategy: this.params.inputs[index].interestRateStrategyAddress,
         aToken: reserveData.aTokenAddress,
         stableDebtToken: reserveData.stableDebtTokenAddress,
-        variableDebtToekn: reserveData.variableDebtTokenAddress,
+        variableDebtToken: reserveData.variableDebtTokenAddress,
       }
 
       // get underlying token symbol
