@@ -44,6 +44,8 @@
   },
   "dependencies": {
     "@infinit-xyz/core": "^0.0.0-alpha.8",
+    "@ethereum-sourcify/bytecode-utils": "^1.2.11",
+    "@nomicfoundation/hardhat-verify": "^2.0.11",
     "@nomicfoundation/hardhat-viem": "^2.0.3",
     "lodash": "^4.17.21",
     "tsup": "^8.1.0",
