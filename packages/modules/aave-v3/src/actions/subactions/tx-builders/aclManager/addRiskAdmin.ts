@@ -1,4 +1,4 @@
-import { Address, encodeFunctionData, toHex, zeroAddress } from 'viem'
+import { Address, encodeFunctionData, getAddress, toHex, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ContractValidateError, ValidateInputValueError } from '@infinit-xyz/core/errors'
@@ -18,8 +18,8 @@ export class AddRiskAdminACLManagerTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: AddRiskAdminACLManagerParams) {
     super(AddRiskAdminACLManagerTxBuilder.name, client)
-    this.aclManager = params.aclManager
-    this.riskAdmin = params.riskAdmin
+    this.aclManager = getAddress(params.aclManager)
+    this.riskAdmin = getAddress(params.riskAdmin)
   }
 
   async buildTx(): Promise<TransactionData> {

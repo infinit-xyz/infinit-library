@@ -1,4 +1,4 @@
-import { Address, Hex, encodeDeployData } from 'viem'
+import { Address, Hex, encodeDeployData, getAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 
@@ -13,7 +13,7 @@ export class DeployL2EncoderTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: DeployL2EncoderParams) {
     super(DeployL2EncoderTxBuilder.name, client)
-    this.poolProxy = params.poolProxy
+    this.poolProxy = getAddress(params.poolProxy)
   }
 
   async buildTx(): Promise<TransactionData> {

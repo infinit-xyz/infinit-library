@@ -1,4 +1,4 @@
-import { Address, encodeFunctionData, zeroAddress } from 'viem'
+import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
@@ -17,8 +17,8 @@ export class TransferOwnershipTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: TransferOwnershipParams) {
     super(TransferOwnershipTxBuilder.name, client)
-    this.ownableContract = params.ownableContract
-    this.newOwner = params.newOwner
+    this.ownableContract = getAddress(params.ownableContract)
+    this.newOwner = getAddress(params.newOwner)
   }
 
   async buildTx(): Promise<TransactionData> {

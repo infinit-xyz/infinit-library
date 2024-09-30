@@ -1,4 +1,4 @@
-import { Address, encodeFunctionData } from 'viem'
+import { Address, encodeFunctionData, getAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 
@@ -15,8 +15,8 @@ export class SetPriceOracleTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: SetPriceOracleParams) {
     super(SetPriceOracleTxBuilder.name, client)
-    this.poolAddressesProvider = params.poolAddressesProvider
-    this.priceOracleSentinel = params.priceOracleSentinel
+    this.poolAddressesProvider = getAddress(params.poolAddressesProvider)
+    this.priceOracleSentinel = getAddress(params.priceOracleSentinel)
   }
 
   async buildTx(): Promise<TransactionData> {
@@ -31,5 +31,7 @@ export class SetPriceOracleTxBuilder extends TxBuilder {
     return tx
   }
 
-  public async validate(): Promise<void> {}
+  public async validate(): Promise<void> {
+    if (this.poolAddressesProvider === zeroAddress) throw new ValidateInputValueError('pool address provider cannot be zero address')
+  }
 }

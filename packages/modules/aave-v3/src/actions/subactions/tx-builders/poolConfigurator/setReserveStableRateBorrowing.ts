@@ -1,4 +1,4 @@
-import { Address, encodeFunctionData, zeroAddress } from 'viem'
+import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
@@ -18,8 +18,8 @@ export class SetReserveStableRateBorrowingTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: SetReserveStableRateBorrowingParams) {
     super(SetReserveStableRateBorrowingTxBuilder.name, client)
-    this.poolConfigurator = params.poolConfigurator
-    this.token = params.token
+    this.poolConfigurator = getAddress(params.poolConfigurator)
+    this.token = getAddress(params.token)
     this.enabled = params.enabled
   }
 

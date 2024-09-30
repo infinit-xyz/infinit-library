@@ -1,4 +1,4 @@
-import { Address, Hex, encodeFunctionData, zeroAddress } from 'viem'
+import { Address, Hex, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
@@ -20,9 +20,9 @@ export class InitializableAdminUpgradeabilityProxyTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: InitializableAdminUpgradeabilityProxyParams) {
     super(InitializableAdminUpgradeabilityProxyTxBuilder.name, client)
-    this.targetContract = params.targetContract
-    this.implementation = params.implementation
-    this.admin = params.admin
+    this.targetContract = getAddress(params.targetContract)
+    this.implementation = getAddress(params.implementation)
+    this.admin = getAddress(params.admin)
     this.data = params.data
   }
 
