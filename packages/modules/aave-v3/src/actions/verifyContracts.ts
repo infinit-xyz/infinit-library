@@ -1,9 +1,9 @@
 import { Action, InfinitCallback, InfinitWallet, SubAction } from "@infinit-xyz/core";
 import { AaveV3Registry, LendingPool } from "../type";
 
+import { ContractInfo, verifyContract } from "@/src/utils/verifer";
 import { validateActionData } from "@infinit-xyz/core/internal";
 import { Etherscan } from "@nomicfoundation/hardhat-verify/etherscan";
-import { ContractInfo, verifyContract } from "@utils/verifer";
 import { Address } from "viem";
 import { z } from "zod";
 
