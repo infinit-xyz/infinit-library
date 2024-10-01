@@ -15,7 +15,7 @@ export type EnableFeeAmountsSubActionParams = {
   feeAmounts: FeeAmount[]
 }
 
-export class EnableFeeAmountsSubAction extends SubAction<EnableFeeAmountsSubActionParams, UniswapV3Registry, {}> {
+export class EnableFeeAmountsSubAction extends SubAction<EnableFeeAmountsSubActionParams, UniswapV3Registry> {
   constructor(client: InfinitWallet, params: EnableFeeAmountsSubActionParams) {
     super(EnableFeeAmountsSubAction.name, client, params)
   }
@@ -35,7 +35,7 @@ export class EnableFeeAmountsSubAction extends SubAction<EnableFeeAmountsSubActi
   public async updateRegistryAndMessage(
     registry: UniswapV3Registry,
     _txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<UniswapV3Registry, Object>> {
+  ): Promise<SubActionExecuteResponse<UniswapV3Registry, object>> {
     return { newRegistry: registry, newMessage: {} }
   }
 }

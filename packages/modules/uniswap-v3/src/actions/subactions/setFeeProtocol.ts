@@ -10,7 +10,7 @@ export type SetFeeProtocolSubActionParams = {
   feeProtocolInfos: SetFeeProtocolTxBuilderParams[]
 }
 
-export class SetFeeProtocolSubAction extends SubAction<SetFeeProtocolSubActionParams, UniswapV3Registry, Object> {
+export class SetFeeProtocolSubAction extends SubAction<SetFeeProtocolSubActionParams, UniswapV3Registry, object> {
   constructor(client: InfinitWallet, params: SetFeeProtocolSubActionParams) {
     super(SetFeeProtocolSubAction.name, client, params)
   }
@@ -24,7 +24,7 @@ export class SetFeeProtocolSubAction extends SubAction<SetFeeProtocolSubActionPa
   public async updateRegistryAndMessage(
     registry: UniswapV3Registry,
     _txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<UniswapV3Registry, Object>> {
+  ): Promise<SubActionExecuteResponse<UniswapV3Registry, object>> {
     return { newRegistry: registry, newMessage: {} }
   }
 }

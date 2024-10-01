@@ -20,7 +20,7 @@ export type SetReserveBorrowingSubActionParams = {
   aclManager: Address
 }
 
-export class SetReserveBorrowingSubAction extends SubAction<SetReserveBorrowingSubActionParams, Object, Object> {
+export class SetReserveBorrowingSubAction extends SubAction<SetReserveBorrowingSubActionParams, object, object> {
   constructor(client: InfinitWallet, params: SetReserveBorrowingSubActionParams) {
     super(SetReserveBorrowingSubAction.name, client, params)
   }
@@ -37,10 +37,7 @@ export class SetReserveBorrowingSubAction extends SubAction<SetReserveBorrowingS
     }
   }
 
-  protected async updateRegistryAndMessage(
-    registry: AaveV3Registry,
-    _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<AaveV3Registry, {}>> {
+  protected async updateRegistryAndMessage(registry: AaveV3Registry, _txHashes: Hash[]): Promise<SubActionExecuteResponse<AaveV3Registry>> {
     return {
       newRegistry: registry,
       newMessage: {},
