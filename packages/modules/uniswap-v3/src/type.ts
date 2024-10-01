@@ -14,4 +14,5 @@ export type UniswapV3Registry = {
   permit2?: Address
   universalRouter?: Address
   unsupportedProtocol?: Address
+  pools?: Address[]
 }
