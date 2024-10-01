@@ -39,6 +39,7 @@
     "@vitest/coverage-v8": "^2.1.1",
     "eslint": "^9.7.0",
     "eslint-plugin-unused-imports": "^4.0.1",
+    "forge-std": "https://github.com/foundry-rs/forge-std#v1.9.3",
     "globals": "^15.9.0",
     "prettier": "^3.3.3",
     "prettier-plugin-solidity": "^1.4.1",
