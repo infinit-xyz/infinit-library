@@ -17,7 +17,7 @@ contract AggregatorApi3Adapter is IAggregator {
   function latestAnswer() external view returns (int256 price_e8) {
     (int224 price, ) = IApi3Proxy(DATA_FEED_PROXY).read();
     // Api3 precision is 1e18
-    price_e8 = price / 10e10;
+    price_e8 = price / 1e10;
   }
 
   function latestTimestamp() external view returns (uint timestamp) {

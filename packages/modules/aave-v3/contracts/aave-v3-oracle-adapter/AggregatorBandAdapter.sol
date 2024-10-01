@@ -21,7 +21,7 @@ contract AggregatorBandAdapter is IAggregator {
   function latestAnswer() external view returns (int256 price_e8) {
     IStdReference.ReferenceData memory data = ref.getReferenceData(base, quote);
     // Band precision is 1e18
-    price_e8 = int256(data.rate) / 10e10;
+    price_e8 = int256(data.rate) / 1e10;
   }
 
   function latestTimestamp() external view returns (uint256 latestUpdated) {

@@ -27,7 +27,7 @@ contract AggregatorPythAdapter is IAggregator {
     (int64 price, , int32 expo, ) = IPyth(PYTH).getPriceUnsafe(PRICE_ID);
     uint256 expoUint = (-expo).toUint256();
     // convert to 1e8 precision
-    uint256 price_e8 = price.toUint256().mul(10e8).div(10 ** expoUint);
+    uint256 price_e8 = price.toUint256().mul(1e8).div(10 ** expoUint);
     return price_e8.toInt256();
   }
 

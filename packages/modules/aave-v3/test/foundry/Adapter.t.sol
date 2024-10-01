@@ -28,21 +28,21 @@ contract AdapterTest is Test {
     AggregatorApi3Adapter api3Adaptor;
     AggregatorPythAdapter pythAdaptor;
 
-    // --- BSC ---
+    // --- FANTOM ---
     //https://docs.aave.com/developers/deployed-contracts/v3-mainnet
-    address AAVE_ORACLE_BSC = 0x39bc1bfDa2130d6Bb6DBEfd366939b4c7aa7C697;
-    address WETH_BSC = 0x2170Ed0880ac9A755fd29B2688956BD959F933F8;
+    address AAVE_ORACLE_FANTOM = 0xfd6f3c1845604C8AE6c6E402ad17fb9885160754;
+    address WETH_FANTOM = 0x74b23882a30290451A17c44f4F05243b6b58C76d;
     //https://docs.bandchain.org/develop/supported-blockchains/
     IStdReference BAND_REF = IStdReference(0xDA7a001b254CD22e46d3eAB04d937489c93174C3);
-    IAggregator wethEACAggregatorProxyBSC;
+    IAggregator wethEACAggregatorProxyFantom;
     AggregatorBandAdapter bandAdaptor;
     // ---
 
-    uint256 bscFork;
+    uint256 fantomFork;
     uint256 arbitrumFork;
 
     function setUp() public {
-        bscFork = vm.createFork(vm.rpcUrl("wss://bsc-rpc.publicnode.com"));
+        fantomFork = vm.createFork(vm.rpcUrl("wss://fantom-rpc.publicnode.com"));
         arbitrumFork = vm.createFork("wss://arbitrum-one.publicnode.com");
 
         vm.selectFork(arbitrumFork);
@@ -50,32 +50,38 @@ contract AdapterTest is Test {
         api3Adaptor = new AggregatorApi3Adapter(API3_ETH_USD_DAPI_PROXY);
         pythAdaptor = new AggregatorPythAdapter(PYTH, PYTH_WETH_USD_PRICE_FEED_ID);
 
-        vm.selectFork(bscFork);
-        wethEACAggregatorProxyBSC = IAggregator(IAaveOracle(AAVE_ORACLE_BSC).getSourceOfAsset(WETH_BSC));
+        vm.selectFork(fantomFork);
+        wethEACAggregatorProxyFantom = IAggregator(IAaveOracle(AAVE_ORACLE_FANTOM).getSourceOfAsset(WETH_FANTOM));
         bandAdaptor = new AggregatorBandAdapter(BAND_REF, "ETH", "USD");
     }
 
     function testApi3() public {
         vm.selectFork(arbitrumFork);
-        int256 price = wethEACAggregatorProxyArbitrum.latestAnswer();
+        int256 price1 = wethEACAggregatorProxyArbitrum.latestAnswer();
         int256 price2 = api3Adaptor.latestAnswer();
-        console.log("Chainlink Price: ", price);
+        console.log("Chainlink Price: ", price1);
         console.log("Api3 Price: ", price2);
+        // price should not be diff than 1%
+        assertApproxEqRel(price1, price2, 1e16);
     }
 
     function testPyth() public {
         vm.selectFork(arbitrumFork);
-        int256 price = wethEACAggregatorProxyArbitrum.latestAnswer();
+        int256 price1 = wethEACAggregatorProxyArbitrum.latestAnswer();
         int256 price2 = pythAdaptor.latestAnswer();
-        console.log("Chainlink Price: ", price);
+        console.log("Chainlink Price: ", price1);
         console.log("Pyth Price: ", price2);
+        // price should not be diff than 8%
+        assertApproxEqRel(price1, price2, 8e16);
     }
 
     function testBand() public {
-        vm.selectFork(bscFork);
-        int256 price = wethEACAggregatorProxyBSC.latestAnswer();
+        vm.selectFork(fantomFork);
+        int256 price1 = wethEACAggregatorProxyFantom.latestAnswer();
         int256 price2 = bandAdaptor.latestAnswer();
-        console.log("Chainlink Price: ", price);
+        console.log("Chainlink Price: ", price1);
         console.log("Band Price: ", price2);
+        // price should not be diff than 1%
+        assertApproxEqRel(price1, price2, 1e16);
     }
 }
