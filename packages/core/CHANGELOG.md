@@ -1,5 +1,13 @@
 # @infinit-xyz/core
 
+## 0.0.0-alpha.9
+
+### Patch Changes
+
+- [#42](https://github.com/infinit-xyz/infinit-library/pull/42)
+  [`0d76c7a`](https://github.com/infinit-xyz/infinit-library/commit/0d76c7a483f3352a42475c57e227297649a8dc88) Thanks
+  [@Pitchanai](https://github.com/Pitchanai)! - Improve the message for validation errors.
+
 ## 0.0.0-alpha.8
 
 ### Patch Changes
