@@ -10,12 +10,12 @@ export type DeployAggregatorPythAdapterParams = {
   priceId: Hex
 }
 
-export class DeployAggregatorApi3AdapterTxBuilder extends TxBuilder {
+export class DeployAggregatorPythAdapterTxBuilder extends TxBuilder {
   private pyth: Address
   private priceId: Hex
 
   constructor(client: InfinitWallet, params: DeployAggregatorPythAdapterParams) {
-    super(DeployAggregatorApi3AdapterTxBuilder.name, client)
+    super(DeployAggregatorPythAdapterTxBuilder.name, client)
     this.pyth = params.pyth
     this.priceId = params.priceId
   }
@@ -38,6 +38,6 @@ export class DeployAggregatorApi3AdapterTxBuilder extends TxBuilder {
 
   public async validate(): Promise<void> {
     if (this.pyth === zeroAddress) throw new ValidateInputValueError('PYTH_CANNOT_BE_ZERO_ADDRESS')
-    if (this.priceId.length - 2 === 64) throw new ValidateInputValueError('PRICE_ID_IS_NOT_32_BYTES')
+    if (this.priceId.length - 2 !== 64) throw new ValidateInputValueError('PRICE_ID_IS_NOT_32_BYTES')
   }
 }
