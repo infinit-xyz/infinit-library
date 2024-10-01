@@ -21,7 +21,7 @@ export type SetLiquidationBonusSubActionParams = {
   aclManager: Address
 }
 
-export class SetLiquidationBonusSubAction extends SubAction<SetLiquidationBonusSubActionParams, Object, Object> {
+export class SetLiquidationBonusSubAction extends SubAction<SetLiquidationBonusSubActionParams, object, object> {
   constructor(client: InfinitWallet, params: SetLiquidationBonusSubActionParams) {
     super(SetLiquidationBonusSubAction.name, client, params)
   }
@@ -39,10 +39,7 @@ export class SetLiquidationBonusSubAction extends SubAction<SetLiquidationBonusS
     }
   }
 
-  protected async updateRegistryAndMessage(
-    registry: AaveV3Registry,
-    _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<AaveV3Registry, {}>> {
+  protected async updateRegistryAndMessage(registry: AaveV3Registry, _txHashes: Hash[]): Promise<SubActionExecuteResponse<AaveV3Registry>> {
     return {
       newRegistry: registry,
       newMessage: {},

@@ -20,7 +20,7 @@ export type DeployInfinitERC20BurnableSubActionParams = {
   initialSupply: bigint
 }
 
-export class DeployInfinitERC20BurnableSubAction extends SubAction<DeployInfinitERC20BurnableSubActionParams, Object, Object> {
+export class DeployInfinitERC20BurnableSubAction extends SubAction<DeployInfinitERC20BurnableSubActionParams, object, object> {
   constructor(client: InfinitWallet, params: DeployInfinitERC20BurnableSubActionParams) {
     super(DeployInfinitERC20BurnableSubAction.name, client, params)
   }
@@ -36,10 +36,7 @@ export class DeployInfinitERC20BurnableSubAction extends SubAction<DeployInfinit
     this.txBuilders.push(new deployInfinitERC20BurnableTxBuilder(this.client, txBuilderParams))
   }
 
-  protected async updateRegistryAndMessage(
-    registry: TokenRegistry,
-    txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<TokenRegistry, {}>> {
+  protected async updateRegistryAndMessage(registry: TokenRegistry, txHashes: Hash[]): Promise<SubActionExecuteResponse<TokenRegistry>> {
     const deployInfinitERC20BurnableHash = txHashes[0]
     const { contractAddress: tokenAddr } = await this.client.publicClient.waitForTransactionReceipt({
       hash: deployInfinitERC20BurnableHash,
