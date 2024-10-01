@@ -7,7 +7,7 @@ import { UniswapV3Registry } from '@/src/type'
 
 export type TransferProxyAdminOwnerSubActionParams = TransferOwnerTxBuilderParams
 
-export class TransferProxyAdminOwnerSubAction extends SubAction<TransferProxyAdminOwnerSubActionParams, UniswapV3Registry, Object> {
+export class TransferProxyAdminOwnerSubAction extends SubAction<TransferProxyAdminOwnerSubActionParams, UniswapV3Registry, object> {
   constructor(client: InfinitWallet, params: TransferProxyAdminOwnerSubActionParams) {
     super(TransferProxyAdminOwnerSubAction.name, client, params)
   }
@@ -24,7 +24,7 @@ export class TransferProxyAdminOwnerSubAction extends SubAction<TransferProxyAdm
   public async updateRegistryAndMessage(
     registry: UniswapV3Registry,
     _txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<UniswapV3Registry, Object>> {
+  ): Promise<SubActionExecuteResponse<UniswapV3Registry, object>> {
     return { newRegistry: registry, newMessage: {} }
   }
 }

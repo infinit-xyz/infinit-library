@@ -11,7 +11,7 @@ import { MerkleDistributor, TokenRegistry } from '@/src/type'
 
 export type DeployERC1967ProxyAndInitializeSubActionParams = DeployERC1967ProxyTxBuilderParams
 
-export class DeployERC1967ProxyAndInitializeSubAction extends SubAction<DeployERC1967ProxyAndInitializeSubActionParams, Object, Object> {
+export class DeployERC1967ProxyAndInitializeSubAction extends SubAction<DeployERC1967ProxyAndInitializeSubActionParams, object, object> {
   constructor(client: InfinitWallet, params: DeployERC1967ProxyAndInitializeSubActionParams) {
     super(DeployERC1967ProxyAndInitializeSubAction.name, client, params)
   }
@@ -24,10 +24,7 @@ export class DeployERC1967ProxyAndInitializeSubAction extends SubAction<DeployER
     this.txBuilders.push(new DeployERC1967ProxyTxBuilder(this.client, deployAccMerkleTxBuilderParams))
   }
 
-  protected async updateRegistryAndMessage(
-    registry: TokenRegistry,
-    txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<TokenRegistry, {}>> {
+  protected async updateRegistryAndMessage(registry: TokenRegistry, txHashes: Hash[]): Promise<SubActionExecuteResponse<TokenRegistry>> {
     const [deployERC1967Hash] = txHashes
     const { contractAddress: erc1967Address } = await this.client.publicClient.waitForTransactionReceipt({ hash: deployERC1967Hash })
     if (!erc1967Address) {
