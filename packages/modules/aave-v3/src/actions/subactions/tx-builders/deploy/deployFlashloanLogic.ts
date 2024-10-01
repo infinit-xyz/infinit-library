@@ -1,5 +1,5 @@
 import { resolveBytecodeWithLinkedLibraries } from '@nomicfoundation/hardhat-viem/internal/bytecode.js'
-import { Address, Hex } from 'viem'
+import { Address, Hex, getAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 
@@ -14,7 +14,7 @@ export class DeployFlashLoanLogicTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: DeployFlashLoanLogicParams) {
     super(DeployFlashLoanLogicTxBuilder.name, client)
-    this.borrowLogic = params.borrowLogic
+    this.borrowLogic = getAddress(params.borrowLogic)
   }
 
   async buildTx(): Promise<TransactionData> {

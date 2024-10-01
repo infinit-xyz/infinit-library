@@ -1,4 +1,4 @@
-import { Address, encodeFunctionData, zeroAddress } from 'viem'
+import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
@@ -16,7 +16,11 @@ export class SetAssetSourcesTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: SetAssetSourcesTxBuilderParams) {
     super(SetAssetSourcesTxBuilder.name, client)
-    this.setAssetSourcesParams = params
+    this.setAssetSourcesParams = {
+      oracle: getAddress(params.oracle),
+      assets: params.assets.map((asset) => getAddress(asset)),
+      sources: params.sources.map((source) => getAddress(source)),
+    }
   }
 
   async buildTx(): Promise<TransactionData> {

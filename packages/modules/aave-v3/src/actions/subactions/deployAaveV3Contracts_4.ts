@@ -35,14 +35,14 @@ export class DeployAaveV3Contracts_4SubAction extends SubAction<
   protected setTxBuilders(): void {
     // set pool impl & deploy pool proxy
     const setPoolImplSubAction = new SetPoolImplTxBuilder(this.client, {
-      poolAddressProvider: this.params.poolAddressesProvider,
+      poolAddressesProvider: this.params.poolAddressesProvider,
       poolImpl: this.params.poolImpl,
     })
     this.txBuilders.push(setPoolImplSubAction)
 
     // set pool configurator impl & deploy pool configurator proxy
     const setPoolConfiguratorImplSubAction = new SetPoolConfiguratorImplTxBuilder(this.client, {
-      poolAddressProvider: this.params.poolAddressesProvider,
+      poolAddressesProvider: this.params.poolAddressesProvider,
       poolConfiguratorImpl: this.params.poolConfiguratorImpl,
     })
     this.txBuilders.push(setPoolConfiguratorImplSubAction)

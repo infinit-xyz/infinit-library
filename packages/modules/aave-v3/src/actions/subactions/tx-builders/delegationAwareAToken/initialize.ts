@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { Address, Hex, encodeFunctionData } from 'viem'
+import { Address, Hex, encodeFunctionData, getAddress } from 'viem'
 
 import { InfinitCallback, InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
@@ -34,11 +34,11 @@ export class DelegationAwareATokenInitializeTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: DelegationAwareATokenInitializeParams) {
     super(DelegationAwareATokenInitializeTxBuilder.name, client)
-    this.aToken = params.aToken
-    this.pool = params.pool
-    this.treasury = params.treasury
-    this.underlyingAsset = params.underlyingAsset
-    this.incentivesController = params.incentivesController
+    this.aToken = getAddress(params.aToken)
+    this.pool = getAddress(params.pool)
+    this.treasury = getAddress(params.treasury)
+    this.underlyingAsset = getAddress(params.underlyingAsset)
+    this.incentivesController = getAddress(params.incentivesController)
     this.aTokenDecimals = params.aTokenDecimals
     this.aTokenName = params.aTokenName
     this.aTokenSymbol = params.aTokenSymbol

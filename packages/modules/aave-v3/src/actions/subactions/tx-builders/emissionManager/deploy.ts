@@ -1,4 +1,4 @@
-import { Address, Hex, encodeDeployData, zeroAddress } from 'viem'
+import { Address, Hex, encodeDeployData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
@@ -14,7 +14,7 @@ export class DeployEmissionManagerTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: DeployEmissionManagerParams) {
     super(DeployEmissionManagerTxBuilder.name, client)
-    this.owner = params.owner
+    this.owner = getAddress(params.owner)
   }
 
   async buildTx(): Promise<TransactionData> {

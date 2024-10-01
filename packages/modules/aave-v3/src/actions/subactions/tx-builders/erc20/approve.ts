@@ -1,4 +1,4 @@
-import { Address, encodeFunctionData, zeroAddress } from 'viem'
+import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
@@ -16,7 +16,7 @@ export class ApproveTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: ApproveTxBuilderParams) {
     super(ApproveTxBuilder.name, client)
-    this.approveParams = params
+    this.approveParams = { ...params, token: getAddress(params.token), spender: getAddress(params.spender) }
   }
 
   async buildTx(): Promise<TransactionData> {

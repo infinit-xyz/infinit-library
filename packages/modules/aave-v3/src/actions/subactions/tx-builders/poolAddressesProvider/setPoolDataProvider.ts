@@ -1,4 +1,4 @@
-import { Address, PublicClient, encodeFunctionData, zeroAddress } from 'viem'
+import { Address, PublicClient, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
@@ -16,8 +16,8 @@ export class SetPoolDataProvider extends TxBuilder {
 
   constructor(client: InfinitWallet, params: SetPoolDataProviderParams) {
     super(SetPoolDataProvider.name, client)
-    this.poolAddressesProvider = params.poolAddressesProvider
-    this.aaveProtocolDataProvider = params.aaveProtocolDataProvider
+    this.poolAddressesProvider = getAddress(params.poolAddressesProvider)
+    this.aaveProtocolDataProvider = getAddress(params.aaveProtocolDataProvider)
   }
 
   async buildTx(): Promise<TransactionData> {

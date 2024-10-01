@@ -1,8 +1,9 @@
 import { z } from 'zod'
 
-import { Address, Hex, encodeFunctionData } from 'viem'
+import { Address, Hex, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -31,10 +32,10 @@ export class StableDebtTokenInitializeTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: StableDebtTokenInitializeParams) {
     super(StableDebtTokenInitializeTxBuilder.name, client)
-    this.stableDebtToken = params.stableDebtToken
-    this.pool = params.pool
-    this.underlyingAsset = params.underlyingAsset
-    this.incentivesController = params.incentivesController
+    this.stableDebtToken = getAddress(params.stableDebtToken)
+    this.pool = getAddress(params.pool)
+    this.underlyingAsset = getAddress(params.underlyingAsset)
+    this.incentivesController = getAddress(params.incentivesController)
     this.debtTokenDecimals = params.debtTokenDecimals
     this.debtTokenName = params.debtTokenName
     this.debtTokenSymbol = params.debtTokenSymbol
@@ -65,5 +66,7 @@ export class StableDebtTokenInitializeTxBuilder extends TxBuilder {
     return tx
   }
 
-  public validate(): any {}
+  public validate(): any {
+    if (this.stableDebtToken === zeroAddress) throw new ValidateInputValueError('stable debt token cannot be zero address')
+  }
 }
