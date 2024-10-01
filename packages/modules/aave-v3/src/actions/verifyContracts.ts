@@ -1,4 +1,4 @@
-import { Action, InfinitCallback, InfinitWallet, SubAction } from "@infinit-xyz/core";
+import { Action, InfinitCache, InfinitCallback, InfinitWallet, SubAction } from "@infinit-xyz/core";
 import { AaveV3Registry, LendingPool } from "../type";
 
 import { ContractInfo, verifyContract } from "@/src/utils/verifer";
@@ -56,7 +56,7 @@ export class VerifyAaveV3Action extends Action<VerifyAaveV3ActionData, AaveV3Reg
         return contracts
     }
 
-    public override async run(registry: AaveV3Registry, callback?: InfinitCallback): Promise<AaveV3Registry> {
+    public override async run(registry: AaveV3Registry, _cache?: InfinitCache, callback?: InfinitCallback): Promise<AaveV3Registry> {
         const client = this.data.signer['deployer']
         const { lendingPools, reserveInterestRateStrategies, poolProxy, poolConfiguratorProxy, rewardsControllerProxy, ...contractToAddressRegistry } = registry
         
