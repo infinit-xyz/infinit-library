@@ -46,7 +46,7 @@ export class InitializePool extends TxBuilder {
     })
 
     if (this.poolAddressesProvider !== addressesProviderInContract) {
-      throw new ValidateInputValueError('invalid poolAddressesProvider')
+      throw new ValidateInputValueError('INVALID_POOL_ADDRESSES_PROVIDER')
     }
   }
 }

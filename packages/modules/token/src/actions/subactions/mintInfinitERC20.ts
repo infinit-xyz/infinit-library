@@ -1,7 +1,7 @@
 import { Address, Hash } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateLengthError } from '@infinit-xyz/core/errors'
 
 import { MintTxBuilder, MintTxBuilderParams } from './txBuilders/InfinitERC20/mint'
 import { TokenRegistry } from '@/src/type'
@@ -17,7 +17,7 @@ export class MintInfinitERC20SubAction extends SubAction<MintInfinitERC20SubActi
     super(MintInfinitERC20SubAction.name, client, params)
 
     if (params.receivers.length !== params.amounts.length) {
-      throw new ValidateInputValueError('receivers and amounts must have the same length')
+      throw new ValidateLengthError()
     }
   }
 

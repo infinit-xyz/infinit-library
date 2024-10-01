@@ -1,7 +1,7 @@
 import { Address, Hex } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
-import { TxNotFoundError } from '@infinit-xyz/core/errors'
+import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
 
 import { DeployNFTDescriptorTxBuilder } from '@/src/actions/subactions/tx-builders/NFTDescriptor/deploy'
 import { DeployProxyAdminTxBuilder } from '@/src/actions/subactions/tx-builders/ProxyAdmin/deploy'
@@ -48,25 +48,25 @@ export class DeployUniswapV3Contracts1SubAction extends SubAction<DeployUniswapV
       hash: deployUniswapV3FactoryHash,
     })
     if (!uniswapV3Factory) {
-      throw new Error('uniswapV3Factory not found')
+      throw new ContractNotFoundError(deployUniswapV3FactoryHash, 'UniswapV3Factory')
     }
     registry['uniswapV3Factory'] = uniswapV3Factory
 
     const { contractAddress: nftDescriptor } = await this.client.publicClient.waitForTransactionReceipt({ hash: deployNFTDescriptorHash })
     if (!nftDescriptor) {
-      throw new Error('nftDescriptor not found')
+      throw new ContractNotFoundError(deployNFTDescriptorHash, 'NFTDescriptor')
     }
     registry['nftDescriptor'] = nftDescriptor
 
     const { contractAddress: tickLens } = await this.client.publicClient.waitForTransactionReceipt({ hash: deployTickLensHash })
     if (!tickLens) {
-      throw new Error('tickLens not found')
+      throw new ContractNotFoundError(deployTickLensHash, 'TickLens')
     }
     registry['tickLens'] = tickLens
 
     const { contractAddress: proxyAdmin } = await this.client.publicClient.waitForTransactionReceipt({ hash: deployProxyAdminHash })
     if (!proxyAdmin) {
-      throw new Error('proxyAdmin not found')
+      throw new ContractNotFoundError(deployProxyAdminHash, 'ProxyAdmin')
     }
     registry['proxyAdmin'] = proxyAdmin
 

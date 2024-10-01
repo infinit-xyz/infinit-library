@@ -1,7 +1,7 @@
 import { Address, Hex, encodeDeployData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateLengthError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -49,6 +49,6 @@ export class DeployAaveOracleTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.assets.length != this.sources.length) throw new ValidateInputValueError('assets&sources length mismatched')
+    if (this.assets.length != this.sources.length) throw new ValidateLengthError()
   }
 }

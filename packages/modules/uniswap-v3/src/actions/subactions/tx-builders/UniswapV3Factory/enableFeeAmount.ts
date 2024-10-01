@@ -1,7 +1,7 @@
 import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ContractValidateError, ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ContractValidateError, ValidateInputValueError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -37,7 +37,7 @@ export class EnableFeeAmountTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.factory === zeroAddress) throw new ValidateInputValueError('Factory cannot be zero address')
+    if (this.factory === zeroAddress) throw new ValidateInputZeroAddressError('FACTORY')
     if (this.fee >= 1000000) throw new ValidateInputValueError('Fee cannot be greater than 1000000')
     if (this.tickSpacing >= 16384 || this.tickSpacing <= 0) throw new ValidateInputValueError('Tick spacing must be between 0 and 16384')
 

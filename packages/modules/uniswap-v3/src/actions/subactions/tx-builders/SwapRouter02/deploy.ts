@@ -1,7 +1,7 @@
 import { Address, Hex, encodeDeployData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -44,8 +44,8 @@ export class DeploySwapRouter02TxBuilder extends TxBuilder {
   }
 
   async validate(): Promise<void> {
-    if (this.factoryV3 === zeroAddress) throw new ValidateInputValueError('Factory cannot be zero address')
-    if (this.positionManager === zeroAddress) throw new ValidateInputValueError('positionManager cannot be zero address')
-    if (this.weth9 === zeroAddress) throw new ValidateInputValueError('weth9 cannot be zero address')
+    if (this.factoryV3 === zeroAddress) throw new ValidateInputZeroAddressError('FACTORY_V3')
+    if (this.positionManager === zeroAddress) throw new ValidateInputZeroAddressError('POSITION_MANAGER')
+    if (this.weth9 === zeroAddress) throw new ValidateInputZeroAddressError('WETH9')
   }
 }

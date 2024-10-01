@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { Address, Hex, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateInputValueError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -68,6 +68,6 @@ export class VariableDebtTokenInitializeTxBuilder extends TxBuilder {
 
   public validate(): any {
     if (this.debtTokenDecimals >= 2 ** 8) throw new ValidateInputValueError('aToken decimals cannot be more than 2^8')
-    if (this.variableDebtToken === zeroAddress) throw new ValidateInputValueError('variable debt token cannot be zero address')
+    if (this.variableDebtToken === zeroAddress) throw new ValidateInputZeroAddressError('VARIABLE_DEBT_TOKEN')
   }
 }

@@ -1,7 +1,7 @@
 import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -46,11 +46,11 @@ export class RegisterAddressProvider extends TxBuilder {
 
   public async validate(): Promise<void> {
     if (this.poolAddressesProviderRegistry === zeroAddress) {
-      throw new ValidateInputValueError('PoolAddressesProviderRegistry should not be zero')
+      throw new ValidateInputZeroAddressError('POOL_ADDRESS_PROVIDER_REGISTRY')
     }
 
     if (this.poolAddressesProvider === zeroAddress) {
-      throw new ValidateInputValueError('PoolAddressesProvider should not be zero')
+      throw new ValidateInputZeroAddressError('POOL_ADDRESS_PROVIDER')
     }
   }
 }

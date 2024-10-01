@@ -1,7 +1,7 @@
 import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -33,6 +33,6 @@ export class SetPriceOracleTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.poolAddressesProvider === zeroAddress) throw new ValidateInputValueError('pool address provider cannot be zero address')
+    if (this.poolAddressesProvider === zeroAddress) throw new ValidateInputZeroAddressError('POOL_ADDRESSES_PROVIDER')
   }
 }

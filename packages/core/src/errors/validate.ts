@@ -11,6 +11,18 @@ export class ValidateInputValueError extends BaseError {
   }
 }
 
+export class ValidateLengthError extends ValidateInputValueError {
+  constructor() {
+    super(`LENGTH_MISMATCH`)
+  }
+}
+
+export class ValidateInputZeroAddressError extends ValidateInputValueError {
+  constructor(param: string) {
+    super(`${param} SHOULD_NOT_BE_ZERO_ADDRESS`)
+  }
+}
+
 export type ValueNotFoundErrorType = ValueNotFoundError & {
   name: 'ValueNotFoundError'
 }

@@ -1,7 +1,7 @@
 import { Address, Hex, encodeDeployData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -40,8 +40,8 @@ export class DeployPullRewardsTransferStrategyTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.incentivesController === zeroAddress) throw new ValidateInputValueError('incentivesController zero address')
-    if (this.rewardsAdmin === zeroAddress) throw new ValidateInputValueError('rewrdsAdmin zero address')
-    if (this.rewardsVault === zeroAddress) throw new ValidateInputValueError('rewrdsVault zero address')
+    if (this.incentivesController === zeroAddress) throw new ValidateInputZeroAddressError('INCENTIVES_CONTROLLER')
+    if (this.rewardsAdmin === zeroAddress) throw new ValidateInputZeroAddressError('REWARDS_ADMIN')
+    if (this.rewardsVault === zeroAddress) throw new ValidateInputZeroAddressError('REWARDS_VAULT')
   }
 }
