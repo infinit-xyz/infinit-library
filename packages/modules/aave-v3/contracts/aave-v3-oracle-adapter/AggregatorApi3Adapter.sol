@@ -10,8 +10,8 @@ contract AggregatorApi3Adapter is IAggregator {
         DATA_FEED_PROXY = _dataFeedProxy;
     }
 
-    function decimals() external pure returns (uint8) {
-        return 8;
+    function decimals() external pure returns (uint8 precision) {
+        precision = 8;
     }
 
     function latestAnswer() external view returns (int256 price_e8) {
