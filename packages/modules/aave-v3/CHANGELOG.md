@@ -1,5 +1,18 @@
 # @infinit-xyz/aave-v3
 
+## 0.0.0-alpha.15
+
+### Minor Changes
+
+- [#43](https://github.com/infinit-xyz/infinit-library/pull/43)
+  [`a0da9f3`](https://github.com/infinit-xyz/infinit-library/commit/a0da9f30573ff3b351b69f288642db7135eb1b8b) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - configure rewards action
+
+### Patch Changes
+
+- Updated dependencies [[`87b4c48`](https://github.com/infinit-xyz/infinit-library/commit/87b4c48dfdee065bc41742100c07dac2ad27b23b)]:
+  - @infinit-xyz/core@0.0.1-alpha.0
+
 ## 0.0.0-alpha.14
 
 ### Patch Changes
