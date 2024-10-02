@@ -26,6 +26,17 @@ export const ARBITRUM_TEST_ADDRESSES = {
   tester: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
 } satisfies Record<string, Address>
 
+export const FANTOM_TEST_ADDRESSES = {
+  // ERC20 Tokens
+  weth: '0x74b23882a30290451A17c44f4F05243b6b58C76d',
+
+  // Misc
+  bandRef: '0xDA7a001b254CD22e46d3eAB04d937489c93174C3',
+
+  // User
+  tester: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
+} satisfies Record<string, Address>
+
 export const TEST_ADDRESSES = {
   // test
   bob: '0x0000000000000000000000000000000000000B0b',
