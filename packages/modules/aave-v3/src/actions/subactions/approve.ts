@@ -8,7 +8,7 @@ import { AaveV3Registry } from '@/src/type'
 
 export type ApproveSubActionParams = ApproveTxBuilderParams
 
-export class ApproveSubAction extends SubAction<ApproveSubActionParams, AaveV3Registry, Object> {
+export class ApproveSubAction extends SubAction<ApproveSubActionParams, AaveV3Registry, object> {
   constructor(client: InfinitWallet, params: ApproveSubActionParams) {
     super(ApproveSubAction.name, client, params)
   }

@@ -8,7 +8,7 @@ import { AaveV3Registry } from '@/src/type'
 
 export type ConfigureAssetSubActionParams = ConfigureAssetsParams
 
-export class ConfigureAssetsSubAction extends SubAction<ConfigureAssetSubActionParams, AaveV3Registry, Object> {
+export class ConfigureAssetsSubAction extends SubAction<ConfigureAssetSubActionParams, AaveV3Registry, object> {
   constructor(client: InfinitWallet, params: ConfigureAssetSubActionParams) {
     super(ConfigureAssetsSubAction.name, client, params)
   }
