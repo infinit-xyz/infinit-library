@@ -18,7 +18,6 @@ export type SetEmissionAdminData = {
 
 export class SetEmissionAdminAction extends Action<SetEmissionAdminData> {
   constructor(data: SetEmissionAdminData) {
-    console.log('data', data)
     validateActionData(data, SetEmissionAdminActionParamsSchema, ['emissionManagerOwner'])
     super(SetEmissionAdminAction.name, data)
   }
