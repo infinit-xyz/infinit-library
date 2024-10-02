@@ -101,7 +101,7 @@ describe('ConfigureRewardsAction', () => {
       functionName: 'supply',
       args: [weth, BigInt(10 ** 17), aliceClient.walletClient.account.address, 0],
     })
-    const usdtArtifact = await readArtifact('IUsdt')
+    const usdtArtifact = await readArtifact('IArbitrumERC20')
     const usdtOwner = await aliceClient.publicClient.readContract({
       address: ARBITRUM_TEST_ADDRESSES.usdt,
       abi: usdtArtifact.abi,
@@ -269,7 +269,7 @@ describe('ConfigureRewardsAction', () => {
       functionName: 'supply',
       args: [weth, BigInt(10 ** 17), aliceClient.walletClient.account.address, 0],
     })
-    const usdtArtifact = await readArtifact('IUsdt')
+    const usdtArtifact = await readArtifact('IArbitrumERC20')
     const usdtOwner = await aliceClient.publicClient.readContract({
       address: ARBITRUM_TEST_ADDRESSES.usdt,
       abi: usdtArtifact.abi,

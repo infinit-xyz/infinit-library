@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
-import { validateActionData, zodAddress } from '@infinit-xyz/core/internal'
+import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/internal'
 
 import { ApproveSubAction, ApproveSubActionParams } from '@actions/subactions/approve'
 import { ConfigureAssetsSubAction } from '@actions/subactions/configureAssets'
@@ -10,7 +10,7 @@ import { ConfigureAssetsParams, RewardsConfigInput } from '@actions/subactions/t
 import type { AaveV3Registry } from '@/src/type'
 
 export const ConfigRewardsParamSchema = z.object({
-  emissionManager: zodAddress.describe(`Address of emission manager e.g. '0x123...abc'`),
+  emissionManager: zodAddressNonZero.describe(`Address of emission manager e.g. '0x123...abc'`),
   rewardsConfigInputs: z.custom<RewardsConfigInput[]>().describe(`Rewards configuration inputs`),
   approveParams: z.custom<ApproveSubActionParams[]>().describe(`Approve tokens to PullRewardsTransferStrategy`),
 })
