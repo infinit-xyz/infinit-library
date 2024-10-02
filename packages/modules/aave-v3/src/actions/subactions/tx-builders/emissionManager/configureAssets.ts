@@ -53,6 +53,9 @@ export class ConfigureAssetsTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.emissionManager === zeroAddress) throw new ValidateInputValueError('owner zero address')
+    this.rewardsConfigInputs.map((input) => {
+      if (input.asset === zeroAddress) throw new ValidateInputValueError('ASSET_SHOULD_NOT_BE_ZERO_ADDRESS')
+    })
+    if (this.emissionManager === zeroAddress) throw new ValidateInputValueError('EMISSION_MANAGER_SHOULD_NOT_BE_ZERO_ADDRESS')
   }
 }
