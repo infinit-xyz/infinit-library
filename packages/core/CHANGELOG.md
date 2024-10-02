@@ -1,5 +1,13 @@
 # @infinit-xyz/core
 
+## 0.0.1-alpha.0
+
+### Patch Changes
+
+- [#57](https://github.com/infinit-xyz/infinit-library/pull/57)
+  [`87b4c48`](https://github.com/infinit-xyz/infinit-library/commit/87b4c48dfdee065bc41742100c07dac2ad27b23b) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - add validation errors
+
 ## 0.0.0-alpha.9
 
 ### Patch Changes
