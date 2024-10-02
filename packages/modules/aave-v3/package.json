@@ -43,7 +43,7 @@
     "extends": "../../../.eslintrc.js"
   },
   "dependencies": {
-    "@infinit-xyz/core": "workspace:*",
+    "@infinit-xyz/core": "^0.0.0-alpha.9",
     "@nomicfoundation/hardhat-viem": "^2.0.3",
     "lodash": "^4.17.21",
     "tsup": "^8.1.0",
@@ -53,7 +53,6 @@
   "devDependencies": {
     "@types/lodash": "^4.17.7",
     "hardhat": "^2.22.5",
-    "tsx": "^4.16.2",
     "typescript": "^5.6.2"
   },
   "engines": {
