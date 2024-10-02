@@ -2,10 +2,10 @@
   "mode": "pre",
   "tag": "alpha",
   "initialVersions": {
-    "@infinit-xyz/core": "0.0.1-alpha",
+    "@infinit-xyz/core": "0.0.0",
     "@infinit-xyz/uniswap-v3": "0.0.0",
-    "@infinit-xyz/aave-v3": "0.0.0-alpha",
-    "@infinit-xyz/token": "0.0.0-alpha",
+    "@infinit-xyz/aave-v3": "0.0.0",
+    "@infinit-xyz/token": "0.0.0",
     "@infinit-xyz/test": "0.0.0"
   },
   "changesets": [
