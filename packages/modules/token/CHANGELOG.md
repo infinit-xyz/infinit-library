@@ -1,5 +1,22 @@
 # @infinit-xyz/token
 
+## 0.0.0-alpha.13
+
+### Minor Changes
+
+- [#55](https://github.com/infinit-xyz/infinit-library/pull/55)
+  [`a817f09`](https://github.com/infinit-xyz/infinit-library/commit/a817f09b5d34bcb015e123986f333c441b962a5e) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - update error message
+
+### Patch Changes
+
+- [#55](https://github.com/infinit-xyz/infinit-library/pull/55)
+  [`a817f09`](https://github.com/infinit-xyz/infinit-library/commit/a817f09b5d34bcb015e123986f333c441b962a5e) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - bump core version to `^0.0.1-alpha.0`
+
+- Updated dependencies [[`a817f09`](https://github.com/infinit-xyz/infinit-library/commit/a817f09b5d34bcb015e123986f333c441b962a5e)]:
+  - @infinit-xyz/core@0.1.0-alpha.1
+
 ## 0.0.0-alpha.12
 
 ### Patch Changes
