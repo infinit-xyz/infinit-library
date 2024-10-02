@@ -20,7 +20,6 @@ import { SetLtvAction, SetLtvActionParamsSchema } from '@actions/setLtv'
 import { SetReserveBorrowingAction, SetReserveBorrowingActionParamsSchema } from '@actions/setReserveBorrowing'
 import { SetReservePauseAction, SetReservePauseActionParamsSchema } from '@actions/setReservePause'
 import { SupportNewReserveAction, SupportNewReserveActionParamsSchema } from '@actions/supportNewReserve'
-import { VerifyAaveV3Action, VerifyAaveV3ActionParamsSchema } from '@actions/verifyContracts'
 
 // example of actions
 export const actions = {
@@ -126,12 +125,6 @@ export const actions = {
     paramsSchema: SetEmissionAdminActionParamsSchema,
     signers: ['emissionManagerOwner'],
   },
-  verifyContracts: {
-    name: 'Verify Contracts',
-    actionClassName: VerifyAaveV3Action.name,
-    paramsSchema: VerifyAaveV3ActionParamsSchema,
-    signers: ['deployer']
-  }
 } satisfies InfinitActionRecord
 
 export {
@@ -151,6 +144,6 @@ export {
   SetLtvAction,
   SetReserveBorrowingAction,
   SetReservePauseAction,
-  SupportNewReserveAction,
-  VerifyAaveV3Action
+  SupportNewReserveAction
 }
+
