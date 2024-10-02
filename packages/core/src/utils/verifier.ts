@@ -1,4 +1,5 @@
 
+import axios from 'axios';
 import type { Artifacts } from 'hardhat/types/artifacts';
 
 import { InfinitCallback } from '@/types/callback';
@@ -6,6 +7,7 @@ import { splitAuxdata } from '@ethereum-sourcify/bytecode-utils';
 import { Etherscan } from '@nomicfoundation/hardhat-verify/etherscan.js';
 import { ContractInformation, extractMatchingContractInformation, LibraryToAddress, SourceToLibraryToAddress } from '@nomicfoundation/hardhat-verify/internal/solc/artifacts.js';
 import { Bytecode } from '@nomicfoundation/hardhat-verify/internal/solc/bytecode.js';
+import { encodeArguments } from '@nomicfoundation/hardhat-verify/internal/utilities'
 import { Libraries, resolveBytecodeWithLinkedLibraries } from '@nomicfoundation/hardhat-viem/internal/bytecode.js';
 import { Address, PublicClient } from 'viem';
 
