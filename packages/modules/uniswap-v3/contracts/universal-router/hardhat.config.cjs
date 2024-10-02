@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 // NOTE: need to import like this for now to be compatible with hardhat commonjs
 const { baseHardhatUserConfig } = require('@infinit-xyz/core/internal/hardhat-base-config')
 const { name } = require('../../package.json')

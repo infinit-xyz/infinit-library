@@ -10,7 +10,7 @@ export type CollectProtocolSubActionParams = {
   pools: Address[]
 }
 
-export class CollectProtocolSubAction extends SubAction<CollectProtocolSubActionParams, UniswapV3Registry, Object> {
+export class CollectProtocolSubAction extends SubAction<CollectProtocolSubActionParams, UniswapV3Registry, object> {
   constructor(client: InfinitWallet, params: CollectProtocolSubActionParams) {
     super(CollectProtocolSubAction.name, client, params)
   }
@@ -29,7 +29,7 @@ export class CollectProtocolSubAction extends SubAction<CollectProtocolSubAction
   public async updateRegistryAndMessage(
     registry: UniswapV3Registry,
     _txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<UniswapV3Registry, Object>> {
+  ): Promise<SubActionExecuteResponse<UniswapV3Registry, object>> {
     return { newRegistry: registry, newMessage: {} }
   }
 }

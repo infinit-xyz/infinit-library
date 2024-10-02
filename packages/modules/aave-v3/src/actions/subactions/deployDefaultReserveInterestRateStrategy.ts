@@ -24,7 +24,7 @@ export type DeployDefaultReserveInterestRateStrategySubActionParams = {
 export class DeployDefaultReserveInterestRateStrategySubAction extends SubAction<
   DeployDefaultReserveInterestRateStrategySubActionParams,
   AaveV3Registry,
-  Object
+  object
 > {
   constructor(client: InfinitWallet, params: DeployDefaultReserveInterestRateStrategySubActionParams) {
     super(DeployDefaultReserveInterestRateStrategySubAction.name, client, params)
@@ -38,10 +38,7 @@ export class DeployDefaultReserveInterestRateStrategySubAction extends SubAction
     }
   }
 
-  protected async updateRegistryAndMessage(
-    registry: AaveV3Registry,
-    txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<AaveV3Registry, {}>> {
+  protected async updateRegistryAndMessage(registry: AaveV3Registry, txHashes: Hash[]): Promise<SubActionExecuteResponse<AaveV3Registry>> {
     // update registry mapping name from txHashes
     for (const [index, txHash] of txHashes.entries()) {
       const strategyName = this.params.defaultReserveInterestRateStrategyConfigs[index]?.name

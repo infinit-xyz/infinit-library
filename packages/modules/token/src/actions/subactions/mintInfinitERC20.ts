@@ -12,7 +12,7 @@ export type MintInfinitERC20SubActionParams = {
   amounts: bigint[]
 }
 
-export class MintInfinitERC20SubAction extends SubAction<MintInfinitERC20SubActionParams, Object, Object> {
+export class MintInfinitERC20SubAction extends SubAction<MintInfinitERC20SubActionParams, object, object> {
   constructor(client: InfinitWallet, params: MintInfinitERC20SubActionParams) {
     super(MintInfinitERC20SubAction.name, client, params)
 
@@ -32,10 +32,7 @@ export class MintInfinitERC20SubAction extends SubAction<MintInfinitERC20SubActi
     }
   }
 
-  protected async updateRegistryAndMessage(
-    registry: TokenRegistry,
-    _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<TokenRegistry, {}>> {
+  protected async updateRegistryAndMessage(registry: TokenRegistry, _txHashes: Hash[]): Promise<SubActionExecuteResponse<TokenRegistry>> {
     return {
       newRegistry: registry,
       newMessage: {},

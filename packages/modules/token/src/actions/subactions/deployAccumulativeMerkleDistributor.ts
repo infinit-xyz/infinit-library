@@ -18,7 +18,7 @@ export type DeployAccumulativeMerkleDistributorSubActionMsg = {
 export class DeployAccumulativeMerkleDistributorSubAction extends SubAction<
   DeployAccumulativeMerkleDistributorSubActionParams,
   TokenRegistry,
-  Object
+  object
 > {
   constructor(client: InfinitWallet, params: DeployAccumulativeMerkleDistributorSubActionParams) {
     super(DeployAccumulativeMerkleDistributorSubAction.name, client, params)
@@ -31,10 +31,7 @@ export class DeployAccumulativeMerkleDistributorSubAction extends SubAction<
     this.txBuilders.push(new DeployAccumulativeMerkleDistributorTxBuilder(this.client, deployAccMerkleTxBuilderParams))
   }
 
-  protected async updateRegistryAndMessage(
-    registry: TokenRegistry,
-    txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<TokenRegistry, {}>> {
+  protected async updateRegistryAndMessage(registry: TokenRegistry, txHashes: Hash[]): Promise<SubActionExecuteResponse<TokenRegistry>> {
     const [deployAccMerkleHash] = txHashes
 
     const { contractAddress: accMerkle } = await this.client.publicClient.waitForTransactionReceipt({ hash: deployAccMerkleHash })

@@ -11,7 +11,7 @@ import { TokenRegistry } from '@/src/type'
 
 export type SetMerkleRootSubActionParams = SetMerkleRootTxBuilderParams
 
-export class SetMerkleRootSubAction extends SubAction<SetMerkleRootSubActionParams, Object, Object> {
+export class SetMerkleRootSubAction extends SubAction<SetMerkleRootSubActionParams, object, object> {
   constructor(client: InfinitWallet, params: SetMerkleRootSubActionParams) {
     super(SetMerkleRootSubAction.name, client, params)
   }
@@ -24,10 +24,7 @@ export class SetMerkleRootSubAction extends SubAction<SetMerkleRootSubActionPara
     this.txBuilders.push(new SetMerkleRootTxBuilder(this.client, txBuilderParams))
   }
 
-  protected async updateRegistryAndMessage(
-    registry: TokenRegistry,
-    _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<TokenRegistry, {}>> {
+  protected async updateRegistryAndMessage(registry: TokenRegistry, _txHashes: Hash[]): Promise<SubActionExecuteResponse<TokenRegistry>> {
     return {
       newRegistry: registry,
       newMessage: {},

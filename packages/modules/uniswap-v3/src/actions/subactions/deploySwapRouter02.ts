@@ -8,7 +8,7 @@ import { UniswapV3Registry } from '@/src/type'
 
 export type DeployUniswapV3Params3 = DeploySwapRouter02TxBuilderParams
 
-export class DeploySwapRouter02SubAction extends SubAction<DeployUniswapV3Params3, UniswapV3Registry, Object> {
+export class DeploySwapRouter02SubAction extends SubAction<DeployUniswapV3Params3, UniswapV3Registry, object> {
   constructor(client: InfinitWallet, params: DeployUniswapV3Params3) {
     super(DeploySwapRouter02SubAction.name, client, params)
   }
@@ -20,7 +20,7 @@ export class DeploySwapRouter02SubAction extends SubAction<DeployUniswapV3Params
   public async updateRegistryAndMessage(
     registry: UniswapV3Registry,
     txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<UniswapV3Registry, Object>> {
+  ): Promise<SubActionExecuteResponse<UniswapV3Registry, object>> {
     if (txHashes.some((v) => !v)) {
       throw new TxNotFoundError()
     }

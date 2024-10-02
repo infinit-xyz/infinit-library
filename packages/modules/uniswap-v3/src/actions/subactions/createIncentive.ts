@@ -15,7 +15,7 @@ export type CreateIncentivesSubActionParams = {
   incentiveInfos: IncentiveInfo[]
 }
 
-export class CreateIncentivesSubAction extends SubAction<CreateIncentivesSubActionParams, UniswapV3Registry, Object> {
+export class CreateIncentivesSubAction extends SubAction<CreateIncentivesSubActionParams, UniswapV3Registry, object> {
   constructor(client: InfinitWallet, params: CreateIncentivesSubActionParams) {
     super(CreateIncentivesSubAction.name, client, params)
   }
@@ -35,7 +35,7 @@ export class CreateIncentivesSubAction extends SubAction<CreateIncentivesSubActi
   public async updateRegistryAndMessage(
     registry: UniswapV3Registry,
     _txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<UniswapV3Registry, Object>> {
+  ): Promise<SubActionExecuteResponse<UniswapV3Registry, object>> {
     return { newRegistry: registry, newMessage: {} }
   }
 }

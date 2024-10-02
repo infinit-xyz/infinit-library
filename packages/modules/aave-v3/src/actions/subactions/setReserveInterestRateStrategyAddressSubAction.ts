@@ -27,7 +27,7 @@ export type SetInterestRateStrategyAddressSubActionParams = {
 export class SetInterestRateStrategyAddressSubAction extends SubAction<
   SetInterestRateStrategyAddressSubActionParams,
   AaveV3Registry,
-  Object
+  object
 > {
   constructor(client: InfinitWallet, params: SetInterestRateStrategyAddressSubActionParams) {
     super(SetInterestRateStrategyAddressSubAction.name, client, params)
@@ -64,10 +64,7 @@ export class SetInterestRateStrategyAddressSubAction extends SubAction<
     }
   }
 
-  protected async updateRegistryAndMessage(
-    registry: AaveV3Registry,
-    _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<AaveV3Registry, {}>> {
+  protected async updateRegistryAndMessage(registry: AaveV3Registry, _txHashes: Hash[]): Promise<SubActionExecuteResponse<AaveV3Registry>> {
     if (!registry.lendingPools) {
       throw new ValueNotFoundError('lendingPools not found in registry')
     }
