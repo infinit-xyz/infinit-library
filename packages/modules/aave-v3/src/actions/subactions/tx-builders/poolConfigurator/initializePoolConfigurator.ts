@@ -1,7 +1,7 @@
 import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -32,6 +32,6 @@ export class InitializePoolConfiguratorTxBuilder extends TxBuilder {
   }
 
   public validate(): any {
-    if (this.poolConfig === zeroAddress) throw new ValidateInputValueError('configuratorLogic cannot be zero address')
+    if (this.poolConfig === zeroAddress) throw new ValidateInputZeroAddressError('CONFIGURATOR_LOGIC')
   }
 }

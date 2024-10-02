@@ -1,7 +1,7 @@
 import { Address, Hex, encodeDeployData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -37,6 +37,6 @@ export class DeployPoolAddressProviderTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.owner === zeroAddress) throw new ValidateInputValueError('Owner must not be zero')
+    if (this.owner === zeroAddress) throw new ValidateInputZeroAddressError('OWNER')
   }
 }

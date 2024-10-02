@@ -1,7 +1,7 @@
 import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ContractValidateError, ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ContractValidateError, ValidateInputValueError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -48,8 +48,8 @@ export class CollectProtocolTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.pool === zeroAddress) throw new ValidateInputValueError('Pool cannot be zero address')
-    if (this.recipient === zeroAddress) throw new ValidateInputValueError('Recipient cannot be zero address')
+    if (this.pool === zeroAddress) throw new ValidateInputZeroAddressError('POOL')
+    if (this.recipient === zeroAddress) throw new ValidateInputValueError('RECIPIENT')
     const protocolFees: ProtocolFees = await this.getProtocolFees(this.client)
     if (this.amount0Requested && this.amount0Requested > protocolFees.token0)
       throw new ContractValidateError('Requested amount0 exceeds protocol fees')

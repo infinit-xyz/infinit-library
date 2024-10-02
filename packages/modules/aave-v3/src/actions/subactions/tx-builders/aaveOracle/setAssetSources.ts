@@ -1,7 +1,7 @@
 import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateInputZeroAddressError, ValidateLengthError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -46,13 +46,13 @@ export class SetAssetSourcesTxBuilder extends TxBuilder {
   public async validate(): Promise<void> {
     const params = this.setAssetSourcesParams
     // check array length
-    if (params.assets.length !== params.sources.length) throw new ValidateInputValueError('MISMATCH_LENGTH')
+    if (params.assets.length !== params.sources.length) throw new ValidateLengthError()
     // check zero address
     for (const asset of params.assets) {
-      if (asset === zeroAddress) throw new ValidateInputValueError('ASSET_SHOULD_NOT_BE_ZERO_ADDRESS')
+      if (asset === zeroAddress) throw new ValidateInputZeroAddressError('ASSET')
     }
     for (const source of params.sources) {
-      if (source === zeroAddress) throw new ValidateInputValueError('SOURCES_SHOULD_NOT_BE_ZERO_ADDRESS')
+      if (source === zeroAddress) throw new ValidateInputZeroAddressError('SOURCES')
     }
   }
 }

@@ -1,7 +1,7 @@
 import { Address, encodeDeployData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateInputValueError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -59,7 +59,7 @@ export class DeployDefaultReserveInterestRateStrategyTxBuilder extends TxBuilder
 
   public async validate(): Promise<void> {
     const params = this.deployInterestRateStrategyParams
-    if (params.poolAddressesProvider === zeroAddress) throw new ValidateInputValueError('POOL_ADDRESS_PROVIDER_IS_ZERO_ADDRESS')
+    if (params.poolAddressesProvider === zeroAddress) throw new ValidateInputZeroAddressError('POOL_ADDRESSES_PROVIDER')
     if (params.variableRateSlope1 > params.variableRateSlope2)
       throw new ValidateInputValueError('VARIABLE_RATE_SLOPE_1_GREATER_THAN_VARIABLE_RATE_SLOPE_2')
     if (params.stableRateSlope1 > params.stableRateSlope2)

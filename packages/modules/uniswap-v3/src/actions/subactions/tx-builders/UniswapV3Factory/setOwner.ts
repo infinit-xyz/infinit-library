@@ -1,7 +1,7 @@
 import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ContractValidateError, ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ContractValidateError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -30,7 +30,7 @@ export class SetOwnerTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.factory === zeroAddress) throw new ValidateInputValueError('Factory cannot be zero address')
+    if (this.factory === zeroAddress) throw new ValidateInputZeroAddressError('FACTORY')
     const uniswapV3FactoryArtifact = await readArtifact('UniswapV3Factory')
     const owner = await this.client.publicClient.readContract({
       address: this.factory,

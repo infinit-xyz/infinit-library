@@ -2,7 +2,7 @@ import type { Address } from 'viem'
 import { encodeFunctionData, getAddress, toHex, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ContractValidateError, ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ContractValidateError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { hasRole } from '@actions/subactions/tx-builders/utils'
 
@@ -37,8 +37,8 @@ export class RemovePoolAdminTxBuilder extends TxBuilder {
 
   public async validate(): Promise<void> {
     // check zeroAddress
-    if (this.poolAdmin === zeroAddress) throw new ValidateInputValueError('POOL_ADMIN_CANNOT_BE_ZERO_ADDRESS')
-    if (this.aclManager === zeroAddress) throw new ValidateInputValueError('ACL_MANAGER_CANNOT_BE_ZERO_ADDRESS')
+    if (this.poolAdmin === zeroAddress) throw new ValidateInputZeroAddressError('POOL_ADMIN')
+    if (this.aclManager === zeroAddress) throw new ValidateInputZeroAddressError('ACL_MANAGER')
 
     // check role
     const DEFAULT_ADMIN = toHex(0x00, { size: 32 })

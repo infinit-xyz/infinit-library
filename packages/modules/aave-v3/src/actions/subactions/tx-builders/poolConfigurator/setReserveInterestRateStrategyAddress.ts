@@ -1,7 +1,7 @@
 import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ContractValidateError, ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ContractValidateError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { getReserveData, getReservesList, isRiskOrPoolAdmin } from '@actions/subactions/tx-builders/utils'
 
@@ -48,7 +48,7 @@ export class SetReserveInterestRateStrategyAddressTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.asset === zeroAddress) throw new ValidateInputValueError('ZERO_ADDRESS_NOT_VALID')
+    if (this.asset === zeroAddress) throw new ValidateInputZeroAddressError('ASSET')
     const [poolArtifact, aclManagerArtifact] = await Promise.all([readArtifact('Pool'), readArtifact('ACLManager')])
     const flag = await isRiskOrPoolAdmin(this.client, aclManagerArtifact, this.aclManager, this.client.walletClient.account.address)
     if (!flag) {

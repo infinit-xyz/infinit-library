@@ -1,7 +1,7 @@
 import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -38,6 +38,6 @@ export class TransferOwnershipTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.newOwner === zeroAddress) throw new ValidateInputValueError('newOwner cannot be zero address')
+    if (this.newOwner === zeroAddress) throw new ValidateInputZeroAddressError('NEW_OWNER')
   }
 }

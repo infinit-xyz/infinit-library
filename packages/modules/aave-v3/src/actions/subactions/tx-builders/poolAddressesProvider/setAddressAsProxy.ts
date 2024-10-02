@@ -48,6 +48,6 @@ export class SetAddressAsProxyTxBuilder extends TxBuilder {
       args: [],
     })
 
-    if (owner !== this.client.walletClient.account.address) throw new ContractValidateError('caller is not owner')
+    if (owner !== this.client.walletClient.account.address) throw new ContractValidateError('CALLER_NOT_OWNER')
   }
 }

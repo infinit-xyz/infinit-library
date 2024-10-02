@@ -2,7 +2,7 @@ import { Libraries, resolveBytecodeWithLinkedLibraries } from '@nomicfoundation/
 import { Address, Hex, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -35,7 +35,7 @@ export class DeployPoolConfiguratorTxBuilder extends TxBuilder {
 
   public validate(): any {
     if (this.configuratorLogic === zeroAddress) {
-      throw new ValidateInputValueError('configuratorLogic cannot be zero address')
+      throw new ValidateInputZeroAddressError('CONFIGURATOR_LOGIC')
     }
   }
 }

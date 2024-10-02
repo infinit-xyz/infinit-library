@@ -1,7 +1,7 @@
 import { Address, Hex, encodeDeployData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -119,8 +119,8 @@ export class DeployUniversalRouterTxBuilder extends TxBuilder {
 
   async validate(): Promise<void> {
     // validate all addresses is not zero address
-    if (this.permit2 === zeroAddress) throw new ValidateInputValueError('permit2 cannot be zero address')
-    if (this.weth9 === zeroAddress) throw new ValidateInputValueError('weth9 cannot be zero address')
-    if (this.unsupportedProtocol === zeroAddress) throw new ValidateInputValueError('unsupportedProtocol cannot be zero address')
+    if (this.permit2 === zeroAddress) throw new ValidateInputZeroAddressError('PERMIT2')
+    if (this.weth9 === zeroAddress) throw new ValidateInputZeroAddressError('WETH9')
+    if (this.unsupportedProtocol === zeroAddress) throw new ValidateInputZeroAddressError('UNSUPPORTED_PROTOCOL')
   }
 }

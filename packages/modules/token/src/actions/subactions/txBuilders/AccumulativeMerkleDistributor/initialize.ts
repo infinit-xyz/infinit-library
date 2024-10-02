@@ -1,7 +1,7 @@
 import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -35,7 +35,6 @@ export class InitializeAccumulativeMerkleDistributorTxBuilder extends TxBuilder 
   }
 
   public async validate(): Promise<void> {
-    if (this.accumulativeMerkleDistributor === zeroAddress)
-      throw new ValidateInputValueError('accumulativeMerkleDistributor cannot be zero address')
+    if (this.accumulativeMerkleDistributor === zeroAddress) throw new ValidateInputZeroAddressError('ACCUMULATIVE_MERKLE_DISTRIBUTOR')
   }
 }
