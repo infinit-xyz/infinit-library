@@ -12,7 +12,7 @@ import { UniswapV3Registry } from '@/src/type'
 
 export type DeployUniversalRouterParams = DeployUniversalRouterTxBuilderParams
 
-export class DeployUniversalRouterSubAction extends SubAction<DeployUniversalRouterParams, UniswapV3Registry, Object> {
+export class DeployUniversalRouterSubAction extends SubAction<DeployUniversalRouterParams, UniswapV3Registry, object> {
   constructor(client: InfinitWallet, params: DeployUniversalRouterParams) {
     super(DeployUniversalRouterSubAction.name, client, params)
   }
@@ -24,7 +24,7 @@ export class DeployUniversalRouterSubAction extends SubAction<DeployUniversalRou
   public async updateRegistryAndMessage(
     registry: UniswapV3Registry,
     txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<UniswapV3Registry, Object>> {
+  ): Promise<SubActionExecuteResponse<UniswapV3Registry, object>> {
     if (txHashes.some((v) => !v)) {
       throw new TxNotFoundError()
     }

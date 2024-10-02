@@ -4,6 +4,17 @@ import { ActionData } from '@base/action'
 
 import { ValidateInputValueError } from '@errors/index'
 
+const formatZodError = (error: ZodError): string => {
+  return error.issues
+    .map((issue, idx) => {
+      // ['address', '0', 'test'] to 'address[0]["test"]'
+      const path = issue.path.map((p, idx) => (idx === 0 ? p : typeof p === 'number' ? `[${p}]` : `["${p}"]`)).join('')
+
+      return `${idx > 0 ? `\n` : ''}- Field: ${path}\n  Error: ${issue.message}`
+    })
+    .join(`\n`)
+}
+
 const validateActionData = (data: ActionData, schema: SomeZodObject, signers: string[]) => {
   // validate signers
   for (const signer of signers) {
@@ -16,7 +27,7 @@ const validateActionData = (data: ActionData, schema: SomeZodObject, signers: st
     schema.parse(data.params)
   } catch (error) {
     if (error instanceof ZodError) {
-      throw new ValidateInputValueError(error.message)
+      throw new ValidateInputValueError(formatZodError(error), error)
     }
 
     // other error
@@ -24,4 +35,4 @@ const validateActionData = (data: ActionData, schema: SomeZodObject, signers: st
   }
 }
 
-export { validateActionData }
+export { formatZodError, validateActionData }

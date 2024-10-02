@@ -1,5 +1,29 @@
 # @infinit-xyz/core
 
+## 0.1.0-alpha.1
+
+### Minor Changes
+
+- [#55](https://github.com/infinit-xyz/infinit-library/pull/55)
+  [`a817f09`](https://github.com/infinit-xyz/infinit-library/commit/a817f09b5d34bcb015e123986f333c441b962a5e) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - update error message
+
+## 0.0.1-alpha.0
+
+### Patch Changes
+
+- [#57](https://github.com/infinit-xyz/infinit-library/pull/57)
+  [`87b4c48`](https://github.com/infinit-xyz/infinit-library/commit/87b4c48dfdee065bc41742100c07dac2ad27b23b) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - add validation errors
+
+## 0.0.0-alpha.9
+
+### Patch Changes
+
+- [#42](https://github.com/infinit-xyz/infinit-library/pull/42)
+  [`0d76c7a`](https://github.com/infinit-xyz/infinit-library/commit/0d76c7a483f3352a42475c57e227297649a8dc88) Thanks
+  [@Pitchanai](https://github.com/Pitchanai)! - Improve the message for validation errors.
+
 ## 0.0.0-alpha.8
 
 ### Patch Changes

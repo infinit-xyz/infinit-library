@@ -1,7 +1,7 @@
-import { Address, PublicClient, encodeFunctionData, zeroAddress } from 'viem'
+import { Address, PublicClient, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateInputValueError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -16,8 +16,8 @@ export class SetPoolDataProvider extends TxBuilder {
 
   constructor(client: InfinitWallet, params: SetPoolDataProviderParams) {
     super(SetPoolDataProvider.name, client)
-    this.poolAddressesProvider = params.poolAddressesProvider
-    this.aaveProtocolDataProvider = params.aaveProtocolDataProvider
+    this.poolAddressesProvider = getAddress(params.poolAddressesProvider)
+    this.aaveProtocolDataProvider = getAddress(params.aaveProtocolDataProvider)
   }
 
   async buildTx(): Promise<TransactionData> {
@@ -37,11 +37,10 @@ export class SetPoolDataProvider extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.poolAddressesProvider === zeroAddress) throw new ValidateInputValueError('PoolAddressesProvider should not be zero')
-    if (this.aaveProtocolDataProvider === zeroAddress) throw new ValidateInputValueError('PoolAddressesProviderRegistry should not be zero')
+    if (this.poolAddressesProvider === zeroAddress) throw new ValidateInputZeroAddressError('POOL_ADDRESSES_PROVIDER')
+    if (this.aaveProtocolDataProvider === zeroAddress) throw new ValidateInputZeroAddressError('AAVE_PROTOCOL_DATA_PROVIDER')
     const poolDataProvider = await this.getPoolDataProvider(this.client)
-    if (this.aaveProtocolDataProvider === poolDataProvider)
-      throw new ValidateInputValueError('new AaveProtocolDataProvider address already set')
+    if (this.aaveProtocolDataProvider === poolDataProvider) throw new ValidateInputValueError('NEW_AAVE_PROTOCOL_DATA_PROVIDER_ALREADY_SET')
   }
 
   private async getPoolDataProvider(client: InfinitWallet): Promise<Address> {

@@ -1,4 +1,4 @@
-import { Address, Hex, encodeFunctionData } from 'viem'
+import { Address, Hex, encodeFunctionData, getAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ContractValidateError } from '@infinit-xyz/core/errors'
@@ -18,9 +18,9 @@ export class SetAddressAsProxyTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: SetAddressAsProxyParams) {
     super(SetAddressAsProxyTxBuilder.name, client)
-    this.poolAddressesProvider = params.poolAddressesProvider
+    this.poolAddressesProvider = getAddress(params.poolAddressesProvider)
     this.id = params.id
-    this.implementationAddress = params.implementationAddress
+    this.implementationAddress = getAddress(params.implementationAddress)
   }
 
   async buildTx(): Promise<TransactionData> {
@@ -48,6 +48,6 @@ export class SetAddressAsProxyTxBuilder extends TxBuilder {
       args: [],
     })
 
-    if (owner !== this.client.walletClient.account.address) throw new ContractValidateError('caller is not owner')
+    if (owner !== this.client.walletClient.account.address) throw new ContractValidateError('CALLER_NOT_OWNER')
   }
 }

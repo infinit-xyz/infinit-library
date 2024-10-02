@@ -1,7 +1,7 @@
-import { Address, encodeFunctionData, zeroAddress } from 'viem'
+import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ContractValidateError } from '@infinit-xyz/core/errors'
+import { ContractValidateError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -16,8 +16,8 @@ export class SetRewardsControllerTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: SetRewardsControllerParams) {
     super(SetRewardsControllerTxBuilder.name, client)
-    this.emissionManager = params.emissionManager
-    this.rewardsController = params.rewardsController
+    this.emissionManager = getAddress(params.emissionManager)
+    this.rewardsController = getAddress(params.rewardsController)
   }
 
   async buildTx(): Promise<TransactionData> {
@@ -45,8 +45,8 @@ export class SetRewardsControllerTxBuilder extends TxBuilder {
       args: [],
     })
 
-    if (owner !== this.client.walletClient.account.address) throw new ContractValidateError('caller is not owner')
+    if (owner !== this.client.walletClient.account.address) throw new ContractValidateError('CALLER_NOT_OWNER')
 
-    if (this.rewardsController === zeroAddress) throw new ContractValidateError('rewardsController cannot be zero address')
+    if (this.rewardsController === zeroAddress) throw new ValidateInputZeroAddressError('REWARDS_CONTROLLER')
   }
 }

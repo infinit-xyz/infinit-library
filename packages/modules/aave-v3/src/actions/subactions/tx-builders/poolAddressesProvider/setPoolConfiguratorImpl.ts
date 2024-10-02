@@ -1,22 +1,23 @@
-import { Address, encodeFunctionData } from 'viem'
+import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
 export type SetPoolConfiguratorImplParams = {
-  poolAddressProvider: Address
+  poolAddressesProvider: Address
   poolConfiguratorImpl: Address
 }
 
 export class SetPoolConfiguratorImplTxBuilder extends TxBuilder {
-  private poolAddressProvider: Address
+  private poolAddressesProvider: Address
   private poolConfiguratorImpl: Address
 
   constructor(client: InfinitWallet, params: SetPoolConfiguratorImplParams) {
     super(SetPoolConfiguratorImplTxBuilder.name, client)
-    this.poolAddressProvider = params.poolAddressProvider
-    this.poolConfiguratorImpl = params.poolConfiguratorImpl
+    this.poolAddressesProvider = getAddress(params.poolAddressesProvider)
+    this.poolConfiguratorImpl = getAddress(params.poolConfiguratorImpl)
   }
 
   async buildTx(): Promise<TransactionData> {
@@ -30,10 +31,12 @@ export class SetPoolConfiguratorImplTxBuilder extends TxBuilder {
 
     const tx: TransactionData = {
       data: callData,
-      to: this.poolAddressProvider,
+      to: this.poolAddressesProvider,
     }
     return tx
   }
 
-  public async validate(): Promise<void> {}
+  public async validate(): Promise<void> {
+    if (this.poolAddressesProvider === zeroAddress) throw new ValidateInputZeroAddressError('POOL_ADDRESSES_PROVIDER')
+  }
 }

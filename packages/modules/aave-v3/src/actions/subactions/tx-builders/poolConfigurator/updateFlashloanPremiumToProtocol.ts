@@ -1,4 +1,4 @@
-import { Address, encodeFunctionData } from 'viem'
+import { Address, encodeFunctionData, getAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 
@@ -15,7 +15,7 @@ export class UpdateFlashloanPremiumToProtocolTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: UpdateFlashloanPremiumToProtocolParams) {
     super(UpdateFlashloanPremiumToProtocolTxBuilder.name, client)
-    this.poolConfigurator = params.poolConfig
+    this.poolConfigurator = getAddress(params.poolConfig)
     this.flashloanPremiumsProtocol = params.flashloanPremiumsProtocol
   }
 

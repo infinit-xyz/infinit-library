@@ -1,8 +1,8 @@
 import { Libraries, resolveBytecodeWithLinkedLibraries } from '@nomicfoundation/hardhat-viem/internal/bytecode.js'
-import { Address, Hex, encodeDeployData, zeroAddress } from 'viem'
+import { Address, Hex, encodeDeployData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -34,14 +34,14 @@ export class DeployPool extends TxBuilder {
 
   constructor(client: InfinitWallet, params: DeployPoolParams) {
     super(DeployPool.name, client)
-    this.poolAddressesProvider = params.poolAddressesProvider
-    this.liquidationLogic = params.liquidationLogic
-    this.supplyLogic = params.supplyLogic
-    this.eModeLogic = params.eModeLogic
-    this.flashLoanLogic = params.flashLoanLogic
-    this.borrowLogic = params.borrowLogic
-    this.bridgeLogic = params.bridgeLogic
-    this.poolLogic = params.poolLogic
+    this.poolAddressesProvider = getAddress(params.poolAddressesProvider)
+    this.liquidationLogic = getAddress(params.liquidationLogic)
+    this.supplyLogic = getAddress(params.supplyLogic)
+    this.eModeLogic = getAddress(params.eModeLogic)
+    this.flashLoanLogic = getAddress(params.flashLoanLogic)
+    this.borrowLogic = getAddress(params.borrowLogic)
+    this.bridgeLogic = getAddress(params.bridgeLogic)
+    this.poolLogic = getAddress(params.poolLogic)
   }
   async buildTx(): Promise<TransactionData> {
     const poolArtifact = await readArtifact('Pool')
@@ -65,13 +65,13 @@ export class DeployPool extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.poolAddressesProvider === zeroAddress) throw new ValidateInputValueError('PoolAddressesProvider cannot be zero address')
-    if (this.liquidationLogic === zeroAddress) throw new ValidateInputValueError('LiquidationLogic cannot be zero address')
-    if (this.supplyLogic === zeroAddress) throw new ValidateInputValueError('SupplyLogic cannot be zero address')
-    if (this.eModeLogic === zeroAddress) throw new ValidateInputValueError('EModeLogic cannot be zero address')
-    if (this.flashLoanLogic === zeroAddress) throw new ValidateInputValueError('FlashLoanLogic cannot be zero address')
-    if (this.borrowLogic === zeroAddress) throw new ValidateInputValueError('BorrowLogic cannot be zero address')
-    if (this.bridgeLogic === zeroAddress) throw new ValidateInputValueError('BridgeLogic cannot be zero address')
-    if (this.poolLogic === zeroAddress) throw new ValidateInputValueError('PoolLogic cannot be zero address')
+    if (this.poolAddressesProvider === zeroAddress) throw new ValidateInputZeroAddressError('POOL_ADDRESSES_PROVIDER')
+    if (this.liquidationLogic === zeroAddress) throw new ValidateInputZeroAddressError('LIQUIDATION_LOGIC')
+    if (this.supplyLogic === zeroAddress) throw new ValidateInputZeroAddressError('SUPPLY_LOGIC')
+    if (this.eModeLogic === zeroAddress) throw new ValidateInputZeroAddressError('EMODE_LOGIC')
+    if (this.flashLoanLogic === zeroAddress) throw new ValidateInputZeroAddressError('FLASHLOAN_LOGIC')
+    if (this.borrowLogic === zeroAddress) throw new ValidateInputZeroAddressError('BORROW_LOGIC')
+    if (this.bridgeLogic === zeroAddress) throw new ValidateInputZeroAddressError('BRIDGE_LOGIC')
+    if (this.poolLogic === zeroAddress) throw new ValidateInputZeroAddressError('POOL_LOGIC')
   }
 }

@@ -25,7 +25,7 @@ export type DeployAaveV3_Setup2SubActionParams = {
   deployer: Address
 }
 
-export class DeployAaveV3_Setup2SubAction extends SubAction<DeployAaveV3_Setup2SubActionParams, AaveV3Registry, {}> {
+export class DeployAaveV3_Setup2SubAction extends SubAction<DeployAaveV3_Setup2SubActionParams, AaveV3Registry> {
   constructor(client: InfinitWallet, params: DeployAaveV3_Setup2SubActionParams) {
     super(DeployAaveV3_Setup2SubAction.name, client, params)
   }
@@ -96,7 +96,7 @@ export class DeployAaveV3_Setup2SubAction extends SubAction<DeployAaveV3_Setup2S
     this.txBuilders.push(emissionManagerTransferOwnership)
   }
 
-  public async updateRegistryAndMessage(registry: AaveV3Registry): Promise<SubActionExecuteResponse<AaveV3Registry, {}>> {
+  public async updateRegistryAndMessage(registry: AaveV3Registry): Promise<SubActionExecuteResponse<AaveV3Registry>> {
     return { newRegistry: registry, newMessage: {} }
   }
 }

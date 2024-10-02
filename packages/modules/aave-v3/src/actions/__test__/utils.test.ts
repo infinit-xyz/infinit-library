@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { ZodError, z } from 'zod'
+import { z } from 'zod'
 
 import { InfinitWallet } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
@@ -73,28 +73,14 @@ describe('ActionUtils', () => {
       }
       expect(() => validateActionData(invalidData, MockActionSchema, ['signer1', 'signer2', 'signer3'])).toThrowError(
         new ValidateInputValueError(
-          new ZodError([
-            {
-              code: 'custom',
-              message: "'undefined' is not a valid address",
-              fatal: true,
-              path: ['address'],
-            },
-            {
-              code: 'invalid_type',
-              expected: 'bigint',
-              received: 'undefined',
-              path: ['bigint'],
-              message: 'Required',
-            },
-            {
-              code: 'invalid_type',
-              expected: 'string',
-              received: 'null',
-              path: ['string'],
-              message: 'Expected string, received null',
-            },
-          ]).message,
+          `- Field: address\n` +
+            `  Error: 'undefined' is not a valid address\n` +
+            `\n` +
+            `- Field: bigint\n` +
+            `  Error: Required\n` +
+            `\n` +
+            `- Field: string\n` +
+            `  Error: Expected string, received null`,
         ),
       )
     })
@@ -114,16 +100,7 @@ describe('ActionUtils', () => {
         },
       }
       expect(() => validateActionData(invalidData, MockActionSchema, ['signer1', 'signer2', 'signer3'])).toThrowError(
-        new ValidateInputValueError(
-          new ZodError([
-            {
-              code: 'custom',
-              message: "'0xNOTADDRESS' is not a valid address",
-              fatal: true,
-              path: ['address'],
-            },
-          ]).message,
-        ),
+        `Please check your input params\n` + `- Field: address\n` + `  Error: '0xNOTADDRESS' is not a valid address`,
       )
     })
   })

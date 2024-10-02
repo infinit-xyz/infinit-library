@@ -25,5 +25,7 @@ export default async function () {
     console.log('⚡️ [INFINIT] Ending Global Setup...')
 
     await Promise.all(serverResults.map((stop) => stop()))
+
+    console.log('⚡️ [INFINIT] Global setup ended')
   }
 }

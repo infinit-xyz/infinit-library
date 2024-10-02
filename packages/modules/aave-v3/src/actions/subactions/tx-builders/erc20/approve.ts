@@ -1,7 +1,7 @@
-import { Address, encodeFunctionData, zeroAddress } from 'viem'
+import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -16,7 +16,7 @@ export class ApproveTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: ApproveTxBuilderParams) {
     super(ApproveTxBuilder.name, client)
-    this.approveParams = params
+    this.approveParams = { ...params, token: getAddress(params.token), spender: getAddress(params.spender) }
   }
 
   async buildTx(): Promise<TransactionData> {
@@ -42,6 +42,6 @@ export class ApproveTxBuilder extends TxBuilder {
   public async validate(): Promise<void> {
     const params = this.approveParams
     // check zero address
-    if (params.spender === zeroAddress) throw new ValidateInputValueError('ASSET_SHOULD_NOT_BE_ZERO_ADDRESS')
+    if (params.spender === zeroAddress) throw new ValidateInputZeroAddressError('ASSET')
   }
 }

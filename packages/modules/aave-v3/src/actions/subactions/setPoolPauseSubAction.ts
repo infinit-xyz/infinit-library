@@ -6,7 +6,7 @@ import { SetPoolPauseTxBuilder, SetPoolPauseTxBuilderParams } from '@actions/sub
 
 import { AaveV3Registry } from '@/src/type'
 
-export class SetPoolPauseSubAction extends SubAction<SetPoolPauseTxBuilderParams, Object, Object> {
+export class SetPoolPauseSubAction extends SubAction<SetPoolPauseTxBuilderParams, object, object> {
   constructor(client: InfinitWallet, params: SetPoolPauseTxBuilderParams) {
     super(SetPoolPauseSubAction.name, client, params)
   }
@@ -15,10 +15,7 @@ export class SetPoolPauseSubAction extends SubAction<SetPoolPauseTxBuilderParams
     this.txBuilders = [new SetPoolPauseTxBuilder(this.client, this.params)]
   }
 
-  protected async updateRegistryAndMessage(
-    registry: AaveV3Registry,
-    _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<AaveV3Registry, {}>> {
+  protected async updateRegistryAndMessage(registry: AaveV3Registry, _txHashes: Hash[]): Promise<SubActionExecuteResponse<AaveV3Registry>> {
     return {
       newRegistry: registry,
       newMessage: {},

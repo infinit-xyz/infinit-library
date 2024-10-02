@@ -1,5 +1,38 @@
 # @infinit-xyz/uniswap-v3
 
+## 0.0.0-alpha.14
+
+### Minor Changes
+
+- [#55](https://github.com/infinit-xyz/infinit-library/pull/55)
+  [`a817f09`](https://github.com/infinit-xyz/infinit-library/commit/a817f09b5d34bcb015e123986f333c441b962a5e) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - update error message
+
+### Patch Changes
+
+- [#55](https://github.com/infinit-xyz/infinit-library/pull/55)
+  [`a817f09`](https://github.com/infinit-xyz/infinit-library/commit/a817f09b5d34bcb015e123986f333c441b962a5e) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - bump core version to `^0.0.1-alpha.0`
+
+- Updated dependencies [[`a817f09`](https://github.com/infinit-xyz/infinit-library/commit/a817f09b5d34bcb015e123986f333c441b962a5e)]:
+  - @infinit-xyz/core@0.1.0-alpha.1
+
+## 0.0.0-alpha.13
+
+### Patch Changes
+
+- [#52](https://github.com/infinit-xyz/infinit-library/pull/52)
+  [`3fa7cf7`](https://github.com/infinit-xyz/infinit-library/commit/3fa7cf76a23a4de53911dd3a32889f0ae0285eb9) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - bump `@infinit-xyz/core@^0.0.0-alpha.9`
+
+## 0.0.0-alpha.12
+
+### Patch Changes
+
+- [#50](https://github.com/infinit-xyz/infinit-library/pull/50)
+  [`9806c12`](https://github.com/infinit-xyz/infinit-library/commit/9806c12479eaa3a8f89628042e6b4d220c4d184c) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - bump core version
+
 ## 0.0.0-alpha.11
 
 ### Patch Changes

@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { Address, Hex } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
-import { ContractNotFoundError, ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ContractNotFoundError, ValidateLengthError } from '@infinit-xyz/core/errors'
 
 import { DefaultReserveInterestRateStrategyConfig } from '@actions/subactions/deployDefaultReserveInterestRateStrategy'
 import { DeployAaveOracleTxBuilder } from '@actions/subactions/tx-builders/aaveOracle/deployAaveOracle'
@@ -122,7 +122,7 @@ export class DeployAaveV3Contracts_2SubAction extends SubAction<
       ...deployDefaultReserveIRSHashes
     ] = txHashes
     if (deployDefaultReserveIRSHashes.length != this.params.defaultReserveInterestRateStrategyConfigs.length) {
-      throw new ValidateInputValueError('deployDefaultReserveIRSHashes&params length mismatched')
+      throw new ValidateLengthError()
     }
     const { contractAddress: aaveProtocolDataProvider } = await this.client.publicClient.waitForTransactionReceipt({
       hash: deployAaveProtocolDataProviderHash,

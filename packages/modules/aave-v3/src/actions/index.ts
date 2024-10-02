@@ -4,6 +4,7 @@ import { AddAssetListingAdminAction, AddAssetListingAdminActionParamsSchema } fr
 import { AddEmergencyAdminAction, AddEmergencyAdminActionParamsSchema } from '@actions/addEmergencyAdmin'
 import { AddPoolAdminAction, AddPoolAdminActionParamsSchema } from '@actions/addPoolAdmin'
 import { AddRiskAdminAction, AddRiskAdminActionParamsSchema } from '@actions/addRiskAdmin'
+import { ConfigRewardsAction, ConfigRewardsParamSchema } from '@actions/configureRewards'
 import { DeployAaveV3Action, DeployAaveV3ParamsSchema } from '@actions/deployAaveV3'
 import {
   DeployDefaultReserveInterestRateStrategyAction,
@@ -125,6 +126,12 @@ export const actions = {
     paramsSchema: SetEmissionAdminActionParamsSchema,
     signers: ['emissionManagerOwner'],
   },
+  configureRewards: {
+    name: 'Configure Rewards',
+    actionClassName: ConfigRewardsAction.name,
+    paramsSchema: ConfigRewardsParamSchema,
+    signers: ['emissionAdmin', 'rewardsHolder'],
+  },
 } satisfies InfinitActionRecord
 
 export {
@@ -132,6 +139,7 @@ export {
   AddEmergencyAdminAction,
   AddPoolAdminAction,
   AddRiskAdminAction,
+  ConfigRewardsAction,
   DeployAaveV3Action,
   DeployDefaultReserveInterestRateStrategyAction,
   RemoveAssetListingAdminAction,

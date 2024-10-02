@@ -11,7 +11,7 @@ import { readArtifact } from '@/src/utils/artifact'
 
 export type InitReserveSubActionParams = InitReserveTxBuilderParams
 
-export class InitReserveSubAction extends SubAction<InitReserveSubActionParams, AaveV3Registry, Object> {
+export class InitReserveSubAction extends SubAction<InitReserveSubActionParams, AaveV3Registry, object> {
   constructor(client: InfinitWallet, params: InitReserveSubActionParams) {
     super(InitReserveSubAction.name, client, params)
   }
@@ -22,10 +22,7 @@ export class InitReserveSubAction extends SubAction<InitReserveSubActionParams, 
     this.txBuilders.push(txBuilder)
   }
 
-  protected async updateRegistryAndMessage(
-    registry: AaveV3Registry,
-    _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<AaveV3Registry, {}>> {
+  protected async updateRegistryAndMessage(registry: AaveV3Registry, _txHashes: Hash[]): Promise<SubActionExecuteResponse<AaveV3Registry>> {
     // update registry mapping name from txHashes
     for (const index in this.params.inputs) {
       const underlyingToken = this.params.inputs[index].underlyingAsset

@@ -1,7 +1,7 @@
 import { Address, Hash } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateLengthError } from '@infinit-xyz/core/errors'
 
 import { MintTxBuilder, MintTxBuilderParams } from './txBuilders/InfinitERC20/mint'
 import { TokenRegistry } from '@/src/type'
@@ -12,12 +12,12 @@ export type MintInfinitERC20SubActionParams = {
   amounts: bigint[]
 }
 
-export class MintInfinitERC20SubAction extends SubAction<MintInfinitERC20SubActionParams, Object, Object> {
+export class MintInfinitERC20SubAction extends SubAction<MintInfinitERC20SubActionParams, object, object> {
   constructor(client: InfinitWallet, params: MintInfinitERC20SubActionParams) {
     super(MintInfinitERC20SubAction.name, client, params)
 
     if (params.receivers.length !== params.amounts.length) {
-      throw new ValidateInputValueError('receivers and amounts must have the same length')
+      throw new ValidateLengthError()
     }
   }
 
@@ -32,10 +32,7 @@ export class MintInfinitERC20SubAction extends SubAction<MintInfinitERC20SubActi
     }
   }
 
-  protected async updateRegistryAndMessage(
-    registry: TokenRegistry,
-    _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<TokenRegistry, {}>> {
+  protected async updateRegistryAndMessage(registry: TokenRegistry, _txHashes: Hash[]): Promise<SubActionExecuteResponse<TokenRegistry>> {
     return {
       newRegistry: registry,
       newMessage: {},

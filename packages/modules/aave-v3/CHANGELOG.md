@@ -1,5 +1,76 @@
 # @infinit-xyz/aave-v3
 
+## 0.0.0-alpha.16
+
+### Minor Changes
+
+- [#55](https://github.com/infinit-xyz/infinit-library/pull/55)
+  [`a817f09`](https://github.com/infinit-xyz/infinit-library/commit/a817f09b5d34bcb015e123986f333c441b962a5e) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - update error message
+
+### Patch Changes
+
+- [#55](https://github.com/infinit-xyz/infinit-library/pull/55)
+  [`a817f09`](https://github.com/infinit-xyz/infinit-library/commit/a817f09b5d34bcb015e123986f333c441b962a5e) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - bump core version to `^0.0.1-alpha.0`
+
+- Updated dependencies [[`a817f09`](https://github.com/infinit-xyz/infinit-library/commit/a817f09b5d34bcb015e123986f333c441b962a5e)]:
+  - @infinit-xyz/core@0.1.0-alpha.1
+
+## 0.0.0-alpha.15
+
+### Minor Changes
+
+- [#43](https://github.com/infinit-xyz/infinit-library/pull/43)
+  [`a0da9f3`](https://github.com/infinit-xyz/infinit-library/commit/a0da9f30573ff3b351b69f288642db7135eb1b8b) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - configure rewards action
+
+### Patch Changes
+
+- Updated dependencies [[`87b4c48`](https://github.com/infinit-xyz/infinit-library/commit/87b4c48dfdee065bc41742100c07dac2ad27b23b)]:
+  - @infinit-xyz/core@0.0.1-alpha.0
+
+## 0.0.0-alpha.14
+
+### Patch Changes
+
+- [#52](https://github.com/infinit-xyz/infinit-library/pull/52)
+  [`3fa7cf7`](https://github.com/infinit-xyz/infinit-library/commit/3fa7cf76a23a4de53911dd3a32889f0ae0285eb9) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - bump `@infinit-xyz/core@^0.0.0-alpha.9`
+
+## 0.0.0-alpha.13
+
+### Patch Changes
+
+- [#50](https://github.com/infinit-xyz/infinit-library/pull/50)
+  [`9806c12`](https://github.com/infinit-xyz/infinit-library/commit/9806c12479eaa3a8f89628042e6b4d220c4d184c) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - bump core version
+
+## 0.0.0-alpha.12
+
+### Minor Changes
+
+- [#36](https://github.com/infinit-xyz/infinit-library/pull/36)
+  [`6986edb`](https://github.com/infinit-xyz/infinit-library/commit/6986edbcaa447281674f2b33d7aafd89d1373945) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - aave v3 set emission admin action
+
+- [#41](https://github.com/infinit-xyz/infinit-library/pull/41)
+  [`2776cf7`](https://github.com/infinit-xyz/infinit-library/commit/2776cf78188ee1402e934b0df8c7681578b6e12a) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - registry typo
+
+### Patch Changes
+
+- [#49](https://github.com/infinit-xyz/infinit-library/pull/49)
+  [`cff34f5`](https://github.com/infinit-xyz/infinit-library/commit/cff34f55aff01f3f3ba63bb02f6b01ab38b13673) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - update to use viem `getAddress`
+
+- [#44](https://github.com/infinit-xyz/infinit-library/pull/44)
+  [`9aec0f9`](https://github.com/infinit-xyz/infinit-library/commit/9aec0f91810a48488ec1bb47f88033bd94362fd9) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - use getAddress & fix bug
+
+- Updated dependencies [[`0d76c7a`](https://github.com/infinit-xyz/infinit-library/commit/0d76c7a483f3352a42475c57e227297649a8dc88)]:
+  - @infinit-xyz/core@0.0.0-alpha.9
+
 ## 0.0.0-alpha.11
 
 ### Patch Changes

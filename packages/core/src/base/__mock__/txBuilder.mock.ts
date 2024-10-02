@@ -15,7 +15,7 @@ export class MockTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (!this.success) throw new ValidateInputValueError('Validation failed')
+    if (!this.success) throw new ValidateInputValueError('VALIDATION_FAILED')
   }
 
   protected async buildTx(_callback?: InfinitCallback): Promise<TransactionData> {

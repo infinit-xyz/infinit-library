@@ -1,4 +1,4 @@
-import { Address, encodeFunctionData } from 'viem'
+import { Address, encodeFunctionData, getAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ContractValidateError } from '@infinit-xyz/core/errors'
@@ -22,10 +22,10 @@ export class DropReserveTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: DropReserveTxBuilderParams) {
     super(DropReserveTxBuilder.name, client)
-    this.poolConfigurator = params.poolConfigurator
-    this.asset = params.asset
-    this.pool = params.pool
-    this.aclManager = params.aclManager
+    this.poolConfigurator = getAddress(params.poolConfigurator)
+    this.asset = getAddress(params.asset)
+    this.pool = getAddress(params.pool)
+    this.aclManager = getAddress(params.aclManager)
   }
 
   async buildTx(): Promise<TransactionData> {

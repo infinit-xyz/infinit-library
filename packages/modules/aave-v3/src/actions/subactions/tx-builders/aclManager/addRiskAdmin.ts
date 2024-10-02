@@ -1,7 +1,7 @@
-import { Address, encodeFunctionData, toHex, zeroAddress } from 'viem'
+import { Address, encodeFunctionData, getAddress, toHex, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ContractValidateError, ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ContractValidateError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { hasRole } from '@actions/subactions/tx-builders/utils'
 
@@ -18,8 +18,8 @@ export class AddRiskAdminACLManagerTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: AddRiskAdminACLManagerParams) {
     super(AddRiskAdminACLManagerTxBuilder.name, client)
-    this.aclManager = params.aclManager
-    this.riskAdmin = params.riskAdmin
+    this.aclManager = getAddress(params.aclManager)
+    this.riskAdmin = getAddress(params.riskAdmin)
   }
 
   async buildTx(): Promise<TransactionData> {
@@ -36,8 +36,8 @@ export class AddRiskAdminACLManagerTxBuilder extends TxBuilder {
 
   public async validate(): Promise<void> {
     // riskAdmin can be zeroAddress
-    if (this.riskAdmin === zeroAddress) throw new ValidateInputValueError('riskAdmin provider cannot be zero address')
-    if (this.aclManager === zeroAddress) throw new ValidateInputValueError('pool address provider cannot be zero address')
+    if (this.riskAdmin === zeroAddress) throw new ValidateInputZeroAddressError('RISK_ADMIN')
+    if (this.aclManager === zeroAddress) throw new ValidateInputZeroAddressError('ACL_MANAGER')
 
     // check role
     const DEFAULT_ADMIN = toHex(0x00, { size: 32 })

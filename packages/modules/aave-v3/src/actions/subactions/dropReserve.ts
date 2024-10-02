@@ -13,7 +13,7 @@ export type DropReserveSubActionParams = {
   aclManager: Address
 }
 
-export class DropReserveSubAction extends SubAction<DropReserveSubActionParams, Object, Object> {
+export class DropReserveSubAction extends SubAction<DropReserveSubActionParams, object, object> {
   constructor(client: InfinitWallet, params: DropReserveSubActionParams) {
     super(DropReserveSubAction.name, client, params)
   }
@@ -30,10 +30,7 @@ export class DropReserveSubAction extends SubAction<DropReserveSubActionParams, 
     }
   }
 
-  protected async updateRegistryAndMessage(
-    registry: AaveV3Registry,
-    _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<AaveV3Registry, {}>> {
+  protected async updateRegistryAndMessage(registry: AaveV3Registry, _txHashes: Hash[]): Promise<SubActionExecuteResponse<AaveV3Registry>> {
     return {
       newRegistry: registry,
       newMessage: {},

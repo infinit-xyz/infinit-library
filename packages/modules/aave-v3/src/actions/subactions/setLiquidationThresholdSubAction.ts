@@ -21,7 +21,7 @@ export type SetLiquidationThresholdSubActionParams = {
   aclManager: Address
 }
 
-export class SetLiquidationThresholdSubAction extends SubAction<SetLiquidationThresholdSubActionParams, Object, Object> {
+export class SetLiquidationThresholdSubAction extends SubAction<SetLiquidationThresholdSubActionParams, object, object> {
   constructor(client: InfinitWallet, params: SetLiquidationThresholdSubActionParams) {
     super(SetLiquidationThresholdSubAction.name, client, params)
   }
@@ -39,10 +39,7 @@ export class SetLiquidationThresholdSubAction extends SubAction<SetLiquidationTh
     }
   }
 
-  protected async updateRegistryAndMessage(
-    registry: AaveV3Registry,
-    _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<AaveV3Registry, {}>> {
+  protected async updateRegistryAndMessage(registry: AaveV3Registry, _txHashes: Hash[]): Promise<SubActionExecuteResponse<AaveV3Registry>> {
     return {
       newRegistry: registry,
       newMessage: {},

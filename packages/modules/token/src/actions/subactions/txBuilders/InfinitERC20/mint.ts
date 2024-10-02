@@ -51,7 +51,7 @@ export class MintTxBuilder extends TxBuilder {
     })
 
     if (owner !== this.client.walletClient.account.address) {
-      throw new ContractValidateError('caller is not the owner')
+      throw new ContractValidateError('CALLER_NOT_OWNER')
     }
   }
 }

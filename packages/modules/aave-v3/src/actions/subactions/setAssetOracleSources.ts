@@ -8,7 +8,7 @@ import { AaveV3Registry } from '@/src/type'
 
 export type SetAssetOracleSourcesSubActionParams = SetAssetSourcesTxBuilderParams
 
-export class SetAssetOracleSourcesSubAction extends SubAction<SetAssetOracleSourcesSubActionParams, AaveV3Registry, Object> {
+export class SetAssetOracleSourcesSubAction extends SubAction<SetAssetOracleSourcesSubActionParams, AaveV3Registry, object> {
   constructor(client: InfinitWallet, params: SetAssetOracleSourcesSubActionParams) {
     super(SetAssetOracleSourcesSubAction.name, client, params)
   }
@@ -24,10 +24,7 @@ export class SetAssetOracleSourcesSubAction extends SubAction<SetAssetOracleSour
     this.txBuilders.push(setOracleTx)
   }
 
-  protected async updateRegistryAndMessage(
-    registry: AaveV3Registry,
-    _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<AaveV3Registry, {}>> {
+  protected async updateRegistryAndMessage(registry: AaveV3Registry, _txHashes: Hash[]): Promise<SubActionExecuteResponse<AaveV3Registry>> {
     // no new address, do nothing
     return {
       newRegistry: registry,

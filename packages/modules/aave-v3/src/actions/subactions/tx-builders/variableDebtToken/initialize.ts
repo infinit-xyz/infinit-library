@@ -1,9 +1,9 @@
 import { z } from 'zod'
 
-import { Address, Hex, encodeFunctionData } from 'viem'
+import { Address, Hex, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateInputValueError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -32,10 +32,10 @@ export class VariableDebtTokenInitializeTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: VariableDebtTokenInitializeParams) {
     super(VariableDebtTokenInitializeTxBuilder.name, client)
-    this.variableDebtToken = params.variableDebtToken
-    this.pool = params.pool
-    this.underlyingAsset = params.underlyingAsset
-    this.incentivesController = params.incentivesController
+    this.variableDebtToken = getAddress(params.variableDebtToken)
+    this.pool = getAddress(params.pool)
+    this.underlyingAsset = getAddress(params.underlyingAsset)
+    this.incentivesController = getAddress(params.incentivesController)
     this.debtTokenDecimals = params.debtTokenDecimals
     this.debtTokenName = params.debtTokenName
     this.debtTokenSymbol = params.debtTokenSymbol
@@ -68,5 +68,6 @@ export class VariableDebtTokenInitializeTxBuilder extends TxBuilder {
 
   public validate(): any {
     if (this.debtTokenDecimals >= 2 ** 8) throw new ValidateInputValueError('aToken decimals cannot be more than 2^8')
+    if (this.variableDebtToken === zeroAddress) throw new ValidateInputZeroAddressError('VARIABLE_DEBT_TOKEN')
   }
 }

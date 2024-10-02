@@ -1,7 +1,7 @@
 import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ContractValidateError, ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ContractValidateError, ValidateInputValueError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -52,9 +52,9 @@ export class CreateIncentiveTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.incentiveKey.pool === zeroAddress) throw new ValidateInputValueError('Pool cannot be zero address')
-    if (this.incentiveKey.refundee === zeroAddress) throw new ValidateInputValueError('refundee cannot be zero address')
-    if (this.incentiveKey.rewardToken === zeroAddress) throw new ValidateInputValueError('rewardToken cannot be zero address')
+    if (this.incentiveKey.pool === zeroAddress) throw new ValidateInputZeroAddressError('POOL')
+    if (this.incentiveKey.refundee === zeroAddress) throw new ValidateInputZeroAddressError('REFUNDEE')
+    if (this.incentiveKey.rewardToken === zeroAddress) throw new ValidateInputZeroAddressError('REWARD_TOKEN')
     if (this.reward === 0n) throw new ValidateInputValueError('reward cannot be zero')
     if (this.incentiveKey.startTime >= this.incentiveKey.endTime) throw new ValidateInputValueError('start time must be before end time')
     // get current block time

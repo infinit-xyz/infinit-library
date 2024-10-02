@@ -10,7 +10,7 @@ export type SetFactoryOwnerSubActionParams = {
   newOwner: Address
 }
 
-export class SetFactoryOwnerSubAction extends SubAction<SetFactoryOwnerSubActionParams, UniswapV3Registry, Object> {
+export class SetFactoryOwnerSubAction extends SubAction<SetFactoryOwnerSubActionParams, UniswapV3Registry, object> {
   constructor(client: InfinitWallet, params: SetFactoryOwnerSubActionParams) {
     super(SetFactoryOwnerSubAction.name, client, params)
   }
@@ -27,7 +27,7 @@ export class SetFactoryOwnerSubAction extends SubAction<SetFactoryOwnerSubAction
   public async updateRegistryAndMessage(
     registry: UniswapV3Registry,
     _txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<UniswapV3Registry, Object>> {
+  ): Promise<SubActionExecuteResponse<UniswapV3Registry, object>> {
     return { newRegistry: registry, newMessage: {} }
   }
 }

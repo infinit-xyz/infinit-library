@@ -21,7 +21,7 @@ export type SetLtvSubActionParams = {
   aclManager: Address
 }
 
-export class SetLtvSubAction extends SubAction<SetLtvSubActionParams, AaveV3Registry, Object> {
+export class SetLtvSubAction extends SubAction<SetLtvSubActionParams, AaveV3Registry, object> {
   constructor(client: InfinitWallet, params: SetLtvSubActionParams) {
     super(SetLtvSubAction.name, client, params)
   }
@@ -40,10 +40,7 @@ export class SetLtvSubAction extends SubAction<SetLtvSubActionParams, AaveV3Regi
     }
   }
 
-  protected async updateRegistryAndMessage(
-    registry: AaveV3Registry,
-    _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<AaveV3Registry, {}>> {
+  protected async updateRegistryAndMessage(registry: AaveV3Registry, _txHashes: Hash[]): Promise<SubActionExecuteResponse<AaveV3Registry>> {
     return {
       newRegistry: registry,
       newMessage: {},

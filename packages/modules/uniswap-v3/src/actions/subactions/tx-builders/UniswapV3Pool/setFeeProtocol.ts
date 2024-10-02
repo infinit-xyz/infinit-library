@@ -1,7 +1,7 @@
 import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ContractValidateError, ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ContractValidateError, ValidateInputValueError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -37,7 +37,7 @@ export class SetFeeProtocolTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.pool === zeroAddress) throw new ValidateInputValueError('Pool cannot be zero address')
+    if (this.pool === zeroAddress) throw new ValidateInputZeroAddressError('POOL')
     if (this.feeProtocol0 !== 0 && (this.feeProtocol0 < 4 || this.feeProtocol0 > 10))
       throw new ValidateInputValueError('Fee protocol0 must be 0 or between 4 and 10')
     if (this.feeProtocol1 !== 0 && (this.feeProtocol1 < 4 || this.feeProtocol1 > 10))

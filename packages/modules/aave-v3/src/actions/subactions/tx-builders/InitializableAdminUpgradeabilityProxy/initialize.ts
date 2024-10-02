@@ -1,7 +1,7 @@
-import { Address, Hex, encodeFunctionData, zeroAddress } from 'viem'
+import { Address, Hex, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -20,9 +20,9 @@ export class InitializableAdminUpgradeabilityProxyTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: InitializableAdminUpgradeabilityProxyParams) {
     super(InitializableAdminUpgradeabilityProxyTxBuilder.name, client)
-    this.targetContract = params.targetContract
-    this.implementation = params.implementation
-    this.admin = params.admin
+    this.targetContract = getAddress(params.targetContract)
+    this.implementation = getAddress(params.implementation)
+    this.admin = getAddress(params.admin)
     this.data = params.data
   }
 
@@ -42,8 +42,11 @@ export class InitializableAdminUpgradeabilityProxyTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.implementation === zeroAddress || this.admin === zeroAddress) {
-      throw new ValidateInputValueError(`implementation or admin is zero address`)
+    if (this.implementation === zeroAddress) {
+      throw new ValidateInputZeroAddressError(`IMPLEMENTATION`)
+    }
+    if (this.admin === zeroAddress) {
+      throw new ValidateInputZeroAddressError(`ADMIN`)
     }
   }
 }

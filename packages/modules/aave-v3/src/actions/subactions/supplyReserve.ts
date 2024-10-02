@@ -19,7 +19,7 @@ export type SupplyReserveSubActionParams = {
   reserves: SupplyParams[]
 }
 
-export class SupplyReserveSubAction extends SubAction<SupplyReserveSubActionParams, AaveV3Registry, Object> {
+export class SupplyReserveSubAction extends SubAction<SupplyReserveSubActionParams, AaveV3Registry, object> {
   constructor(client: InfinitWallet, params: SupplyReserveSubActionParams) {
     super(SupplyReserveSubAction.name, client, params)
   }
@@ -48,10 +48,7 @@ export class SupplyReserveSubAction extends SubAction<SupplyReserveSubActionPara
     }
   }
 
-  protected async updateRegistryAndMessage(
-    registry: AaveV3Registry,
-    _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<AaveV3Registry, {}>> {
+  protected async updateRegistryAndMessage(registry: AaveV3Registry, _txHashes: Hash[]): Promise<SubActionExecuteResponse<AaveV3Registry>> {
     // no new address, do nothing
     return {
       newRegistry: registry,

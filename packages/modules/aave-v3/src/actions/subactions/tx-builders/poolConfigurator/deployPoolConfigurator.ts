@@ -1,8 +1,8 @@
 import { Libraries, resolveBytecodeWithLinkedLibraries } from '@nomicfoundation/hardhat-viem/internal/bytecode.js'
-import { Address, Hex, zeroAddress } from 'viem'
+import { Address, Hex, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -15,7 +15,7 @@ export class DeployPoolConfiguratorTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: DeployPoolConfiguratorParams) {
     super(DeployPoolConfiguratorTxBuilder.name, client)
-    this.configuratorLogic = params.configuratorLogic
+    this.configuratorLogic = getAddress(params.configuratorLogic)
   }
 
   async buildTx(): Promise<TransactionData> {
@@ -35,7 +35,7 @@ export class DeployPoolConfiguratorTxBuilder extends TxBuilder {
 
   public validate(): any {
     if (this.configuratorLogic === zeroAddress) {
-      throw new ValidateInputValueError('configuratorLogic cannot be zero address')
+      throw new ValidateInputZeroAddressError('CONFIGURATOR_LOGIC')
     }
   }
 }

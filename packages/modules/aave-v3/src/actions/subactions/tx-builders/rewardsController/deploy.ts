@@ -1,7 +1,7 @@
-import { Address, Hex, encodeDeployData, zeroAddress } from 'viem'
+import { Address, Hex, encodeDeployData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -14,7 +14,7 @@ export class DeployRewardsControllerTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: DeployRewardsControllerParams) {
     super(DeployRewardsControllerTxBuilder.name, client)
-    this.emissionManager = params.emissionManager
+    this.emissionManager = getAddress(params.emissionManager)
   }
 
   async buildTx(): Promise<TransactionData> {
@@ -34,6 +34,6 @@ export class DeployRewardsControllerTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.emissionManager === zeroAddress) throw new ValidateInputValueError('owner zero address')
+    if (this.emissionManager === zeroAddress) throw new ValidateInputZeroAddressError('EMISSION_MANAGER')
   }
 }

@@ -5,6 +5,7 @@ import { privateKeyToAccount } from 'viem/accounts'
 import { arbitrum } from 'viem/chains'
 
 import { InfinitWallet, TransactionData } from '@infinit-xyz/core'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { ANVIL_PRIVATE_KEY } from '@actions/__mock__/account'
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
@@ -51,7 +52,7 @@ describe('SetReserveInterestRateStrategyAddressTxBuilder', () => {
       aclManager: aclManager,
       pool: pool,
     })
-    await expect(txBuilder.validate()).rejects.toThrowError('ZERO_ADDRESS_NOT_VALID')
+    await expect(txBuilder.validate()).rejects.toThrowError(new ValidateInputZeroAddressError('ASSET'))
   })
   // *validate not listed reserve
   test('validate: not listed reserve', async () => {
