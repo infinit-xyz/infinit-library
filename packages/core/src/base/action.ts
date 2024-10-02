@@ -18,7 +18,7 @@ type ActionData = {
    *
    * @type {Object}
    */
-  params: Object
+  params: object
 
   /**
    * Signers for the action, represented as a record where each key
@@ -47,7 +47,7 @@ type ActionClients<D extends ActionData> = Record<keyof D['signer'], InfinitWall
  * @template D - Type of the data associated with the action, which defaults to `{ params: {}; signer: {} }`.
  * @template R - Type of the registry used by the action, which defaults to `{}`.
  */
-abstract class Action<D extends ActionData = { params: {}; signer: {} }, R extends Object = {}> {
+abstract class Action<D extends ActionData = { params: {}; signer: {} }, R extends object = {}> {
   /**
    * The name of the action.
    *
@@ -81,7 +81,7 @@ abstract class Action<D extends ActionData = { params: {}; signer: {} }, R exten
    * @returns An object containing the action information, including the name and the total number of sub-actions.
    * @private
    */
-  private getActionInfo(subActions: SubAction<any, R, {}>[] | ((message?: Object) => SubAction<any, R>)[]): CallbackParams['actionInfo'] {
+  private getActionInfo(subActions: SubAction<any, R, {}>[] | ((message?: object) => SubAction<any, R>)[]): CallbackParams['actionInfo'] {
     return {
       name: this.name,
       totalSubActions: subActions.length,
@@ -140,7 +140,7 @@ abstract class Action<D extends ActionData = { params: {}; signer: {} }, R exten
    * @protected
    * @abstract
    */
-  protected abstract getSubActions<M extends Object>(): SubAction<any, R>[] | ((message?: M) => SubAction<any, R>)[]
+  protected abstract getSubActions<M extends object>(): SubAction<any, R>[] | ((message?: M) => SubAction<any, R>)[]
 }
 
 export { Action, ActionClients, ActionData }

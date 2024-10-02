@@ -11,7 +11,7 @@ import { UniswapV3Registry } from '@/src/type'
 
 export type DeployUniswapV3StakerSubActionParams = DeployUniswapV3StakerTxBuilderParams
 
-export class DeployUniswapV3StakerSubAction extends SubAction<DeployUniswapV3StakerSubActionParams, UniswapV3Registry, Object> {
+export class DeployUniswapV3StakerSubAction extends SubAction<DeployUniswapV3StakerSubActionParams, UniswapV3Registry, object> {
   constructor(client: InfinitWallet, params: DeployUniswapV3StakerSubActionParams) {
     super(DeployUniswapV3StakerSubAction.name, client, params)
   }
@@ -23,7 +23,7 @@ export class DeployUniswapV3StakerSubAction extends SubAction<DeployUniswapV3Sta
   public async updateRegistryAndMessage(
     registry: UniswapV3Registry,
     txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<UniswapV3Registry, Object>> {
+  ): Promise<SubActionExecuteResponse<UniswapV3Registry, object>> {
     if (txHashes.some((v) => !v)) {
       throw new TxNotFoundError()
     }

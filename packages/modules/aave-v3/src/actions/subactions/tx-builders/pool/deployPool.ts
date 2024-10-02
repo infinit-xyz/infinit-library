@@ -1,5 +1,5 @@
 import { Libraries, resolveBytecodeWithLinkedLibraries } from '@nomicfoundation/hardhat-viem/internal/bytecode.js'
-import { Address, Hex, encodeDeployData, zeroAddress } from 'viem'
+import { Address, Hex, encodeDeployData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
@@ -34,14 +34,14 @@ export class DeployPool extends TxBuilder {
 
   constructor(client: InfinitWallet, params: DeployPoolParams) {
     super(DeployPool.name, client)
-    this.poolAddressesProvider = params.poolAddressesProvider
-    this.liquidationLogic = params.liquidationLogic
-    this.supplyLogic = params.supplyLogic
-    this.eModeLogic = params.eModeLogic
-    this.flashLoanLogic = params.flashLoanLogic
-    this.borrowLogic = params.borrowLogic
-    this.bridgeLogic = params.bridgeLogic
-    this.poolLogic = params.poolLogic
+    this.poolAddressesProvider = getAddress(params.poolAddressesProvider)
+    this.liquidationLogic = getAddress(params.liquidationLogic)
+    this.supplyLogic = getAddress(params.supplyLogic)
+    this.eModeLogic = getAddress(params.eModeLogic)
+    this.flashLoanLogic = getAddress(params.flashLoanLogic)
+    this.borrowLogic = getAddress(params.borrowLogic)
+    this.bridgeLogic = getAddress(params.bridgeLogic)
+    this.poolLogic = getAddress(params.poolLogic)
   }
   async buildTx(): Promise<TransactionData> {
     const poolArtifact = await readArtifact('Pool')

@@ -1,4 +1,4 @@
-import { Address, Hex, encodeDeployData } from 'viem'
+import { Address, Hex, encodeDeployData, getAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 
@@ -13,7 +13,7 @@ export class DeployDelegationAwareATokenTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: DeployDelegationAwareATokenParams) {
     super(DeployDelegationAwareATokenTxBuilder.name, client)
-    this.pool = params.pool
+    this.pool = getAddress(params.pool)
   }
 
   async buildTx(): Promise<TransactionData> {

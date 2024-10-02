@@ -20,7 +20,7 @@ export type DeployInfinitERC20SubActionParams = {
   initialSupply: bigint
 }
 
-export class DeployInfinitERC20SubAction extends SubAction<DeployInfinitERC20SubActionParams, Object, Object> {
+export class DeployInfinitERC20SubAction extends SubAction<DeployInfinitERC20SubActionParams, object, object> {
   constructor(client: InfinitWallet, params: DeployInfinitERC20SubActionParams) {
     super(DeployInfinitERC20SubAction.name, client, params)
   }
@@ -36,10 +36,7 @@ export class DeployInfinitERC20SubAction extends SubAction<DeployInfinitERC20Sub
     this.txBuilders.push(new DeployInfinitERC20TxBuilder(this.client, txBuilderParams))
   }
 
-  protected async updateRegistryAndMessage(
-    registry: TokenRegistry,
-    txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<TokenRegistry, {}>> {
+  protected async updateRegistryAndMessage(registry: TokenRegistry, txHashes: Hash[]): Promise<SubActionExecuteResponse<TokenRegistry>> {
     const deployInfinitERC20Hash = txHashes[0]
     const { contractAddress: tokenAddr } = await this.client.publicClient.waitForTransactionReceipt({ hash: deployInfinitERC20Hash })
     if (!tokenAddr) {

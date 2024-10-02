@@ -1,6 +1,7 @@
-import { Address, encodeFunctionData } from 'viem'
+import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -15,8 +16,8 @@ export class SetACLAdminTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: SetACLAdminParams) {
     super(SetACLAdminTxBuilder.name, client)
-    this.poolAddressesProvider = params.poolAddressesProvider
-    this.aclAdmin = params.aclAdmin
+    this.poolAddressesProvider = getAddress(params.poolAddressesProvider)
+    this.aclAdmin = getAddress(params.aclAdmin)
   }
 
   async buildTx(): Promise<TransactionData> {
@@ -30,5 +31,7 @@ export class SetACLAdminTxBuilder extends TxBuilder {
     return tx
   }
 
-  public async validate(): Promise<void> {}
+  public async validate(): Promise<void> {
+    if (this.poolAddressesProvider === zeroAddress) throw new ValidateInputValueError('poolAddressesProvider cannot be zero address')
+  }
 }

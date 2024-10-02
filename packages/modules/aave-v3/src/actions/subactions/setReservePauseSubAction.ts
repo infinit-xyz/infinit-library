@@ -17,7 +17,7 @@ export type SetReservePauseSubActionParams = {
   aclManager: Address
 }
 
-export class SetReservePauseSubAction extends SubAction<SetReservePauseSubActionParams, Object, Object> {
+export class SetReservePauseSubAction extends SubAction<SetReservePauseSubActionParams, object, object> {
   constructor(client: InfinitWallet, params: SetReservePauseSubActionParams) {
     super(SetReservePauseSubAction.name, client, params)
   }
@@ -34,10 +34,7 @@ export class SetReservePauseSubAction extends SubAction<SetReservePauseSubAction
     }
   }
 
-  protected async updateRegistryAndMessage(
-    registry: AaveV3Registry,
-    _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<AaveV3Registry, {}>> {
+  protected async updateRegistryAndMessage(registry: AaveV3Registry, _txHashes: Hash[]): Promise<SubActionExecuteResponse<AaveV3Registry>> {
     return {
       newRegistry: registry,
       newMessage: {},

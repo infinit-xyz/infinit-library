@@ -1,6 +1,7 @@
-import { Address, encodeFunctionData } from 'viem'
+import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -16,8 +17,8 @@ export class InitializeAaveEcosystemReserveV2TxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: InitializeAaveEcosystemReserveV2Params) {
     super(InitializeAaveEcosystemReserveV2TxBuilder.name, client)
-    this.aaveEcosystemReserveV2 = params.aaveEcosystemReserveV2
-    this.fundsAdmin = params.fundsAdmin
+    this.aaveEcosystemReserveV2 = getAddress(params.aaveEcosystemReserveV2)
+    this.fundsAdmin = getAddress(params.fundsAdmin)
   }
 
   async buildTx(): Promise<TransactionData> {
@@ -30,5 +31,7 @@ export class InitializeAaveEcosystemReserveV2TxBuilder extends TxBuilder {
     return tx
   }
 
-  public async validate(): Promise<void> {}
+  public async validate(): Promise<void> {
+    if (this.aaveEcosystemReserveV2 == zeroAddress) throw new ValidateInputValueError('aaveEcosystemReserveV2 cannot be zero')
+  }
 }

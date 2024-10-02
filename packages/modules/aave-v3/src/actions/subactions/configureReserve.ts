@@ -11,7 +11,7 @@ import { AaveV3Registry } from '@/src/type'
 
 export type ConfigureReserveSubActionParams = ConfigureReservesTxBuilderParams
 
-export class ConfigureReservesSubAction extends SubAction<ConfigureReserveSubActionParams, AaveV3Registry, Object> {
+export class ConfigureReservesSubAction extends SubAction<ConfigureReserveSubActionParams, AaveV3Registry, object> {
   constructor(client: InfinitWallet, params: ConfigureReserveSubActionParams) {
     super(ConfigureReservesSubAction.name, client, params)
   }
@@ -22,10 +22,7 @@ export class ConfigureReservesSubAction extends SubAction<ConfigureReserveSubAct
     this.txBuilders.push(txBuilder)
   }
 
-  protected async updateRegistryAndMessage(
-    registry: AaveV3Registry,
-    _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<AaveV3Registry, {}>> {
+  protected async updateRegistryAndMessage(registry: AaveV3Registry, _txHashes: Hash[]): Promise<SubActionExecuteResponse<AaveV3Registry>> {
     // no new address, do nothing
     return {
       newRegistry: registry,

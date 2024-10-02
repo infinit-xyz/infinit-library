@@ -23,7 +23,7 @@ export type SetCollateralSubActionParams = {
   aclManager: Address
 }
 
-export class SetCollateralSubAction extends SubAction<SetCollateralSubActionParams, Object, Object> {
+export class SetCollateralSubAction extends SubAction<SetCollateralSubActionParams, object, object> {
   constructor(client: InfinitWallet, params: SetCollateralSubActionParams) {
     super(SetCollateralSubAction.name, client, params)
   }
@@ -43,10 +43,7 @@ export class SetCollateralSubAction extends SubAction<SetCollateralSubActionPara
     }
   }
 
-  protected async updateRegistryAndMessage(
-    registry: AaveV3Registry,
-    _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<AaveV3Registry, {}>> {
+  protected async updateRegistryAndMessage(registry: AaveV3Registry, _txHashes: Hash[]): Promise<SubActionExecuteResponse<AaveV3Registry>> {
     return {
       newRegistry: registry,
       newMessage: {},

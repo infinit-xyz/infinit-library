@@ -1,4 +1,4 @@
-import { Address, Hex, encodeDeployData, zeroAddress } from 'viem'
+import { Address, Hex, encodeDeployData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
@@ -14,7 +14,7 @@ export class DeployAaveEcosystemReserveControllerTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: DeployAaveEcosystemReserveControllerParams) {
     super(DeployAaveEcosystemReserveControllerTxBuilder.name, client)
-    this.treasuryOwner = params.treasuryOwner
+    this.treasuryOwner = getAddress(params.treasuryOwner)
   }
 
   async buildTx(): Promise<TransactionData> {

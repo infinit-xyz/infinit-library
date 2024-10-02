@@ -8,7 +8,7 @@ import { AaveV3Registry } from '@/src/type'
 
 export type AddAssetListingAdminSubActionParams = AddAssetListingAdminParams
 
-export class AddAssetListingAdminSubAction extends SubAction<AddAssetListingAdminSubActionParams, AaveV3Registry, Object> {
+export class AddAssetListingAdminSubAction extends SubAction<AddAssetListingAdminSubActionParams, AaveV3Registry> {
   constructor(client: InfinitWallet, params: AddAssetListingAdminSubActionParams) {
     super(AddAssetListingAdminSubAction.name, client, params)
   }
@@ -19,10 +19,7 @@ export class AddAssetListingAdminSubAction extends SubAction<AddAssetListingAdmi
     this.txBuilders.push(txBuilder)
   }
 
-  protected async updateRegistryAndMessage(
-    registry: AaveV3Registry,
-    _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<AaveV3Registry, {}>> {
+  protected async updateRegistryAndMessage(registry: AaveV3Registry, _txHashes: Hash[]): Promise<SubActionExecuteResponse<AaveV3Registry>> {
     // no new address, do nothing
     return {
       newRegistry: registry,
