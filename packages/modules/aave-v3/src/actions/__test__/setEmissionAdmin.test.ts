@@ -2,6 +2,8 @@ import { beforeAll, describe, expect, test, vi } from 'vitest'
 
 import { Address } from 'viem'
 
+import { ContractValidateError } from '@infinit-xyz/core/errors'
+
 import { ARBITRUM_TEST_ADDRESSES, TEST_ADDRESSES } from '@actions/__mock__/address'
 import { setupAaveV3 } from '@actions/__mock__/setup'
 import { SetEmissionAdminAction } from '@actions/setEmissionAdmin'
@@ -38,7 +40,7 @@ describe('EmissionManager:SetEmissionAdminAction', () => {
         emissionManagerOwner: bob,
       },
     })
-    await expect(action.run(registry)).rejects.toThrowError(expect.stringContaining('CALLER_NOT_OWNER'))
+    await expect(action.run(registry)).rejects.toThrowError(new ContractValidateError('CALLER_NOT_OWNER'))
   })
 
   test('should run successfully', async () => {
