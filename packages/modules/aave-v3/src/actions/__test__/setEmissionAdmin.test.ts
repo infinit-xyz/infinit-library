@@ -38,7 +38,7 @@ describe('EmissionManager:SetEmissionAdminAction', () => {
         emissionManagerOwner: bob,
       },
     })
-    await expect(action.run(registry)).rejects.toThrowError('caller is not owner')
+    await expect(action.run(registry)).rejects.toThrowError(expect.stringContaining('CALLER_NOT_OWNER'))
   })
 
   test('should run successfully', async () => {
