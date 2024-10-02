@@ -1,37 +1,26 @@
-import { Action, InfinitCache, InfinitCallback, InfinitWallet, SubAction } from "@infinit-xyz/core";
-import { AaveV3Registry, LendingPool } from "../type";
+import { AaveV3Registry, LendingPool } from "@/src/type";
+import { getArtifacts } from "@/src/utils/artifact";
+import { InfinitCallback } from "@infinit-xyz/core";
+import { ContractInfo, verifyContract } from "@infinit-xyz/core/internal";
+import { Etherscan } from "@nomicfoundation/hardhat-verify/src/internal/etherscan.js";
+import { Address, Chain, createPublicClient, http, PublicClient } from "viem";
 
-import { ContractInfo, verifyContract } from "@/src/utils/verifer";
-import { validateActionData } from "@infinit-xyz/core/internal";
-import { Etherscan } from "@nomicfoundation/hardhat-verify/etherscan";
-import { Address } from "viem";
-import { z } from "zod";
-
-export const VerifyAaveV3ActionParamsSchema = z.object({
-    apiKey: z.string().describe('block explorer api key'),
-    apiUrl: z.string().describe('block explorer api url'),
-    url: z.string().describe('block explorer url'),
-})
-
-export type VerifyAaveV3ActionParams = z.infer<typeof VerifyAaveV3ActionParamsSchema>
-
-export type VerifyAaveV3ActionData = {
-    params: VerifyAaveV3ActionParams
-    signer: Record<'deployer', InfinitWallet>
+type BlockExplorerParams = {
+    apiKey?: string
+    apiUrl: string
+    url: string
 }
 
-
-export class VerifyAaveV3Action extends Action<VerifyAaveV3ActionData, AaveV3Registry> {
-    instance: Etherscan
-        
-    constructor(data: VerifyAaveV3ActionData) {
-        validateActionData(data, VerifyAaveV3ActionParamsSchema, ['deployer'])
-        super(VerifyAaveV3Action.name, data)
-        this.instance = new Etherscan(data.params.apiKey, data.params.apiUrl, data.params.url)
-    }
-
-    protected getSubActions(): SubAction[] {
-        return []
+export class AaveV3Verifier {
+  etherscan: Etherscan
+  client: PublicClient
+    constructor(chain: Chain, rpcEndpoint: string, params: BlockExplorerParams) {
+        params.apiKey = params.apiKey ?? "API_KEY_NOT_PROVIDED"
+        this.etherscan = new Etherscan(params.apiKey!, params.apiUrl, params.url)
+        this.client = createPublicClient({
+            chain, 
+            transport: http(rpcEndpoint)
+        })
     }
 
     private async getLendingPoolContractInfos(poolConfiguratorProxy: Address, lendingPools: Record<string, LendingPool>) {
@@ -55,9 +44,8 @@ export class VerifyAaveV3Action extends Action<VerifyAaveV3ActionData, AaveV3Reg
         }
         return contracts
     }
-
-    public override async run(registry: AaveV3Registry, _cache?: InfinitCache, callback?: InfinitCallback): Promise<AaveV3Registry> {
-        const client = this.data.signer['deployer']
+    
+    public async verify(registry: AaveV3Registry, callback?: InfinitCallback) {
         const { lendingPools, reserveInterestRateStrategies, poolProxy, poolConfiguratorProxy, rewardsControllerProxy, ...contractToAddressRegistry } = registry
         
         let contracts: ContractInfo[] = []
@@ -84,10 +72,9 @@ export class VerifyAaveV3Action extends Action<VerifyAaveV3ActionData, AaveV3Reg
         if (reserveInterestRateStrategies) {
             contracts = contracts.concat(await this.getReserveInterestRateStrategyContractInfos( reserveInterestRateStrategies))
         }
-
+        const artifacts = await getArtifacts()
         for (const contract of contracts) {
-            await verifyContract(client, this.instance, contract, callback)
+            await verifyContract(this.client, this.etherscan, artifacts, contract, callback)
         }
-        return registry
     }
 }
