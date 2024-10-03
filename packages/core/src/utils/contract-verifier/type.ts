@@ -35,7 +35,7 @@ type BlockExplorerParams = {
 /**
  * Parameters for callback events.
  */
-type CallbackParams = {
+type ContractVerifierCallbackParams = {
   /**
    * Information about the total number of contracts to verify.
    */
@@ -61,7 +61,7 @@ type CallbackParams = {
 /**
  * Keys for callback parameters.
  */
-type CallbackKeys = keyof CallbackParams
+type CallbackKeys = keyof ContractVerifierCallbackParams
 
 /**
  * Callback function for contract verification events.
@@ -71,6 +71,6 @@ type CallbackKeys = keyof CallbackParams
  * @param value - The value associated with the callback event.
  * @returns A promise that resolves when the callback is complete.
  */
-type ContractVerifierCallback = <T extends CallbackKeys>(key: T, value: CallbackParams[T]) => Promise<void>
+type ContractVerifierCallback = <T extends CallbackKeys>(key: T, value: ContractVerifierCallbackParams[T]) => Promise<void>
 
-export { BlockExplorerParams, ContractInfo, ContractVerifierCallback }
+export { BlockExplorerParams, ContractInfo, ContractVerifierCallback, ContractVerifierCallbackParams }
