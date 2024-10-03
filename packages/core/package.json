@@ -75,5 +75,8 @@
   },
   "peerDependencies": {
     "viem": "2.21.16"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }
