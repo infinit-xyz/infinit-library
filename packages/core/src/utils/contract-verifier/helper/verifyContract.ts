@@ -59,12 +59,14 @@ export const verifyContract = async (
   const verificationStatus = await instance.getVerificationStatus(guid)
 
   const isSuccess = verificationStatus.isSuccess()
+  const isAlreadyVerified = verificationStatus.isAlreadyVerified()
 
-  if (isSuccess) {
+  if (isSuccess || isAlreadyVerified) {
     await callback?.('contractVerificationFinished', {
       contractName: contractInformation.contractName,
       address: contract.address,
       url: instance.browserUrl,
+      isAlreadyVerified: isAlreadyVerified,
     })
   } else {
     throw new VerifyContractError(contractInformation.contractName, contract.address, verificationStatus.message)

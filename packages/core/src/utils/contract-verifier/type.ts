@@ -12,6 +12,7 @@ type BlockExplorerParams = {
 }
 
 type CallbackParams = {
+  contractVerificationInfo: { totalContracts: number }
   /**
    * Event emitted when a contract verification starts.
    * Contains the contract name and the contract address to verify
@@ -26,7 +27,7 @@ type CallbackParams = {
    * Event emitted when a contract verification finished.
    * Contain the contract name and the contract address to verify and url of that contract
    */
-  contractVerificationFinished: { contractName: string; address: Address; url: string }
+  contractVerificationFinished: { contractName: string; address: Address; url: string; isAlreadyVerified: boolean }
 }
 
 /**
