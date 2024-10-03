@@ -64,13 +64,14 @@
   "dependencies": {
     "@ethereum-sourcify/bytecode-utils": "^1.2.11",
     "@nomicfoundation/hardhat-toolbox-viem": "^3.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.11",
     "hardhat": "^2.22.5",
     "hardhat-preprocessor": "^0.1.5",
-    "hardhat-verify": "^1.0.0",
     "tsup": "^8.2.4",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/debug": "^4.1.12",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.2",
     "vitest": "^1.6.0"
