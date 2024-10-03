@@ -3,15 +3,15 @@ import { describe, expect, test } from 'vitest'
 
 import { zeroAddress } from 'viem'
 
-import { VerifyContractError } from '@/errors/contractVerifier'
+import { GetContractInfoError, VerifyContractError } from './contractVerifier'
 
 describe('VerifyContractError', () => {
   const fakeContractName = 'FAKE_NAME'
-  const faceContractAddress = zeroAddress
+  const fakeContractAddress = zeroAddress
 
   test('should match snapshot', () => {
-    expect(new VerifyContractError(fakeContractName, faceContractAddress)).toMatchInlineSnapshot(`
-        [VerifyContractError: Failed to verify contract ${fakeContractName} on the block explorer at contract address: ${faceContractAddress}
+    expect(new VerifyContractError(fakeContractName, fakeContractAddress)).toMatchInlineSnapshot(`
+        [VerifyContractError: Failed to verify contract ${fakeContractName} on the block explorer at contract address: ${fakeContractAddress}
 
         ${coreName}: ${coreVersion}]
     `)
@@ -20,8 +20,31 @@ describe('VerifyContractError', () => {
   test('should match snapshot with additional error', () => {
     const fakeError = new Error('FAKE_ERROR')
 
-    expect(new VerifyContractError(fakeContractName, faceContractAddress, fakeError)).toMatchInlineSnapshot(`
-      [VerifyContractError: Failed to verify contract ${fakeContractName} on the block explorer at contract address: ${faceContractAddress}
+    expect(new VerifyContractError(fakeContractName, fakeContractAddress, fakeError)).toMatchInlineSnapshot(`
+      [VerifyContractError: Failed to verify contract ${fakeContractName} on the block explorer at contract address: ${fakeContractAddress}
+      Error: ${fakeError}
+
+      ${coreName}: ${coreVersion}]
+  `)
+  })
+})
+
+describe('GetContractInfoError', () => {
+  const fakeContractAddress = zeroAddress
+
+  test('should match snapshot', () => {
+    expect(new GetContractInfoError(fakeContractAddress)).toMatchInlineSnapshot(`
+        [GetContractInfoError: Failed to get contract information for ${fakeContractAddress}
+
+        ${coreName}: ${coreVersion}]
+    `)
+  })
+
+  test('should match snapshot with additional error', () => {
+    const fakeError = new Error('FAKE_ERROR')
+
+    expect(new GetContractInfoError(fakeContractAddress, fakeError)).toMatchInlineSnapshot(`
+      [GetContractInfoError: Failed to get contract information for ${fakeContractAddress}
       Error: ${fakeError}
 
       ${coreName}: ${coreVersion}]
