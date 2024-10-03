@@ -152,6 +152,5 @@ export {
   SetLtvAction,
   SetReserveBorrowingAction,
   SetReservePauseAction,
-  SupportNewReserveAction
+  SupportNewReserveAction,
 }
-

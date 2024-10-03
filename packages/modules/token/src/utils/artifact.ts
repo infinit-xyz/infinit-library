@@ -2,9 +2,9 @@ import path from 'path'
 
 import type { Artifacts, ArtifactsMap } from 'hardhat/types/artifacts'
 
+import { moduleDir } from '../constants'
 import { name } from '@/package.json'
 import { Artifacts as ArtifactsFromPath } from 'hardhat/internal/artifacts'
-import { moduleDir } from '../constants'
 
 const readArtifact = async <ArgT extends keyof ArtifactsMap>(contractNameOrFullyQualifiedName: ArgT): Promise<ArtifactsMap[ArgT]> => {
   //Use moduleDir only when testing for vitest.
@@ -20,6 +20,5 @@ const getArtifacts = async (): Promise<Artifacts> => {
   const artifacts: Artifacts = new ArtifactsFromPath(path.join(artifactsBase, `./artifacts/${path.basename(name)}`))
   return artifacts
 }
- 
 
 export { getArtifacts, readArtifact }

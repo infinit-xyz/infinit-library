@@ -1,6 +1,6 @@
 const { baseHardhatUserConfig } = require('@infinit-xyz/core/internal/hardhat-base-config')
 const { name } = require('../../package.json')
-require("@nomicfoundation/hardhat-verify");
+require('@nomicfoundation/hardhat-verify')
 
 const remappings = [`@aave/core-v3/contracts=aave-v3-core`]
 
