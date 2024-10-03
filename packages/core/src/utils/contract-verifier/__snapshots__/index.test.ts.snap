@@ -2,7 +2,7 @@
 
 exports[`utils/verifier/index.ts > export: should match snapshot 1`] = `
 [
-  "ContractVerifier",
+  "BaseContractVerifier",
   "verifyContract",
   "BlockExplorerParams",
   "ContractInfo",

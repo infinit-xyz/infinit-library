@@ -1,3 +1,3 @@
-export { ContractVerifier } from './ContractVerifier'
+export { BaseContractVerifier } from './BaseContractVerifier'
 export { verifyContract } from './helper'
 export { BlockExplorerParams, ContractInfo, ContractVerifierCallback } from './type'

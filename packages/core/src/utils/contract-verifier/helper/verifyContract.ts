@@ -4,8 +4,9 @@ import type { Artifacts } from 'hardhat/types/artifacts'
 
 import { ContractInfo, ContractVerifierCallback } from '../type'
 import { getConstructorArgsFromCreationCode } from './getConstructorArgsFromCreationCode'
-import { getContractInformation } from '@/utils/verifier/helper/getContractInformation'
-import { resolveLinkedLibraries } from '@/utils/verifier/helper/resolveLinkedLibraries'
+import { getContractInformation } from './getContractInformation'
+import { resolveLinkedLibraries } from './resolveLinkedLibraries'
+import { VerifyContractError } from '@/errors/contractVerifier'
 import { Etherscan } from '@nomicfoundation/hardhat-verify/etherscan.js'
 import { encodeArguments, sleep } from '@nomicfoundation/hardhat-verify/internal/utilities'
 
@@ -66,8 +67,6 @@ export const verifyContract = async (
       url: instance.browserUrl,
     })
   } else {
-    throw new Error(
-      `Failed to verify contract ${contractInformation.contractName} on the block explorer. at contract address: ${contract.address}`,
-    )
+    throw new VerifyContractError(contractInformation.contractName, contract.address, verificationStatus.message)
   }
 }

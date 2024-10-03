@@ -2,14 +2,14 @@
 
 exports[`exports - internal/index: should match snapshot 1`] = `
 [
-  "validateActionData",
-  "zodAddress",
-  "zodAddressNonZero",
-  "zodHex",
-  "ContractVerifier",
+  "BaseContractVerifier",
   "verifyContract",
   "BlockExplorerParams",
   "ContractInfo",
   "ContractVerifierCallback",
+  "validateActionData",
+  "zodAddress",
+  "zodAddressNonZero",
+  "zodHex",
 ]
 `;
