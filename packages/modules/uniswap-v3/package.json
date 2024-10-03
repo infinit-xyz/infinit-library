@@ -21,6 +21,10 @@
     "./actions": {
       "types": "./dist/actions/index.d.ts",
       "default": "./dist/actions/index.js"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "default": "./dist/utils/index.js"
     }
   },
   "scripts": {
