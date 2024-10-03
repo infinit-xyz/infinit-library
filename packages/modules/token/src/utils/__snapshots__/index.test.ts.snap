@@ -2,6 +2,7 @@
 
 exports[`index.ts > export: should match snapshot 1`] = `
 [
+  "TokenContractVerifier",
   "MerkleTree",
 ]
 `;
