@@ -1,0 +1,1 @@
+export { verifyContract } from './verifyContract'

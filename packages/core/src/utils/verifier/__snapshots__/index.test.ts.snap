@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`utils/verifier/index.ts > export: should match snapshot 1`] = `
+[
+  "ContractVerifier",
+  "verifyContract",
+  "BlockExplorerParams",
+  "ContractInfo",
+  "ContractVerifierCallback",
+]
+`;

@@ -1,4 +1,4 @@
-import { Address, Hex } from 'viem';
+import { Hex } from 'viem'
 
 /**
  * Parameters for callbacks.
@@ -34,21 +34,6 @@ type CallbackParams = {
    * Contains the name of the sub-action.
    */
   subActionFinished: { name: string }
-  /**
-   * Event emitted when a contract verification starts.
-   * Contains the contract name and the contract address to verify 
-   */
-  contractVerificationStarted: { contractName: string, address: Address }
-  /**
-   * Event emitted when a contract verification submits
-   * Contains the the contract name and the contract address to verify and guid of verification
-   */
-  contractVerificationSubmitted: { contractName: string, address: Address, guid: string }
-  /**
-   * Event emitted when a contract verification finished.
-   * Contain the contract name and the contract address to verify and url of that contract
-   */
-  contractVerificationFinished: { contractName: string, address: Address, url: string }
 }
 
 /**
@@ -63,5 +48,4 @@ type CallbackKeys = keyof CallbackParams
  */
 type InfinitCallback = <T extends CallbackKeys>(key: T, value: CallbackParams[T]) => Promise<void>
 
-export { CallbackKeys, CallbackParams, InfinitCallback };
-
+export { CallbackKeys, CallbackParams, InfinitCallback }
