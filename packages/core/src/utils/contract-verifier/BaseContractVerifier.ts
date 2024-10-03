@@ -4,7 +4,7 @@ import { Artifacts } from 'hardhat/types'
 
 import { verifyContract } from './helper'
 import { BlockExplorerParams, ContractInfo, ContractVerifierCallback } from './type'
-import { Etherscan } from '@nomicfoundation/hardhat-verify/etherscan'
+import { Etherscan } from '@nomicfoundation/hardhat-verify/etherscan.js'
 
 /**
  * Abstract base class for contract verification.

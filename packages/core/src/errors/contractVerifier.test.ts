@@ -17,12 +17,12 @@ describe('VerifyContractError', () => {
     `)
   })
 
-  test('should match snapshot with message', () => {
-    const fakeMessage = 'FAKE_MESSAGE'
+  test('should match snapshot with additional error', () => {
+    const fakeError = new Error('FAKE_ERROR')
 
-    expect(new VerifyContractError(fakeContractName, faceContractAddress, fakeMessage)).toMatchInlineSnapshot(`
+    expect(new VerifyContractError(fakeContractName, faceContractAddress, fakeError)).toMatchInlineSnapshot(`
       [VerifyContractError: Failed to verify contract ${fakeContractName} on the block explorer at contract address: ${faceContractAddress}
-      Message: ${fakeMessage}
+      Error: ${fakeError}
 
       ${coreName}: ${coreVersion}]
   `)

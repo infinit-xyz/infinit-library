@@ -6,9 +6,11 @@ import { ContractInfo, ContractVerifierCallback } from '../type'
 import { getConstructorArgsFromCreationCode } from './getConstructorArgsFromCreationCode'
 import { getContractInformation } from './getContractInformation'
 import { resolveLinkedLibraries } from './resolveLinkedLibraries'
-import { VerifyContractError } from '@/errors/contractVerifier'
+import { BaseError } from '@/errors/base'
+import { GetContractInfoError, VerifyContractError } from '@/errors/contractVerifier'
 import { Etherscan } from '@nomicfoundation/hardhat-verify/etherscan.js'
-import { encodeArguments, sleep } from '@nomicfoundation/hardhat-verify/internal/utilities'
+import { ContractInformation } from '@nomicfoundation/hardhat-verify/internal/solc/artifacts.js'
+import { encodeArguments, sleep } from '@nomicfoundation/hardhat-verify/internal/utilities.js'
 
 export const verifyContract = async (
   client: PublicClient,
@@ -16,11 +18,40 @@ export const verifyContract = async (
   artifacts: Artifacts,
   contract: ContractInfo,
   callback?: ContractVerifierCallback,
-) => {
-  // check if contract is already verified
-  if (await instance.isVerified(contract.address)) return
-  // get contract information
-  let contractInformation = await getContractInformation(client, artifacts, contract)
+): Promise<void> => {
+  let contractInformation: ContractInformation
+  const contractUrl = instance.getContractUrl(contract.address)
+
+  try {
+    contractInformation = await getContractInformation(client, artifacts, contract)
+  } catch (error) {
+    if (error instanceof BaseError) {
+      throw error
+    }
+
+    throw new GetContractInfoError(contract.address, error)
+  }
+
+  try {
+    // check if contract is already verified
+    const isVerified = await instance.isVerified(contract.address)
+    if (isVerified) {
+      await callback?.('contractVerificationFinished', {
+        contractName: contractInformation.contractName,
+        address: contract.address,
+        url: contractUrl,
+        isAlreadyVerified: true,
+      })
+
+      return
+    }
+  } catch (error) {
+    if (error instanceof BaseError) {
+      throw error
+    }
+
+    throw new GetContractInfoError(contract.address, error)
+  }
 
   await callback?.('contractVerificationStarted', {
     contractName: contractInformation.contractName,
@@ -28,25 +59,56 @@ export const verifyContract = async (
   })
 
   // resolve linked libraries
-  contractInformation = await resolveLinkedLibraries(artifacts, contractInformation)
+  try {
+    contractInformation = await resolveLinkedLibraries(artifacts, contractInformation)
+  } catch (error) {
+    if (error instanceof BaseError) {
+      throw error
+    }
+
+    throw new GetContractInfoError(contract.address, error)
+  }
+
   // get encoded constructor arguments
-  const encodedConstructorArgs: string = contract.constructorArgs
-    ? await encodeArguments(
+  let encodedConstructorArgs: string
+
+  try {
+    if (contract.constructorArgs) {
+      encodedConstructorArgs = await encodeArguments(
         contractInformation.contractOutput.abi,
         contractInformation.sourceName,
         contractInformation.contractName,
         contract.constructorArgs,
       )
-    : await getConstructorArgsFromCreationCode(instance, contract.address, contractInformation)
+    } else {
+      encodedConstructorArgs = await getConstructorArgsFromCreationCode(instance, contract.address, contractInformation)
+    }
+  } catch (error) {
+    if (error instanceof BaseError) {
+      throw error
+    }
+
+    throw new GetContractInfoError(contract.address, error)
+  }
+
   // verify contract
   const contractFQN = `${contractInformation.sourceName}:${contractInformation.contractName}`
-  const { message: guid } = await instance.verify(
-    contract.address,
-    JSON.stringify(contractInformation.compilerInput),
-    contractFQN,
-    `v${contractInformation.solcLongVersion}`,
-    encodedConstructorArgs,
-  )
+  let guid: string
+
+  try {
+    const resposne = await instance.verify(
+      contract.address,
+      JSON.stringify(contractInformation.compilerInput),
+      contractFQN,
+      `v${contractInformation.solcLongVersion}`,
+      encodedConstructorArgs,
+    )
+
+    guid = resposne.message
+  } catch (error) {
+    throw new VerifyContractError(contractInformation.contractName, contract.address, error)
+  }
+
   await callback?.('contractVerificationSubmitted', {
     contractName: contractInformation.contractName,
     address: contract.address,
@@ -56,19 +118,26 @@ export const verifyContract = async (
   // wait for 1 second before checking the status (avoid rate limiting)
   await sleep(1_000)
 
-  const verificationStatus = await instance.getVerificationStatus(guid)
+  let isSuccess: boolean
+  let isAlreadyVerified: boolean
 
-  const isSuccess = verificationStatus.isSuccess()
-  const isAlreadyVerified = verificationStatus.isAlreadyVerified()
+  try {
+    const verificationStatus = await instance.getVerificationStatus(guid)
+
+    isSuccess = verificationStatus.isSuccess()
+    isAlreadyVerified = verificationStatus.isAlreadyVerified()
+  } catch (error) {
+    throw new VerifyContractError(contractInformation.contractName, contract.address, error)
+  }
 
   if (isSuccess || isAlreadyVerified) {
     await callback?.('contractVerificationFinished', {
       contractName: contractInformation.contractName,
       address: contract.address,
-      url: instance.browserUrl,
+      url: contractUrl,
       isAlreadyVerified: isAlreadyVerified,
     })
   } else {
-    throw new VerifyContractError(contractInformation.contractName, contract.address, verificationStatus.message)
+    throw new VerifyContractError(contractInformation.contractName, contract.address)
   }
 }
