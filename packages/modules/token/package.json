@@ -1,6 +1,6 @@
 {
   "name": "@infinit-xyz/token",
-  "version": "0.0.0-alpha.13",
+  "version": "0.0.0-alpha.14",
   "homepage": "https://infinit.tech",
   "repository": {
     "type": "git",
@@ -43,13 +43,12 @@
     "extends": "../../../.eslintrc.js"
   },
   "dependencies": {
-    "@infinit-xyz/core": "^0.1.0-alpha.1",
+    "@infinit-xyz/core": "^0.1.0-alpha.2",
     "@openzeppelin/contracts": "5.0.0",
     "@openzeppelin/contracts-upgradeable": "4.9.3",
     "@openzeppelin/merkle-tree": "^1.0.7",
     "lodash": "^4.17.21",
     "tsup": "^8.2.4",
-    "viem": "2.21.16",
     "zod": "^3.23.8"
   },
   "devDependencies": {
@@ -57,7 +56,10 @@
     "hardhat": "^2.22.5",
     "typescript": "^5.6.2"
   },
+  "peerDependencies": {
+    "viem": "2.21.16"
+  },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   }
 }
