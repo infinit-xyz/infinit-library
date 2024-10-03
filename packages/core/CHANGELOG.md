@@ -1,5 +1,17 @@
 # @infinit-xyz/core
 
+## 0.1.0-alpha.2
+
+### Patch Changes
+
+- [#60](https://github.com/infinit-xyz/infinit-library/pull/60)
+  [`90100b4`](https://github.com/infinit-xyz/infinit-library/commit/90100b4414e4be44d0fe141f7e2baff293a6ef9b) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - set engines to be node >=22
+
+- [#60](https://github.com/infinit-xyz/infinit-library/pull/60)
+  [`90100b4`](https://github.com/infinit-xyz/infinit-library/commit/90100b4414e4be44d0fe141f7e2baff293a6ef9b) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - add viem to peerDependencies\
+
 ## 0.1.0-alpha.1
 
 ### Minor Changes
