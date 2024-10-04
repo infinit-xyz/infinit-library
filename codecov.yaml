@@ -2,7 +2,7 @@ codecov:
   require_ci_to_pass: false
 
 comment:
-  layout: 'header, diff, flags, files, components'
+  layout: 'header, diff, flags, files, footer, components'
 
 coverage:
   status:
