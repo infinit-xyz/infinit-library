@@ -1,0 +1,43 @@
+codecov:
+  require_ci_to_pass: false
+
+comment:
+  layout: 'header, diff, flags, files, components'
+
+coverage:
+  status:
+    project:
+      default:
+        informational: true
+    patch:
+      default:
+        informational: true
+
+component_management:
+  default_rules:
+    statuses:
+      - type: project
+        target: auto
+        branches:
+          - '!main'
+  individual_components:
+    - component_id: module_test
+      name: internal testing
+      paths:
+        - packages/test/**
+    - component_id: module_core
+      name: infinit-xyz/core
+      paths:
+        - packages/core/**
+    - component_id: module_aave_v3
+      name: infinit-xyz/aave-v3
+      paths:
+        - packages/modules/aave-v3/**
+    - component_id: module_uniswap_v3
+      name: infinit-xyz/uniswap-v3
+      paths:
+        - packages/modules/uniswap-v3/**
+    - component_id: module_token
+      name: infinit-xyz/token
+      paths:
+        - packages/modules/token/**
