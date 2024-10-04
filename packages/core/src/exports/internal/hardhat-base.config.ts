@@ -4,7 +4,7 @@ import path from 'path'
 import { HardhatUserConfig } from 'hardhat/types'
 
 if (process.env.ENABLE_HARDHAT_TOOLBOX === 'true') {
-  require('@nomicfoundation/hardhat-toolbox-viem')
+  import('@nomicfoundation/hardhat-toolbox-viem')
 }
 
 function parseRemappings(remappings: string[]) {

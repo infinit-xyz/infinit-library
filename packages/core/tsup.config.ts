@@ -7,7 +7,7 @@ export default defineConfig({
     'src/exports/internal/index.ts',
     'src/exports/errors.ts',
     'src/exports/internal/hardhat-compile.ts',
-    'src/exports/internal/hardhat-base.config.cts',
+    'src/exports/internal/hardhat-base.config.ts',
     'src/types/action.ts',
     'src/types/callback.ts',
     'src/types/cache.ts',

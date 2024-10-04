@@ -31,7 +31,7 @@
       "default": "./dist/exports/internal/hardhat-compile.js"
     },
     "./internal/hardhat-base-config": {
-      "types": "./dist/exports/internal/hardhat-base.config.d.ts",
+      "types": "./dist/exports/internal/hardhat-base.config.d.cts",
       "default": "./dist/exports/internal/hardhat-base.config.cjs"
     },
     "./errors": {

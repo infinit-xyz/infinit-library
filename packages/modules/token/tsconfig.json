@@ -1,21 +1,7 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "target": "ES2023",
-    "module": "ES2022",
-    "moduleResolution": "Bundler",
-    "moduleDetection": "force",
-    "resolveJsonModule": true,
-
-    "types": ["node"],
-
-    "allowImportingTsExtensions": true,
-    "noEmit": true,
-
-    "esModuleInterop": true,
-
     "baseUrl": ".",
-
     "paths": {
       "@actions/*": ["./src/actions/*"],
       "@contracts/*": ["./src/contracts/*"],
