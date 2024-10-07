@@ -2,15 +2,16 @@ import { PublicClient } from 'viem'
 
 import type { Artifacts } from 'hardhat/types/artifacts'
 
-import { ContractInfo, ContractVerifierCallback } from '../type'
-import { getConstructorArgsFromCreationCode } from './getConstructorArgsFromCreationCode'
-import { getContractInformation } from './getContractInformation'
-import { resolveLinkedLibraries } from './resolveLinkedLibraries'
 import { BaseError } from '@/errors/base'
 import { GetContractInfoError, VerifyContractError } from '@/errors/contractVerifier'
 import { Etherscan } from '@nomicfoundation/hardhat-verify/etherscan.js'
 import { ContractInformation } from '@nomicfoundation/hardhat-verify/internal/solc/artifacts.js'
 import { encodeArguments, sleep } from '@nomicfoundation/hardhat-verify/internal/utilities.js'
+import { ContractInfo, ContractVerifierCallback } from '../type'
+import { getConstructorArgsFromCreationCode } from './getConstructorArgsFromCreationCode'
+import { getContractInformation } from './getContractInformation'
+import { isBlockscout } from './isBlockscout'
+import { resolveLinkedLibraries } from './resolveLinkedLibraries'
 
 export const verifyContract = async (
   client: PublicClient,
@@ -70,25 +71,28 @@ export const verifyContract = async (
   }
 
   // get encoded constructor arguments
-  let encodedConstructorArgs: string
+  let encodedConstructorArgs: string = ''
+  // note: blockscout does not require encoded constructor arguments for verification
+  const flag: boolean = await isBlockscout(instance.apiUrl)
+  if (!flag) {
+    try {
+      if (contract.constructorArgs) {
+        encodedConstructorArgs = await encodeArguments(
+          contractInformation.contractOutput.abi,
+          contractInformation.sourceName,
+          contractInformation.contractName,
+          contract.constructorArgs,
+        )
+      } else {
+        encodedConstructorArgs = await getConstructorArgsFromCreationCode(instance, contract.address, contractInformation)
+      }
+    } catch (error) {
+      if (error instanceof BaseError) {
+        throw error
+      }
 
-  try {
-    if (contract.constructorArgs) {
-      encodedConstructorArgs = await encodeArguments(
-        contractInformation.contractOutput.abi,
-        contractInformation.sourceName,
-        contractInformation.contractName,
-        contract.constructorArgs,
-      )
-    } else {
-      encodedConstructorArgs = await getConstructorArgsFromCreationCode(instance, contract.address, contractInformation)
+      throw new GetContractInfoError(contract.address, error)
     }
-  } catch (error) {
-    if (error instanceof BaseError) {
-      throw error
-    }
-
-    throw new GetContractInfoError(contract.address, error)
   }
 
   // verify contract
