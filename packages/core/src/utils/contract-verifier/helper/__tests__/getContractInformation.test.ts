@@ -9,7 +9,7 @@ describe('getCreationInformation', () => {
   const address = "0x9a3c2b73adac0f85e04ea049df31ffc2a8e35401"
   const invalidAddress = "0x87646Ac012AC9ffbBc3A37ec516Bd0d661b408ed"
   const rpc = "https://arbitrum-sepolia.blockpi.network/v1/rpc/public"
-  const artifacts = new ArtifactsFromPath(path.join(process.cwd(), "packages/core/src/utils/contract-verifier/helper/__mocks__/artifacts"))
+  const artifacts = new ArtifactsFromPath(path.join(process.cwd(), "packages/core/src/utils/contract-verifier/helper/__mocks__/mock-artifacts"))
 
   test('have artifact', async () => {
     const client = await createPublicClient({
