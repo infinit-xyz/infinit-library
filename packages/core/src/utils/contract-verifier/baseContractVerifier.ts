@@ -28,8 +28,6 @@ export abstract class BaseContractVerifier<R extends object> {
     // so we use a default value if it is not provided.
     // 3. We only support Blockscout v1 API.
     const parsedApiKey = params.apiKey ?? 'BLOCKSCOUT'
-    // trim the /v2 from the end of the URL
-    params.apiUrl = params.apiUrl.split('/v2')[0]
     this.etherscan = new Etherscan(parsedApiKey, params.apiUrl, params.url)
     this.client = client
   }
