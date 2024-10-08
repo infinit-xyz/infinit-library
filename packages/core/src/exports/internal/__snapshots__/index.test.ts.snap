@@ -3,6 +3,7 @@
 exports[`exports - internal/index: should match snapshot 1`] = `
 [
   "BaseContractVerifier",
+  "isBlockscout",
   "verifyContract",
   "BlockExplorerParams",
   "ContractInfo",
