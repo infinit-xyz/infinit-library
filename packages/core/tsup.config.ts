@@ -18,4 +18,5 @@ export default defineConfig({
   clean: true,
   splitting: true,
   keepNames: true,
+  external: ['@nomicfoundation/hardhat-toolbox-viem', 'hardhat', 'hardhat-preprocessor', 'zod', 'viem'],
 })
