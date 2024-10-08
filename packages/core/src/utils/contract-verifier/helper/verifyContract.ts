@@ -100,7 +100,7 @@ export const verifyContract = async (
   let guid: string
 
   try {
-    const resposne = await instance.verify(
+    const response = await instance.verify(
       contract.address,
       JSON.stringify(contractInformation.compilerInput),
       contractFQN,
@@ -108,7 +108,7 @@ export const verifyContract = async (
       encodedConstructorArgs,
     )
 
-    guid = resposne.message
+    guid = response.message
   } catch (error) {
     throw new VerifyContractError(contractInformation.contractName, contract.address, error)
   }
