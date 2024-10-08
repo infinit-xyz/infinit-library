@@ -3,7 +3,7 @@ import { describe, expect, test } from 'vitest'
 
 import { zeroAddress } from 'viem'
 
-import { GetContractInfoError, VerifyContractError } from './contractVerifier'
+import { GetContractInfoError, VerifyContractError } from '@errors/contractVerifier'
 
 describe('VerifyContractError', () => {
   const fakeContractName = 'FAKE_NAME'

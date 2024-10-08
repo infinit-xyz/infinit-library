@@ -2,8 +2,8 @@ import { PublicClient } from 'viem'
 
 import { Artifacts } from 'hardhat/types'
 
-import { verifyContract } from './helper'
-import { BlockExplorerParams, ContractInfo, ContractVerifierCallback } from './type'
+import { verifyContract } from '@/utils/contract-verifier/helper'
+import { BlockExplorerParams, ContractInfo, ContractVerifierCallback } from '@/utils/contract-verifier/type'
 import { Etherscan } from '@nomicfoundation/hardhat-verify/etherscan.js'
 
 /**

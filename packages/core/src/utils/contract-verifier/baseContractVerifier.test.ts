@@ -4,11 +4,11 @@ import { PublicClient } from 'viem'
 
 import { Artifacts } from 'hardhat/types'
 
-import { BaseContractVerifier } from './baseContractVerifier'
-import { verifyContract } from './helper'
-import { BlockExplorerParams, ContractInfo, ContractVerifierCallback } from './type'
+import { BaseContractVerifier } from '@/utils/contract-verifier/baseContractVerifier'
+import { verifyContract } from '@/utils/contract-verifier/helper'
+import { BlockExplorerParams, ContractInfo, ContractVerifierCallback } from '@/utils/contract-verifier/type'
 
-vi.mock('./helper')
+vi.mock('@/utils/contract-verifier/helper')
 
 class MockContractVerifier extends BaseContractVerifier<object> {
   protected async getContracts(): Promise<ContractInfo[]> {
