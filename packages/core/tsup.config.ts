@@ -22,6 +22,7 @@ export default defineConfig({
     '@ethereum-sourcify/bytecode-utils',
     '@nomicfoundation/hardhat-toolbox-viem',
     '@nomicfoundation/hardhat-verify',
+    'axios',
     'hardhat-preprocessor',
     'zod',
     'viem',
