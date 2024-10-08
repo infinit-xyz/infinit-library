@@ -8,7 +8,7 @@ import { getConstructorArgsFromCreationCode } from '../getConstructorArgsFromCre
 import { getContractInformation } from '../getContractInformation'
 import { resolveLinkedLibraries } from '../resolveLinkedLibraries'
 
-describe('resolveLinkedLibraries', () => {
+describe('getConstructorArgsFromCreationCode', () => {
   const apiKey = 'U19FHTSVAE2MTBTG89IWKF6ERWW9VX9IY4'
   const apiUrl = 'https://api-sepolia.arbiscan.io/api'
   const url = 'https://sepolia.arbiscan.io'
