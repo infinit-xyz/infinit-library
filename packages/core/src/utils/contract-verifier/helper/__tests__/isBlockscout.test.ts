@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'vitest'
+
 import { isBlockscout } from '../isBlockscout'
 
 describe('isBlockscout', () => {
-
   test('etherscan', async () => {
     expect(isBlockscout('https://api-sepolia.arbiscan.io/api')).resolves.toBe(false)
   })

@@ -2,9 +2,9 @@ import { PublicClient } from 'viem'
 
 import { Artifacts } from 'hardhat/types'
 
-import { Etherscan } from '@nomicfoundation/hardhat-verify/etherscan.js'
 import { verifyContract } from './helper'
 import { BlockExplorerParams, ContractInfo, ContractVerifierCallback } from './type'
+import { Etherscan } from '@nomicfoundation/hardhat-verify/etherscan.js'
 
 /**
  * Abstract base class for contract verification.
@@ -22,7 +22,7 @@ export abstract class BaseContractVerifier<R extends object> {
    * @param params - The parameters for the block explorer.
    */
   constructor(client: PublicClient, params: BlockExplorerParams) {
-    // NOTE: 
+    // NOTE:
     // 1. We can use Etherscan class for Blockscout API as well.
     // 2. Blockscout API key is not required. but Etherscan client requires it.
     // so we use a default value if it is not provided.

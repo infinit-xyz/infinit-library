@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export const isBlockscout = async (apiUrl: string) => {
   // note: blockscout has a /v2/stats endpoint
-  const url = new URL(apiUrl + "/v2/stats")
+  const url = new URL(apiUrl + '/v2/stats')
   let isBlockscout: boolean = true
   await axios
     .get(url.toString())
@@ -16,6 +16,7 @@ export const isBlockscout = async (apiUrl: string) => {
         isBlockscout = false
       } else {
         throw new Error(error)
-    }})
+      }
+    })
   return isBlockscout
 }

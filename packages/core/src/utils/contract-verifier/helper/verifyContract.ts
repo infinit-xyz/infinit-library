@@ -2,16 +2,16 @@ import { PublicClient } from 'viem'
 
 import type { Artifacts } from 'hardhat/types/artifacts'
 
-import { BaseError } from '@/errors/base'
-import { GetContractInfoError, VerifyContractError } from '@/errors/contractVerifier'
-import { Etherscan } from '@nomicfoundation/hardhat-verify/etherscan.js'
-import { ContractInformation } from '@nomicfoundation/hardhat-verify/internal/solc/artifacts.js'
-import { encodeArguments, sleep } from '@nomicfoundation/hardhat-verify/internal/utilities.js'
 import { ContractInfo, ContractVerifierCallback } from '../type'
 import { getConstructorArgsFromCreationCode } from './getConstructorArgsFromCreationCode'
 import { getContractInformation } from './getContractInformation'
 import { isBlockscout } from './isBlockscout'
 import { resolveLinkedLibraries } from './resolveLinkedLibraries'
+import { BaseError } from '@/errors/base'
+import { GetContractInfoError, VerifyContractError } from '@/errors/contractVerifier'
+import { Etherscan } from '@nomicfoundation/hardhat-verify/etherscan.js'
+import { ContractInformation } from '@nomicfoundation/hardhat-verify/internal/solc/artifacts.js'
+import { encodeArguments, sleep } from '@nomicfoundation/hardhat-verify/internal/utilities.js'
 
 export const verifyContract = async (
   client: PublicClient,
