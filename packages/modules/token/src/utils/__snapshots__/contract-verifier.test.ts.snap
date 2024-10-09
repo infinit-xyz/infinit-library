@@ -22,3 +22,26 @@ exports[`TokenContractVerifier.ts > export: should match snapshot 1`] = `
   },
 ]
 `;
+
+exports[`TokenContractVerifier.ts > getContracts: should match snapshot 1`] = `
+[
+  {
+    "address": "0x86ce7353a19a6dbdb0a0ac01536ffc60f704980e",
+  },
+  {
+    "address": "0x445aa85126dd02145e194e31b19ebac0d051e4e2",
+  },
+  {
+    "address": "0xab7819826b1acd87e30fa45e359e4038683365e6",
+  },
+  {
+    "address": "0x78bb7fd5fc49a644f7b07e43812ef9535fbcfd29",
+  },
+  {
+    "address": "0x63743aaf4522ad8c47ba84b2fd2f645710b4454a",
+  },
+  {
+    "address": "0x56313c36ba155bab1a5d569f48eaa965e270399d",
+  },
+]
+`;

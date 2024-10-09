@@ -47,3 +47,51 @@ exports[`UniswapV3ContractVerifier.ts > export: should match snapshot 1`] = `
   },
 ]
 `;
+
+exports[`UniswapV3ContractVerifier.ts > getContracts: should match snapshot 1`] = `
+[
+  {
+    "address": "0x8f0c29795615148f30bd402876fa69cbf88a91d4",
+  },
+  {
+    "address": "0xd66d72c3e44037229d01cd28ec541c10d8989ff1",
+  },
+  {
+    "address": "0xac80bb20b9f763de59557bb0d88936800da7620e",
+  },
+  {
+    "address": "0x9cd6a1f83e35f40910ae5b59d86e3eb03ca32d21",
+  },
+  {
+    "address": "0x90a15ed68e1bd5eb02d972de6dde6fa72b0ff3c7",
+  },
+  {
+    "address": "0x318cedc9cd4ead794eb3ff09de67463a0a476425",
+  },
+  {
+    "address": "0x2ffa05a4e3a06b1cb3716e294a31bd10356cd2ac",
+  },
+  {
+    "address": "0xc421820a10be395d41a25873f45e27b5cea80dfe",
+  },
+  {
+    "address": "0xee6188037ab4f10a071cfa549fde21dc415e78a3",
+  },
+  {
+    "address": "0xbfc8692eded1c443569c17e7e6618033d533931c",
+  },
+  {
+    "address": "0xfd1f634f6c4b8f7b63ed9b32e748a049b28e743f",
+  },
+  {
+    "address": "0xc09eec68cd04842b213507ad0e0acbfcce87316a",
+  },
+  {
+    "address": "0x6ab3a902b67f0caf98c4714557845840e9645a5c",
+  },
+  {
+    "address": "0x2135ea24a418c8312b302dfce8eb3897b4c68804",
+    "constructorArgs": [],
+  },
+]
+`;
