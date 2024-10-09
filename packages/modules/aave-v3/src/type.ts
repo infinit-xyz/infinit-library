@@ -39,6 +39,7 @@ export type AaveV3Registry = {
   emissionManager?: Address
   aggregatorApi3Adapters?: Record<string, Address>
   aggregatorPythAdapters?: Record<string, Address>
+  aggregatorBandAdapters?: Record<string, Address>
 }
 
 export type LendingPool = {

@@ -31,10 +31,10 @@ export class DeployAggregatorPythAdapterSubAction extends SubAction<DeployAggreg
 
   protected setTxBuilders(): void {
     // add default reserve interest rate strategy txs
-    for (const aggregatorPtyhAdapterConfig of this.params.aggregatorPythAdapterConfigs) {
+    for (const aggregatorPythAdapterConfig of this.params.aggregatorPythAdapterConfigs) {
       const params: DeployAggregatorPythAdapterParams = {
         pyth: this.params.pyth,
-        priceId: aggregatorPtyhAdapterConfig.params.priceId,
+        priceId: aggregatorPythAdapterConfig.params.priceId,
       }
       const txBuilder = new DeployAggregatorPythAdapterTxBuilder(this.client, params)
       this.txBuilders.push(txBuilder)

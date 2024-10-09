@@ -17,7 +17,6 @@ describe('DeployAggregatorApi3AdapterSubAction', () => {
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
 
   const params: DeployAggregatorApi3AdapterSubActionParams = {
-    pyth: ARBITRUM_TEST_ADDRESSES.pyth,
     aggregatorApi3AdapterConfigs: [
       {
         symbol: 'eth-usd',

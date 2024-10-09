@@ -19,6 +19,8 @@ export class AaveV3ContractVerifier extends BaseContractVerifier<AaveV3Registry>
       poolProxy,
       poolConfiguratorProxy,
       rewardsControllerProxy,
+      aggregatorApi3Adapters,
+      aggregatorPythAdapters,
       ...contractToAddressRegistry
     } = registry
 
@@ -83,4 +85,6 @@ export class AaveV3ContractVerifier extends BaseContractVerifier<AaveV3Registry>
     }
     return contracts
   }
+
+  //TODO: Handle adapter contracts
 }
