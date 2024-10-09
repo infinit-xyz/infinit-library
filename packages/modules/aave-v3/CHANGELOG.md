@@ -1,5 +1,24 @@
 # @infinit-xyz/aave-v3
 
+## 0.0.0-alpha.18
+
+### Minor Changes
+
+- [#59](https://github.com/infinit-xyz/infinit-library/pull/59)
+  [`6305a85`](https://github.com/infinit-xyz/infinit-library/commit/6305a85e8694007ef9008ed66ad60310c14114b8) Thanks
+  [@Kittikornl](https://github.com/Kittikornl)! - support verify contract on explorer (support Etherscan and Blockscout V1)
+
+### Patch Changes
+
+- [#59](https://github.com/infinit-xyz/infinit-library/pull/59)
+  [`6305a85`](https://github.com/infinit-xyz/infinit-library/commit/6305a85e8694007ef9008ed66ad60310c14114b8) Thanks
+  [@Kittikornl](https://github.com/Kittikornl)! - update tsup config to have external dependencies
+
+- Updated dependencies [[`6305a85`](https://github.com/infinit-xyz/infinit-library/commit/6305a85e8694007ef9008ed66ad60310c14114b8),
+  [`6305a85`](https://github.com/infinit-xyz/infinit-library/commit/6305a85e8694007ef9008ed66ad60310c14114b8),
+  [`a0db724`](https://github.com/infinit-xyz/infinit-library/commit/a0db724623b66d0a55b483d30a8c8652f3ee0918)]:
+  - @infinit-xyz/core@0.1.0-alpha.3
+
 ## 0.0.0-alpha.17
 
 ### Patch Changes
