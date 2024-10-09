@@ -13,4 +13,5 @@ export default defineConfig({
   banner: {
     js: "import { createRequire } from 'module';const require = createRequire(import.meta.url);",
   },
+  external: ['@openzeppelin/contracts', '@openzeppelin/contracts-upgradeable', '@openzeppelin/merkle-tree', 'lodash', 'zod', 'viem'],
 })

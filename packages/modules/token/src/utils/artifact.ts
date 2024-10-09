@@ -14,4 +14,11 @@ const readArtifact = async <ArgT extends keyof ArtifactsMap>(contractNameOrFully
   return artifact as ArtifactsMap[ArgT]
 }
 
-export { readArtifact }
+const getArtifacts = async (): Promise<Artifacts> => {
+  //Use moduleDir only when testing for vitest.
+  const artifactsBase = process.env.NODE_ENV === 'test' ? moduleDir : process.cwd()
+  const artifacts: Artifacts = new ArtifactsFromPath(path.join(artifactsBase, `./artifacts/${path.basename(name)}`))
+  return artifacts
+}
+
+export { getArtifacts, readArtifact }
