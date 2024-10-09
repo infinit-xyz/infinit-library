@@ -5,4 +5,4 @@
 '@infinit-xyz/core': minor
 ---
 
-update for contract verification (currently support only etherscan)
+support verify contract on explorer (support Etherscan and Blockscout V1)
