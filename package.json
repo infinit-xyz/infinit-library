@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "postinstall": "bun run --filter './packages/**' postinstall",
-    "clean": "rm -rf node_modules && bun run --filter './packages/**' clean && find . -type l -delete",
+    "clean": "rm -rf node_modules && bun run --filter './packages/**' clean",
     "compile": "bun run --filter './packages/**' compile",
     "build": "bun run build:core && bun run build:test && bun run build:modules",
     "build:core": "bun run --filter './packages/core' build",

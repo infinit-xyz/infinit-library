@@ -28,7 +28,7 @@
     }
   },
   "scripts": {
-    "postinstall": "bun ./scripts/post-install.ts",
+    "postinstall": "bun ./scripts/postInstall.ts",
     "build": "tsup",
     "clean": "rm -rf cache artifacts node_modules dist tsconfig.tsbuildinfo",
     "typecheck_temp": "tsc --noEmit",
