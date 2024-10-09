@@ -13,5 +13,12 @@ export default defineConfig({
   banner: {
     js: "import { createRequire } from 'module';const require = createRequire(import.meta.url);",
   },
-  external: ['@nomicfoundation/hardhat-viem', 'base64-sol', 'lodash', 'zod', 'solmate', 'viem'],
+  external: [
+    'base64-sol',
+    '@openzeppelin/contracts-3.4.1-solc-0.7-2',
+    '@openzeppelin/contracts-3.4.2-solc-0.7',
+    '@openzeppelin/contracts-4.7.0',
+    'base64-sol',
+    'solmate',
+  ],
 })

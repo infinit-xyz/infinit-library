@@ -44,9 +44,7 @@
   },
   "dependencies": {
     "@infinit-xyz/core": "^0.1.0-alpha.3",
-    "@nomicfoundation/hardhat-viem": "^2.0.3",
-    "lodash": "^4.17.21",
-    "zod": "^3.23.8"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "tsup": "^8.1.0",
@@ -54,6 +52,7 @@
     "typescript": "^5.6.2"
   },
   "peerDependencies": {
+    "zod": "^3.23.8",
     "viem": "2.21.16"
   },
   "engines": {
