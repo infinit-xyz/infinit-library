@@ -1,10 +1,10 @@
 import { describe, expect, test } from 'vitest'
 
-import { getContractCreationCode } from '../getContractCreationCode'
 import { Etherscan } from '@nomicfoundation/hardhat-verify/etherscan'
+import { getContractCreationCode } from '../getContractCreationCode'
 
 describe('getCreationCodeFromBlockExplorer', () => {
-  const apiKey = 'U19FHTSVAE2MTBTG89IWKF6ERWW9VX9IY4'
+  const apiKey = process.env.SEPOLIA_ARBISCAN_API_KEY ?? "NO_API_KEY"
   const apiUrl = 'https://api-sepolia.arbiscan.io/api'
   const url = 'https://sepolia.arbiscan.io'
 
