@@ -18,7 +18,7 @@ runs:
 
     - name: Install dependencies
       shell: bash
-      run: bun install --ignore-scripts
+      run: bun install --frozen-lockfile
 
     - name: Cache artifacts
       id: cache-artifacts
