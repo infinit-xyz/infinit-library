@@ -75,7 +75,7 @@
     "vitest": "^2.1.2"
   },
   "peerDependencies": {
-    "viem": "2.21.16"
+    "viem": "2.21.19"
   },
   "engines": {
     "node": ">=22"
