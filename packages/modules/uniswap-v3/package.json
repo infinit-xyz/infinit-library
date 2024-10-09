@@ -1,6 +1,6 @@
 {
   "name": "@infinit-xyz/uniswap-v3",
-  "version": "0.0.0-alpha.15",
+  "version": "0.0.0-alpha.16",
   "homepage": "https://infinit.tech",
   "repository": {
     "type": "git",
@@ -21,6 +21,10 @@
     "./actions": {
       "types": "./dist/actions/index.d.ts",
       "default": "./dist/actions/index.js"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "default": "./dist/utils/index.js"
     }
   },
   "scripts": {
@@ -39,21 +43,19 @@
     "extends": "../../../.eslintrc.js"
   },
   "dependencies": {
-    "@infinit-xyz/core": "^0.1.0-alpha.2",
+    "@infinit-xyz/core": "^0.1.0-alpha.3",
     "@nomicfoundation/hardhat-viem": "^2.0.3",
     "@openzeppelin/contracts-3.4.1-solc-0.7-2": "npm:@openzeppelin/contracts@3.4.1-solc-0.7-2",
     "@openzeppelin/contracts-3.4.2-solc-0.7": "npm:@openzeppelin/contracts@3.4.2-solc-0.7",
     "@openzeppelin/contracts-4.7.0": "npm:@openzeppelin/contracts@4.7.0",
     "base64-sol": "1.0.1",
-    "hardhat-preprocessor": "^0.1.5",
     "lodash": "^4.17.21",
-    "tsup": "^8.1.0",
     "zod": "^3.23.8",
     "solmate": "git://github.com/transmissions11/solmate.git#8d910d876f51c3b2585c9109409d601f600e68e1"
   },
   "devDependencies": {
+    "tsup": "^8.1.0",
     "@types/lodash": "^4.17.7",
-    "hardhat": "^2.22.5",
     "typescript": "^5.6.2"
   },
   "peerDependencies": {

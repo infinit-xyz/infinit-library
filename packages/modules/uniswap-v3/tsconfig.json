@@ -20,6 +20,7 @@
       "@actions/*": ["./src/actions/*"],
       "@contracts/*": ["./src/contracts/*"],
       "@scripts/*": ["./src/scripts/*"],
+      "@utils/*": ["./src/utils/*"],
       "@/*": ["*"]
     }
   },

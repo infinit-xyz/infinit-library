@@ -18,4 +18,13 @@ export default defineConfig({
   clean: true,
   splitting: true,
   keepNames: true,
+  external: [
+    '@ethereum-sourcify/bytecode-utils',
+    '@nomicfoundation/hardhat-toolbox-viem',
+    '@nomicfoundation/hardhat-verify',
+    'axios',
+    'hardhat-preprocessor',
+    'zod',
+    'viem',
+  ],
 })
