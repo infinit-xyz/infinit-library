@@ -4,14 +4,14 @@ import { describe, expect, test } from 'vitest'
 import { createPublicClient, http } from 'viem'
 import { arbitrumSepolia } from 'viem/chains'
 
-import { Etherscan } from '@nomicfoundation/hardhat-verify/etherscan'
-import { Artifacts as ArtifactsFromPath } from 'hardhat/internal/artifacts'
 import { getConstructorArgsFromCreationCode } from '../getConstructorArgsFromCreationCode'
 import { getContractInformation } from '../getContractInformation'
 import { resolveLinkedLibraries } from '../resolveLinkedLibraries'
+import { Etherscan } from '@nomicfoundation/hardhat-verify/etherscan'
+import { Artifacts as ArtifactsFromPath } from 'hardhat/internal/artifacts'
 
 describe('getConstructorArgsFromCreationCode', () => {
-  const apiKey = process.env.SEPOLIA_ARBISCAN_API_KEY ?? "NO_API_KEY"
+  const apiKey = process.env.SEPOLIA_ARBISCAN_API_KEY ?? 'NO_API_KEY'
   const apiUrl = 'https://api-sepolia.arbiscan.io/api'
   const url = 'https://sepolia.arbiscan.io'
   const withParams = '0x9a3c2b73adac0f85e04ea049df31ffc2a8e35401'
