@@ -41,6 +41,7 @@ jobs:
         run: bun run test:coverage
         env:
           VITE_ARBITRUM_RPC_URL: ${{ secrets.VITE_ARBITRUM_RPC_URL }}
+          SEPOLIA_ARBISCAN_API_KEY: ${{ secrets.SEPOLIA_ARBISCAN_API_KEY }}
 
       - name: Upload results to Codecov
         uses: codecov/codecov-action@v4
