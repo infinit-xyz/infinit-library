@@ -33,7 +33,7 @@ describe('UniswapV3ContractVerifier.ts', () => {
   }
 
   
-  test('export: should match snapshot', async () => {
+  test('getContracts: should match snapshot', async () => {
     const verifier = new TestUniswapV3ContractVerifier(
       await createPublicClient({
         chain: holesky,

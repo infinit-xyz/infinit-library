@@ -33,7 +33,7 @@ describe('TokenContractVerifier.ts', () => {
   }
 
   
-  test('export: should match snapshot', async () => {
+  test('getContracts: should match snapshot', async () => {
     const verifier = new TestTokenContractVerifier(
       await createPublicClient({
         chain: holesky,

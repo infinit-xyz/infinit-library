@@ -63,7 +63,7 @@ describe('AaveV3ContractVerifier.ts', () => {
   }
 
   
-  test('export: should match snapshot', async () => {
+  test('getContracts: should match snapshot', async () => {
     const verifier = new TestAaveV3ContractVerifier(
       await createPublicClient({
         chain: holesky,
