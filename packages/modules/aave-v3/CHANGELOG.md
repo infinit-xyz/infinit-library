@@ -1,5 +1,18 @@
 # @infinit-xyz/aave-v3
 
+## 0.0.0-alpha.19
+
+### Minor Changes
+
+- [#74](https://github.com/infinit-xyz/infinit-library/pull/74)
+  [`83e278b`](https://github.com/infinit-xyz/infinit-library/commit/83e278b9c929c71380a5fa2995d30be9e1a4bee2) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - update dependencies and bundle
+
+### Patch Changes
+
+- Updated dependencies [[`83e278b`](https://github.com/infinit-xyz/infinit-library/commit/83e278b9c929c71380a5fa2995d30be9e1a4bee2)]:
+  - @infinit-xyz/core@0.1.0-alpha.4
+
 ## 0.0.0-alpha.18
 
 ### Minor Changes
