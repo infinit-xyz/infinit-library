@@ -1,3 +1,4 @@
+// symlink a directory from the original to the target
 import { $ } from 'bun'
 import { existsSync } from 'fs'
 

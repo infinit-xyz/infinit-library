@@ -1,3 +1,4 @@
+// change linked contracts to original files
 import { $ } from 'bun'
 import fs from 'fs'
 

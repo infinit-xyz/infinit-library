@@ -1,3 +1,4 @@
+// delete copied contracts from running `prepack` script, then link the contracts from node_modules to our package
 import { $ } from 'bun'
 
 import { linkContractDirectory } from '../../../../scripts/linkContracts'
