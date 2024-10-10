@@ -1,5 +1,13 @@
 # @infinit-xyz/aave-v3
 
+## 0.0.0-alpha.20
+
+### Patch Changes
+
+- [#78](https://github.com/infinit-xyz/infinit-library/pull/78)
+  [`357264d`](https://github.com/infinit-xyz/infinit-library/commit/357264d7fd3001cb7af10e5f581fa3f17f527598) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - use symlink contracts folder
+
 ## 0.0.0-alpha.19
 
 ### Minor Changes
