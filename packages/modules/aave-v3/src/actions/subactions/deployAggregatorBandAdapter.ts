@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import { Address, Hash } from 'viem'
+import { Hash } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError, ValidateInputValueError } from '@infinit-xyz/core/errors'
