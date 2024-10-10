@@ -19,6 +19,9 @@ export class AaveV3ContractVerifier extends BaseContractVerifier<AaveV3Registry>
       poolProxy,
       poolConfiguratorProxy,
       rewardsControllerProxy,
+      aggregatorApi3Adapters,
+      aggregatorPythAdapters,
+      aggregatorBandAdapters,
       ...contractToAddressRegistry
     } = registry
 
@@ -53,6 +56,21 @@ export class AaveV3ContractVerifier extends BaseContractVerifier<AaveV3Registry>
       contracts = contracts.concat(reserveInterestRateStrategyContractInfos)
     }
 
+    if (aggregatorApi3Adapters) {
+      const aggregatorApi3AdaptersContractInfos = await this.getAggregatorAdapterContractInfos(aggregatorApi3Adapters)
+      contracts = contracts.concat(aggregatorApi3AdaptersContractInfos)
+    }
+
+    if (aggregatorPythAdapters) {
+      const aggregatorPythAdaptersContractInfos = await this.getAggregatorAdapterContractInfos(aggregatorPythAdapters)
+      contracts = contracts.concat(aggregatorPythAdaptersContractInfos)
+    }
+
+    if (aggregatorBandAdapters) {
+      const aggregatorBandAdaptersContractInfos = await this.getAggregatorAdapterContractInfos(aggregatorBandAdapters)
+      contracts = contracts.concat(aggregatorBandAdaptersContractInfos)
+    }
+
     return contracts
   }
 
@@ -79,6 +97,14 @@ export class AaveV3ContractVerifier extends BaseContractVerifier<AaveV3Registry>
   private async getReserveInterestRateStrategyContractInfos(reserveInterestRateStrategies: Record<string, Address>) {
     const contracts: ContractInfo[] = []
     for (const address of Object.values(reserveInterestRateStrategies)) {
+      contracts.push({ address })
+    }
+    return contracts
+  }
+
+  private async getAggregatorAdapterContractInfos(aggregatorAdapters: Record<string, Address>) {
+    const contracts: ContractInfo[] = []
+    for (const address of Object.values(aggregatorAdapters)) {
       contracts.push({ address })
     }
     return contracts

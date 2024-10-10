@@ -16,10 +16,26 @@ export const ARBITRUM_TEST_ADDRESSES = {
   // Misc
   chainlinkEthFeeder: '0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612',
   oneAddress: '0x0000000000000000000000000000000000000001',
+  api3EthUsdDapiProxy: '0xf624881ac131210716F7708C28403cCBe346cB73',
+  api3WbtcUsdDapiProxy: '0xE53154CFCc333200a0EC4CB6C206b1a5a1432d21',
+  pyth: '0xff1a0f4744e8582DF1aE09D5611b887B6a12925C',
+  pythWethUsdPriceFeedId: '0x9d4294bbcd1174d6f2003ec365831e64cc31d9f6f15a2b85399db8d5000960f6',
+  pythWbtcUsdPriceFeedId: '0xc9d8b075a5c69303365ae23633d4e085199bf5c520a3b90fed1322a0342ffc33',
 
   // User
   aaveExecutor: '0xFF1137243698CaA18EE364Cc966CF0e02A4e6327',
   aaveEmergencyAdmin: '0xbbd9f90699c1FA0D7A65870D241DD1f1217c96Eb',
+  tester: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
+} satisfies Record<string, Address>
+
+export const FANTOM_TEST_ADDRESSES = {
+  // ERC20 Tokens
+  weth: '0x74b23882a30290451A17c44f4F05243b6b58C76d',
+
+  // Misc
+  bandRef: '0xDA7a001b254CD22e46d3eAB04d937489c93174C3',
+
+  // User
   tester: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
 } satisfies Record<string, Address>
 

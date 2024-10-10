@@ -1,0 +1,4 @@
+[profile.default]
+libs = ["../../../node_modules"]
+remappings = ['@aave/core-v3/contracts=contracts/aave-v3-core']
+solc = "0.8.10"
