@@ -20,23 +20,19 @@ describe('DeployAggregatorBandAdapterSubAction', () => {
     ref: FANTOM_TEST_ADDRESSES.bandRef,
     aggregatorBandAdapterConfigs: [
       {
-        symbol: 'weth-usd',
-        params: {
-          base: 'WETH',
-          quote: 'USD',
-        },
+        name: 'weth-usd',
+        base: 'WETH',
+        quote: 'USD',
       },
       {
-        symbol: 'wbtc-usd',
-        params: {
-          base: 'WBTC',
-          quote: 'USD',
-        },
+        name: 'wbtc-usd',
+        base: 'WBTC',
+        quote: 'USD',
       },
     ],
   }
 
-  test('deploy aggregator pyth adaptors', async () => {
+  test('deploy aggregator band adaptors', async () => {
     subAction = new DeployAggregatorBandAdapterSubAction(client, params)
     const registry: AaveV3Registry = {}
     const callback = vi.fn()

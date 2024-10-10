@@ -20,16 +20,12 @@ describe('DeployAggregatorPythAdapterSubAction', () => {
     pyth: ARBITRUM_TEST_ADDRESSES.pyth,
     aggregatorPythAdapterConfigs: [
       {
-        symbol: 'weth-usd',
-        params: {
-          priceId: ARBITRUM_TEST_ADDRESSES.pythWethUsdPriceFeedId,
-        },
+        name: 'weth-usd',
+        priceId: ARBITRUM_TEST_ADDRESSES.pythWethUsdPriceFeedId,
       },
       {
-        symbol: 'wbtc-usd',
-        params: {
-          priceId: ARBITRUM_TEST_ADDRESSES.pythWbtcUsdPriceFeedId,
-        },
+        name: 'wbtc-usd',
+        priceId: ARBITRUM_TEST_ADDRESSES.pythWbtcUsdPriceFeedId,
       },
     ],
   }

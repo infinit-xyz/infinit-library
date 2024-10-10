@@ -19,16 +19,12 @@ describe('DeployAggregatorApi3AdapterSubAction', () => {
   const params: DeployAggregatorApi3AdapterSubActionParams = {
     aggregatorApi3AdapterConfigs: [
       {
-        symbol: 'eth-usd',
-        params: {
-          dataFeedProxy: ARBITRUM_TEST_ADDRESSES.api3EthUsdDapiProxy,
-        },
+        name: 'eth-usd',
+        dataFeedProxy: ARBITRUM_TEST_ADDRESSES.api3EthUsdDapiProxy,
       },
       {
-        symbol: 'wbtc-usd',
-        params: {
-          dataFeedProxy: ARBITRUM_TEST_ADDRESSES.api3WbtcUsdDapiProxy,
-        },
+        name: 'wbtc-usd',
+        dataFeedProxy: ARBITRUM_TEST_ADDRESSES.api3WbtcUsdDapiProxy,
       },
     ],
   }

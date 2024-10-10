@@ -13,17 +13,12 @@ import {
 import { AaveV3Registry } from '@/src/type'
 
 export type AggregatorBandAdapterConfig = {
-  symbol: string
-  params: {
-    base: string
-    quote: string
-  }
-}
+  name: string
+} & Omit<DeployAggregatorBandAdapterParams, 'ref'>
 
 export type DeployAggregatorBandAdapterSubActionParams = {
-  ref: Address
   aggregatorBandAdapterConfigs: AggregatorBandAdapterConfig[]
-}
+} & Pick<DeployAggregatorBandAdapterParams, 'ref'>
 
 export class DeployAggregatorBandAdapterSubAction extends SubAction<DeployAggregatorBandAdapterSubActionParams, AaveV3Registry, object> {
   constructor(client: InfinitWallet, params: DeployAggregatorBandAdapterSubActionParams) {
@@ -33,10 +28,11 @@ export class DeployAggregatorBandAdapterSubAction extends SubAction<DeployAggreg
   protected setTxBuilders(): void {
     // add default reserve interest rate strategy txs
     for (const aggregatorBandAdapterConfig of this.params.aggregatorBandAdapterConfigs) {
+      const { base, quote } = aggregatorBandAdapterConfig
       const params: DeployAggregatorBandAdapterParams = {
         ref: this.params.ref,
-        base: aggregatorBandAdapterConfig.params.base,
-        quote: aggregatorBandAdapterConfig.params.quote,
+        base: base,
+        quote: quote,
       }
       const txBuilder = new DeployAggregatorBandAdapterTxBuilder(this.client, params)
       this.txBuilders.push(txBuilder)
@@ -46,16 +42,16 @@ export class DeployAggregatorBandAdapterSubAction extends SubAction<DeployAggreg
   protected async updateRegistryAndMessage(registry: AaveV3Registry, txHashes: Hash[]): Promise<SubActionExecuteResponse<AaveV3Registry>> {
     // update registry mapping name from txHashes
     for (const [index, txHash] of txHashes.entries()) {
-      const symbol = this.params.aggregatorBandAdapterConfigs[index]?.symbol
+      const name = this.params.aggregatorBandAdapterConfigs[index]?.name
       // throw error if haven't specify the reserve interest rate strategy name
-      if (symbol === undefined) throw new ValidateInputValueError('NO_AGGREGATOR_BAND_ADAPTER_SYMBOL')
+      if (name === undefined) throw new ValidateInputValueError('NO_AGGREGATOR_BAND_ADAPTER_SYMBOL')
 
       // get deployed address from the txHash
       const { contractAddress } = await this.client.publicClient.waitForTransactionReceipt({ hash: txHash })
 
       // set contract address to registry
       if (!contractAddress) throw new ContractNotFoundError(txHash, 'AggregatorBandAdapter')
-      _.set(registry, ['aggregatorBandAdapters', symbol], contractAddress)
+      _.set(registry, ['aggregatorBandAdapters', name], contractAddress)
     }
     return {
       newRegistry: registry,
