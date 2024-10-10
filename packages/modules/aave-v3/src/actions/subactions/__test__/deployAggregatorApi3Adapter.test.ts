@@ -71,7 +71,7 @@ describe('DeployAggregatorApi3AdapterSubAction', () => {
     validateAdapter(adapters['wbtc-usd'])
   })
 
-  async function validate(adapter: Address): Promise<void> {
+  async function validateAdapter(adapter: Address): Promise<void> {
     const aggregatorApi3AdapterArtifact = await readArtifact('AggregatorApi3Adapter')
 
     // contract instance
