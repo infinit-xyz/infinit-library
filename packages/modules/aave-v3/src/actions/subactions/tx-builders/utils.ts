@@ -2,9 +2,9 @@ import { Address, Hex } from 'viem'
 
 import { InfinitWallet } from '@infinit-xyz/core'
 
-import { ACLManager$Type } from '@/artifacts/aave-v3/aave-v3-core/protocol/configuration/ACLManager.sol/ACLManager'
-import { Pool$Type } from '@/artifacts/aave-v3/aave-v3-core/protocol/pool/Pool.sol/Pool'
-import { AToken$Type } from '@/artifacts/aave-v3/aave-v3-core/protocol/tokenization/AToken.sol/AToken'
+import { ACLManager$Type } from '@/artifacts/aave-v3/aave-v3-core/contracts/protocol/configuration/ACLManager.sol/ACLManager'
+import { Pool$Type } from '@/artifacts/aave-v3/aave-v3-core/contracts/protocol/pool/Pool.sol/Pool'
+import { AToken$Type } from '@/artifacts/aave-v3/aave-v3-core/contracts/protocol/tokenization/AToken.sol/AToken'
 
 export function getLiquidationThreshold(config: bigint): bigint {
   //bit 16-31: Liq. threshold
