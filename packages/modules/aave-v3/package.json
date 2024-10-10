@@ -28,7 +28,6 @@
     }
   },
   "scripts": {
-    "postinstall": "bun ./scripts/postInstall.ts",
     "build": "tsup",
     "clean": "rm -rf cache artifacts node_modules dist tsconfig.tsbuildinfo",
     "typecheck_temp": "tsc --noEmit",
@@ -45,8 +44,6 @@
   },
   "dependencies": {
     "@infinit-xyz/core": "^0.1.0-alpha.4",
-    "aave-v3-core": "https://github.com/aave/aave-v3-core#b74526a7bc67a3a117a1963fc871b3eb8cea8435",
-    "aave-v3-periphery": "https://github.com/aave/aave-v3-periphery#803c3e7d6d1c6da8d91411f4d085494f7189ea0b",
     "lodash": "^4.17.21"
   },
   "devDependencies": {

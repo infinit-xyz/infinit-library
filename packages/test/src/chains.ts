@@ -22,7 +22,7 @@ if (!process.env.VITE_ARBITRUM_RPC_URL) {
 }
 
 const RPC_URL = {
-  [TestChain.arbitrum]: process.env.VITE_ARBITRUM_RPC_URL ?? 'https://1rpc.io/arb',
+  [TestChain.arbitrum]: process.env.VITE_ARBITRUM_RPC_URL ?? 'https://arbitrum.llamarpc.com',
 }
 
 /**

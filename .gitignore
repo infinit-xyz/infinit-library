@@ -115,5 +115,3 @@ cache/
 
 # Github workflow
 .secrets
-
-packages/modules/**/contracts/**/contracts
