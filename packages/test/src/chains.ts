@@ -25,7 +25,7 @@ if (!process.env.VITE_FANTOM_RPC_URL) {
 }
 
 const RPC_URL = {
-  [TestChain.arbitrum]: process.env.VITE_ARBITRUM_RPC_URL ?? 'https://arbitrum.llamarpc.com',
+  [TestChain.arbitrum]: process.env.VITE_ARBITRUM_RPC_URL ?? 'https://1rpc.io/arb',
   [TestChain.fantom]: process.env.VITE_FANTOM_RPC_URL ?? 'https://fantom-pokt.nodies.app',
 }
 
