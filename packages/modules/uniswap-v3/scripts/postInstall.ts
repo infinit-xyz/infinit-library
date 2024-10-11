@@ -13,7 +13,7 @@ const targetRepositories = [
   'universal-router',
 ]
 
-linkContractDirectory(`../../../node_modules/permit2/src`, `permit2/src`)
+linkContractDirectory(`../../../node_modules/permit2/src`, `permit2/contracts`)
 // await Promise.all([
 //   targetRepositories.map(async (repo) => {
 //     linkContractDirectory(`../../../node_modules/@uniswap/${repo}/contracts`, `${repo}/contracts`)

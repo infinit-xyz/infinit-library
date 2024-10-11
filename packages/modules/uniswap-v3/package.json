@@ -57,10 +57,9 @@
 
     "@uniswap/swap-router-contracts": "https://github.com/Uniswap/swap-router-contracts.git#8fe4f086cee7c08f0bdb6ebe20c9ab615921c65f",
     "@uniswap/lib": "https://github.com/Uniswap/solidity-lib.git#c01640b0f0f1d8a85cba8de378cc48469fcfd9a6",
-    "@uniswap/v2-core": "https://github.com/Uniswap/v2-core.git#ee547b17853e71ed4e0101ccfd52e70d5acded58",
-    
-    "@uniswap/v3-core": "https://github.com/Uniswap/v3-core.git#e3589b192d0be27e100cd0daaf6c97204fdb1899",
-    "@uniswap/v3-periphery": "https://github.com/Uniswap/v3-periphery.git#8943ee4047ea7892685802e4baf5f913993844fa",
+    "@uniswap/v2-core": "https://github.com/Uniswap/v2-core.git#4dd59067c76dea4a0e8e4bfdda41877a6b16dedc",
+    "@uniswap/v3-core": "https://github.com/Uniswap/v3-core.git#d8b1c635c275d2a9450bd6a78f3fa2484fef73eb",
+    "@uniswap/v3-periphery": "https://github.com/Uniswap/v3-periphery.git#0682387198a24c7cd63566a2c58398533860a5d1",
     "@uniswap/v3-staker": "https://github.com/Uniswap/v3-staker.git#bc460c03c431431d5b057dad37e6ecc1b3d14f9b",
     "@uniswap/universal-router": "https://github.com/Uniswap/universal-router.git#41183d6eb154f0ab0e74a0e911a5ef9ea51fc4bd"
   },

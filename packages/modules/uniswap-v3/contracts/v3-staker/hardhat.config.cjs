@@ -1,11 +1,7 @@
 const { baseHardhatUserConfig } = require('@infinit-xyz/core/internal/hardhat-base-config')
 const { name } = require('../../package.json')
 
-const remappings = [
-  `@uniswap/v3-core/contracts=v3-core/contracts`,
-  `@uniswap/v3-periphery/contracts=v3-periphery/contracts`,
-  `@openzeppelin/contracts=@openzeppelin/contracts-3.4.1-solc-0.7-2`,
-]
+const remappings = [`@openzeppelin/contracts=@openzeppelin/contracts-3.4.1-solc-0.7-2`]
 
 const DEFAULT_COMPILER_SETTINGS = {
   version: '0.7.6',

@@ -21,7 +21,7 @@ export class DeployQuoterV2TxBuilder extends TxBuilder {
   }
 
   async buildTx(): Promise<TransactionData> {
-    const quoterV2Artifact = await readArtifact('swap-router-contracts/lens/QuoterV2.sol:QuoterV2')
+    const quoterV2Artifact = await readArtifact('swap-router-contracts/contracts/lens/QuoterV2.sol:QuoterV2')
 
     const deployData: Hex = encodeDeployData({
       abi: quoterV2Artifact.abi,
