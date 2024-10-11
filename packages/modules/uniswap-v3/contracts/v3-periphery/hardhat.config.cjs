@@ -2,9 +2,9 @@ const { baseHardhatUserConfig } = require('@infinit-xyz/core/internal/hardhat-ba
 const { name } = require('../../package.json')
 
 const remappings = [
-  `@uniswap/v2-core/contracts=v2-core`,
-  `@uniswap/v3-core/contracts=v3-core`,
-  `@uniswap/lib/contracts=uni-lib`,
+  // `@uniswap/v2-core/contracts=v2-core/contracts`,
+  // `@uniswap/v3-core/contracts=v3-core/contracts`,
+  // `@uniswap/lib/contracts=uni-lib/contracts`,
   `@openzeppelin/contracts=@openzeppelin/contracts-3.4.2-solc-0.7`,
 ]
 
