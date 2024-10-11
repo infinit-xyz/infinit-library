@@ -46,7 +46,7 @@
   "dependencies": {
     "@infinit-xyz/core": "^0.1.0-alpha.4",
     "aave-v3-core": "https://github.com/aave/aave-v3-core#b74526a7bc67a3a117a1963fc871b3eb8cea8435",
-    "aave-v3-oracle-adapter": "git+ssh://git@github.com/infinit-xyz/aave-v3-oracle-adapter-private#8b5ef8e68be487e92e02f26740494bbe6bb78565",
+    "aave-v3-oracle-adapter": "git+ssh://git@github.com/infinit-xyz/aave-v3-oracle-adapter-private#02c4f6c78fa509e1831cb9456484c9be28c6832d",
     "aave-v3-periphery": "https://github.com/aave/aave-v3-periphery#803c3e7d6d1c6da8d91411f4d085494f7189ea0b",
     "lodash": "^4.17.21"
   },
