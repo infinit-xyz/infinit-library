@@ -30,7 +30,7 @@
   "scripts": {
     "postinstall": "bun ./scripts/postInstall.ts",
     "build": "tsup",
-    "clean": "rm -rf cache artifacts node_modules dist tsconfig.tsbuildinfo && find . -type l -delete",
+    "clean": "rm -rf cache artifacts node_modules dist tsconfig.tsbuildinfo",
     "typecheck_temp": "tsc --noEmit",
     "compile": "ENABLE_HARDHAT_TOOLBOX=true bun ../../../node_modules/@infinit-xyz/core/dist/exports/internal/hardhat-compile.js $PWD",
     "typecheck": "tsc --noEmit",
