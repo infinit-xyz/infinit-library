@@ -8,6 +8,7 @@ README.md
 pre-commit
 .changeset/*
 __mocks__
+__snapshots__
 
 // Ignore all Solidity code except for some contracts that we write ourselves
 *.sol
