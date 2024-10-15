@@ -33,7 +33,9 @@
     "clean": "rm -rf cache artifacts node_modules dist",
     "compile": "ENABLE_HARDHAT_TOOLBOX=true bun ../../../node_modules/@infinit-xyz/core/dist/exports/internal/hardhat-compile.js $PWD",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepack": "bun ./scripts/prepack.ts",
+    "postpack": "bun ./scripts/postpack.ts"
   },
   "files": [
     "/dist",
