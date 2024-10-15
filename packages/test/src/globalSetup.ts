@@ -21,6 +21,8 @@ export default async function () {
 
   const serverResults = await Promise.all(servers.map((server) => server.start()))
 
+  console.log('⚡️ [INFINIT] Global Setup Done')
+
   return async () => {
     console.log('⚡️ [INFINIT] Ending Global Setup...')
 

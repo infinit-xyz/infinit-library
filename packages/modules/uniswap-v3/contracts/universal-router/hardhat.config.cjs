@@ -1,12 +1,7 @@
 // NOTE: need to import like this for now to be compatible with hardhat commonjs
 const { baseHardhatUserConfig } = require('@infinit-xyz/core/internal/hardhat-base-config')
 const { name } = require('../../package.json')
-const remappings = [
-  `@uniswap/v2-core/contracts=v2-core`,
-  `@uniswap/v3-core/contracts=v3-core`,
-  `@uniswap/v3-periphery/contracts=v3-periphery`,
-  `@openzeppelin/contracts=@openzeppelin/contracts-4.7.0`,
-]
+const remappings = [`@openzeppelin/contracts=@openzeppelin/contracts-4.7.0`, `permit2/src=permit2/contracts`]
 
 const DEFAULT_COMPILER_SETTINGS = {
   version: '0.8.17',
