@@ -14,5 +14,5 @@ await Promise.all(
 linkContractDirectory(`../../../node_modules/permit2/src`, `permit2/contracts`)
 
 await targetRepositories.map(async (repo) => {
-  linkContractDirectory(`../../../node_modules/${repo}/contracts`, `${repo}/contracts`)
+  linkContractDirectory(`../../../node_modules/@uniswap/${repo}/contracts`, `${repo}/contracts`)
 })
