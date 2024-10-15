@@ -3,15 +3,7 @@ import { $ } from 'bun'
 
 import { linkContractDirectory } from '../../../../scripts/linkContracts'
 
-const targetRepositories: string[] = [
-  'lib',
-  'v3-core',
-  'v2-core',
-  'v3-periphery',
-  'v3-staker',
-  'swap-router-contracts',
-  'universal-router',
-]
+const targetRepositories: string[] = ['lib', 'v3-core', 'v2-core', 'v3-periphery', 'v3-staker', 'swap-router-contracts', 'universal-router']
 
 await Promise.all(
   targetRepositories.map(async (repo: string) => {
