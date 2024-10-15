@@ -1,0 +1,61 @@
+{
+  "name": "@infinit-xyz/init-capital",
+  "version": "0.0.0-alpha.0",
+  "homepage": "https://infinit.tech",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/infinit-xyz/infinit-library.git",
+    "directory": "packages/modules/init-capital"
+  },
+  "bugs": {
+    "url": "https://github.com/infinit-xyz/infinit-library/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./actions": {
+      "types": "./dist/actions/index.d.ts",
+      "default": "./dist/actions/index.js"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "default": "./dist/utils/index.js"
+    }
+  },
+  "scripts": {
+    "postinstall": "bun ./scripts/postInstall.ts",
+    "build": "tsup",
+    "clean": "rm -rf cache artifacts node_modules dist",
+    "compile": "ENABLE_HARDHAT_TOOLBOX=true bun ../../../node_modules/@infinit-xyz/core/dist/exports/internal/hardhat-compile.js $PWD",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "files": [
+    "/dist",
+    "/contracts"
+  ],
+  "eslintConfig": {
+    "extends": "../../../.eslintrc.js"
+  },
+  "dependencies": {
+    "@infinit-xyz/core": ":workspace*",
+    "tsup": "^8.2.4",
+    "viem": "2.21.16",
+    "zod": "^3.23.8",
+    "@openzeppelin/contracts-4.9.3": "npm:@openzeppelin/contracts@4.9.3",
+    "@openzeppelin/contracts-upgradeable-4.9.3": "npm:@openzeppelin/contracts-upgradeable@4.9.3",
+    "init-capital": "https://github.com/init-capital/init-capital-contracts#59208ba34be2bf9dc65ecda32991540b4d067bb6"
+  },
+  "devDependencies": {
+    "hardhat": "^2.22.5",
+    "typescript": "^5.6.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
