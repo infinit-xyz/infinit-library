@@ -44,7 +44,7 @@
     "extends": "../../../.eslintrc.js"
   },
   "dependencies": {
-    "@infinit-xyz/core": ":workspace*",
+    "@infinit-xyz/core": "^0.1.0-alpha.4",
     "@openzeppelin/contracts-3.4.1-solc-0.7-2": "npm:@openzeppelin/contracts@3.4.1-solc-0.7-2",
     "@openzeppelin/contracts-3.4.2-solc-0.7": "npm:@openzeppelin/contracts@3.4.2-solc-0.7",
     "@openzeppelin/contracts-4.7.0": "npm:@openzeppelin/contracts@4.7.0",
@@ -52,7 +52,6 @@
     "base64-sol": "1.0.1",
     "lodash": "^4.17.21",
     "solmate": "git://github.com/transmissions11/solmate.git#8d910d876f51c3b2585c9109409d601f600e68e1",
-
     "permit2": "https://github.com/Uniswap/permit2.git#cc56ad0f3439c502c246fc5cfcc3db92bb8b7219",
 
     "@uniswap/swap-router-contracts": "https://github.com/Uniswap/swap-router-contracts.git#8fe4f086cee7c08f0bdb6ebe20c9ab615921c65f",
