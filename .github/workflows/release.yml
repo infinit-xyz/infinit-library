@@ -13,8 +13,6 @@ jobs:
     name: Check
     uses: ./.github/workflows/check.yml
     secrets: inherit
-    with:
-      skip-format-and-type: true
 
   changesets:
     name: Changesets

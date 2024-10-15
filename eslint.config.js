@@ -21,7 +21,17 @@ const gitignorePath = path.resolve(__dirname, '.gitignore')
 
 export default [
   {
-    ignores: ['**/build', '**/dist', '**/node_modules', '**/coverage/', '**/__snapshots__/', '**/bun.lockb', 'CHANGELOG.md', 'README.md'],
+    ignores: [
+      '**/build',
+      '**/dist',
+      '**/node_modules',
+      '**/coverage/',
+      '**/__snapshots__/',
+      '**/__mocks__/',
+      '**/bun.lockb',
+      'CHANGELOG.md',
+      'README.md',
+    ],
   },
   includeIgnoreFile(gitignorePath),
   ...compat.extends('eslint:recommended', 'plugin:@typescript-eslint/recommended'),
