@@ -2,8 +2,7 @@
 import { $ } from 'bun'
 import fs from 'fs'
 
-const targetRepositories: string[] = ['init-capital']al-router',
-]
+const targetRepositories: string[] = ['init-capital']
 
 const symLinks: string[] = []
 
