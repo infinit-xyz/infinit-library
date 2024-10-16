@@ -21,14 +21,14 @@ component_management:
         branches:
           - '!main'
   individual_components:
-    - component_id: module_test
-      name: internal testing
-      paths:
-        - packages/test/**
     - component_id: module_core
       name: infinit-xyz/core
       paths:
         - packages/core/**
+    - component_id: module_token
+      name: infinit-xyz/token
+      paths:
+        - packages/modules/token/**
     - component_id: module_aave_v3
       name: infinit-xyz/aave-v3
       paths:
@@ -37,7 +37,12 @@ component_management:
       name: infinit-xyz/uniswap-v3
       paths:
         - packages/modules/uniswap-v3/**
-    - component_id: module_token
-      name: infinit-xyz/token
+    - component_id: module_init_capital
+      name: infinit-xyz/init-capital
       paths:
-        - packages/modules/token/**
+        - packages/modules/init-capital/**
+
+ignore:
+  - 'scripts/*'
+  - 'packages/**/scripts/*'
+  = 'packages/test'
