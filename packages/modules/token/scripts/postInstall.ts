@@ -6,5 +6,5 @@ const targetRepositories = ['infinit-erc20-contracts']
 
 
 for (const repo of targetRepositories) {
-  await linkContractDirectory(`../../../node_modules/@infinit-xyz/${repo}/contracts`, `${repo}/contracts`)
+  await linkContractDirectory(`../../../node_modules/${repo}/contracts`, `${repo}/contracts`)
 }
