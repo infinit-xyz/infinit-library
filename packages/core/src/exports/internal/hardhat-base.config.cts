@@ -20,7 +20,7 @@ const baseHardhatUserConfig = (contractDir: string, name: string, remappings?: s
       eachLine: (_hre: any) => ({
         transform: (line: string) => {
           // only transform if remappings defined
-          if (remappings && line.match(/^\s*import /i)) {
+          if (remappings && (line.match(/".*.sol";$/) || line.match(/'.*.sol';$/))) {
             for (const [find, replace] of parseRemappings(remappings)) {
               if (line.match('"' + find)) {
                 line = line.replace('"' + find, '"' + replace) // handle double quote
