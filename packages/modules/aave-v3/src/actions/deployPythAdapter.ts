@@ -10,8 +10,14 @@ export const DeployPythAdapterActionParamsSchema = z.object({
   pythAdapterConfigs: z
     .array(
       z.object({
-        name: z.string().describe('Name of the price id'),
-        priceId: zodHex.describe('Price ID of the price pair'),
+        name: z
+          .string()
+          .describe(
+            'The name of the adapter, this name will be used exclusively to retrieve the deployed address from the registry for subsequent use',
+          ),
+        priceId: zodHex.describe(
+          'Price ID, for example, "0xff61491a9311..." for the ETH/USD, access https://www.pyth.network/developers/price-feed-ids for more info.',
+        ),
       }),
     )
     .describe('List of the PythAdapter Configs. Access https://www.pyth.network/developers/price-feed-ids to find the price id'),

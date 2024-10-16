@@ -10,7 +10,7 @@ export const DeployBandAdapterActionParamsSchema = z.object({
   bandAdapterConfigs: z
     .array(
       z.object({
-        name: z.string().describe('Name of the base/quote'),
+        name: z.string().describe('The name of the adapter, this name will be used exclusively to retrieve the deployed address from the registry for subsequent use'),,
         base: z.string().describe('String of the base'),
         quote: z.string().describe('String of the quote'),
       }),

@@ -9,7 +9,9 @@ export const DeployApi3AdapterActionParamsSchema = z.object({
   api3AdapterConfigs: z
     .array(
       z.object({
-        name: z.string().describe('Name of the data feed'),
+        name: z
+          .string()
+        .describe('The name of the adapter, this name will be used exclusively to retrieve the deployed address from the registry for subsequent use')
         dataFeedProxy: zodAddressNonZero.describe('Address of Api3 DataFeedProxy.'),
       }),
     )
