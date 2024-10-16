@@ -37,7 +37,6 @@
     "test": "vitest run",
     "prepack": "bun ./scripts/prepack.ts",
     "postpack": "bun ./scripts/postpack.ts"
-
   },
   "files": [
     "/dist",
@@ -53,7 +52,6 @@
     "@openzeppelin/merkle-tree": "^1.0.7",
     "@infinit-xyz/infinit-erc20-contracts": "https://github.com/infinit-xyz/infinit-erc20-contracts.git",
     "lodash": "^4.17.21"
-    
   },
   "devDependencies": {
     "tsup": "^8.2.4",
