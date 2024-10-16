@@ -10,12 +10,14 @@ export const DeployBandAdapterActionParamsSchema = z.object({
   bandAdapterConfigs: z
     .array(
       z.object({
-        name: z.string().describe('Name of the price pair'),
+        name: z.string().describe('Name of the base/quote'),
         base: z.string().describe('String of the base'),
         quote: z.string().describe('String of the quote'),
       }),
     )
-    .describe('List of the BandAdapter Configs'),
+    .describe(
+      'List of the BandAdapter Configs. Access https://data.bandprotocol.com to find the base and quote, for example, "ETH/USD" is the base/quote for ETH and USD.',
+    ),
 }) satisfies z.ZodType<DeployBandAdapterSubActionParams>
 
 export type DeployBandAdapterActionParams = z.infer<typeof DeployBandAdapterActionParamsSchema>

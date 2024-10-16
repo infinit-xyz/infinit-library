@@ -41,7 +41,7 @@ export class DeployBandAdapterSubAction extends SubAction<DeployBandAdapterSubAc
     for (const [index, txHash] of txHashes.entries()) {
       const name = this.params.bandAdapterConfigs[index]?.name
       // throw error if haven't specify the reserve interest rate strategy name
-      if (name === undefined) throw new ValidateInputValueError('NO_AGGREGATOR_BAND_ADAPTER_SYMBOL')
+      if (name === undefined) throw new ValidateInputValueError('NO_BAND_ADAPTER_SYMBOL')
 
       // get deployed address from the txHash
       const { contractAddress } = await this.client.publicClient.waitForTransactionReceipt({ hash: txHash })

@@ -10,11 +10,11 @@ export const DeployPythAdapterActionParamsSchema = z.object({
   pythAdapterConfigs: z
     .array(
       z.object({
-        name: z.string().describe('Name of the price pair'),
+        name: z.string().describe('Name of the price id'),
         priceId: zodHex.describe('Price ID of the price pair'),
       }),
     )
-    .describe('List of the PythAdapter Configs'),
+    .describe('List of the PythAdapter Configs. Access https://www.pyth.network/developers/price-feed-ids to find the price id'),
 }) satisfies z.ZodType<DeployPythAdapterSubActionParams>
 
 export type DeployPythAdapterActionParams = z.infer<typeof DeployPythAdapterActionParamsSchema>

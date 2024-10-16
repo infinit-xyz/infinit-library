@@ -9,11 +9,11 @@ export const DeployApi3AdapterActionParamsSchema = z.object({
   api3AdapterConfigs: z
     .array(
       z.object({
-        name: z.string().describe('Name of the price pair'),
-        dataFeedProxy: zodAddressNonZero.describe('Address of Api3 DataFeedProxy'),
+        name: z.string().describe('Name of the data feed'),
+        dataFeedProxy: zodAddressNonZero.describe('Address of Api3 DataFeedProxy.'),
       }),
     )
-    .describe('List of the Api3Adapter Configs'),
+    .describe('List of the Api3Adapter Configs. Access https://market.api3.org to find the DataFeedProxy'),
 }) satisfies z.ZodType<DeployApi3AdapterSubActionParams>
 
 export type DeployApi3AdapterActionParams = z.infer<typeof DeployApi3AdapterActionParamsSchema>

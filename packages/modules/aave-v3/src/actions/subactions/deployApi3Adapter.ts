@@ -36,7 +36,7 @@ export class DeployApi3AdapterSubAction extends SubAction<DeployApi3AdapterSubAc
     for (const [index, txHash] of txHashes.entries()) {
       const name = this.params.api3AdapterConfigs[index]?.name
       // throw error if haven't specify the reserve interest rate strategy name
-      if (name === undefined) throw new ValidateInputValueError('NO_AGGREGATOR_API3_ADAPTER_SYMBOL')
+      if (name === undefined) throw new ValidateInputValueError('NO_API3_ADAPTER_SYMBOL')
 
       // get deployed address from the txHash
       const { contractAddress } = await this.client.publicClient.waitForTransactionReceipt({ hash: txHash })
