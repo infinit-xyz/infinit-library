@@ -19,6 +19,9 @@ export class AaveV3ContractVerifier extends BaseContractVerifier<AaveV3Registry>
       poolProxy,
       poolConfiguratorProxy,
       rewardsControllerProxy,
+      api3Adapters,
+      pythAdapters,
+      bandAdapters,
       ...contractToAddressRegistry
     } = registry
 
@@ -53,6 +56,21 @@ export class AaveV3ContractVerifier extends BaseContractVerifier<AaveV3Registry>
       contracts = contracts.concat(reserveInterestRateStrategyContractInfos)
     }
 
+    if (api3Adapters) {
+      const api3AdaptersContractInfos = await this.getAdapterContractInfos(api3Adapters)
+      contracts = contracts.concat(api3AdaptersContractInfos)
+    }
+
+    if (pythAdapters) {
+      const pythAdaptersContractInfos = await this.getAdapterContractInfos(pythAdapters)
+      contracts = contracts.concat(pythAdaptersContractInfos)
+    }
+
+    if (bandAdapters) {
+      const bandAdaptersContractInfos = await this.getAdapterContractInfos(bandAdapters)
+      contracts = contracts.concat(bandAdaptersContractInfos)
+    }
+
     return contracts
   }
 
@@ -79,6 +97,14 @@ export class AaveV3ContractVerifier extends BaseContractVerifier<AaveV3Registry>
   private async getReserveInterestRateStrategyContractInfos(reserveInterestRateStrategies: Record<string, Address>) {
     const contracts: ContractInfo[] = []
     for (const address of Object.values(reserveInterestRateStrategies)) {
+      contracts.push({ address })
+    }
+    return contracts
+  }
+
+  private async getAdapterContractInfos(adapters: Record<string, Address>) {
+    const contracts: ContractInfo[] = []
+    for (const address of Object.values(adapters)) {
       contracts.push({ address })
     }
     return contracts

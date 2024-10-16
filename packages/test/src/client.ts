@@ -10,6 +10,13 @@ const arbitrumTestClient = createTestClient({
   transport: http(getForkRpcUrl(TestChain.arbitrum), { timeout: 60_000 }),
 })
 
+const fantomTestClient = createTestClient({
+  mode: 'anvil',
+  chain: chains.fantom,
+  transport: http(getForkRpcUrl(TestChain.fantom), { timeout: 60_000 }),
+})
+
 export const testClients: Record<TestChain, TestClient> = {
   [TestChain.arbitrum]: arbitrumTestClient,
+  [TestChain.fantom]: fantomTestClient,
 }
