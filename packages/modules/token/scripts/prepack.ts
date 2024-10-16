@@ -2,9 +2,7 @@
 import { $ } from 'bun'
 import fs from 'fs'
 
-const targetRepositories: string[] = [
-  'infinit-erc20-contracts',
-]
+const targetRepositories: string[] = ['infinit-erc20-contracts']
 
 const symLinks: string[] = []
 

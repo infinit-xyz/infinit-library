@@ -11,7 +11,6 @@ await Promise.all(
   }),
 )
 
-
 await targetRepositories.map(async (repo) => {
   linkContractDirectory(`../../../node_modules/@infinit-xyz/${repo}/contracts`, `${repo}/contracts`)
 })
