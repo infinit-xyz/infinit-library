@@ -40,7 +40,7 @@ export const DeployAaveV3ParamsSchema = z.object({
   rewardsHolder: zodAddress.describe(`Address of the rewards holder, e.g. '0x123...abc'`),
   flashloanPremiumsTotal: z.bigint().describe(`Total flash loan premium rate in bps e.g. 50n`),
   flashloanPremiumsProtocol: z.bigint().describe(`Portion of flash loan premium for the protocol in bps e.g. 50n`),
-  chainlinkAggProxy: zodAddress.describe(`Address of the Chainlink aggregator proxy for price data e.g. '0x123...abc'`),
+  chainlinkAggProxy: zodAddress.describe(`Address of the Chainlink proxy for price data e.g. '0x123...abc'`),
   chainlinkETHUSDAggProxy: zodAddress.describe(`Address of the Chainlink ETH/USD price feed proxy e.g. '0x123...abc'`),
   assets: z.array(zodAddress).describe(`List of supported asset addresses`),
   sources: z.array(zodAddress).describe(`List of price feed source addresses`),

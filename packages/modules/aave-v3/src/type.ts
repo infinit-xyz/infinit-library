@@ -37,9 +37,9 @@ export type AaveV3Registry = {
   rewardsControllerProxy?: Address
   pullRewardsTransferStrategy?: Address
   emissionManager?: Address
-  aggregatorApi3Adapters?: Record<string, Address>
-  aggregatorPythAdapters?: Record<string, Address>
-  aggregatorBandAdapters?: Record<string, Address>
+  Api3Adapters?: Record<string, Address>
+  PythAdapters?: Record<string, Address>
+  BandAdapters?: Record<string, Address>
 }
 
 export type LendingPool = {

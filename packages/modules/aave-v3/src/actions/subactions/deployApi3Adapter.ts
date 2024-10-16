@@ -5,31 +5,28 @@ import { Hash } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError, ValidateInputValueError } from '@infinit-xyz/core/errors'
 
-import {
-  DeployAggregatorApi3AdapterParams,
-  DeployAggregatorApi3AdapterTxBuilder,
-} from '@actions/subactions/tx-builders/AggregatorApi3Adapter/deploy'
+import { DeployApi3AdapterParams, DeployApi3AdapterTxBuilder } from '@actions/subactions/tx-builders/Api3Adapter/deploy'
 
 import { AaveV3Registry } from '@/src/type'
 
-export type AggregatorApi3AdapterConfig = {
+export type Api3AdapterConfig = {
   name: string
-} & DeployAggregatorApi3AdapterParams
+} & DeployApi3AdapterParams
 
-export type DeployAggregatorApi3AdapterSubActionParams = {
-  aggregatorApi3AdapterConfigs: AggregatorApi3AdapterConfig[]
+export type DeployApi3AdapterSubActionParams = {
+  api3AdapterConfigs: Api3AdapterConfig[]
 }
 
-export class DeployAggregatorApi3AdapterSubAction extends SubAction<DeployAggregatorApi3AdapterSubActionParams, AaveV3Registry, object> {
-  constructor(client: InfinitWallet, params: DeployAggregatorApi3AdapterSubActionParams) {
-    super(DeployAggregatorApi3AdapterSubAction.name, client, params)
+export class DeployApi3AdapterSubAction extends SubAction<DeployApi3AdapterSubActionParams, AaveV3Registry, object> {
+  constructor(client: InfinitWallet, params: DeployApi3AdapterSubActionParams) {
+    super(DeployApi3AdapterSubAction.name, client, params)
   }
 
   protected setTxBuilders(): void {
     // add default reserve interest rate strategy txs
-    for (const aggregatorApi3AdapterConfig of this.params.aggregatorApi3AdapterConfigs) {
-      const { dataFeedProxy } = aggregatorApi3AdapterConfig
-      const txBuilder = new DeployAggregatorApi3AdapterTxBuilder(this.client, { dataFeedProxy })
+    for (const api3AdapterConfig of this.params.api3AdapterConfigs) {
+      const { dataFeedProxy } = api3AdapterConfig
+      const txBuilder = new DeployApi3AdapterTxBuilder(this.client, { dataFeedProxy })
       this.txBuilders.push(txBuilder)
     }
   }
@@ -37,7 +34,7 @@ export class DeployAggregatorApi3AdapterSubAction extends SubAction<DeployAggreg
   protected async updateRegistryAndMessage(registry: AaveV3Registry, txHashes: Hash[]): Promise<SubActionExecuteResponse<AaveV3Registry>> {
     // update registry mapping name from txHashes
     for (const [index, txHash] of txHashes.entries()) {
-      const name = this.params.aggregatorApi3AdapterConfigs[index]?.name
+      const name = this.params.api3AdapterConfigs[index]?.name
       // throw error if haven't specify the reserve interest rate strategy name
       if (name === undefined) throw new ValidateInputValueError('NO_AGGREGATOR_API3_ADAPTER_SYMBOL')
 
@@ -45,8 +42,8 @@ export class DeployAggregatorApi3AdapterSubAction extends SubAction<DeployAggreg
       const { contractAddress } = await this.client.publicClient.waitForTransactionReceipt({ hash: txHash })
 
       // set contract address to registry
-      if (!contractAddress) throw new ContractNotFoundError(txHash, 'AggregatorApi3Adapter')
-      _.set(registry, ['aggregatorApi3Adapters', name], contractAddress)
+      if (!contractAddress) throw new ContractNotFoundError(txHash, 'Api3Adapter')
+      _.set(registry, ['api3Adapters', name], contractAddress)
     }
     return {
       newRegistry: registry,

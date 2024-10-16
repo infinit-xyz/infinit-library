@@ -3,38 +3,37 @@ import { describe, expect, test, vi } from 'vitest'
 import { InfinitCache } from '@infinit-xyz/core'
 
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
-import { DeployAggregatorPythAdapterAction, DeployAggregatorPythAdapterData } from '@actions/deployAggregatorPythAdapter'
-import { DeployAggregatorPythAdapterSubAction } from '@actions/subactions/deployAggregatorPythAdapter'
+import { DeployApi3AdapterAction, DeployApi3AdapterData } from '@actions/deployApi3Adapter'
+import { DeployApi3AdapterSubAction } from '@actions/subactions/deployApi3Adapter'
 
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
-vi.mock('@actions/subactions/deployAggregatorPythAdapter')
+vi.mock('@actions/subactions/deployApi3Adapter')
 
-// NOTE: test with Pyth oracle on Arbitrum
-describe('Deploy aggregator pyth adapter action', () => {
+// NOTE: test with Api3 oracle on Arbitrum
+describe('Deploy api3 adapter action', () => {
   const client = new TestInfinitWallet(TestChain.arbitrum, ARBITRUM_TEST_ADDRESSES.tester)
 
-  const data: DeployAggregatorPythAdapterData = {
+  const data: DeployApi3AdapterData = {
     params: {
-      pyth: ARBITRUM_TEST_ADDRESSES.pyth,
-      aggregatorPythAdapterConfigs: [
+      api3AdapterConfigs: [
         {
           name: 'eth-usd',
-          priceId: ARBITRUM_TEST_ADDRESSES.pythWethUsdPriceFeedId,
+          dataFeedProxy: ARBITRUM_TEST_ADDRESSES.api3EthUsdDapiProxy,
         },
         {
           name: 'wbtc-usd',
-          priceId: ARBITRUM_TEST_ADDRESSES.pythWbtcUsdPriceFeedId,
+          dataFeedProxy: ARBITRUM_TEST_ADDRESSES.api3WbtcUsdDapiProxy,
         },
       ],
     },
     signer: { deployer: client },
   }
-  const action = new DeployAggregatorPythAdapterAction(data)
+  const action = new DeployApi3AdapterAction(data)
   const mockRegistry = {}
 
   test('should run sub-actions successfully', async () => {
-    const mockSubActionExecute = vi.mocked(DeployAggregatorPythAdapterSubAction.prototype.execute)
+    const mockSubActionExecute = vi.mocked(DeployApi3AdapterSubAction.prototype.execute)
     mockSubActionExecute.mockResolvedValue({
       newRegistry: {
         ...mockRegistry,
@@ -48,14 +47,14 @@ describe('Deploy aggregator pyth adapter action', () => {
   })
 
   test('should throw an error if sub-action validation fails', async () => {
-    const mockSubActionValidate = vi.mocked(DeployAggregatorPythAdapterSubAction.prototype.validate)
+    const mockSubActionValidate = vi.mocked(DeployApi3AdapterSubAction.prototype.validate)
     mockSubActionValidate.mockRejectedValueOnce(new Error('Validation Error'))
 
     await expect(action.run(mockRegistry)).rejects.toThrowError('Validation Error')
   })
 
   test('should throw an error if sub-action execution fails', async () => {
-    const mockSubActionExecute = vi.mocked(DeployAggregatorPythAdapterSubAction.prototype.execute)
+    const mockSubActionExecute = vi.mocked(DeployApi3AdapterSubAction.prototype.execute)
     mockSubActionExecute.mockRejectedValueOnce(new Error('Execution Error'))
 
     await expect(action.run(mockRegistry)).rejects.toThrowError('Execution Error')
@@ -63,7 +62,7 @@ describe('Deploy aggregator pyth adapter action', () => {
 
   test('should handle cache correctly', async () => {
     const cache: InfinitCache = {
-      name: 'DeployAggregatorPythAdapterAction',
+      name: 'DeployApi3AdapterAction',
       subActions: [
         {
           name: 'MockSubAction',
@@ -75,7 +74,7 @@ describe('Deploy aggregator pyth adapter action', () => {
       ],
     }
 
-    const mockSubActionExecute = vi.mocked(DeployAggregatorPythAdapterSubAction.prototype.execute)
+    const mockSubActionExecute = vi.mocked(DeployApi3AdapterSubAction.prototype.execute)
     mockSubActionExecute.mockResolvedValue({
       newRegistry: {
         ...mockRegistry,
@@ -103,7 +102,7 @@ describe('Deploy aggregator pyth adapter action', () => {
   test('should handle callback correctly', async () => {
     const callback = vi.fn()
 
-    const mockSubAction = vi.mocked(DeployAggregatorPythAdapterSubAction.prototype)
+    const mockSubAction = vi.mocked(DeployApi3AdapterSubAction.prototype)
     mockSubAction.execute.mockResolvedValue({
       newRegistry: {},
       newMessage: {},

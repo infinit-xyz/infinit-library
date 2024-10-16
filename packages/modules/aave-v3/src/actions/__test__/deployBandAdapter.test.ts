@@ -3,21 +3,21 @@ import { describe, expect, test, vi } from 'vitest'
 import { InfinitCache } from '@infinit-xyz/core'
 
 import { FANTOM_TEST_ADDRESSES } from '@actions/__mock__/address'
-import { DeployAggregatorBandAdapterAction, DeployAggregatorBandAdapterData } from '@actions/deployAggregatorBandAdapter'
-import { DeployAggregatorBandAdapterSubAction } from '@actions/subactions/deployAggregatorBandAdapter'
+import { DeployBandAdapterAction, DeployBandAdapterData } from '@actions/deployBandAdapter'
+import { DeployBandAdapterSubAction } from '@actions/subactions/deployBandAdapter'
 
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
-vi.mock('@actions/subactions/deployAggregatorBandAdapter')
+vi.mock('@actions/subactions/deployBandAdapter')
 
 // NOTE: test with Band oracle on Fantom
-describe('Deploy aggregator band adapter action', () => {
+describe('Deploy band adapter action', () => {
   const client = new TestInfinitWallet(TestChain.arbitrum, FANTOM_TEST_ADDRESSES.tester)
 
-  const data: DeployAggregatorBandAdapterData = {
+  const data: DeployBandAdapterData = {
     params: {
       ref: FANTOM_TEST_ADDRESSES.bandRef,
-      aggregatorBandAdapterConfigs: [
+      bandAdapterConfigs: [
         {
           name: 'eth-usd',
           quote: 'WETH',
@@ -32,11 +32,11 @@ describe('Deploy aggregator band adapter action', () => {
     },
     signer: { deployer: client },
   }
-  const action = new DeployAggregatorBandAdapterAction(data)
+  const action = new DeployBandAdapterAction(data)
   const mockRegistry = {}
 
   test('should run sub-actions successfully', async () => {
-    const mockSubActionExecute = vi.mocked(DeployAggregatorBandAdapterSubAction.prototype.execute)
+    const mockSubActionExecute = vi.mocked(DeployBandAdapterSubAction.prototype.execute)
     mockSubActionExecute.mockResolvedValue({
       newRegistry: {
         ...mockRegistry,
@@ -50,14 +50,14 @@ describe('Deploy aggregator band adapter action', () => {
   })
 
   test('should throw an error if sub-action validation fails', async () => {
-    const mockSubActionValidate = vi.mocked(DeployAggregatorBandAdapterSubAction.prototype.validate)
+    const mockSubActionValidate = vi.mocked(DeployBandAdapterSubAction.prototype.validate)
     mockSubActionValidate.mockRejectedValueOnce(new Error('Validation Error'))
 
     await expect(action.run(mockRegistry)).rejects.toThrowError('Validation Error')
   })
 
   test('should throw an error if sub-action execution fails', async () => {
-    const mockSubActionExecute = vi.mocked(DeployAggregatorBandAdapterSubAction.prototype.execute)
+    const mockSubActionExecute = vi.mocked(DeployBandAdapterSubAction.prototype.execute)
     mockSubActionExecute.mockRejectedValueOnce(new Error('Execution Error'))
 
     await expect(action.run(mockRegistry)).rejects.toThrowError('Execution Error')
@@ -65,7 +65,7 @@ describe('Deploy aggregator band adapter action', () => {
 
   test('should handle cache correctly', async () => {
     const cache: InfinitCache = {
-      name: 'DeployAggregatorBandAdapterAction',
+      name: 'DeployBandAdapterAction',
       subActions: [
         {
           name: 'MockSubAction',
@@ -77,7 +77,7 @@ describe('Deploy aggregator band adapter action', () => {
       ],
     }
 
-    const mockSubActionExecute = vi.mocked(DeployAggregatorBandAdapterSubAction.prototype.execute)
+    const mockSubActionExecute = vi.mocked(DeployBandAdapterSubAction.prototype.execute)
     mockSubActionExecute.mockResolvedValue({
       newRegistry: {
         ...mockRegistry,
@@ -105,7 +105,7 @@ describe('Deploy aggregator band adapter action', () => {
   test('should handle callback correctly', async () => {
     const callback = vi.fn()
 
-    const mockSubAction = vi.mocked(DeployAggregatorBandAdapterSubAction.prototype)
+    const mockSubAction = vi.mocked(DeployBandAdapterSubAction.prototype)
     mockSubAction.execute.mockResolvedValue({
       newRegistry: {},
       newMessage: {},

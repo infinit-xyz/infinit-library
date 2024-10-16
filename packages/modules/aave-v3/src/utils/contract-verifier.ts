@@ -19,9 +19,9 @@ export class AaveV3ContractVerifier extends BaseContractVerifier<AaveV3Registry>
       poolProxy,
       poolConfiguratorProxy,
       rewardsControllerProxy,
-      aggregatorApi3Adapters,
-      aggregatorPythAdapters,
-      aggregatorBandAdapters,
+      api3Adapters,
+      pythAdapters,
+      bandAdapters,
       ...contractToAddressRegistry
     } = registry
 
@@ -56,19 +56,19 @@ export class AaveV3ContractVerifier extends BaseContractVerifier<AaveV3Registry>
       contracts = contracts.concat(reserveInterestRateStrategyContractInfos)
     }
 
-    if (aggregatorApi3Adapters) {
-      const aggregatorApi3AdaptersContractInfos = await this.getAggregatorAdapterContractInfos(aggregatorApi3Adapters)
-      contracts = contracts.concat(aggregatorApi3AdaptersContractInfos)
+    if (api3Adapters) {
+      const api3AdaptersContractInfos = await this.getAdapterContractInfos(api3Adapters)
+      contracts = contracts.concat(api3AdaptersContractInfos)
     }
 
-    if (aggregatorPythAdapters) {
-      const aggregatorPythAdaptersContractInfos = await this.getAggregatorAdapterContractInfos(aggregatorPythAdapters)
-      contracts = contracts.concat(aggregatorPythAdaptersContractInfos)
+    if (pythAdapters) {
+      const pythAdaptersContractInfos = await this.getAdapterContractInfos(pythAdapters)
+      contracts = contracts.concat(pythAdaptersContractInfos)
     }
 
-    if (aggregatorBandAdapters) {
-      const aggregatorBandAdaptersContractInfos = await this.getAggregatorAdapterContractInfos(aggregatorBandAdapters)
-      contracts = contracts.concat(aggregatorBandAdaptersContractInfos)
+    if (bandAdapters) {
+      const bandAdaptersContractInfos = await this.getAdapterContractInfos(bandAdapters)
+      contracts = contracts.concat(bandAdaptersContractInfos)
     }
 
     return contracts
@@ -102,9 +102,9 @@ export class AaveV3ContractVerifier extends BaseContractVerifier<AaveV3Registry>
     return contracts
   }
 
-  private async getAggregatorAdapterContractInfos(aggregatorAdapters: Record<string, Address>) {
+  private async getAdapterContractInfos(adapters: Record<string, Address>) {
     const contracts: ContractInfo[] = []
-    for (const address of Object.values(aggregatorAdapters)) {
+    for (const address of Object.values(adapters)) {
       contracts.push({ address })
     }
     return contracts

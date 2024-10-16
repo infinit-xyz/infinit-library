@@ -5,24 +5,24 @@ import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
-export type DeployAggregatorApi3AdapterParams = {
+export type DeployApi3AdapterParams = {
   dataFeedProxy: Address
 }
 
-export class DeployAggregatorApi3AdapterTxBuilder extends TxBuilder {
+export class DeployApi3AdapterTxBuilder extends TxBuilder {
   private dataFeedProxy: Address
 
-  constructor(client: InfinitWallet, params: DeployAggregatorApi3AdapterParams) {
-    super(DeployAggregatorApi3AdapterTxBuilder.name, client)
+  constructor(client: InfinitWallet, params: DeployApi3AdapterParams) {
+    super(DeployApi3AdapterTxBuilder.name, client)
     this.dataFeedProxy = params.dataFeedProxy
   }
 
   async buildTx(): Promise<TransactionData> {
-    const aggregatorApi3AdapterArtifact = await readArtifact('AggregatorApi3Adapter')
+    const api3AdapterArtifact = await readArtifact('Api3Adapter')
 
     const deployData = encodeDeployData({
-      abi: aggregatorApi3AdapterArtifact.abi,
-      bytecode: aggregatorApi3AdapterArtifact.bytecode,
+      abi: api3AdapterArtifact.abi,
+      bytecode: api3AdapterArtifact.bytecode,
       args: [this.dataFeedProxy],
     })
 

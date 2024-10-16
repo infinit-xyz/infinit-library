@@ -3,22 +3,19 @@ import { describe, expect, test, vi } from 'vitest'
 import { Address, getContract, zeroAddress } from 'viem'
 
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
-import {
-  DeployAggregatorApi3AdapterSubAction,
-  DeployAggregatorApi3AdapterSubActionParams,
-} from '@actions/subactions/deployAggregatorApi3Adapter'
+import { DeployApi3AdapterSubAction, DeployApi3AdapterSubActionParams } from '@actions/subactions/deployApi3Adapter'
 
 import { AaveV3Registry } from '@/src/type'
 import { readArtifact } from '@/src/utils/artifact'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
-describe('DeployAggregatorApi3AdapterSubAction', () => {
-  let subAction: DeployAggregatorApi3AdapterSubAction
+describe('DeployApi3AdapterSubAction', () => {
+  let subAction: DeployApi3AdapterSubAction
   const tester = ARBITRUM_TEST_ADDRESSES.aaveExecutor
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
 
-  const params: DeployAggregatorApi3AdapterSubActionParams = {
-    aggregatorApi3AdapterConfigs: [
+  const params: DeployApi3AdapterSubActionParams = {
+    api3AdapterConfigs: [
       {
         name: 'eth-usd',
         dataFeedProxy: ARBITRUM_TEST_ADDRESSES.api3EthUsdDapiProxy,
@@ -31,13 +28,13 @@ describe('DeployAggregatorApi3AdapterSubAction', () => {
   }
 
   test('validate success', async () => {
-    subAction = new DeployAggregatorApi3AdapterSubAction(client, params)
+    subAction = new DeployApi3AdapterSubAction(client, params)
     await expect(subAction.validate()).resolves.not.toThrowError()
   })
 
   test('validate throw error', async () => {
-    subAction = new DeployAggregatorApi3AdapterSubAction(client, {
-      aggregatorApi3AdapterConfigs: [
+    subAction = new DeployApi3AdapterSubAction(client, {
+      api3AdapterConfigs: [
         {
           name: 'eth-usd',
           dataFeedProxy: zeroAddress,
@@ -51,12 +48,12 @@ describe('DeployAggregatorApi3AdapterSubAction', () => {
     await expect(subAction.validate()).rejects.toThrowError()
   })
 
-  test('deploy aggregator api3 adaptors and validate should be success', async () => {
-    subAction = new DeployAggregatorApi3AdapterSubAction(client, params)
+  test('deploy api3 adaptors and validate should be success', async () => {
+    subAction = new DeployApi3AdapterSubAction(client, params)
     const registry: AaveV3Registry = {}
     const callback = vi.fn()
     const result = await subAction.execute(registry, {}, callback)
-    const adapters = result.newRegistry.aggregatorApi3Adapters!
+    const adapters = result.newRegistry.api3Adapters!
 
     // check no zero address
     expect(adapters['eth-usd']).not.to.equal(zeroAddress)
@@ -64,7 +61,7 @@ describe('DeployAggregatorApi3AdapterSubAction', () => {
 
     // check unique of the adapter addresses
     const adaptersSize = new Set(Object.values(adapters)).size
-    expect(adaptersSize).to.equal(params.aggregatorApi3AdapterConfigs.length)
+    expect(adaptersSize).to.equal(params.api3AdapterConfigs.length)
 
     // validate contracts
     validateAdapter(adapters['eth-usd'])
@@ -72,19 +69,19 @@ describe('DeployAggregatorApi3AdapterSubAction', () => {
   })
 
   async function validateAdapter(adapter: Address): Promise<void> {
-    const aggregatorApi3AdapterArtifact = await readArtifact('AggregatorApi3Adapter')
+    const api3AdapterArtifact = await readArtifact('Api3Adapter')
 
     // contract instance
-    const aggregatorApi3Adapter = getContract({
+    const api3Adapter = getContract({
       address: adapter,
-      abi: aggregatorApi3AdapterArtifact.abi,
+      abi: api3AdapterArtifact.abi,
       client: client.publicClient,
     })
 
     // get info
-    const decimals = aggregatorApi3Adapter.read.decimals()
-    const lastestAnswer = aggregatorApi3Adapter.read.latestAnswer()
-    const lastestTimestamp = aggregatorApi3Adapter.read.latestTimestamp()
+    const decimals = api3Adapter.read.decimals()
+    const lastestAnswer = api3Adapter.read.latestAnswer()
+    const lastestTimestamp = api3Adapter.read.latestTimestamp()
 
     // validate
     expect(decimals).to.equal(8)
