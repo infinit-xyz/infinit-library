@@ -28,12 +28,15 @@
     }
   },
   "scripts": {
+    "postinstall": "bun ./scripts/postInstall.ts",
     "build": "tsup",
-    "clean": "rm -rf cache artifacts node_modules dist tsconfig.tsbuildinfo",
+    "clean": "rm -rf cache artifacts node_modules dist tsconfig.tsbuildinfo && find . -type l -delete",
     "typecheck_temp": "tsc --noEmit",
     "compile": "ENABLE_HARDHAT_TOOLBOX=true bun ../../../node_modules/@infinit-xyz/core/dist/exports/internal/hardhat-compile.js $PWD",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepack": "bun ./scripts/prepack.ts",
+    "postpack": "bun ./scripts/postpack.ts"
   },
   "files": [
     "/dist",
@@ -47,9 +50,19 @@
     "@openzeppelin/contracts-3.4.1-solc-0.7-2": "npm:@openzeppelin/contracts@3.4.1-solc-0.7-2",
     "@openzeppelin/contracts-3.4.2-solc-0.7": "npm:@openzeppelin/contracts@3.4.2-solc-0.7",
     "@openzeppelin/contracts-4.7.0": "npm:@openzeppelin/contracts@4.7.0",
+    
     "base64-sol": "1.0.1",
     "lodash": "^4.17.21",
-    "solmate": "git://github.com/transmissions11/solmate.git#8d910d876f51c3b2585c9109409d601f600e68e1"
+    "solmate": "git://github.com/transmissions11/solmate.git#8d910d876f51c3b2585c9109409d601f600e68e1",
+    "permit2": "https://github.com/Uniswap/permit2.git#cc56ad0f3439c502c246fc5cfcc3db92bb8b7219",
+
+    "@uniswap/swap-router-contracts": "https://github.com/Uniswap/swap-router-contracts.git#8fe4f086cee7c08f0bdb6ebe20c9ab615921c65f",
+    "@uniswap/lib": "https://github.com/Uniswap/solidity-lib.git#c01640b0f0f1d8a85cba8de378cc48469fcfd9a6",
+    "@uniswap/v2-core": "https://github.com/Uniswap/v2-core.git#4dd59067c76dea4a0e8e4bfdda41877a6b16dedc",
+    "@uniswap/v3-core": "https://github.com/Uniswap/v3-core.git#d8b1c635c275d2a9450bd6a78f3fa2484fef73eb",
+    "@uniswap/v3-periphery": "https://github.com/Uniswap/v3-periphery.git#0682387198a24c7cd63566a2c58398533860a5d1",
+    "@uniswap/v3-staker": "https://github.com/Uniswap/v3-staker.git#bc460c03c431431d5b057dad37e6ecc1b3d14f9b",
+    "@uniswap/universal-router": "https://github.com/Uniswap/universal-router.git#41183d6eb154f0ab0e74a0e911a5ef9ea51fc4bd"
   },
   "devDependencies": {
     "tsup": "^8.1.0",
