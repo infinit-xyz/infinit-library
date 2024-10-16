@@ -1,11 +1,11 @@
 {
-  "name": "@infinit-xyz/aave-v3",
-  "version": "0.0.0-alpha.19",
+  "name": "@infinit-xyz/init-capital",
+  "version": "0.0.0-alpha.0",
   "homepage": "https://infinit.tech",
   "repository": {
     "type": "git",
     "url": "https://github.com/infinit-xyz/infinit-library.git",
-    "directory": "packages/modules/aave-v3"
+    "directory": "packages/modules/init-capital"
   },
   "bugs": {
     "url": "https://github.com/infinit-xyz/infinit-library/issues"
@@ -30,8 +30,7 @@
   "scripts": {
     "postinstall": "bun ./scripts/postInstall.ts",
     "build": "tsup",
-    "clean": "rm -rf cache artifacts node_modules dist tsconfig.tsbuildinfo && find . -type l -delete",
-    "typecheck_temp": "tsc --noEmit",
+    "clean": "rm -rf cache artifacts node_modules dist",
     "compile": "ENABLE_HARDHAT_TOOLBOX=true bun ../../../node_modules/@infinit-xyz/core/dist/exports/internal/hardhat-compile.js $PWD",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
@@ -47,20 +46,18 @@
   },
   "dependencies": {
     "@infinit-xyz/core": "^0.1.0-alpha.4",
-    "aave-v3-core": "https://github.com/aave/aave-v3-core#b74526a7bc67a3a117a1963fc871b3eb8cea8435",
-    "aave-v3-periphery": "https://github.com/aave/aave-v3-periphery#803c3e7d6d1c6da8d91411f4d085494f7189ea0b",
-    "lodash": "^4.17.21"
+    "tsup": "^8.2.4",
+    "viem": "2.21.16",
+    "zod": "^3.23.8",
+    "@openzeppelin/contracts-4.9.3": "npm:@openzeppelin/contracts@4.9.3",
+    "@openzeppelin/contracts-upgradeable-4.9.3": "npm:@openzeppelin/contracts-upgradeable@4.9.3",
+    "init-capital": "https://github.com/init-capital/init-capital-contracts#59208ba34be2bf9dc65ecda32991540b4d067bb6"
   },
   "devDependencies": {
-    "tsup": "^8.1.0",
-    "@types/lodash": "^4.17.7",
+    "hardhat": "^2.22.5",
     "typescript": "^5.6.2"
   },
-  "peerDependencies": {
-    "zod": "^3.23.8",
-    "viem": "2.21.16"
-  },
   "engines": {
-    "node": ">=22"
+    "node": ">=20"
   }
 }
