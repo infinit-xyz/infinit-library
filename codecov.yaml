@@ -45,4 +45,4 @@ component_management:
 ignore:
   - 'scripts/*'
   - 'packages/**/scripts/*'
-  = 'packages/test'
+  - 'packages/test'
