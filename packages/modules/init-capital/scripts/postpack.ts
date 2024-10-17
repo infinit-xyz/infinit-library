@@ -3,7 +3,7 @@ import { $ } from 'bun'
 
 import { linkContractDirectory } from '../../../../scripts/linkContracts'
 
-const targetRepositories: string[] = ['lib', 'v3-core', 'v2-core', 'v3-periphery', 'v3-staker', 'swap-router-contracts', 'universal-router']
+const targetRepositories: string[] = ['init-capital']
 
 await Promise.all(
   targetRepositories.map(async (repo: string) => {
@@ -11,8 +11,6 @@ await Promise.all(
   }),
 )
 
-linkContractDirectory(`../../../node_modules/permit2/src`, `permit2/contracts`)
-
 await targetRepositories.map(async (repo) => {
-  linkContractDirectory(`../../../node_modules/@uniswap/${repo}/contracts`, `${repo}/contracts`)
+  linkContractDirectory(`../../../node_modules/${repo}/contracts`, `${repo}/contracts`)
 })

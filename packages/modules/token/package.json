@@ -1,6 +1,6 @@
 {
   "name": "@infinit-xyz/token",
-  "version": "0.0.0-alpha.16",
+  "version": "0.0.0-alpha.17",
   "homepage": "https://infinit.tech",
   "repository": {
     "type": "git",
@@ -46,7 +46,7 @@
     "extends": "../../../.eslintrc.js"
   },
   "dependencies": {
-    "@infinit-xyz/core": "^0.1.0-alpha.4",
+    "@infinit-xyz/core": "^0.1.0-alpha.5",
     "@openzeppelin/merkle-tree": "^1.0.7",
     "infinit-erc20-contracts": "https://github.com/infinit-xyz/infinit-erc20-contracts.git",
     "lodash": "^4.17.21"
@@ -58,7 +58,7 @@
   },
   "peerDependencies": {
     "zod": "^3.23.8",
-    "viem": "2.21.16"
+    "viem": "2.21.28"
   },
   "engines": {
     "node": ">=22"

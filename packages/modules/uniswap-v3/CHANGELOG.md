@@ -1,5 +1,21 @@
 # @infinit-xyz/uniswap-v3
 
+## 0.0.0-alpha.18
+
+### Patch Changes
+
+- [#81](https://github.com/infinit-xyz/infinit-library/pull/81)
+  [`a851684`](https://github.com/infinit-xyz/infinit-library/commit/a85168472b39588461576567805e133573eb4bc0) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - use contracts from node_modules
+
+- [#91](https://github.com/infinit-xyz/infinit-library/pull/91)
+  [`51eb6d4`](https://github.com/infinit-xyz/infinit-library/commit/51eb6d4ddc3906459a4f6df23b9b992100331919) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - bump viem version from 2.21.16 to 2.21.28
+
+- Updated dependencies [[`128f5d5`](https://github.com/infinit-xyz/infinit-library/commit/128f5d53bb344eb5078436684413ecd12e86a05b),
+  [`51eb6d4`](https://github.com/infinit-xyz/infinit-library/commit/51eb6d4ddc3906459a4f6df23b9b992100331919)]:
+  - @infinit-xyz/core@0.1.0-alpha.5
+
 ## 0.0.0-alpha.17
 
 ### Minor Changes

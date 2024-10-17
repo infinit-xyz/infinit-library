@@ -20,21 +20,29 @@ runs:
       shell: bash
       run: bun install --frozen-lockfile
 
-    - name: Cache artifacts
-      id: cache-artifacts
-      uses: actions/cache@v4
-      env:
-        cache-name: cache-artifacts
-      with:
-        path: ./packages/modules/**/artifacts/**
-        key: ${{ env.cache-name }}-${{ hashFiles('**/package.json','**/bun.lockb','./packages/modules/**/contracts/**/*') }}
+    # - name: Cache artifacts
+    #   id: cache-artifacts
+    #   uses: actions/cache@v4
+    #   env:
+    #     cache-name: cache-artifacts
+    #   with:
+    #     path: ./packages/modules/**/artifacts/**
+    #     key: ${{ env.cache-name }}-${{ hashFiles('**/package.json','**/bun.lockb','./packages/modules/**/contracts/**/*') }}
 
-    - if: ${{ steps.cache-artifacts.outputs.cache-hit == 'true' }}
-      name: Artifacts cache hit
-      shell: bash
-      run: echo "👍 Artifacts Cache Hit"
+    # - if: ${{ steps.cache-artifacts.outputs.cache-hit == 'true' }}
+    #   name: Artifacts cache hit
+    #   shell: bash
+    #   run: echo "👍 Artifacts Cache Hit"
 
-    - if: ${{ steps.cache-artifacts.outputs.cache-hit != 'true' }}
-      name: Compile contracts
+    # - if: ${{ steps.cache-artifacts.outputs.cache-hit != 'true' }}
+    #   name: Compile contracts
+    #   shell: bash
+    #   run: echo "👎 Artifacts Cache Miss -> Compiling contracts..." && bun run build && bun run compile
+
+    - name: Bundle source code
       shell: bash
-      run: echo "👎 Artifacts Cache Miss -> Compiling contracts..." && bun run build && bun run compile
+      run: bun run build
+
+    - name: Compile contracts
+      shell: bash
+      run: bun run compile
