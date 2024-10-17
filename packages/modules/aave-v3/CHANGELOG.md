@@ -1,5 +1,21 @@
 # @infinit-xyz/aave-v3
 
+## 0.0.0-alpha.20
+
+### Patch Changes
+
+- [#78](https://github.com/infinit-xyz/infinit-library/pull/78)
+  [`357264d`](https://github.com/infinit-xyz/infinit-library/commit/357264d7fd3001cb7af10e5f581fa3f17f527598) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - use symlink contracts folder
+
+- [#91](https://github.com/infinit-xyz/infinit-library/pull/91)
+  [`51eb6d4`](https://github.com/infinit-xyz/infinit-library/commit/51eb6d4ddc3906459a4f6df23b9b992100331919) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - bump viem version from 2.21.16 to 2.21.28
+
+- Updated dependencies [[`128f5d5`](https://github.com/infinit-xyz/infinit-library/commit/128f5d53bb344eb5078436684413ecd12e86a05b),
+  [`51eb6d4`](https://github.com/infinit-xyz/infinit-library/commit/51eb6d4ddc3906459a4f6df23b9b992100331919)]:
+  - @infinit-xyz/core@0.1.0-alpha.5
+
 ## 0.0.0-alpha.19
 
 ### Minor Changes
