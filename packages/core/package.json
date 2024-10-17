@@ -77,7 +77,7 @@
   },
   "peerDependencies": {
     "zod": "^3.23.8",
-    "viem": "2.21.16"
+    "viem": "2.21.28"
   },
   "engines": {
     "node": ">=22"
