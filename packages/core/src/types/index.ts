@@ -23,4 +23,5 @@ export { ToSendTransaction, TransactionData }
 
 export { InfinitAction, InfinitActionRecord } from './action'
 export { InfinitCache } from './cache'
-export { InfinitCallback } from './callback'
+export { InfinitCallback } from './callback/action'
+export { ContractVerifierCallback } from './callback/contractVerifier'

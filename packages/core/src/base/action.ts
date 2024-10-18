@@ -1,6 +1,6 @@
 import { SubAction } from '@base/subAction'
 
-import { CallbackParams } from '@/types/callback'
+import { CallbackParams } from '@/types/callback/action'
 import { InfinitCache, InfinitCallback } from 'src/types'
 
 import { IncorrectCacheError } from '@errors/index'
