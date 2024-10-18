@@ -78,8 +78,9 @@ describe('subAction', () => {
 
       await subAction.checkCache(txCaches, callback)
 
-      expect(callback).toBeCalledWith('txChecked', { txHash: successTxHash, status: 'CONFIRMED' })
-      expect(callback).toBeCalledWith('txChecked', { txHash: failTxHash, status: 'REVERTED' })
+      const walletAddress = client.walletClient.account.address
+      expect(callback).toBeCalledWith('txChecked', { txHash: successTxHash, status: 'CONFIRMED', walletAddress })
+      expect(callback).toBeCalledWith('txChecked', { txHash: failTxHash, status: 'REVERTED', walletAddress })
       expect(callback).toBeCalledTimes(2)
     })
   })

@@ -74,6 +74,7 @@ export class InfinitWallet {
     const txReceipts: TransactionReceipt[] = []
 
     for (const transaction of transactions) {
+      const walletAddress = this.walletClient.account.address
       // Send the transaction using the wallet client and get the transaction hash
       const txHash: Hash = await this.walletClient.sendTransaction({
         ...transaction.txData,
@@ -81,7 +82,7 @@ export class InfinitWallet {
       })
 
       // Notify the callback that the transaction has been submitted
-      await callback?.('txSubmitted', { name: transaction.name, txHash })
+      await callback?.('txSubmitted', { name: transaction.name, txHash, walletAddress })
 
       // Wait for the transaction to be confirmed and get the receipt
       const txReceipt = await this.publicClient.waitForTransactionReceipt({ hash: txHash })
@@ -92,7 +93,7 @@ export class InfinitWallet {
       }
 
       // Notify the callback that the transaction has been confirmed
-      await callback?.('txConfirmed', { name: transaction.name, txHash })
+      await callback?.('txConfirmed', { name: transaction.name, txHash, walletAddress })
 
       // Add the transaction receipt to the array of receipts
       txReceipts.push(txReceipt)
