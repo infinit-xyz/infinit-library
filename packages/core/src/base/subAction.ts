@@ -139,8 +139,9 @@ abstract class SubAction<P extends object = {}, R extends object = {}, M extends
       }
 
       const isTxSuccess = await this.client.checkTransaction(txHash)
+      const walletAddress = this.client.walletClient.account.address
 
-      await callback?.('txChecked', { txHash: txHash, status: isTxSuccess ? 'CONFIRMED' : 'REVERTED' })
+      await callback?.('txChecked', { txHash: txHash, status: isTxSuccess ? 'CONFIRMED' : 'REVERTED', walletAddress })
 
       if (!isTxSuccess) {
         failedIdx = idx
