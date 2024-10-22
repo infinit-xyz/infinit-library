@@ -3,9 +3,10 @@ import { Address, Hex } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
 
-import { InitCapitalRegistry } from '@/src/type'
 import { DeployAccessControlManagerTxBuilder } from '@actions/subactions/tx-builders/AccessControlManager/deploy'
 import { DeployProxyAdminTxBuilder } from '@actions/subactions/tx-builders/ProxyAdmin/deploy'
+
+import { InitCapitalRegistry } from '@/src/type'
 
 export type DeployInitCapitalContracts_1SubActionParams = {}
 
@@ -14,7 +15,11 @@ export type DeployInitCapitalMsg = {
   accessControlManager: Address
 }
 
-export class DeployInitCapitalContracts1SubAction extends SubAction<DeployInitCapitalContracts_1SubActionParams, InitCapitalRegistry, DeployInitCapitalMsg> {
+export class DeployInitCapitalContracts1SubAction extends SubAction<
+  DeployInitCapitalContracts_1SubActionParams,
+  InitCapitalRegistry,
+  DeployInitCapitalMsg
+> {
   constructor(client: InfinitWallet, params: DeployInitCapitalContracts_1SubActionParams) {
     super(DeployInitCapitalContracts1SubAction.name, client, params)
   }
@@ -45,7 +50,7 @@ export class DeployInitCapitalContracts1SubAction extends SubAction<DeployInitCa
     registry['accessControlManager'] = accessControlManager
 
     const { contractAddress: proxyAdmin } = await this.client.publicClient.waitForTransactionReceipt({
-       hash: deployProxyAdminHash 
+      hash: deployProxyAdminHash,
     })
     if (!proxyAdmin) {
       throw new ContractNotFoundError(deployProxyAdminHash, 'ProxyAdmin')
@@ -54,7 +59,7 @@ export class DeployInitCapitalContracts1SubAction extends SubAction<DeployInitCa
 
     const newMessage: DeployInitCapitalMsg = {
       proxyAdmin,
-      accessControlManager
+      accessControlManager,
     }
     return { newRegistry: registry, newMessage: newMessage }
   }

@@ -1,4 +1,4 @@
-import { Address, encodeDeployData, getAddress, Hex } from 'viem'
+import { Address, Hex, encodeDeployData, getAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 
@@ -14,7 +14,7 @@ export class DeployMoneyMarketHookTxBuilder extends TxBuilder {
   private initCore: Address
   private wrappedNativeToken: Address
   private accessControlManager: Address
-  
+
   constructor(client: InfinitWallet, params: DeployMoneyMarketHookTxBuilderParams) {
     super(DeployMoneyMarketHookTxBuilder.name, client)
     this.initCore = getAddress(params.initCore)

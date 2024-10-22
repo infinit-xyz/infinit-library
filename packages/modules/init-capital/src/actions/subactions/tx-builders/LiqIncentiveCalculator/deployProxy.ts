@@ -3,8 +3,9 @@ import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 
-import { readArtifact } from '@/src/utils/artifact'
 import { DeployTransparentUpgradeableProxyTxBuilder } from '@actions/subactions/tx-builders/TransparentUpgradeableProxy/deploy'
+
+import { readArtifact } from '@/src/utils/artifact'
 
 export type DeployLiqIncentiveCalculatorProxyTxBuilderParams = {
   logic: Address
@@ -29,15 +30,15 @@ export class DeployLiqIncentiveCalculatorProxyTxBuilder extends TxBuilder {
     const txData = encodeFunctionData({
       abi: liqIncentiveCalculatorArtifact.abi,
       functionName: 'initialize',
-      args: [this.maxLiqIncentiveMultiplier]
+      args: [this.maxLiqIncentiveMultiplier],
     })
 
     const txBuilder = new DeployTransparentUpgradeableProxyTxBuilder(this.client, {
-        logic: this.logic,
-        admin: this.admin,
-        data: txData,
+      logic: this.logic,
+      admin: this.admin,
+      data: txData,
     })
-    
+
     return await txBuilder.buildTx()
   }
 

@@ -22,7 +22,11 @@ export class BeginDefaultAdminTransferTxBuilder extends TxBuilder {
 
   async buildTx(): Promise<TransactionData> {
     const accessControlManagerArtifact = await readArtifact('AccessControlManager')
-    const encodedData = encodeFunctionData({ abi: accessControlManagerArtifact.abi, functionName: 'beginDefaultAdminTransfer', args: [this.newOwner] })
+    const encodedData = encodeFunctionData({
+      abi: accessControlManagerArtifact.abi,
+      functionName: 'beginDefaultAdminTransfer',
+      args: [this.newOwner],
+    })
     return {
       to: this.accessControlManager,
       data: encodedData,

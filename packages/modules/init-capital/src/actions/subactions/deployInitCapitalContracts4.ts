@@ -3,11 +3,11 @@ import { Address, Hex } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
 
-import { InitCapitalRegistry } from '@/src/type'
 import { DeployLendingPoolTxBuilder } from '@actions/subactions/tx-builders/LendingPool/deploy'
 import { DeployMoneyMarketHookTxBuilder } from '@actions/subactions/tx-builders/MoneyMarketHook/deploy'
 import { DeployRiskManagerTxBuilder } from '@actions/subactions/tx-builders/RiskManager/deploy'
 
+import { InitCapitalRegistry } from '@/src/type'
 
 export type DeployInitCapitalContracts_4SubActionParams = {
   accessControlManager: Address
@@ -16,31 +16,41 @@ export type DeployInitCapitalContracts_4SubActionParams = {
 }
 
 export type DeployInitCapitalMsg_4 = {
-    riskManagerImpl: Address
-    lendingPoolImpl: Address
-    moneyMarketHookImpl: Address
+  riskManagerImpl: Address
+  lendingPoolImpl: Address
+  moneyMarketHookImpl: Address
 }
 
-export class DeployInitCapitalContracts4SubAction extends SubAction<DeployInitCapitalContracts_4SubActionParams, InitCapitalRegistry, DeployInitCapitalMsg_4> {
+export class DeployInitCapitalContracts4SubAction extends SubAction<
+  DeployInitCapitalContracts_4SubActionParams,
+  InitCapitalRegistry,
+  DeployInitCapitalMsg_4
+> {
   constructor(client: InfinitWallet, params: DeployInitCapitalContracts_4SubActionParams) {
     super(DeployInitCapitalContracts4SubAction.name, client, params)
   }
 
   protected setTxBuilders(): void {
     // ----------- implementation -----------
-    this.txBuilders.push(new DeployRiskManagerTxBuilder(this.client, {
+    this.txBuilders.push(
+      new DeployRiskManagerTxBuilder(this.client, {
         initCore: this.params.initCoreProxy,
-        accessControlManager: this.params.accessControlManager
-    }))
-    this.txBuilders.push(new DeployLendingPoolTxBuilder(this.client, {
+        accessControlManager: this.params.accessControlManager,
+      }),
+    )
+    this.txBuilders.push(
+      new DeployLendingPoolTxBuilder(this.client, {
         initCore: this.params.initCoreProxy,
-        accessControlManager: this.params.accessControlManager
-    }))
-    this.txBuilders.push(new DeployMoneyMarketHookTxBuilder(this.client, {
+        accessControlManager: this.params.accessControlManager,
+      }),
+    )
+    this.txBuilders.push(
+      new DeployMoneyMarketHookTxBuilder(this.client, {
         initCore: this.params.initCoreProxy,
         wrappedNativeToken: this.params.wrappedNativeToken,
-        accessControlManager: this.params.accessControlManager
-    }))
+        accessControlManager: this.params.accessControlManager,
+      }),
+    )
   }
 
   public async updateRegistryAndMessage(
@@ -76,11 +86,11 @@ export class DeployInitCapitalContracts4SubAction extends SubAction<DeployInitCa
       throw new ContractNotFoundError(deployMoneyMarketHookHash, 'MoneyMarketHook')
     }
     registry['moneyMarketHookImpl'] = moneyMarketHookImpl
-    
+
     const newMessage: DeployInitCapitalMsg_4 = {
       riskManagerImpl,
       lendingPoolImpl,
-      moneyMarketHookImpl
+      moneyMarketHookImpl,
     }
 
     return { newRegistry: registry, newMessage: newMessage }

@@ -1,4 +1,4 @@
-import { Address, encodeDeployData, getAddress, Hex } from 'viem'
+import { Address, Hex, encodeDeployData, getAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 
@@ -10,7 +10,7 @@ export interface DeployConfigTxBuilderParams {
 
 export class DeployConfigTxBuilder extends TxBuilder {
   private accessControlManager: Address
-  
+
   constructor(client: InfinitWallet, params: DeployConfigTxBuilderParams) {
     super(DeployConfigTxBuilder.name, client)
     this.accessControlManager = getAddress(params.accessControlManager)
