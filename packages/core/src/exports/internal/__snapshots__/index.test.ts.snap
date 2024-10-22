@@ -10,6 +10,7 @@ exports[`exports - internal/index: should match snapshot 1`] = `
   "isBlockscout",
   "verifyContract",
   "validateActionData",
+  "validateZodObject",
   "zodAddress",
   "zodAddressNonZero",
   "zodHex",

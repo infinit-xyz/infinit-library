@@ -14,7 +14,7 @@ import { formatZodError } from '@/utils/validate'
  */
 const validateZodObject = (data: any, schema: SomeZodObject): void => {
   try {
-    schema.parse(data.params)
+    schema.parse(data)
   } catch (error) {
     if (error instanceof ZodError) {
       throw new ValidateInputValueError(formatZodError(error), error)
