@@ -1,6 +1,7 @@
-import { Address, encodeFunctionData } from 'viem'
+import { Address, encodeFunctionData, keccak256, toHex } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
+import { ContractValidateError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -46,5 +47,16 @@ export class SetPoolConfigTxBuilder extends TxBuilder {
     return tx
   }
 
-  public async validate(): Promise<void> {}
+  public async validate(): Promise<void> {
+    const acmArtifact = await readArtifact('AccessControlManager')
+    const hasRole: boolean = await this.client.publicClient.readContract({
+      address: this.config,
+      abi: acmArtifact.abi,
+      functionName: 'hasRole',
+      args: [keccak256(toHex('guardian')), this.client.walletClient.account.address],
+    })
+    if (!hasRole) {
+      throw new ContractValidateError('NOT_GUARDIAN')
+    }
+  }
 }
