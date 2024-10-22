@@ -1,5 +1,5 @@
 ---
-'@infinit-xyz/aave-v3': minor
+'@infinit-xyz/uniswap-v3': minor
 ---
 
 minor: update type from core
