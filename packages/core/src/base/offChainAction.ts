@@ -13,7 +13,7 @@ type OffChainActionReturn<D extends object | string | [] | undefined> = {
   /**
    * Optional data returned by the action.
    */
-  data?: D
+  data: D
 }
 
 /**

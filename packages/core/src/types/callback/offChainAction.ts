@@ -18,11 +18,11 @@ type OffChainActionCallbackParams = {
     /**
      * Current progress step.
      */
-    current?: number
+    currentStep?: number
     /**
      * Total steps for the progress.
      */
-    total?: number
+    totalSteps?: number
     /**
      * Message indicating the progress of the action.
      */
@@ -52,6 +52,6 @@ type OffChainActionCallbackKeys = keyof OffChainActionCallbackParams
  * @param value - The value corresponding to the parameters of that event.
  * @returns A promise that resolves when the callback is completed.
  */
-type OffChainActionCallback = <T extends OffChainActionCallbackKeys>(key: T, value: OffChainActionCallbackParams[T]) => Promise<void>
+type OffChainActionCallback = <T extends OffChainActionCallbackKeys>(key: T, value?: OffChainActionCallbackParams[T]) => Promise<void>
 
 export { OffChainActionCallback, OffChainActionCallbackKeys, OffChainActionCallbackParams }

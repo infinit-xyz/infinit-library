@@ -10,6 +10,8 @@ exports[`exports - index: should match snapshot 1`] = `
   "ActionCallback",
   "ContractVerifierCallback",
   "OffChainActionCallback",
+  "InfinitOffChainAction",
+  "InfinitOffChainActionRecord",
   "Action",
   "OffChainAction",
   "SubAction",
