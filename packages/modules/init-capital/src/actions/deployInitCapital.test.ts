@@ -43,6 +43,26 @@ describe('deployInitCapitalAction', () => {
         maxLiqIncentiveMultiplier: 100n,
         governor: oneAddress,
         guardian: oneAddress,
+        doubleSlopeIRMConfigs: [
+          {
+            name: 'StablecoinIRM',
+            params: {
+              baseBorrowRateE18: 100000000000000000n,
+              jumpUtilizationRateE18: 800000000000000000n,
+              borrowRateMultiplierE18: 10000000000000000n,
+              jumpRateMultiplierE18: 10000000000000000n,
+            },
+          },
+          {
+            name: 'MajorcoinIRM',
+            params: {
+              baseBorrowRateE18: 100000000000000000n,
+              jumpUtilizationRateE18: 800000000000000000n,
+              borrowRateMultiplierE18: 10000000000000000n,
+              jumpRateMultiplierE18: 10000000000000000n,
+            },
+          },
+        ],
       },
       signer: {
         deployer: client,
@@ -69,6 +89,11 @@ describe('deployInitCapitalAction', () => {
     expect(curRegistry.riskManagerImpl).not.toBe(zeroAddress)
     expect(curRegistry.moneyMarketHookImpl).not.toBe(zeroAddress)
     expect(curRegistry.lendingPoolImpl).not.toBe(zeroAddress)
+    // check that name in irms is correct
+    expect(Object.keys(curRegistry.irms!)).toEqual(['StablecoinIRM', 'MajorcoinIRM'])
+    for (const irm of Object.values(curRegistry.irms!)) {
+      expect(irm).not.toBe(zeroAddress)
+    }
     // check AccessControlManager owner
     const accessControlManagerArtifact = await readArtifact('AccessControlManager')
     const accessControlManagerOwner = await client.publicClient.readContract({
