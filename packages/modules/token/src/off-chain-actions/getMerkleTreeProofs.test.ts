@@ -18,7 +18,7 @@ describe('GetMerkleTreeProofsOffChainAction', () => {
         },
       }
 
-      const result = await action.run(params)
+      const result = await action.run({}, params)
 
       expect(result.message).toBe('Generate Merkle Tree Proofs Successfully')
       expect(result.data).toMatchSnapshot()
@@ -34,7 +34,7 @@ describe('GetMerkleTreeProofsOffChainAction', () => {
         },
       }
 
-      await expect(action.run(params)).rejects.toThrowError(ValidateInputValueError)
+      await expect(action.run({}, params)).rejects.toThrowError(ValidateInputValueError)
     })
   })
 })
