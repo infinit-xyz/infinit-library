@@ -19,7 +19,7 @@ export class InitializePosManagerTxBuilder extends TxBuilder {
   private initCore: Address
   private maxCollCount: number
 
-  constructor(client: InfinitWallet, params: InitializePosManagerParams) {
+  constructor(client: InfinitWallet, params: InitializePosManagerTxBuilderParams) {
     super(InitializePosManagerTxBuilder.name, client)
     this.posManager = getAddress(params.posManager)
     this.nftName = params.nftName
