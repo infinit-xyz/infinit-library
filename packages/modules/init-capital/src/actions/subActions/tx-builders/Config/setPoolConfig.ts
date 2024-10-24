@@ -21,9 +21,9 @@ export type SetPoolConfigTxBuilderParams = {
 }
 
 export class SetPoolConfigTxBuilder extends TxBuilder {
-  config: Address
-  pool: Address
-  poolConfig: PoolConfig
+  public config: Address
+  public pool: Address
+  public poolConfig: PoolConfig
 
   constructor(client: InfinitWallet, params: SetPoolConfigTxBuilderParams) {
     super(SetPoolConfigTxBuilder.name, client)

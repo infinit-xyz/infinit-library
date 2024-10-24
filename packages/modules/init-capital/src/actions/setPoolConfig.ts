@@ -20,10 +20,10 @@ export type SetPoolConfigActionData = {
   signer: Record<'guardian', InfinitWallet>
 }
 
-export class ConfigRewardsAction extends Action<SetPoolConfigActionData, InitCapitalRegistry> {
+export class SetPoolConfigAction extends Action<SetPoolConfigActionData, InitCapitalRegistry> {
   constructor(data: SetPoolConfigActionData) {
     validateActionData(data, SetPoolConfigParamsSchema, ['guardian'])
-    super(ConfigRewardsAction.name, data)
+    super(SetPoolConfigAction.name, data)
   }
 
   protected getSubActions(): SubAction[] {
