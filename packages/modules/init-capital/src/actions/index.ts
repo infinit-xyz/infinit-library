@@ -1,17 +1,14 @@
-import { z } from 'zod'
-
 import { InfinitActionRecord } from '@infinit-xyz/core'
 
-// remove this
-class MockAction {}
+import { DeployInitCapitalAction, DeployInitCapitalParamsSchema } from '@actions/deployInitCapital'
 
 export const actions = {
   init: {
-    name: 'UPDATE THIS',
-    actionClassName: MockAction.name,
-    paramsSchema: z.object({}),
-    signers: ['deployer'],
+    name: 'Deploy Init Capital',
+    actionClassName: DeployInitCapitalAction.name,
+    paramsSchema: DeployInitCapitalParamsSchema,
+    signers: ['deployer', 'accessControlManagerOwner'],
   },
 } satisfies InfinitActionRecord
 
-export { MockAction }
+export { DeployInitCapitalAction }
