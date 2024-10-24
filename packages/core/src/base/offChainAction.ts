@@ -1,4 +1,4 @@
-import { OffChainActionCallback } from '@/types/callback/offChainAction'
+import { OffChainActionCallback } from '@/types'
 
 /**
  * The return type for off-chain actions.
@@ -24,18 +24,13 @@ type OffChainActionReturn<D extends object | string | [] | undefined> = {
  */
 abstract class OffChainAction<P extends object | undefined = undefined, D extends object | string | [] | undefined = undefined> {
   /**
-   * The name of the off-chain action.
-   */
-  public name: string
-
-  /**
    * Creates an instance of OffChainAction.
-   *
-   * @param name - The name of the off-chain action.
    */
-  constructor(name: string) {
-    this.name = name
+  constructor() {
+    this.initialize()
   }
+
+  abstract initialize(): void
 
   /**
    * Abstract method to run the off-chain action.
