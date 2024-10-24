@@ -5,7 +5,7 @@ import { Address } from 'viem'
 import { OffChainAction, OffChainActionCallback, OffChainActionReturn } from '@infinit-xyz/core'
 import { validateZodObject, zodAddress } from '@infinit-xyz/core/internal'
 
-import { MerkleTreeProofs } from '@/src/type'
+import { MerkleTreeProofs, TokenRegistry } from '@/src/type'
 import { MerkleTree } from '@utils/merkleTree'
 
 enum Step {
@@ -21,12 +21,15 @@ export const GetMerkleTreeProofsOffChainActionParamsSchema = z.object({
 
 export type GetMerkleTreeProofsOffChainActionParams = z.infer<typeof GetMerkleTreeProofsOffChainActionParamsSchema>
 
-export class GetMerkleTreeProofsOffChainAction extends OffChainAction<GetMerkleTreeProofsOffChainActionParams, MerkleTreeProofs> {
-  constructor() {
-    super(GetMerkleTreeProofsOffChainAction.name)
-  }
+export class GetMerkleTreeProofsOffChainAction extends OffChainAction<
+  TokenRegistry,
+  GetMerkleTreeProofsOffChainActionParams,
+  MerkleTreeProofs
+> {
+  override initialize(): void {}
 
   public override async run(
+    _registry: TokenRegistry, // unused
     params: GetMerkleTreeProofsOffChainActionParams,
     callback?: OffChainActionCallback,
   ): Promise<OffChainActionReturn<MerkleTreeProofs>> {
