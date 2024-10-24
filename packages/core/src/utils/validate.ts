@@ -2,6 +2,7 @@ import { SomeZodObject, ZodError } from 'zod'
 
 import { ActionData } from '@base/action'
 
+import { validateZodObject } from '@/utils/zod'
 import { ValidateInputValueError } from '@errors/index'
 
 const formatZodError = (error: ZodError): string => {
@@ -23,16 +24,7 @@ const validateActionData = (data: ActionData, schema: SomeZodObject, signers: st
     }
   }
   // validate params
-  try {
-    schema.parse(data.params)
-  } catch (error) {
-    if (error instanceof ZodError) {
-      throw new ValidateInputValueError(formatZodError(error), error)
-    }
-
-    // other error
-    throw error
-  }
+  validateZodObject(data.params, schema)
 }
 
 export { formatZodError, validateActionData }

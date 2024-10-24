@@ -9,14 +9,25 @@ export default defineConfig({
     poolOptions: {
       threads: {
         minThreads: 1,
-        maxThreads: 8,
+        maxThreads: 6,
       },
     },
     globals: true,
     coverage: {
       reporter: ['text', 'json', 'html', 'json-summary'],
       provider: 'v8',
-      exclude: ['**/*.config.*'],
+      exclude: [
+        'packages/test',
+        'scripts',
+        'packages/**/scripts/**',
+        '**/*.config.*',
+        '**/dist/**',
+        'node_modules/**',
+        '**/artifacts/**',
+        '**/cache/**',
+        '**/contracts/**',
+        '**/__mocks__/**',
+      ],
     },
     testTimeout: 25000,
     hookTimeout: 15000,

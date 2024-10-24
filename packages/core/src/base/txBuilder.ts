@@ -1,4 +1,4 @@
-import { InfinitCallback, TransactionData } from '@/types'
+import { ActionCallback, TransactionData } from '@/types'
 
 import { InfinitWallet } from '@infinit-wallet/index'
 
@@ -42,7 +42,7 @@ abstract class TxBuilder {
    * @param callback - An optional callback function to be executed after the transaction data is retrieved.
    * @returns A promise that resolves with the transaction data for the transaction builder.
    */
-  public async getTx(callback?: InfinitCallback): Promise<TransactionData> {
+  public async getTx(callback?: ActionCallback): Promise<TransactionData> {
     return this.buildTx(callback)
   }
 
@@ -67,7 +67,7 @@ abstract class TxBuilder {
    * @param callback - An optional callback function to be executed after the transaction data is built.
    * @returns A promise that resolves with the transaction data for the transaction builder.
    */
-  protected abstract buildTx(callback?: InfinitCallback): Promise<TransactionData>
+  protected abstract buildTx(callback?: ActionCallback): Promise<TransactionData>
 }
 
 export { TxBuilder }

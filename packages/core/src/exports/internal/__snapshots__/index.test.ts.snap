@@ -2,14 +2,15 @@
 
 exports[`exports - internal/index: should match snapshot 1`] = `
 [
-  "BaseContractVerifier",
-  "isBlockscout",
-  "verifyContract",
   "BlockExplorerParams",
   "ContractInfo",
   "ContractVerifierCallback",
   "ContractVerifierCallbackParams",
+  "BaseContractVerifier",
+  "isBlockscout",
+  "verifyContract",
   "validateActionData",
+  "validateZodObject",
   "zodAddress",
   "zodAddressNonZero",
   "zodHex",

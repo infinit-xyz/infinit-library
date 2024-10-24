@@ -6,7 +6,7 @@ import { linea } from 'viem/chains'
 import { MockTxBuilder } from '@base/__mock__/txBuilder.mock'
 import { TxBuilder } from '@base/txBuilder'
 
-import { TransactionData } from '../../types'
+import { TransactionData } from '@/types'
 
 import { MOCK_PRIVATE_KEY } from '@infinit-wallet/__mock__/constants.mock'
 import { InfinitWallet } from '@infinit-wallet/index'

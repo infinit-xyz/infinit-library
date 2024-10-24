@@ -1,0 +1,21 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`GetMerkleTreeProofsOffChainAction > run > should run successfully 1`] = `
+{
+  "proofs": {
+    "0x0000000000000000000000000000000000000b0b": {
+      "amount": "10",
+      "proof": [
+        "0x67c6a2e151d4352a55021b5d0028c18121cfc24c7d73b179d22b17daff069c6e",
+      ],
+    },
+    "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266": {
+      "amount": "1",
+      "proof": [
+        "0xafc6f8fb50c5343cc92a27103f4957af79694fe75477c9f9cb2234403abb205b",
+      ],
+    },
+  },
+  "root": "0x58a6afa2098c00b60e53a3f29f12ee2355536ec7fdb863e8abce018e011c3164",
+}
+`;

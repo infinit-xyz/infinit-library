@@ -2,12 +2,12 @@
 
 exports[`utils/verifier/index.ts > export: should match snapshot 1`] = `
 [
-  "BaseContractVerifier",
-  "isBlockscout",
-  "verifyContract",
   "BlockExplorerParams",
   "ContractInfo",
   "ContractVerifierCallback",
   "ContractVerifierCallbackParams",
+  "BaseContractVerifier",
+  "isBlockscout",
+  "verifyContract",
 ]
 `;
