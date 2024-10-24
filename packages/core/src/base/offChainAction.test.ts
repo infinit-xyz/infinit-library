@@ -6,7 +6,8 @@ import { OffChainAction, OffChainActionReturn } from './offChainAction'
 
 // Mock implementation of OffChainAction for testing
 class TestOffChainAction extends OffChainAction<{}, { param1: string }, { result: string }> {
-  override initialize(): void {
+  constructor() {
+    super()
     this.name = TestOffChainAction.name
   }
 

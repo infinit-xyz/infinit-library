@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test, vi } from 'vitest'
 
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 
@@ -35,6 +35,34 @@ describe('GetMerkleTreeProofsOffChainAction', () => {
       }
 
       await expect(action.run({}, params)).rejects.toThrowError(ValidateInputValueError)
+    })
+
+    test('should handle callback correctly', async () => {
+      const action = new GetMerkleTreeProofsOffChainAction()
+
+      const params: GetMerkleTreeProofsOffChainActionParams = {
+        userRewardMapping: {
+          [TEST_ADDRESSES.bob]: '10',
+          [TEST_ADDRESSES.tester]: '1',
+        },
+      }
+
+      const callback = vi.fn()
+
+      await action.run({}, params, callback)
+
+      expect(callback).toHaveBeenCalledWith('start', { message: 'Get Merkle Tree Proofs' })
+      expect(callback).toHaveBeenCalledWith('progress', {
+        currentStep: 1,
+        totalSteps: 2,
+        message: 'Validating data',
+      })
+      expect(callback).toHaveBeenCalledWith('progress', {
+        currentStep: 2,
+        totalSteps: 2,
+        message: 'Generating Merkle Tree Proofs',
+      })
+      expect(callback).toHaveBeenCalledWith('finish')
     })
   })
 })

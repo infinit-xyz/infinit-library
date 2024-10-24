@@ -13,7 +13,7 @@ enum Step {
   GENERATE_MERKLE_TREE_PROOFS = 2,
 }
 
-const TOTAL_STEP = Object.keys(Step).length
+const TOTAL_STEP = Object.keys(Step).length / 2
 
 export const GetMerkleTreeProofsOffChainActionParamsSchema = z.object({
   userRewardMapping: z.record(zodAddress, z.string()),
@@ -26,7 +26,10 @@ export class GetMerkleTreeProofsOffChainAction extends OffChainAction<
   GetMerkleTreeProofsOffChainActionParams,
   MerkleTreeProofs
 > {
-  override initialize(): void {}
+  constructor() {
+    super()
+    this.name = GetMerkleTreeProofsOffChainAction.name
+  }
 
   public override async run(
     _registry: TokenRegistry, // unused

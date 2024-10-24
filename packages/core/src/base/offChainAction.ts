@@ -30,22 +30,9 @@ abstract class OffChainAction<
 > {
   /**
    * The name of the off-chain action.
+   * Should be overridden by the child class.
    */
-  name: string = 'OffChainAction'
-
-  /**
-   * Creates an instance of OffChainAction.
-   */
-  constructor() {
-    this.initialize()
-  }
-
-  /**
-   * Abstract method to initialize the off-chain action.
-   * This method should be implemented by subclasses to perform any necessary setup and set the name field.
-   * This method is called by the constructor.
-   */
-  abstract initialize(): void
+  public name: string = 'OffChainAction'
 
   /**
    * Abstract method to run the off-chain action.
