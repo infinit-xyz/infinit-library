@@ -3,8 +3,9 @@ import { Address, Hex } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
 
-import { InitCapitalRegistry } from '@/src/type'
 import { DeployInitCoreTxBuilder } from '@actions/subactions/tx-builders/InitCore/deploy'
+
+import { InitCapitalRegistry } from '@/src/type'
 
 export type DeployInitCoreImplSubActionParams = {
   posManagerProxy: Address
@@ -22,10 +23,12 @@ export class DeployInitCoreImplSubAction extends SubAction<DeployInitCoreImplSub
 
   protected setTxBuilders(): void {
     // ----------- implementation -----------
-    this.txBuilders.push(new DeployInitCoreTxBuilder(this.client, {
-      posManager: this.params.posManagerProxy,
-      accessControlManager: this.params.accessControlManager
-    }))
+    this.txBuilders.push(
+      new DeployInitCoreTxBuilder(this.client, {
+        posManager: this.params.posManagerProxy,
+        accessControlManager: this.params.accessControlManager,
+      }),
+    )
   }
 
   public async updateRegistryAndMessage(
@@ -47,7 +50,7 @@ export class DeployInitCoreImplSubAction extends SubAction<DeployInitCoreImplSub
     registry['initCoreImpl'] = initCoreImpl
 
     const newMessage: DeployInitCoreImplMsg = {
-      initCoreImpl
+      initCoreImpl,
     }
 
     return { newRegistry: registry, newMessage: newMessage }

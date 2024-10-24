@@ -1,4 +1,4 @@
-import { Address, encodeDeployData, getAddress, Hex } from 'viem'
+import { Address, Hex, encodeDeployData, getAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 
@@ -10,7 +10,7 @@ export interface DeployLiqIncentiveCalculatorTxBuilderParams {
 
 export class DeployLiqIncentiveCalculatorTxBuilder extends TxBuilder {
   private accessControlManager: Address
-  
+
   constructor(client: InfinitWallet, params: DeployLiqIncentiveCalculatorTxBuilderParams) {
     super(DeployLiqIncentiveCalculatorTxBuilder.name, client)
     this.accessControlManager = getAddress(params.accessControlManager)

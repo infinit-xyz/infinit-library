@@ -3,11 +3,12 @@ import { Address, Hex } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
 
-import { InitCapitalRegistry } from '@/src/type'
 import { DeployConfigTxBuilder } from '@actions/subactions/tx-builders/Config/deploy'
 import { DeployInitOracleTxBuilder } from '@actions/subactions/tx-builders/InitOracle/deploy'
 import { DeployLiqIncentiveCalculatorTxBuilder } from '@actions/subactions/tx-builders/LiqIncentiveCalculator/deploy'
 import { DeployPosManagerTxBuilder } from '@actions/subactions/tx-builders/PosManager/deploy'
+
+import { InitCapitalRegistry } from '@/src/type'
 
 export type DeployInitCapitalContracts_2SubActionParams = {
   accessControlManager: Address
@@ -20,14 +21,18 @@ export type DeployInitCapitalMsg_2 = {
   posManagerImpl: Address
 }
 
-export class DeployInitCapitalContracts2SubAction extends SubAction<DeployInitCapitalContracts_2SubActionParams, InitCapitalRegistry, DeployInitCapitalMsg_2> {
+export class DeployInitCapitalContracts2SubAction extends SubAction<
+  DeployInitCapitalContracts_2SubActionParams,
+  InitCapitalRegistry,
+  DeployInitCapitalMsg_2
+> {
   constructor(client: InfinitWallet, params: DeployInitCapitalContracts_2SubActionParams) {
     super(DeployInitCapitalContracts2SubAction.name, client, params)
   }
 
   protected setTxBuilders(): void {
     const txBuilderParams = {
-      accessControlManager: this.params.accessControlManager
+      accessControlManager: this.params.accessControlManager,
     }
     // ----------- implementation -----------
     this.txBuilders.push(new DeployInitOracleTxBuilder(this.client, txBuilderParams))
@@ -44,12 +49,7 @@ export class DeployInitCapitalContracts2SubAction extends SubAction<DeployInitCa
       throw new TxNotFoundError()
     }
 
-    const [
-      deployInitOracleImplHash, 
-      deployConfigImplHash, 
-      deployLiqIncentiveCalculatorImplHash, 
-      deployPosManagerImplHash 
-    ] = txHashes
+    const [deployInitOracleImplHash, deployConfigImplHash, deployLiqIncentiveCalculatorImplHash, deployPosManagerImplHash] = txHashes
 
     const { contractAddress: initOracleImpl } = await this.client.publicClient.waitForTransactionReceipt({
       hash: deployInitOracleImplHash,
@@ -87,7 +87,7 @@ export class DeployInitCapitalContracts2SubAction extends SubAction<DeployInitCa
       initOracleImpl,
       configImpl,
       liqIncentiveCalculatorImpl,
-      posManagerImpl
+      posManagerImpl,
     }
 
     return { newRegistry: registry, newMessage: newMessage }

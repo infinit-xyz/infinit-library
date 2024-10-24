@@ -3,8 +3,9 @@ import { Address, Hex } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
 
-import { InitCapitalRegistry } from '@/src/type'
 import { DeployTransparentUpgradeableProxyTxBuilder } from '@actions/subactions/tx-builders/TransparentUpgradeableProxy/deploy'
+
+import { InitCapitalRegistry } from '@/src/type'
 
 export type DeployInitCoreProxySubActionParams = {
   proxyAdmin: Address
@@ -15,18 +16,24 @@ export type DeployInitCoreProxyMsg = {
   initCoreProxy: Address
 }
 
-export class DeployInitCoreProxySubAction extends SubAction<DeployInitCoreProxySubActionParams, InitCapitalRegistry, DeployInitCoreProxyMsg> {
+export class DeployInitCoreProxySubAction extends SubAction<
+  DeployInitCoreProxySubActionParams,
+  InitCapitalRegistry,
+  DeployInitCoreProxyMsg
+> {
   constructor(client: InfinitWallet, params: DeployInitCoreProxySubActionParams) {
     super(DeployInitCoreProxySubAction.name, client, params)
   }
 
   protected setTxBuilders(): void {
     // ----------- implementation -----------
-    this.txBuilders.push(new DeployTransparentUpgradeableProxyTxBuilder(this.client, {
-      logic: this.params.initCoreImpl,
-      admin: this.params.proxyAdmin,
-      data: '0x'
-    }))
+    this.txBuilders.push(
+      new DeployTransparentUpgradeableProxyTxBuilder(this.client, {
+        logic: this.params.initCoreImpl,
+        admin: this.params.proxyAdmin,
+        data: '0x',
+      }),
+    )
   }
 
   public async updateRegistryAndMessage(
@@ -48,7 +55,7 @@ export class DeployInitCoreProxySubAction extends SubAction<DeployInitCoreProxyS
     registry['initCoreProxy'] = initCoreProxy
 
     const newMessage: DeployInitCoreProxyMsg = {
-      initCoreProxy
+      initCoreProxy,
     }
 
     return { newRegistry: registry, newMessage: newMessage }

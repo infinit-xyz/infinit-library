@@ -14,12 +14,12 @@ export type InitializePosManagerTxBuilderParams = {
 
 export class InitializePosManagerTxBuilder extends TxBuilder {
   private posManager: Address
-  private nftName: string 
+  private nftName: string
   private nftSymbol: string
   private initCore: Address
   private maxCollCount: number
 
-  constructor(client: InfinitWallet, params: InitializePosManagerParams) {
+  constructor(client: InfinitWallet, params: InitializePosManagerTxBuilderParams) {
     super(InitializePosManagerTxBuilder.name, client)
     this.posManager = getAddress(params.posManager)
     this.nftName = params.nftName

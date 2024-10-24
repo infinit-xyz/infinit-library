@@ -1,4 +1,4 @@
-import { Address, encodeDeployData, getAddress, Hex } from 'viem'
+import { Address, Hex, encodeDeployData, getAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 
@@ -10,7 +10,7 @@ export interface DeployInitOracleTxBuilderParams {
 
 export class DeployInitOracleTxBuilder extends TxBuilder {
   private accessControlManager: Address
-  
+
   constructor(client: InfinitWallet, params: DeployInitOracleTxBuilderParams) {
     super(DeployInitOracleTxBuilder.name, client)
     this.accessControlManager = getAddress(params.accessControlManager)

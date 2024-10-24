@@ -29,7 +29,7 @@ export class AcceptDefaultAdminTransferTxBuilder extends TxBuilder {
   public async validate(): Promise<void> {
     if (this.accessControlManager === zeroAddress) throw new ValidateInputValueError('ProxyAdmin cannot be zero address')
     const accessControlManagerArtifact = await readArtifact('AccessControlManager')
-    const [newOwner , schedule]  = await this.client.publicClient.readContract({
+    const [newOwner, schedule] = await this.client.publicClient.readContract({
       address: this.accessControlManager,
       abi: accessControlManagerArtifact.abi,
       functionName: 'pendingDefaultAdmin',
@@ -37,7 +37,7 @@ export class AcceptDefaultAdminTransferTxBuilder extends TxBuilder {
     })
     if (this.client.walletClient.account.address !== newOwner) throw new ContractValidateError('only owner can transfer owner')
     // get block timestamp
-    const block =  await this.client.publicClient.getBlock()
-    if (block.timestamp >= schedule) throw new ContractValidateError('transfer delay not passed')
+    const block = await this.client.publicClient.getBlock()
+    if (Number(block.timestamp) < schedule) throw new ContractValidateError('transfer delay not passed')
   }
 }
