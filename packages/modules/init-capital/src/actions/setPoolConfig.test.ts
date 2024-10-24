@@ -5,8 +5,8 @@ import { SubAction } from '@infinit-xyz/core'
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
 
 import { SetPoolConfigAction, SetPoolConfigActionData } from './setPoolConfig'
-import { SetPoolConfigSubAction } from './subActions/setPoolConfigs'
-import { PoolConfig, SetPoolConfigTxBuilder } from './subActions/tx-builders/Config/setPoolConfig'
+import { SetPoolConfigSubAction } from './subactions/setPoolConfigs'
+import { PoolConfig, SetPoolConfigTxBuilder } from './subactions/tx-builders/Config/setPoolConfig'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
 class SetPoolConfigActionTest extends SetPoolConfigAction {

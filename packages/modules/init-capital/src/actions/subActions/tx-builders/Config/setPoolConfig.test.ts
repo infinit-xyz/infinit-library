@@ -3,7 +3,7 @@ import { describe, expect, test } from 'vitest'
 import { encodeFunctionData } from 'viem'
 
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
-import { SetPoolConfigTxBuilder } from '@actions/subActions/tx-builders/setPoolConfig'
+import { SetPoolConfigTxBuilder } from '@actions/subactions/tx-builders/Config/setPoolConfig'
 
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'

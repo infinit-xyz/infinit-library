@@ -3,8 +3,8 @@ import { z } from 'zod'
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
 import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/internal'
 
-import { SetPoolConfigSubAction } from '@actions/subActions/setPoolConfig'
-import { SetPoolConfigTxBuilderParams } from '@actions/subActions/txBuilders/Config/setPoolConfig'
+import { SetPoolConfigSubAction } from '@actions/subactions/setPoolConfig'
+import { SetPoolConfigTxBuilderParams } from '@actions/subactions/tx-builders/Config/setPoolConfig'
 
 import { InitCapitalRegistry } from '@/src/type'
 
