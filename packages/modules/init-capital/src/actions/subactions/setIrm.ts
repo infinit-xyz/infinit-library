@@ -2,7 +2,7 @@ import { Hash } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 
-import { SetIrmTxBuilder, SetIrmTxBuilderParams } from '@actions/subActions/txBuilders/Pool/setIrm'
+import { SetIrmTxBuilder, SetIrmTxBuilderParams } from '@actions/subactions/tx-builders/Pool/setIrm'
 
 import { InitCapitalRegistry } from '@/src/type'
 

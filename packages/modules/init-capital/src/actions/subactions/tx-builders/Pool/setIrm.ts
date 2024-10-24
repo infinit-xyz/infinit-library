@@ -21,7 +21,7 @@ export class SetIrmTxBuilder extends TxBuilder {
   }
 
   async buildTx(): Promise<TransactionData> {
-    const poolArtifact = await readArtifact('Pool')
+    const poolArtifact = await readArtifact('LendingPool')
 
     const callData = encodeFunctionData({
       abi: poolArtifact.abi,

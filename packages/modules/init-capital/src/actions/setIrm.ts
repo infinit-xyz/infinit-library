@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
 import { validateActionData, zodAddress, zodAddressNonZero } from '@infinit-xyz/core/internal'
 
-import { SetIrmSubAction } from '@actions/subActions/setIrm'
+import { SetIrmSubAction } from '@actions/subactions/setIrm'
 
 import { InitCapitalRegistry } from '@/src/type'
 
