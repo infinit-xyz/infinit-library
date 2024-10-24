@@ -17,7 +17,7 @@ export class AddGuardianTxBuilder extends TxBuilder {
   private guardian: Address
   private role: Hex
 
-  constructor(client: InfinitWallet, params: AddGuardianParams) {
+  constructor(client: InfinitWallet, params: AddGuardianTxBuilderParams) {
     super(AddGuardianTxBuilder.name, client)
     this.accessControlManager = getAddress(params.accessControlManager)
     this.guardian = getAddress(params.guardian)
