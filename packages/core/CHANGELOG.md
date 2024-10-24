@@ -1,5 +1,13 @@
 # @infinit-xyz/core
 
+## 0.1.0-alpha.6
+
+### Minor Changes
+
+- [#95](https://github.com/infinit-xyz/infinit-library/pull/95)
+  [`da76f14`](https://github.com/infinit-xyz/infinit-library/commit/da76f1429408ec25f7ca0e084c847e96aad33009) Thanks
+  [@mintcnn](https://github.com/mintcnn)! - Add wallet address to transaction callbacks
+
 ## 0.1.0-alpha.5
 
 ### Minor Changes
