@@ -29,6 +29,11 @@ abstract class OffChainAction<
   D extends object | string | [] | undefined = undefined,
 > {
   /**
+   * The name of the off-chain action.
+   */
+  name: string = 'OffChainAction'
+
+  /**
    * Creates an instance of OffChainAction.
    */
   constructor() {
@@ -37,7 +42,8 @@ abstract class OffChainAction<
 
   /**
    * Abstract method to initialize the off-chain action.
-   * This method should be implemented by subclasses to perform any necessary setup.
+   * This method should be implemented by subclasses to perform any necessary setup and set the name field.
+   * This method is called by the constructor.
    */
   abstract initialize(): void
 
