@@ -2,8 +2,7 @@ import { Address, Hash } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 
-import { SetPoolConfigTxBuilder, SetPoolConfigTxBuilderParams } from '@actions/subActions/txBuilders/Config/setPoolConfig'
-import '@actions/subactions/tx-builders/Config/setPoolConfig'
+import { SetPoolConfigTxBuilder, SetPoolConfigTxBuilderParams } from '@actions/subactions/tx-builders/Config/setPoolConfig'
 
 import { InitCapitalRegistry } from '@/src/type'
 

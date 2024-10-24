@@ -3,8 +3,8 @@ import { z } from 'zod'
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
 import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/internal'
 
-import { SetPoolConfigSubAction } from '@actions/subActions/setPoolConfig'
-import { SetPoolConfigTxBuilderParams } from '@actions/subActions/txBuilders/Config/setPoolConfig'
+import { SetPoolConfigSubAction } from '@actions/subactions/setPoolConfig'
+import { SetPoolConfigTxBuilderParams } from '@actions/subactions/tx-builders/Config/setPoolConfig'
 
 import { InitCapitalRegistry } from '@/src/type'
 
@@ -20,10 +20,10 @@ export type SetPoolConfigActionData = {
   signer: Record<'guardian', InfinitWallet>
 }
 
-export class ConfigRewardsAction extends Action<SetPoolConfigActionData, InitCapitalRegistry> {
+export class SetPoolConfigAction extends Action<SetPoolConfigActionData, InitCapitalRegistry> {
   constructor(data: SetPoolConfigActionData) {
     validateActionData(data, SetPoolConfigParamsSchema, ['guardian'])
-    super(ConfigRewardsAction.name, data)
+    super(SetPoolConfigAction.name, data)
   }
 
   protected getSubActions(): SubAction[] {
