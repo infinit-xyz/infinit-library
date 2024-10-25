@@ -1,6 +1,7 @@
-import { Address, encodeFunctionData } from 'viem'
+import { Address, encodeFunctionData, getAddress, keccak256, toHex, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
+import { ContractValidateError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -24,7 +25,7 @@ export class SetModeStatusTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: SetModeStatusTxBuilderParams) {
     super(SetModeStatusTxBuilder.name, client)
-    this.config = params.config
+    this.config = getAddress(params.config)
     this.mode = params.mode
     this.status = params.status
   }
@@ -44,5 +45,26 @@ export class SetModeStatusTxBuilder extends TxBuilder {
     return tx
   }
 
-  public async validate(): Promise<void> {}
+  public async validate(): Promise<void> {
+    if (this.config === zeroAddress) {
+      throw new ValidateInputZeroAddressError('CONFIG')
+    }
+
+    const [configArtifact, acmArtifact] = await Promise.all([readArtifact('Config'), readArtifact('AccessControlManager')])
+    const acm: Address = await this.client.publicClient.readContract({
+      address: this.config,
+      abi: configArtifact.abi,
+      functionName: 'ACM',
+      args: [],
+    })
+    const hasRole: boolean = await this.client.publicClient.readContract({
+      address: acm,
+      abi: acmArtifact.abi,
+      functionName: 'hasRole',
+      args: [keccak256(toHex('guardian')), this.client.walletClient.account.address],
+    })
+    if (!hasRole) {
+      throw new ContractValidateError('NOT_GUARDIAN')
+    }
+  }
 }
