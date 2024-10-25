@@ -1,5 +1,30 @@
 # @infinit-xyz/token
 
+## 0.0.0-alpha.18
+
+### Patch Changes
+
+- [#104](https://github.com/infinit-xyz/infinit-library/pull/104)
+  [`385f29b`](https://github.com/infinit-xyz/infinit-library/commit/385f29b85725cfa8da3a47e53e1aed281571dec8) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - setup offChainAction
+
+- Updated dependencies [[`99f7d41`](https://github.com/infinit-xyz/infinit-library/commit/99f7d41f39712ee23742d13f6c772b35e50d8a82),
+  [`99f7d41`](https://github.com/infinit-xyz/infinit-library/commit/99f7d41f39712ee23742d13f6c772b35e50d8a82),
+  [`99f7d41`](https://github.com/infinit-xyz/infinit-library/commit/99f7d41f39712ee23742d13f6c772b35e50d8a82)]:
+  - @infinit-xyz/core@0.1.0-alpha.7
+
+## 0.0.0-alpha.17
+
+### Patch Changes
+
+- [#91](https://github.com/infinit-xyz/infinit-library/pull/91)
+  [`51eb6d4`](https://github.com/infinit-xyz/infinit-library/commit/51eb6d4ddc3906459a4f6df23b9b992100331919) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - bump viem version from 2.21.16 to 2.21.28
+
+- Updated dependencies [[`128f5d5`](https://github.com/infinit-xyz/infinit-library/commit/128f5d53bb344eb5078436684413ecd12e86a05b),
+  [`51eb6d4`](https://github.com/infinit-xyz/infinit-library/commit/51eb6d4ddc3906459a4f6df23b9b992100331919)]:
+  - @infinit-xyz/core@0.1.0-alpha.5
+
 ## 0.0.0-alpha.16
 
 ### Minor Changes

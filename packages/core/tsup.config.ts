@@ -9,7 +9,7 @@ export default defineConfig({
     'src/exports/internal/hardhat-compile.ts',
     'src/exports/internal/hardhat-base.config.cts',
     'src/types/action.ts',
-    'src/types/callback.ts',
+    'src/types/callback/index.ts',
     'src/types/cache.ts',
   ],
   format: ['esm', 'cjs'], // Build for ESmodules and Commonjs

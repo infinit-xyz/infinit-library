@@ -1,0 +1,20 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`exports - index: should match snapshot 1`] = `
+[
+  "InfinitWallet",
+  "ContractProvider",
+  "InfinitAction",
+  "InfinitActionRecord",
+  "InfinitCache",
+  "InfinitOffChainAction",
+  "InfinitOffChainActionRecord",
+  "ActionCallback",
+  "ContractVerifierCallback",
+  "OffChainActionCallback",
+  "Action",
+  "OffChainAction",
+  "SubAction",
+  "TxBuilder",
+]
+`;
