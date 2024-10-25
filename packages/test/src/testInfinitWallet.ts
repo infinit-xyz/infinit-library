@@ -56,7 +56,6 @@ export class TestInfinitWallet extends InfinitWallet {
 
       // Check if the transaction was successful; throw an error if not
       if (txReceipt.status !== 'success') {
-        console.log(`txReceipt.status !== 'success'`)
         throw new TransactionError(txHash)
       }
 
