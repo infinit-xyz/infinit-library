@@ -17,6 +17,9 @@ import { readArtifact } from '@utils/artifact'
 
 vi.mock('@actions/subactions/setLtvSubAction')
 
+const DISTRIBUTION_END_UNIX_TIMESTAMP = Math.floor(Date.now() / 1_000 + 1_000_000)
+console.log({ DISTRIBUTION_END_UNIX_TIMESTAMP })
+
 describe('ConfigureRewardsAction', () => {
   let action: SetEmissionAdminAction
   let client: TestInfinitWallet
@@ -58,7 +61,7 @@ describe('ConfigureRewardsAction', () => {
           {
             emissionPerSecond: 10_000n,
             totalSupply: 0n,
-            distributionEnd: 1729853192,
+            distributionEnd: DISTRIBUTION_END_UNIX_TIMESTAMP,
             asset: registry.lendingPools!.WETH.aToken,
             reward: ARBITRUM_TEST_ADDRESSES.usdt,
             transferStrategy: registry.pullRewardsTransferStrategy!,
@@ -199,7 +202,7 @@ describe('ConfigureRewardsAction', () => {
           {
             emissionPerSecond: 10_000n,
             totalSupply: 0n,
-            distributionEnd: 1729853192,
+            distributionEnd: DISTRIBUTION_END_UNIX_TIMESTAMP,
             asset: registry.lendingPools!.WETH.aToken,
             reward: ARBITRUM_TEST_ADDRESSES.usdt,
             transferStrategy: registry.pullRewardsTransferStrategy!,
