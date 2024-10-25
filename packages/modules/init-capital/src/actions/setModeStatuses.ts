@@ -3,8 +3,8 @@ import { z } from 'zod'
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
 import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/internal'
 
-import { SetModeStatusesSubAction } from '@actions/subActions/setModeStatuses'
-import { SetModeStatusTxBuilderParams } from '@actions/subActions/txBuilders/Config/setModeStatus'
+import { SetModeStatusesSubAction } from '@actions/subactions/setModeStatuses'
+import { SetModeStatusTxBuilderParams } from '@actions/subactions/tx-builders/Config/setModeStatus'
 
 import { InitCapitalRegistry } from '@/src/type'
 

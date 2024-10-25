@@ -2,8 +2,8 @@ import { Address, Hash } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 
-import { SetModeStatusTxBuilder, SetModeStatusTxBuilderParams } from '@actions/subActions/txBuilders/Config/setModeStatus'
-import '@actions/subactions/tx-builders/Config/SetModeStatus'
+import '@actions/subactions/tx-builders/Config/setModeStatus'
+import { SetModeStatusTxBuilder, SetModeStatusTxBuilderParams } from '@actions/subactions/tx-builders/Config/setModeStatus'
 
 import { InitCapitalRegistry } from '@/src/type'
 
