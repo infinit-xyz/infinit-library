@@ -1,4 +1,4 @@
-import { Address, encodeFunctionData, keccak256, toHex } from 'viem'
+import { Address, encodeFunctionData, getAddress, keccak256, toHex } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ContractValidateError } from '@infinit-xyz/core/errors'
@@ -27,8 +27,8 @@ export class SetPoolConfigTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: SetPoolConfigTxBuilderParams) {
     super(SetPoolConfigTxBuilder.name, client)
-    this.config = params.config
-    this.pool = params.pool
+    this.config = getAddress(params.config)
+    this.pool = getAddress(params.pool)
     this.poolConfig = params.poolConfig
   }
 
