@@ -48,9 +48,15 @@ export class SetPoolConfigTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    const acmArtifact = await readArtifact('AccessControlManager')
-    const hasRole: boolean = await this.client.publicClient.readContract({
+    const [configArtifact, acmArtifact] = await Promise.all([readArtifact('Config'), readArtifact('AccessControlManager')])
+    const acm: Address = await this.client.publicClient.readContract({
       address: this.config,
+      abi: configArtifact.abi,
+      functionName: 'ACM',
+      args: [],
+    })
+    const hasRole: boolean = await this.client.publicClient.readContract({
+      address: acm,
       abi: acmArtifact.abi,
       functionName: 'hasRole',
       args: [keccak256(toHex('guardian')), this.client.walletClient.account.address],
