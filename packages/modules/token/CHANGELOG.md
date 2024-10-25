@@ -1,5 +1,18 @@
 # @infinit-xyz/token
 
+## 0.0.0-alpha.18
+
+### Patch Changes
+
+- [#104](https://github.com/infinit-xyz/infinit-library/pull/104)
+  [`385f29b`](https://github.com/infinit-xyz/infinit-library/commit/385f29b85725cfa8da3a47e53e1aed281571dec8) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - setup offChainAction
+
+- Updated dependencies [[`99f7d41`](https://github.com/infinit-xyz/infinit-library/commit/99f7d41f39712ee23742d13f6c772b35e50d8a82),
+  [`99f7d41`](https://github.com/infinit-xyz/infinit-library/commit/99f7d41f39712ee23742d13f6c772b35e50d8a82),
+  [`99f7d41`](https://github.com/infinit-xyz/infinit-library/commit/99f7d41f39712ee23742d13f6c772b35e50d8a82)]:
+  - @infinit-xyz/core@0.1.0-alpha.7
+
 ## 0.0.0-alpha.17
 
 ### Patch Changes
