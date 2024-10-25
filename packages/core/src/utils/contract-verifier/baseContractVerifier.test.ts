@@ -2,11 +2,11 @@ import { describe, expect, test, vi } from 'vitest'
 
 import { PublicClient } from 'viem'
 
+import { BlockExplorerParams, ContractInfo, ContractVerifierCallback } from '@/types/callback/contractVerifier'
 import { Artifacts } from 'hardhat/types'
 
 import { BaseContractVerifier } from '@/utils/contract-verifier/baseContractVerifier'
 import { verifyContract } from '@/utils/contract-verifier/helper'
-import { BlockExplorerParams, ContractInfo, ContractVerifierCallback } from '@/utils/contract-verifier/type'
 
 vi.mock('@/utils/contract-verifier/helper')
 

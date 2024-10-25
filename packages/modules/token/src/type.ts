@@ -16,3 +16,13 @@ export type TokenRegistry = {
     merkle: Record<Address, { amount: string; proof: Hex[] }>
   }
 }
+
+export type ProofDetail = {
+  proof: Hex[]
+  amount: string
+}
+
+export type MerkleTreeProofs = {
+  root: Hex
+  proofs: Record<Address, ProofDetail>
+}

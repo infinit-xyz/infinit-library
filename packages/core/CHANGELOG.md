@@ -1,5 +1,23 @@
 # @infinit-xyz/core
 
+## 0.1.0-alpha.7
+
+### Minor Changes
+
+- [#99](https://github.com/infinit-xyz/infinit-library/pull/99)
+  [`99f7d41`](https://github.com/infinit-xyz/infinit-library/commit/99f7d41f39712ee23742d13f6c772b35e50d8a82) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - change `InfinitCallback` to `ActionCallback`
+
+### Patch Changes
+
+- [#99](https://github.com/infinit-xyz/infinit-library/pull/99)
+  [`99f7d41`](https://github.com/infinit-xyz/infinit-library/commit/99f7d41f39712ee23742d13f6c772b35e50d8a82) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - add `OffChainAction`
+
+- [#99](https://github.com/infinit-xyz/infinit-library/pull/99)
+  [`99f7d41`](https://github.com/infinit-xyz/infinit-library/commit/99f7d41f39712ee23742d13f6c772b35e50d8a82) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - add `validateZodObject`
+
 ## 0.1.0-alpha.6
 
 ### Minor Changes
