@@ -18,7 +18,6 @@ import { readArtifact } from '@utils/artifact'
 vi.mock('@actions/subactions/setLtvSubAction')
 
 const DISTRIBUTION_END_UNIX_TIMESTAMP = Math.floor(Date.now() / 1_000 + 1_000_000)
-console.log({ DISTRIBUTION_END_UNIX_TIMESTAMP })
 
 describe('ConfigureRewardsAction', () => {
   let action: SetEmissionAdminAction
