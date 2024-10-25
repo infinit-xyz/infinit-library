@@ -1,7 +1,7 @@
-import { Address, encodeFunctionData, zeroAddress } from 'viem'
+import { Address, encodeFunctionData, keccak256, toHex, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
+import { ContractValidateError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -38,6 +38,24 @@ export class SetIrmTxBuilder extends TxBuilder {
   public async validate(): Promise<void> {
     if (this.pool === zeroAddress) {
       throw new ValidateInputZeroAddressError('pool')
+    }
+
+    const [lendingPoolArtifact, acmArtifact] = await Promise.all([readArtifact('LendingPool'), readArtifact('AccessControlManager')])
+    await this.client.publicClient.readContract({
+      address: this.pool,
+      abi: lendingPoolArtifact.abi,
+      functionName: 'ACM',
+      args: [],
+    })
+
+    const hasRole: boolean = await this.client.publicClient.readContract({
+      address: this.pool,
+      abi: acmArtifact.abi,
+      functionName: 'hasRole',
+      args: [keccak256(toHex('guardian')), this.client.walletClient.account.address],
+    })
+    if (!hasRole) {
+      throw new ContractValidateError('NOT_GUARDIAN')
     }
   }
 }
