@@ -1,8 +1,8 @@
 import { PublicClient } from 'viem'
 
+import { ContractInfo, ContractVerifierCallback } from '@/types/callback/contractVerifier'
 import type { Artifacts } from 'hardhat/types/artifacts'
 
-import { ContractInfo, ContractVerifierCallback } from '../type'
 import { getConstructorArgsFromCreationCode } from './getConstructorArgsFromCreationCode'
 import { getContractInformation } from './getContractInformation'
 import { isBlockscout } from './isBlockscout'

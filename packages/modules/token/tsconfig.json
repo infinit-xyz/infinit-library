@@ -18,6 +18,7 @@
 
     "paths": {
       "@actions/*": ["./src/actions/*"],
+      "@offChainActions/*": ["./src/off-chain-actions/*"],
       "@contracts/*": ["./src/contracts/*"],
       "@scripts/*": ["./src/scripts/*"],
       "@utils/*": ["./src/utils/*"],

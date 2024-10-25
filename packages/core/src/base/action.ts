@@ -1,7 +1,7 @@
 import { SubAction } from '@base/subAction'
 
-import { CallbackParams } from '@/types/callback'
-import { InfinitCache, InfinitCallback } from 'src/types'
+import { InfinitCache } from '@/types'
+import { ActionCallback, ActionCallbackParams } from '@/types/callback/action'
 
 import { IncorrectCacheError } from '@errors/index'
 import { InfinitWallet } from '@infinit-wallet/index'
@@ -81,7 +81,9 @@ abstract class Action<D extends ActionData = { params: {}; signer: {} }, R exten
    * @returns An object containing the action information, including the name and the total number of sub-actions.
    * @private
    */
-  private getActionInfo(subActions: SubAction<any, R, {}>[] | ((message?: object) => SubAction<any, R>)[]): CallbackParams['actionInfo'] {
+  private getActionInfo(
+    subActions: SubAction<any, R, {}>[] | ((message?: object) => SubAction<any, R>)[],
+  ): ActionCallbackParams['actionInfo'] {
     return {
       name: this.name,
       totalSubActions: subActions.length,
@@ -99,7 +101,7 @@ abstract class Action<D extends ActionData = { params: {}; signer: {} }, R exten
    * @param callback - Optional callback function for communicating data during execution.
    * @returns A promise that resolves with the updated registry after all sub-actions have been executed.
    */
-  public async run(registry: R, cache?: InfinitCache, callback?: InfinitCallback): Promise<R> {
+  public async run(registry: R, cache?: InfinitCache, callback?: ActionCallback): Promise<R> {
     let currentMessages = {}
     let currentRegistry: R = { ...registry }
 

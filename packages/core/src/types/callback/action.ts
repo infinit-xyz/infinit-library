@@ -3,7 +3,7 @@ import { Address, Hex } from 'viem'
 /**
  * Parameters for callbacks.
  */
-type CallbackParams = {
+type ActionCallbackParams = {
   /**
    * Event emitted when an action starts.
    * Information about the action. This includes the name of the action and the total number of sub-actions.
@@ -39,13 +39,13 @@ type CallbackParams = {
 /**
  * Keys for callback parameters.
  */
-type CallbackKeys = keyof CallbackParams
+type ActionCallbackKeys = keyof ActionCallbackParams
 
 /**
  * Callback function for Infinit events.
  * Accepts a key representing the event type and a value corresponding to the parameters of that event.
  * Returns a promise that resolves when the callback is completed.
  */
-type InfinitCallback = <T extends CallbackKeys>(key: T, value: CallbackParams[T]) => Promise<void>
+type ActionCallback = <T extends ActionCallbackKeys>(key: T, value: ActionCallbackParams[T]) => Promise<void>
 
-export { CallbackKeys, CallbackParams, InfinitCallback }
+export { ActionCallback, ActionCallbackKeys, ActionCallbackParams }

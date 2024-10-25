@@ -2,8 +2,8 @@ import { Address, Hex, encodePacked, keccak256 } from 'viem'
 
 import { ValidateInputValueError, ValueNotFoundError } from '@infinit-xyz/core/errors'
 
+import { ProofDetail } from '@/src/type'
 import { SimpleMerkleTree } from '@openzeppelin/merkle-tree'
-import { ProofDetail } from '@utils/merkleTree/type'
 
 export class MerkleTree {
   private tree: SimpleMerkleTree
@@ -14,7 +14,17 @@ export class MerkleTree {
     this.tree = this.generateTree()
   }
 
+  private validateUserRewardMapping() {
+    Object.entries(this.userRewardMapping).forEach(([userAddress, reward]) => {
+      if (BigInt(reward) === BigInt(0)) {
+        throw new ValidateInputValueError(`${userAddress} has 0 reward`)
+      }
+    })
+  }
+
   private generateTree() {
+    this.validateUserRewardMapping()
+
     const leaves = Object.entries(this.userRewardMapping).map(([userAddress, reward]) =>
       keccak256(encodePacked(['address', 'uint256'], [userAddress as Hex, BigInt(reward)])),
     )
@@ -28,17 +38,14 @@ export class MerkleTree {
     if (userRewardAmount === undefined) {
       throw new ValueNotFoundError(`${userAddress} not found in the reward list`)
     }
-    if (Number(userRewardAmount) === 0) {
-      throw new ValidateInputValueError(`Reward of ${userAddress} is 0`)
-    }
 
     const proof = this.tree.getProof(keccak256(encodePacked(['address', 'uint256'], [userAddress, BigInt(userRewardAmount)]))) as Hex[]
 
     return { proof, amount: userRewardAmount }
   }
 
-  public getRoot(): string {
-    return this.tree.root
+  public getRoot(): Hex {
+    return this.tree.root as Hex
   }
 
   public getAllProofs(): Record<Address, ProofDetail> {
