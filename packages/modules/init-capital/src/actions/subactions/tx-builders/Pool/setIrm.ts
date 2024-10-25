@@ -1,4 +1,4 @@
-import { Address, encodeFunctionData, keccak256, toHex, zeroAddress } from 'viem'
+import { Address, encodeFunctionData, getAddress, keccak256, toHex, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ContractValidateError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
@@ -16,8 +16,8 @@ export class SetIrmTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: SetIrmTxBuilderParams) {
     super(SetIrmTxBuilder.name, client)
-    this.pool = params.pool
-    this.irm = params.irm
+    this.pool = getAddress(params.pool)
+    this.irm = getAddress(params.irm)
   }
 
   async buildTx(): Promise<TransactionData> {
