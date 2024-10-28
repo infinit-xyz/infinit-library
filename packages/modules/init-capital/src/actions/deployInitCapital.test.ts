@@ -67,7 +67,9 @@ describe('deployInitCapitalAction', () => {
         accessControlManagerOwner: client2,
       },
     })
+    console.log('blocktimeBf', (await client.publicClient.getBlock()).timestamp)
     const curRegistry = await action.run({}, undefined, undefined)
+    console.log('blocktimeAf', (await client.publicClient.getBlock()).timestamp)
 
     expect(curRegistry.proxyAdmin).not.toBe(zeroAddress)
     expect(curRegistry.accessControlManager).not.toBe(zeroAddress)
