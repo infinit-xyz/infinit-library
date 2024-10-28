@@ -115,6 +115,13 @@ export const setupUniswapV3 = async (): Promise<UniswapV3Registry> => {
     args: [3886124089039612594790876n],
   })
 
+  await client.sendTransactions([
+    {
+      name: 'initialize pool',
+      txData: { data: initializePoolData, to: poolAddress },
+    },
+  ])
+
   // add new position via npm
   const mintData = encodeFunctionData({
     abi: nonfungiblePositionManagerArtifact.abi,
@@ -137,10 +144,6 @@ export const setupUniswapV3 = async (): Promise<UniswapV3Registry> => {
   })
 
   await client.sendTransactions([
-    {
-      name: 'initialize pool',
-      txData: { data: initializePoolData, to: poolAddress },
-    },
     { name: 'Add new position via NPM', txData: { data: mintData, to: curRegistry.nonfungiblePositionManager! } },
   ])
 
