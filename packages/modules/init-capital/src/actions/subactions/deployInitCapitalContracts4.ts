@@ -7,8 +7,8 @@ import { DeployLendingPoolTxBuilder } from '@actions/subactions/tx-builders/Lend
 import { DeployMoneyMarketHookTxBuilder } from '@actions/subactions/tx-builders/MoneyMarketHook/deploy'
 import { DeployRiskManagerTxBuilder } from '@actions/subactions/tx-builders/RiskManager/deploy'
 
-import { InitCapitalRegistry } from '@/src/type'
 import { DeployFeeVaultTxBuilder } from './tx-builders/FeeVault/deploy'
+import { InitCapitalRegistry } from '@/src/type'
 
 export type DeployInitCapitalContracts_4SubActionParams = {
   accessControlManager: Address
@@ -35,11 +35,13 @@ export class DeployInitCapitalContracts4SubAction extends SubAction<
 
   protected setTxBuilders(): void {
     // ----------- Fee Vault -----------
-    this.txBuilders.push(new DeployFeeVaultTxBuilder(this.client, {
-      wrappedNativeToken: this.params.wrappedNativeToken,
-      admin: this.params.feeAdmin,
-      treasury: this.params.treasury,
-    }))
+    this.txBuilders.push(
+      new DeployFeeVaultTxBuilder(this.client, {
+        wrappedNativeToken: this.params.wrappedNativeToken,
+        admin: this.params.feeAdmin,
+        treasury: this.params.treasury,
+      }),
+    )
     // ----------- implementation -----------
     this.txBuilders.push(
       new DeployRiskManagerTxBuilder(this.client, {

@@ -6,14 +6,14 @@ import { readArtifact } from '@/src/utils/artifact'
 
 export interface DeployFeeVaultTxBuilderParams {
   wrappedNativeToken: Address
-  admin: Address 
+  admin: Address
   treasury: Address
 }
 
 type FeeInfo = {
-    admin: Address
-    treasury: Address
-    feeBps: bigint
+  admin: Address
+  treasury: Address
+  feeBps: bigint
 }
 
 export class DeployFeeVaultTxBuilder extends TxBuilder {
@@ -26,16 +26,16 @@ export class DeployFeeVaultTxBuilder extends TxBuilder {
     super(DeployFeeVaultTxBuilder.name, client)
     this.wrappedNativeToken = getAddress(params.wrappedNativeToken)
     this.feeInfos = [
-        {
-            admin: this.initCapitalDefaultAdmin,
-            treasury: this.initCapitalDefaultAdmin,
-            feeBps: this.initCapitalFeeBps,
-        },
-        {
-            admin: getAddress(params.admin),
-            treasury: getAddress(params.treasury),
-            feeBps: 9_000n,
-        }
+      {
+        admin: this.initCapitalDefaultAdmin,
+        treasury: this.initCapitalDefaultAdmin,
+        feeBps: this.initCapitalFeeBps,
+      },
+      {
+        admin: getAddress(params.admin),
+        treasury: getAddress(params.treasury),
+        feeBps: 9_000n,
+      },
     ]
   }
 

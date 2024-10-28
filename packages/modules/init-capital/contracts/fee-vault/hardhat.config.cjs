@@ -1,10 +1,7 @@
 const { baseHardhatUserConfig } = require('@infinit-xyz/core/internal/hardhat-base-config')
 const { name } = require('../../package.json')
 
-const remappings = [
-  `@openzeppelin-contracts/=@openzeppelin/contracts-5.0.2/`,
-  `fee-vault/contracts/=fee-vault/src/`,
-]
+const remappings = [`@openzeppelin-contracts/=@openzeppelin/contracts-5.0.2/`, `fee-vault/contracts/=fee-vault/src/`]
 
 const DEFAULT_COMPILER_SETTINGS = {
   version: '0.8.25',

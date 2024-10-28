@@ -109,7 +109,7 @@ describe('deployInitCapitalAction', () => {
     expect(feeInfos[1].admin).equal(oneAddress)
     expect(feeInfos[1].treasury).equal(oneAddress)
     expect(feeInfos[1].feeBps).equal(9000n)
-  
+
     // check AccessControlManager owner
     const accessControlManagerArtifact = await readArtifact('AccessControlManager')
     const accessControlManagerOwner = await client.publicClient.readContract({
