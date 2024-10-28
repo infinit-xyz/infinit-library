@@ -43,8 +43,8 @@
       "default": "./dist/types/action.js"
     },
     "./types/callback": {
-      "types": "./dist/types/callback.d.ts",
-      "default": "./dist/types/callback.js"
+      "types": "./dist/types/callback/index.d.ts",
+      "default": "./dist/types/callback/index.js"
     },
     "./types/cache": {
       "types": "./dist/types/cache.d.ts",
