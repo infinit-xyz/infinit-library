@@ -28,7 +28,7 @@ jobs:
           cache: false
 
       - name: Run test
-        run: bun run test packages/modules/init-capital/
+        run: bun run test:coverage
         env:
           VITE_ARBITRUM_RPC_URL: ${{ secrets.VITE_ARBITRUM_RPC_URL }}
           SEPOLIA_ARBISCAN_API_KEY: ${{ secrets.SEPOLIA_ARBISCAN_API_KEY }}
