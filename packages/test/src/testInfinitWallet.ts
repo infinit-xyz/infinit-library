@@ -38,7 +38,7 @@ export class TestInfinitWallet extends InfinitWallet {
     // 0. set user balance
     await this.testClient.setBalance({
       address: this.impersonatedUser,
-      value: parseEther('100'),
+      value: parseEther('10000'),
     })
 
     const txReceipts: TransactionReceipt[] = []

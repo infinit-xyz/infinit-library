@@ -210,7 +210,7 @@ describe('deployAaveV3Action', () => {
     expect(owner).toBe(oneAddress)
   })
 
-  test('simple run (different addreses on each roles) + init reserves', { retry: 5 }, async () => {
+  test('simple run (different addreses on each roles) + init reserves', { retry: 3 }, async () => {
     const deployer = client.walletClient.account.address
     const weth9 = await readArtifact('WETH9')
     const callData = encodeFunctionData({ abi: weth9.abi, functionName: 'deposit', args: [] })
@@ -339,23 +339,25 @@ describe('deployAaveV3Action', () => {
     const poolArtifact = await readArtifact('Pool')
 
     // mint and approved WETH
-    await aliceClient.sendTransactions([
-      {
-        name: 'Mint WETH',
-        txData: {
-          data: encodeFunctionData({ abi: weth9.abi, functionName: 'deposit', args: [] }),
-          to: weth,
-          value: parseEther('100'),
+    await expect(
+      aliceClient.sendTransactions([
+        {
+          name: 'Mint WETH',
+          txData: {
+            data: encodeFunctionData({ abi: weth9.abi, functionName: 'deposit', args: [] }),
+            to: weth,
+            value: parseEther('100'),
+          },
         },
-      },
-      {
-        name: 'Approve WETH',
-        txData: {
-          data: encodeFunctionData({ abi: weth9.abi, functionName: 'approve', args: [curRegistry2.poolProxy!, maxUint256] }),
-          to: weth,
+        {
+          name: 'Approve WETH',
+          txData: {
+            data: encodeFunctionData({ abi: weth9.abi, functionName: 'approve', args: [curRegistry2.poolProxy!, maxUint256] }),
+            to: weth,
+          },
         },
-      },
-    ])
+      ]),
+    ).resolves.not.toThrowError()
 
     // supply to the pool
     await expect(
