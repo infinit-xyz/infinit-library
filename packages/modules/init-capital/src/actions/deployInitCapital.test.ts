@@ -2,7 +2,6 @@ import { beforeAll, describe, expect, test } from 'vitest'
 
 import { keccak256, toHex, zeroAddress } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
-import { arbitrum } from 'viem/chains'
 
 import { InfinitWallet } from '@infinit-xyz/core'
 
@@ -12,24 +11,23 @@ import { DeployInitCapitalAction } from '@actions/deployInitCapital'
 import { hasRole } from '@actions/subactions/tx-builders/utils'
 
 import { readArtifact } from '@/src/utils/artifact'
-import { TestChain, getForkRpcUrl } from '@infinit-xyz/test'
+import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
 describe('deployInitCapitalAction', () => {
   let action: DeployInitCapitalAction
   let client: InfinitWallet
   let client2: InfinitWallet
 
-  // anvil rpc endpoint
-  const rpcEndpoint = getForkRpcUrl(TestChain.arbitrum)
   // anvil tester pk
-  const privateKey = ANVIL_PRIVATE_KEY
   const oneAddress = ARBITRUM_TEST_ADDRESSES.oneAddress
 
   const weth = ARBITRUM_TEST_ADDRESSES.weth
   beforeAll(() => {
-    const account = privateKeyToAccount(privateKey)
-    client = new InfinitWallet(arbitrum, rpcEndpoint, account)
-    client2 = new InfinitWallet(arbitrum, rpcEndpoint, privateKeyToAccount(ANVIL_PRIVATE_KEY_2))
+    const account1 = privateKeyToAccount(ANVIL_PRIVATE_KEY)
+    const account2 = privateKeyToAccount(ANVIL_PRIVATE_KEY_2)
+
+    client = new TestInfinitWallet(TestChain.arbitrum, account1.address)
+    client2 = new TestInfinitWallet(TestChain.arbitrum, account2.address)
   })
 
   test('deploy all', async () => {
