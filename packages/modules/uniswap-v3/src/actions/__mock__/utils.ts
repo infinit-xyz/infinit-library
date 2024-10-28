@@ -115,18 +115,12 @@ export const setupUniswapV3 = async (): Promise<UniswapV3Registry> => {
     args: [3886124089039612594790876n],
   })
 
-  const block1 = await client.publicClient.getBlock()
-  console.log('block 1', block1.timestamp)
-
   await client.sendTransactions([
     {
       name: 'initialize pool',
       txData: { data: initializePoolData, to: poolAddress },
     },
   ])
-
-  const block2 = await client.publicClient.getBlock()
-  console.log('block 2', block2.timestamp)
 
   // add new position via npm
   const mintData = encodeFunctionData({
@@ -152,9 +146,6 @@ export const setupUniswapV3 = async (): Promise<UniswapV3Registry> => {
   await client.sendTransactions([
     { name: 'Add new position via NPM', txData: { data: mintData, to: curRegistry.nonfungiblePositionManager! } },
   ])
-
-  const block3 = await client.publicClient.getBlock()
-  console.log('block 3', block3.timestamp)
 
   return curRegistry
 }
