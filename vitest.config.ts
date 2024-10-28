@@ -12,6 +12,7 @@ export default defineConfig({
         maxThreads: 4,
       },
     },
+    retry: 3,
     globals: true,
     coverage: {
       reporter: ['text', 'json', 'html', 'json-summary'],
