@@ -121,27 +121,6 @@ export class DeployInitCapitalAction extends Action<DeployInitCapitalActionData,
           DeployInitCoreImplMsg &
           DeployInitCoreProxyMsg &
           DeployInitCapitalMsg_4 &
-          DeployInitCapitalMsg_5,
-      ) =>
-        new DeployInitCapitalContracts6SubAction(deployer, {
-          initCoreProxy: message.initCoreProxy,
-          posManagerProxy: message.posManagerProxy,
-          accessControlManager: message.accessControlManager,
-          nftName: params.posManagerNftName,
-          nftSymbol: params.posManagerNftSymbol,
-          maxCollCount: params.maxCollCount,
-          configProxy: message.configProxy,
-          initOracleProxy: message.initOracleProxy,
-          riskManagerProxy: message.riskManagerProxy,
-        }),
-      () => new DeployDoubleSlopeIRMsSubAction(deployer, { doubleSlopeIRMConfigs: params.doubleSlopeIRMConfigs }),
-      (
-        message: DeployInitCapitalMsg &
-          DeployInitCapitalMsg_2 &
-          DeployInitCapitalMsg_3 &
-          DeployInitCoreImplMsg &
-          DeployInitCoreProxyMsg &
-          DeployInitCapitalMsg_4 &
           DeployInitCapitalMsg_5 &
           DeployInitCapitalMsg_6,
       ) =>
@@ -163,6 +142,27 @@ export class DeployInitCapitalAction extends Action<DeployInitCapitalActionData,
           proxyAdmin: message.proxyAdmin,
           newOwner: params.proxyAdminOwner,
         }),
+      (
+        message: DeployInitCapitalMsg &
+          DeployInitCapitalMsg_2 &
+          DeployInitCapitalMsg_3 &
+          DeployInitCoreImplMsg &
+          DeployInitCoreProxyMsg &
+          DeployInitCapitalMsg_4 &
+          DeployInitCapitalMsg_5,
+      ) =>
+        new DeployInitCapitalContracts6SubAction(deployer, {
+          initCoreProxy: message.initCoreProxy,
+          posManagerProxy: message.posManagerProxy,
+          accessControlManager: message.accessControlManager,
+          nftName: params.posManagerNftName,
+          nftSymbol: params.posManagerNftSymbol,
+          maxCollCount: params.maxCollCount,
+          configProxy: message.configProxy,
+          initOracleProxy: message.initOracleProxy,
+          riskManagerProxy: message.riskManagerProxy,
+        }),
+      () => new DeployDoubleSlopeIRMsSubAction(deployer, { doubleSlopeIRMConfigs: params.doubleSlopeIRMConfigs }),
       (
         message: DeployInitCapitalMsg &
           DeployInitCapitalMsg_2 &
