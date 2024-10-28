@@ -66,7 +66,7 @@ export class TestInfinitWallet extends InfinitWallet {
         // Add the transaction receipt to the array of receipts
         txReceipts.push(txReceipt)
       } catch (error) {
-        console.error(`[${TestInfinitWallet.name}-sendTransactions] Error in transaction: ${transaction.name}`)
+        console.error(`[${TestInfinitWallet.name}-sendTransactions] Error in transaction: ${transaction.name}`, error)
         throw error
       }
     }
