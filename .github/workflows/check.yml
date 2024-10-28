@@ -24,6 +24,8 @@ jobs:
 
       - name: Set up foundry
         uses: foundry-rs/foundry-toolchain@v1
+        with:
+          cache: false
 
       - name: Run test
         run: bun run test packages/modules/init-capital/
