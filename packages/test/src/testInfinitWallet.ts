@@ -77,6 +77,10 @@ export class TestInfinitWallet extends InfinitWallet {
       }
     }
 
+    await this.testClient.stopImpersonatingAccount({
+      address: this.impersonatedUser,
+    })
+
     return txReceipts
   }
 }
