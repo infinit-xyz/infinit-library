@@ -5,4 +5,4 @@
 '@infinit-xyz/uniswap-v3': patch
 ---
 
-Fix export path of callback in core
+Bump core version
