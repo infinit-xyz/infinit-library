@@ -77,7 +77,7 @@ export const setupAaveV3 = async (): Promise<AaveV3Registry> => {
     to: weth,
     value: BigInt(10 ** 18),
   }
-  await client.walletClient.sendTransaction({ ...tx, account: client.walletClient.account.address, chain: client.walletClient.chain })
+  await client.sendTransactions([{ name: 'deposit', txData: tx }])
   // note: there is no erc20mintable
   const usdtArtifact = await readArtifact('IERC20')
   // transfer 100 wei to the client
