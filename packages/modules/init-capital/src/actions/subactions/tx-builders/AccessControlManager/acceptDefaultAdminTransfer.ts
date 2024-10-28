@@ -20,6 +20,8 @@ export class AcceptDefaultAdminTransferTxBuilder extends TxBuilder {
   async buildTx(): Promise<TransactionData> {
     const accessControlManagerArtifact = await readArtifact('AccessControlManager')
     const encodedData = encodeFunctionData({ abi: accessControlManagerArtifact.abi, functionName: 'acceptDefaultAdminTransfer', args: [] })
+    const block = await this.client.publicClient.getBlock()
+    console.log('block bf send', block.timestamp)
     return {
       to: this.accessControlManager,
       data: encodedData,
