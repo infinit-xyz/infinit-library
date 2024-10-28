@@ -1,6 +1,7 @@
 import { Address } from 'viem'
 
 export type InitCapitalRegistry = {
+  feeVault?: Address
   proxyAdmin?: Address
   accessControlManager?: Address
   api3ProxyOracleReaderProxy?: Address

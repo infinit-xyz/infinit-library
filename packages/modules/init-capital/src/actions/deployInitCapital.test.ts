@@ -41,6 +41,8 @@ describe('deployInitCapitalAction', () => {
         maxLiqIncentiveMultiplier: 100n,
         governor: oneAddress,
         guardian: oneAddress,
+        feeAdmin: oneAddress,
+        treasury: oneAddress,
         doubleSlopeIRMConfigs: [
           {
             name: 'StablecoinIRM',
@@ -69,6 +71,7 @@ describe('deployInitCapitalAction', () => {
     })
     const curRegistry = await action.run({}, undefined, undefined)
 
+    expect(curRegistry.feeVault).not.toBe(zeroAddress)
     expect(curRegistry.proxyAdmin).not.toBe(zeroAddress)
     expect(curRegistry.accessControlManager).not.toBe(zeroAddress)
     expect(curRegistry.initOracleProxy).not.toBe(zeroAddress)
@@ -92,6 +95,21 @@ describe('deployInitCapitalAction', () => {
     for (const irm of Object.values(curRegistry.irms!)) {
       expect(irm).not.toBe(zeroAddress)
     }
+    // check feeInfos of feeVault
+    const feeVaultArtifact = await readArtifact('FeeVault')
+    const feeInfos = await client.publicClient.readContract({
+      address: curRegistry.feeVault!,
+      abi: feeVaultArtifact.abi,
+      functionName: 'getFeeInfos',
+      args: [],
+    })
+    expect(feeInfos[0].admin).equal('0x60045e6DE3080D3a6271E635616dBbC20886dfCb')
+    expect(feeInfos[0].treasury).equal('0x60045e6DE3080D3a6271E635616dBbC20886dfCb')
+    expect(feeInfos[0].feeBps).equal(1000n)
+    expect(feeInfos[1].admin).equal(oneAddress)
+    expect(feeInfos[1].treasury).equal(oneAddress)
+    expect(feeInfos[1].feeBps).equal(9000n)
+  
     // check AccessControlManager owner
     const accessControlManagerArtifact = await readArtifact('AccessControlManager')
     const accessControlManagerOwner = await client.publicClient.readContract({

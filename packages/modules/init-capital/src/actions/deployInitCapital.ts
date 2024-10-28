@@ -30,6 +30,8 @@ export const DeployInitCapitalParamsSchema = z.object({
   maxLiqIncentiveMultiplier: z.bigint().describe(`Maximum liquidation incentive multiplier`),
   governor: zodAddress.describe(`Address of account who will be granted the governor role`),
   guardian: zodAddress.describe(`Address of account who will be granted the guardian role`),
+  feeAdmin: zodAddress.describe(`Address of account who can control the fee vault`),
+  treasury: zodAddress.describe(`Address of account who receive the fee from the fee vault`),
   doubleSlopeIRMConfigs: z.array(
     z.object({
       name: z.string().describe(`Name of the reserve interest rate model that will be displayed in the registry`),
@@ -98,6 +100,8 @@ export class DeployInitCapitalAction extends Action<DeployInitCapitalActionData,
           accessControlManager: message.accessControlManager,
           initCoreProxy: message.initCoreProxy,
           wrappedNativeToken: message.accessControlManager,
+          feeAdmin: params.feeAdmin,
+          treasury: params.treasury,
         }),
       (
         message: DeployInitCapitalMsg &
