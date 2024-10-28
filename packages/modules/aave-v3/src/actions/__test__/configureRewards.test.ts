@@ -2,9 +2,8 @@ import { beforeAll, describe, expect, test, vi } from 'vitest'
 
 import { Address, encodeFunctionData, maxUint256 } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
-import { arbitrum } from 'viem/chains'
 
-import { InfinitWallet, TransactionData } from '@infinit-xyz/core'
+import { TransactionData } from '@infinit-xyz/core'
 
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
 import { setupAaveV3 } from '@actions/__mock__/setup'
@@ -12,7 +11,7 @@ import { ConfigRewardsAction } from '@actions/configureRewards'
 import { SetEmissionAdminAction } from '@actions/setEmissionAdmin'
 
 import { AaveV3Registry } from '@/src/type'
-import { TestChain, TestInfinitWallet, getForkRpcUrl } from '@infinit-xyz/test'
+import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'
 
 vi.mock('@actions/subactions/setLtvSubAction')
@@ -24,7 +23,7 @@ describe('ConfigureRewardsAction', () => {
   let client: TestInfinitWallet
   let registry: AaveV3Registry
   let emissionManager: Address
-  let aliceClient: InfinitWallet
+  let aliceClient: TestInfinitWallet
 
   const weth = ARBITRUM_TEST_ADDRESSES.weth
   const claimerPk = '0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d'
@@ -33,11 +32,11 @@ describe('ConfigureRewardsAction', () => {
     client = new TestInfinitWallet(TestChain.arbitrum, ARBITRUM_TEST_ADDRESSES.tester)
 
     registry = await setupAaveV3()
-    const rpcEndpoint = getForkRpcUrl(TestChain.arbitrum)
+
     const aliceAccount = privateKeyToAccount(claimerPk)
 
     emissionManager = registry.emissionManager!
-    aliceClient = new InfinitWallet(arbitrum, rpcEndpoint, aliceAccount)
+    aliceClient = new TestInfinitWallet(TestChain.arbitrum, aliceAccount.address)
   })
 
   test('should run successfully', async () => {
@@ -77,40 +76,67 @@ describe('ConfigureRewardsAction', () => {
     await configRewardsAction.run(registry)
 
     // test user claim rewards
-    const weth9 = await readArtifact('WETH9')
+    const [weth9, poolArtifact, usdtArtifact, rewardsControllerArtifact, erc20Artifact] = await Promise.all([
+      readArtifact('WETH9'),
+      readArtifact('Pool'),
+      readArtifact('IArbitrumERC20'),
+      readArtifact('RewardsController'),
+      readArtifact('IERC20'),
+    ])
 
-    const poolArtifact = await readArtifact('Pool')
-    await aliceClient.walletClient.writeContract({
-      address: weth,
-      abi: weth9.abi,
-      functionName: 'deposit',
-      args: [],
-      value: BigInt(10 ** 18),
-    })
+    await aliceClient.sendTransactions([
+      {
+        name: 'deposit',
+        txData: {
+          to: weth,
+          value: BigInt(10 ** 18),
+          data: encodeFunctionData({
+            abi: weth9.abi,
+            functionName: 'deposit',
+            args: [],
+          }),
+        },
+      },
+    ])
+
     await client.testClient.increaseTime({ seconds: 10000 })
 
-    await aliceClient.walletClient.writeContract({
-      address: weth,
-      abi: weth9.abi,
-      functionName: 'approve',
-      args: [registry.poolProxy!, maxUint256],
-    })
+    await aliceClient.sendTransactions([
+      {
+        name: 'approve',
+        txData: {
+          to: weth,
+          data: encodeFunctionData({
+            abi: weth9.abi,
+            functionName: 'approve',
+            args: [registry.poolProxy!, maxUint256],
+          }),
+        },
+      },
+    ])
+
     await client.testClient.increaseTime({ seconds: 10000 })
 
-    await aliceClient.walletClient.writeContract({
-      address: registry.poolProxy!,
-      abi: poolArtifact.abi,
-      functionName: 'supply',
-      args: [weth, BigInt(10 ** 17), aliceClient.walletClient.account.address, 0],
-    })
-    const usdtArtifact = await readArtifact('IArbitrumERC20')
+    await aliceClient.sendTransactions([
+      {
+        name: 'supply',
+        txData: {
+          to: registry.poolProxy!,
+          data: encodeFunctionData({
+            abi: poolArtifact.abi,
+            functionName: 'supply',
+            args: [weth, BigInt(10 ** 17), aliceClient.walletClient.account.address, 0],
+          }),
+        },
+      },
+    ])
+
     const usdtOwner = await aliceClient.publicClient.readContract({
       address: ARBITRUM_TEST_ADDRESSES.usdt,
       abi: usdtArtifact.abi,
       functionName: 'owner',
       args: [],
     })
-    const usdtOwnerClient = new TestInfinitWallet(TestChain.arbitrum, usdtOwner)
 
     const mintData = encodeFunctionData({
       abi: usdtArtifact.abi,
@@ -121,6 +147,9 @@ describe('ConfigureRewardsAction', () => {
       data: mintData,
       to: ARBITRUM_TEST_ADDRESSES.usdt,
     }
+
+    const usdtOwnerClient = new TestInfinitWallet(TestChain.arbitrum, usdtOwner)
+    await usdtOwnerClient.sendTransactions([{ name: 'mint', txData: mintTx }])
 
     const approveData = encodeFunctionData({
       abi: usdtArtifact.abi,
@@ -133,13 +162,10 @@ describe('ConfigureRewardsAction', () => {
       to: ARBITRUM_TEST_ADDRESSES.usdt,
     }
 
-    await usdtOwnerClient.sendTransactions([{ name: 'mint', txData: mintTx }])
     await client.sendTransactions([{ name: 'approve', txData: approveTx }])
 
     await client.testClient.increaseTime({ seconds: 10000 })
-    const rewardsControllerArtifact = await readArtifact('RewardsController')
 
-    const erc20Artifact = await readArtifact('IERC20')
     const aliceUsdtBalanceBf = await aliceClient.publicClient.readContract({
       address: ARBITRUM_TEST_ADDRESSES.usdt,
       abi: erc20Artifact.abi,
@@ -148,13 +174,21 @@ describe('ConfigureRewardsAction', () => {
     })
     expect(aliceUsdtBalanceBf).toBe(0n)
 
-    await aliceClient.walletClient.writeContract({
-      address: registry.rewardsControllerProxy!,
-      abi: rewardsControllerArtifact.abi,
-      functionName: 'claimAllRewardsToSelf',
-      args: [[registry.lendingPools!.WETH.aToken]],
-      // gas: 1000000n,
-    })
+    // claim rewards 1st time
+    await aliceClient.sendTransactions([
+      {
+        name: 'claimAllRewardsToSelf',
+        txData: {
+          to: registry.rewardsControllerProxy!,
+          data: encodeFunctionData({
+            abi: rewardsControllerArtifact.abi,
+            functionName: 'claimAllRewardsToSelf',
+            args: [[registry.lendingPools!.WETH.aToken]],
+          }),
+        },
+      },
+    ])
+
     const aliceUsdtBalanceAft = await aliceClient.publicClient.readContract({
       address: ARBITRUM_TEST_ADDRESSES.usdt,
       abi: erc20Artifact.abi,
@@ -164,13 +198,21 @@ describe('ConfigureRewardsAction', () => {
     expect(aliceUsdtBalanceAft).toBeGreaterThan(0n)
 
     await client.testClient.increaseTime({ seconds: 10000 })
-    await aliceClient.walletClient.writeContract({
-      address: registry.rewardsControllerProxy!,
-      abi: rewardsControllerArtifact.abi,
-      functionName: 'claimAllRewardsToSelf',
-      args: [[registry.lendingPools!.WETH.aToken]],
-      gas: 1000000n,
-    })
+
+    // claim rewards 2nd time
+    await aliceClient.sendTransactions([
+      {
+        name: 'claimAllRewardsToSelf',
+        txData: {
+          to: registry.rewardsControllerProxy!,
+          data: encodeFunctionData({
+            abi: rewardsControllerArtifact.abi,
+            functionName: 'claimAllRewardsToSelf',
+            args: [[registry.lendingPools!.WETH.aToken]],
+          }),
+        },
+      },
+    ])
 
     const aliceUsdtBalanceAft2 = await aliceClient.publicClient.readContract({
       address: ARBITRUM_TEST_ADDRESSES.usdt,
@@ -246,32 +288,51 @@ describe('ConfigureRewardsAction', () => {
     expect(usdtAllowance).toBe(maxUint256)
     // test user claim rewards
     const weth9 = await readArtifact('WETH9')
-
     const poolArtifact = await readArtifact('Pool')
-    await aliceClient.walletClient.writeContract({
-      address: weth,
-      abi: weth9.abi,
-      functionName: 'deposit',
-      args: [],
-      value: BigInt(10 ** 18),
-    })
-    await client.testClient.increaseTime({ seconds: 10000 })
-
-    await aliceClient.walletClient.writeContract({
-      address: weth,
-      abi: weth9.abi,
-      functionName: 'approve',
-      args: [registry.poolProxy!, maxUint256],
-    })
-    await client.testClient.increaseTime({ seconds: 10000 })
-
-    await aliceClient.walletClient.writeContract({
-      address: registry.poolProxy!,
-      abi: poolArtifact.abi,
-      functionName: 'supply',
-      args: [weth, BigInt(10 ** 17), aliceClient.walletClient.account.address, 0],
-    })
     const usdtArtifact = await readArtifact('IArbitrumERC20')
+
+    await aliceClient.sendTransactions([
+      {
+        name: 'approve WETH',
+        txData: {
+          to: weth,
+          data: encodeFunctionData({
+            abi: weth9.abi,
+            functionName: 'approve',
+            args: [registry.poolProxy!, maxUint256],
+          }),
+        },
+      },
+      {
+        name: 'deposit',
+        txData: {
+          to: weth,
+          value: BigInt(10 ** 18),
+          data: encodeFunctionData({
+            abi: weth9.abi,
+            functionName: 'deposit',
+            args: [],
+          }),
+        },
+      },
+    ])
+
+    await client.testClient.increaseTime({ seconds: 20000 })
+
+    await aliceClient.sendTransactions([
+      {
+        name: 'supply WETH',
+        txData: {
+          to: registry.poolProxy!,
+          data: encodeFunctionData({
+            abi: poolArtifact.abi,
+            functionName: 'supply',
+            args: [weth, BigInt(10 ** 17), aliceClient.walletClient.account.address, 0],
+          }),
+        },
+      },
+    ])
+
     const usdtOwner = await aliceClient.publicClient.readContract({
       address: ARBITRUM_TEST_ADDRESSES.usdt,
       abi: usdtArtifact.abi,
@@ -303,13 +364,19 @@ describe('ConfigureRewardsAction', () => {
     })
     expect(aliceUsdtBalanceBf).toBe(0n)
 
-    await aliceClient.walletClient.writeContract({
-      address: registry.rewardsControllerProxy!,
-      abi: rewardsControllerArtifact.abi,
-      functionName: 'claimAllRewardsToSelf',
-      args: [[registry.lendingPools!.WETH.aToken]],
-      // gas: 1000000n,
-    })
+    await aliceClient.sendTransactions([
+      {
+        name: 'claimAllRewardsToSelf',
+        txData: {
+          to: registry.rewardsControllerProxy!,
+          data: encodeFunctionData({
+            abi: rewardsControllerArtifact.abi,
+            functionName: 'claimAllRewardsToSelf',
+            args: [[registry.lendingPools!.WETH.aToken]],
+          }),
+        },
+      },
+    ])
     const aliceUsdtBalanceAft = await aliceClient.publicClient.readContract({
       address: ARBITRUM_TEST_ADDRESSES.usdt,
       abi: erc20Artifact.abi,
@@ -319,13 +386,20 @@ describe('ConfigureRewardsAction', () => {
     expect(aliceUsdtBalanceAft).toBeGreaterThan(0n)
 
     await client.testClient.increaseTime({ seconds: 10000 })
-    await aliceClient.walletClient.writeContract({
-      address: registry.rewardsControllerProxy!,
-      abi: rewardsControllerArtifact.abi,
-      functionName: 'claimAllRewardsToSelf',
-      args: [[registry.lendingPools!.WETH.aToken]],
-      gas: 1000000n,
-    })
+
+    await aliceClient.sendTransactions([
+      {
+        name: 'claimAllRewardsToSelf',
+        txData: {
+          to: registry.rewardsControllerProxy!,
+          data: encodeFunctionData({
+            abi: rewardsControllerArtifact.abi,
+            functionName: 'claimAllRewardsToSelf',
+            args: [[registry.lendingPools!.WETH.aToken]],
+          }),
+        },
+      },
+    ])
 
     const aliceUsdtBalanceAft2 = await aliceClient.publicClient.readContract({
       address: ARBITRUM_TEST_ADDRESSES.usdt,
