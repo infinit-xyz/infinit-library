@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, test } from 'vitest'
+import { beforeAll, describe, expect, test, vi } from 'vitest'
 
 import { encodeFunctionData } from 'viem'
 import { Address, privateKeyToAccount } from 'viem/accounts'
@@ -192,23 +192,28 @@ describe('deployInfinitERC20Action', () => {
 
     // Attempt to mint tokens as a non-owner
     await expect(
-      bobClient.sendTransactions([
-        {
-          name: 'mint',
-          txData: {
-            to: ttToken,
-            data: encodeFunctionData({
-              abi: infinitERC20.abi,
-              functionName: 'mint',
-              args: [bob, mintAmount],
-            }),
+      bobClient.sendTransactions(
+        [
+          {
+            name: 'mint',
+            txData: {
+              to: ttToken,
+              data: encodeFunctionData({
+                abi: infinitERC20.abi,
+                functionName: 'mint',
+                args: [bob, mintAmount],
+              }),
+            },
           },
-        },
-      ]),
+        ],
+        undefined,
+        { hideErrorMessage: true },
+      ),
     ).rejects.toThrowError()
   })
 
   test('deploy token, test initial supply > max supply', async () => {
+    vi.spyOn(console, 'error').mockImplementationOnce(() => {})
     try {
       action = new DeployInfinitERC20Action({
         params: {
