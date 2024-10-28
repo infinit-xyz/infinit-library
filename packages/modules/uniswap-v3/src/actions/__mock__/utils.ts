@@ -115,7 +115,7 @@ export const setupUniswapV3 = async (): Promise<UniswapV3Registry> => {
     args: [3886124089039612594790876n],
   })
 
-  // add new pool via npm
+  // add new position via npm
   const mintData = encodeFunctionData({
     abi: nonfungiblePositionManagerArtifact.abi,
     functionName: 'mint',
@@ -141,7 +141,7 @@ export const setupUniswapV3 = async (): Promise<UniswapV3Registry> => {
       name: 'initialize pool',
       txData: { data: initializePoolData, to: poolAddress },
     },
-    { name: 'Add new pool via NPM', txData: { data: mintData, to: curRegistry.nonfungiblePositionManager! } },
+    { name: 'Add new position via NPM', txData: { data: mintData, to: curRegistry.nonfungiblePositionManager! } },
   ])
 
   return curRegistry
