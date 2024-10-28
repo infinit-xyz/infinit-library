@@ -40,6 +40,6 @@ export class AcceptDefaultAdminTransferTxBuilder extends TxBuilder {
     const block = await this.client.publicClient.getBlock()
     console.log('block', block.timestamp)
     console.log('schedule', schedule)
-    if (block.timestamp <= schedule) throw new ContractValidateError('transfer delay not passed')
+    if (block.timestamp < schedule) throw new ContractValidateError('transfer delay not passed')
   }
 }
