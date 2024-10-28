@@ -1,9 +1,7 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
+import { encodeFunctionData } from 'viem'
 import { Address, privateKeyToAccount } from 'viem/accounts'
-import { arbitrum } from 'viem/chains'
-
-import { InfinitWallet } from '@infinit-xyz/core'
 
 import { ANVIL_PRIVATE_KEY } from '@actions/__mocks__/account'
 import { TEST_ADDRESSES } from '@actions/__mocks__/address'
@@ -11,21 +9,19 @@ import { DeployAccumulativeMerkleDistributorAction } from '@actions/deployAccumu
 import { DeployInfinitERC20Action } from '@actions/deployInfinitERC20'
 import { SetMerkleRootAction } from '@actions/setMerkleRoot'
 
-import { TestChain, getForkRpcUrl } from '@infinit-xyz/test'
+import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'
 import { MerkleTree } from '@utils/merkleTree'
 
 describe('set merkle root', () => {
-  let client: InfinitWallet
+  let client: TestInfinitWallet
 
-  // anvil rpc endpoint
-  const rpcEndpoint = getForkRpcUrl(TestChain.arbitrum)
   // anvil tester pk
   const privateKey = ANVIL_PRIVATE_KEY
 
   beforeAll(() => {
     const account = privateKeyToAccount(privateKey)
-    client = new InfinitWallet(arbitrum, rpcEndpoint, account)
+    client = new TestInfinitWallet(TestChain.arbitrum, account.address)
   })
 
   test('set merkle root', async () => {
@@ -85,7 +81,7 @@ describe('set merkle root', () => {
       },
     })
 
-    await setMerkleRootAction.run(reg)
+    await expect(setMerkleRootAction.run(reg)).resolves.toBeTruthy()
 
     const root = await client.publicClient.readContract({
       address: merkleContract,
@@ -96,13 +92,22 @@ describe('set merkle root', () => {
     expect(root).toBe(generatedRoot)
 
     const erc20 = await readArtifact('InfinitERC20')
+
     // transfer tokens to merkle
-    await client.walletClient.writeContract({
-      address: deployedTokens[0]!,
-      abi: erc20.abi,
-      functionName: 'transfer',
-      args: [merkleContract, 10n],
-    })
+    await client.sendTransactions([
+      {
+        name: 'transfer',
+        txData: {
+          to: deployedTokens[0]!,
+          data: encodeFunctionData({
+            abi: erc20.abi,
+            functionName: 'transfer',
+            args: [merkleContract, 10n],
+          }),
+        },
+      },
+    ])
+
     // read balance
     const balanceBeforeClaim = await client.publicClient.readContract({
       address: deployedTokens[0]!,
@@ -112,12 +117,20 @@ describe('set merkle root', () => {
     })
     // test claim
     const clientProof = merkleTree.getProof(client.walletClient.account.address)
-    await client.walletClient.writeContract({
-      address: merkleContract,
-      abi: merkleArtifact.abi,
-      functionName: 'claim',
-      args: [TEST_ADDRESSES.bob, BigInt(clientProof.amount), clientProof.proof],
-    })
+    await client.sendTransactions([
+      {
+        name: 'claim',
+        txData: {
+          to: merkleContract,
+          data: encodeFunctionData({
+            abi: merkleArtifact.abi,
+            functionName: 'claim',
+            args: [TEST_ADDRESSES.bob, BigInt(clientProof.amount), clientProof.proof],
+          }),
+        },
+      },
+    ])
+
     // balance after claim
     const balanceAfterClaim = await client.publicClient.readContract({
       address: deployedTokens[0]!,
