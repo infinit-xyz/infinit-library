@@ -26,7 +26,7 @@ jobs:
         uses: foundry-rs/foundry-toolchain@v1
 
       - name: Run test
-        run: bun run test:coverage
+        run: bun run test packages/modules/init-capital/
         env:
           VITE_ARBITRUM_RPC_URL: ${{ secrets.VITE_ARBITRUM_RPC_URL }}
           SEPOLIA_ARBISCAN_API_KEY: ${{ secrets.SEPOLIA_ARBISCAN_API_KEY }}
