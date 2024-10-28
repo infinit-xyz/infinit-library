@@ -26,7 +26,11 @@ export class TestInfinitWallet extends InfinitWallet {
     this.impersonatedUser = impersonatedUser
   }
 
-  override sendTransactions = async (transactions: ToSendTransaction[], callback?: ActionCallback): Promise<TransactionReceipt[]> => {
+  override sendTransactions = async (
+    transactions: ToSendTransaction[],
+    callback?: ActionCallback,
+    { hideErrorMessage = false }: { hideErrorMessage?: boolean } = {},
+  ): Promise<TransactionReceipt[]> => {
     await this.testClient.impersonateAccount({
       address: this.impersonatedUser,
     })
@@ -66,7 +70,9 @@ export class TestInfinitWallet extends InfinitWallet {
         // Add the transaction receipt to the array of receipts
         txReceipts.push(txReceipt)
       } catch (error) {
-        console.error(`[${TestInfinitWallet.name}-sendTransactions] Error in transaction: ${transaction.name}`, error)
+        if (!hideErrorMessage) {
+          console.error(`[${TestInfinitWallet.name}-sendTransactions] Error in transaction: ${transaction.name}`, error)
+        }
         throw error
       }
     }
