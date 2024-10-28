@@ -9,7 +9,7 @@ export default defineConfig({
     poolOptions: {
       threads: {
         minThreads: 1,
-        maxThreads: 1,
+        maxThreads: 4,
       },
     },
     globals: true,
