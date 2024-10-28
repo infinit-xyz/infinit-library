@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
-import { encodeFunctionData, maxUint256, parseUnits, zeroAddress } from 'viem'
+import { encodeFunctionData, maxUint256, parseEther, parseUnits, zeroAddress } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 import { InfinitWallet, TransactionData } from '@infinit-xyz/core'
@@ -345,7 +345,7 @@ describe('deployAaveV3Action', () => {
         txData: {
           data: encodeFunctionData({ abi: weth9.abi, functionName: 'deposit', args: [] }),
           to: weth,
-          value: BigInt(10 ** 18),
+          value: parseEther('100'),
         },
       },
       {
@@ -366,7 +366,7 @@ describe('deployAaveV3Action', () => {
             data: encodeFunctionData({
               abi: poolArtifact.abi,
               functionName: 'supply',
-              args: [weth, BigInt(10 ** 17), aliceClient.walletClient.account.address, 0],
+              args: [weth, parseEther('10'), aliceClient.walletClient.account.address, 0],
             }),
             to: curRegistry2.poolProxy,
           },
@@ -383,7 +383,7 @@ describe('deployAaveV3Action', () => {
             data: encodeFunctionData({
               abi: poolArtifact.abi,
               functionName: 'borrow',
-              args: [weth, BigInt(10 ** 16), BigInt(2), 0, aliceClient.walletClient.account.address],
+              args: [weth, parseEther('1'), BigInt(2), 0, aliceClient.walletClient.account.address],
             }),
             to: curRegistry2.poolProxy,
           },
@@ -400,7 +400,7 @@ describe('deployAaveV3Action', () => {
             data: encodeFunctionData({
               abi: poolArtifact.abi,
               functionName: 'repay',
-              args: [weth, BigInt(10 ** 16), BigInt(2), aliceClient.walletClient.account.address],
+              args: [weth, parseEther('0.1'), BigInt(2), aliceClient.walletClient.account.address],
             }),
             to: curRegistry2.poolProxy,
           },
@@ -415,6 +415,8 @@ describe('deployAaveV3Action', () => {
       args: [aliceClient.walletClient.account.address],
     })
 
+    const withdrawAmount = parseEther('0.1')
+
     await aliceClient.sendTransactions([
       {
         name: 'Withdraw WETH',
@@ -422,7 +424,7 @@ describe('deployAaveV3Action', () => {
           data: encodeFunctionData({
             abi: poolArtifact.abi,
             functionName: 'withdraw',
-            args: [weth, BigInt(2 ** 16), aliceClient.walletClient.account.address],
+            args: [weth, withdrawAmount, aliceClient.walletClient.account.address],
           }),
           to: curRegistry2.poolProxy,
         },
@@ -436,6 +438,6 @@ describe('deployAaveV3Action', () => {
       args: [aliceClient.walletClient.account.address],
     })
 
-    await expect(aliceBalBf + BigInt(2 ** 16)).toBe(aliceBalAft)
+    await expect(aliceBalBf + withdrawAmount).toBe(aliceBalAft)
   })
 })
