@@ -10,10 +10,6 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
-    },
-    "./actions": {
-      "types": "./dist/actions/index.d.ts",
-      "default": "./dist/actions/index.js"
     }
   },
   "scripts": {

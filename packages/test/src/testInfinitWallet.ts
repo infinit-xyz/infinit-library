@@ -1,8 +1,8 @@
-import type { Address, Client, Hash, Hex, TestActions, TransactionReceipt, WalletActions } from 'viem'
+import type { Address, Client, Hash, TestActions, TransactionReceipt, WalletActions } from 'viem'
 import { parseEther, walletActions } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
-import { InfinitWallet, ToSendTransaction } from '@infinit-xyz/core'
+import { ActionCallback, InfinitWallet, ToSendTransaction } from '@infinit-xyz/core'
 import { TransactionError } from '@infinit-xyz/core/errors'
 
 import { testClients } from './client.js'
@@ -26,7 +26,7 @@ export class TestInfinitWallet extends InfinitWallet {
     this.impersonatedUser = impersonatedUser
   }
 
-  override sendTransactions = async (transactions: ToSendTransaction[]): Promise<TransactionReceipt[]> => {
+  override sendTransactions = async (transactions: ToSendTransaction[], callback?: ActionCallback): Promise<TransactionReceipt[]> => {
     await this.testClient.impersonateAccount({
       address: this.impersonatedUser,
     })
@@ -37,27 +37,39 @@ export class TestInfinitWallet extends InfinitWallet {
       value: parseEther('100'),
     })
 
-    const txHashes: Hex[] = []
-    // 1. Submit all transactions
-    for (const transaction of transactions) {
-      const tx = transaction.txData
-      const hash: Hash = await this.testClient.sendTransaction({
-        account: this.impersonatedUser,
-        to: tx.to,
-        value: tx.value,
-        data: tx.data,
-        chain: this.publicClient.chain,
-      })
-      if (!(await this.checkTransaction(hash))) throw new TransactionError(hash)
-      txHashes.push(hash)
-    }
+    const txReceipts: TransactionReceipt[] = []
 
-    // 2. get transaction receipts
-    const txReceipts = await Promise.all(txHashes.map((txHash) => this.publicClient.getTransactionReceipt({ hash: txHash })))
+    for (const transaction of transactions) {
+      const walletAddress = this.impersonatedUser
+      // Send the transaction using the wallet client and get the transaction hash
+      const txHash: Hash = await this.walletClient.sendTransaction({
+        ...transaction.txData,
+        account: this.impersonatedUser,
+        chain: this.walletClient.chain,
+      })
+
+      // Notify the callback that the transaction has been submitted
+      await callback?.('txSubmitted', { name: transaction.name, txHash, walletAddress })
+
+      // Wait for the transaction to be confirmed and get the receipt
+      const txReceipt = await this.publicClient.waitForTransactionReceipt({ hash: txHash })
+
+      // Check if the transaction was successful; throw an error if not
+      if (txReceipt.status !== 'success') {
+        throw new TransactionError(txHash)
+      }
+
+      // Notify the callback that the transaction has been confirmed
+      await callback?.('txConfirmed', { name: transaction.name, txHash, walletAddress })
+
+      // Add the transaction receipt to the array of receipts
+      txReceipts.push(txReceipt)
+    }
 
     await this.testClient.stopImpersonatingAccount({
       address: this.impersonatedUser,
     })
+
     return txReceipts
   }
 }

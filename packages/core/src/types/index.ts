@@ -23,7 +23,8 @@ export { ToSendTransaction, TransactionData }
 
 export { InfinitAction, InfinitActionRecord } from './action'
 export { InfinitCache } from './cache'
+export { InfinitOffChainAction, InfinitOffChainActionRecord } from './offChainAction'
+
 export { ActionCallback } from './callback/action'
 export { ContractVerifierCallback } from './callback/contractVerifier'
 export { OffChainActionCallback } from './callback/offChainAction'
-export { InfinitOffChainAction, InfinitOffChainActionRecord } from './offChainAction'
