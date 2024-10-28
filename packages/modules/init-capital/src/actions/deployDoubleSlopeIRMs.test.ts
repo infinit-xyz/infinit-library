@@ -7,7 +7,6 @@ import { arbitrum } from 'viem/chains'
 import { InfinitWallet } from '@infinit-xyz/core'
 
 import { ANVIL_PRIVATE_KEY, ANVIL_PRIVATE_KEY_2 } from '@actions/__mock__/account'
-import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
 import { DeployDoubleSlopeIRMsAction } from '@actions/deployDoubleSlopeIRMs'
 
 import { TestChain, getForkRpcUrl } from '@infinit-xyz/test'
@@ -21,9 +20,7 @@ describe('deployDoubleSlopeIRMsAction', () => {
   const rpcEndpoint = getForkRpcUrl(TestChain.arbitrum)
   // anvil tester pk
   const privateKey = ANVIL_PRIVATE_KEY
-  const oneAddress = ARBITRUM_TEST_ADDRESSES.oneAddress
 
-  const weth = ARBITRUM_TEST_ADDRESSES.weth
   beforeAll(() => {
     const account = privateKeyToAccount(privateKey)
     client = new InfinitWallet(arbitrum, rpcEndpoint, account)

@@ -3,11 +3,11 @@ import { Address, Hex } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
 
+import { DeployFeeVaultTxBuilder } from '@actions/subactions/tx-builders/FeeVault/deploy'
 import { DeployLendingPoolTxBuilder } from '@actions/subactions/tx-builders/LendingPool/deploy'
 import { DeployMoneyMarketHookTxBuilder } from '@actions/subactions/tx-builders/MoneyMarketHook/deploy'
 import { DeployRiskManagerTxBuilder } from '@actions/subactions/tx-builders/RiskManager/deploy'
 
-import { DeployFeeVaultTxBuilder } from './tx-builders/FeeVault/deploy'
 import { InitCapitalRegistry } from '@/src/type'
 
 export type DeployInitCapitalContracts_4SubActionParams = {
