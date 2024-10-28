@@ -3,6 +3,8 @@ const { name } = require('../../package.json')
 
 const remappings = [`@openzeppelin/contracts=@openzeppelin/contracts-3.4.1-solc-0.7-2`]
 
+console.log('YOYOYOY')
+
 const DEFAULT_COMPILER_SETTINGS = {
   version: '0.7.6',
   settings: {
