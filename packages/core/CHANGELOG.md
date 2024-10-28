@@ -1,5 +1,12 @@
 # @infinit-xyz/core
 
+## 0.1.0-alpha.8
+
+### Minor Changes
+
+- [`b9624e1`](https://github.com/infinit-xyz/infinit-library/commit/b9624e1797c500b33ffe4695013ee4d07191c737) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - update callback export
+
 ## 0.1.0-alpha.7
 
 ### Minor Changes
