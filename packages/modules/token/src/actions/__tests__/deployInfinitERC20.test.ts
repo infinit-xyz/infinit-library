@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, test } from 'vitest'
+import { beforeAll, describe, expect, test, vi } from 'vitest'
 
 import { encodeFunctionData } from 'viem'
 import { Address, privateKeyToAccount } from 'viem/accounts'
@@ -213,6 +213,7 @@ describe('deployInfinitERC20Action', () => {
   })
 
   test('deploy token, test initial supply > max supply', async () => {
+    vi.spyOn(console, 'error').mockImplementationOnce(() => {})
     try {
       action = new DeployInfinitERC20Action({
         params: {
