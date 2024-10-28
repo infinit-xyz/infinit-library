@@ -3,7 +3,7 @@ import { beforeAll, describe, expect, test } from 'vitest'
 import { encodeFunctionData, maxUint256, parseUnits, zeroAddress } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
-import { InfinitWallet, ToSendTransaction, TransactionData } from '@infinit-xyz/core'
+import { InfinitWallet, TransactionData } from '@infinit-xyz/core'
 
 import { ANVIL_PRIVATE_KEY } from '@actions/__mock__/account'
 import { ARBITRUM_TEST_ADDRESSES, TEST_ADDRESSES } from '@actions/__mock__/address'
@@ -335,10 +335,11 @@ describe('deployAaveV3Action', () => {
     })
     const curRegistry2 = await action2.run(curRegistry, undefined, undefined)
 
-    // supply
+    // test supply
     const poolArtifact = await readArtifact('Pool')
 
-    const toSendTransactions: ToSendTransaction[] = [
+    // mint and approved WETH
+    await aliceClient.sendTransactions([
       {
         name: 'Mint WETH',
         txData: {
@@ -354,42 +355,58 @@ describe('deployAaveV3Action', () => {
           to: weth,
         },
       },
-      {
-        name: 'Supply WETH',
-        txData: {
-          data: encodeFunctionData({
-            abi: poolArtifact.abi,
-            functionName: 'supply',
-            args: [weth, BigInt(10 ** 17), aliceClient.walletClient.account.address, 0],
-          }),
-          to: curRegistry2.poolProxy,
-        },
-      },
-      {
-        name: 'Borrow WETH',
-        txData: {
-          data: encodeFunctionData({
-            abi: poolArtifact.abi,
-            functionName: 'borrow',
-            args: [weth, BigInt(10 ** 16), BigInt(2), 0, aliceClient.walletClient.account.address],
-          }),
-          to: curRegistry2.poolProxy,
-        },
-      },
-      {
-        name: 'Repay WETH',
-        txData: {
-          data: encodeFunctionData({
-            abi: poolArtifact.abi,
-            functionName: 'repay',
-            args: [weth, BigInt(10 ** 16), BigInt(2), aliceClient.walletClient.account.address],
-          }),
-          to: curRegistry2.poolProxy,
-        },
-      },
-    ]
+    ])
 
-    await aliceClient.sendTransactions(toSendTransactions)
+    // supply to the pool
+    await expect(
+      aliceClient.sendTransactions([
+        {
+          name: 'Supply WETH',
+          txData: {
+            data: encodeFunctionData({
+              abi: poolArtifact.abi,
+              functionName: 'supply',
+              args: [weth, BigInt(10 ** 17), aliceClient.walletClient.account.address, 0],
+            }),
+            to: curRegistry2.poolProxy,
+          },
+        },
+      ]),
+    ).resolves.not.toThrowError()
+
+    // borrow from the pool
+    await expect(
+      aliceClient.sendTransactions([
+        {
+          name: 'Borrow WETH',
+          txData: {
+            data: encodeFunctionData({
+              abi: poolArtifact.abi,
+              functionName: 'borrow',
+              args: [weth, BigInt(10 ** 16), BigInt(2), 0, aliceClient.walletClient.account.address],
+            }),
+            to: curRegistry2.poolProxy,
+          },
+        },
+      ]),
+    ).resolves.not.toThrowError()
+
+    // repay to the pool
+    await expect(
+      aliceClient.sendTransactions([
+        {
+          name: 'Repay WETH',
+          txData: {
+            data: encodeFunctionData({
+              abi: poolArtifact.abi,
+              functionName: 'repay',
+              args: [weth, BigInt(10 ** 16), BigInt(2), aliceClient.walletClient.account.address],
+            }),
+            to: curRegistry2.poolProxy,
+          },
+        },
+      ]),
+    ).resolves.not.toThrowError()
 
     const aliceBalBf = await aliceClient.publicClient.readContract({
       address: weth,
