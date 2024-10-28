@@ -145,9 +145,9 @@ export class DeployInitCapitalAction extends Action<DeployInitCapitalActionData,
           DeployInitCapitalMsg_5 &
           DeployInitCapitalMsg_6,
       ) =>
-        new TransferProxyAdminOwnerSubAction(deployer, {
-          proxyAdmin: message.proxyAdmin,
-          newOwner: params.proxyAdminOwner,
+        new BeginDefaultAdminTransferSubAction(deployer, {
+          accessControlManager: message.accessControlManager,
+          newOwner: accessControlManagerOwner.walletClient.account.address,
         }),
       (
         message: DeployInitCapitalMsg &
@@ -159,9 +159,9 @@ export class DeployInitCapitalAction extends Action<DeployInitCapitalActionData,
           DeployInitCapitalMsg_5 &
           DeployInitCapitalMsg_6,
       ) =>
-        new BeginDefaultAdminTransferSubAction(deployer, {
-          accessControlManager: message.accessControlManager,
-          newOwner: accessControlManagerOwner.walletClient.account.address,
+        new TransferProxyAdminOwnerSubAction(deployer, {
+          proxyAdmin: message.proxyAdmin,
+          newOwner: params.proxyAdminOwner,
         }),
       (
         message: DeployInitCapitalMsg &
