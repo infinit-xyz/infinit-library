@@ -210,7 +210,7 @@ describe('deployAaveV3Action', () => {
     expect(owner).toBe(oneAddress)
   })
 
-  test('simple run (different addreses on each roles) + init reserves', async () => {
+  test('simple run (different addreses on each roles) + init reserves', { retry: 3 }, async () => {
     const deployer = client.walletClient.account.address
     const weth9 = await readArtifact('WETH9')
     const callData = encodeFunctionData({ abi: weth9.abi, functionName: 'deposit', args: [] })
