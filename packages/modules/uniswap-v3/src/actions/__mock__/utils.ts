@@ -1,6 +1,5 @@
 import { Address, encodeFunctionData, zeroAddress } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
-import { arbitrum } from 'viem/chains'
 
 import { InfinitWallet, TransactionData } from '@infinit-xyz/core'
 
@@ -11,10 +10,11 @@ import { DeployUniswapV3StakerAction } from '@actions/deployUniswapV3Staker'
 
 import { UniswapV3Registry } from '@/src/type'
 import { readArtifact } from '@/src/utils/artifact'
-import { TestChain, TestInfinitWallet, getForkRpcUrl } from '@infinit-xyz/test'
+import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
 export const setupUniswapV3 = async (): Promise<UniswapV3Registry> => {
-  const client = new InfinitWallet(arbitrum, getForkRpcUrl(TestChain.arbitrum), privateKeyToAccount(ANVIL_PRIVATE_KEY))
+  const account = privateKeyToAccount(ANVIL_PRIVATE_KEY)
+  const client = new TestInfinitWallet(TestChain.arbitrum, account.address)
   const deployer = client.walletClient.account.address
   const weth = ARBITRUM_TEST_ADDRESSES.weth
   const usdt = ARBITRUM_TEST_ADDRESSES.usdt
