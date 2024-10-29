@@ -10,7 +10,7 @@ import { readArtifact } from '@utils/artifact'
 
 // anvil tester
 const tester = ARBITRUM_TEST_ADDRESSES.tester
-describe('SetModeStatus', async () => {
+describe('SetBorrFactorsE18', async () => {
   let txBuilder: SetBorrFactorE18TxBuilder
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
 
