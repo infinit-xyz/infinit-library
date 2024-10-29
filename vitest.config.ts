@@ -1,7 +1,7 @@
 import path from 'path'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
-import { defineConfig } from 'vitest/config'
+import { configDefaults, defineConfig } from 'vitest/config'
 
 const MAX_TEST_PARALLELISM = 6
 
@@ -11,7 +11,7 @@ export default defineConfig({
     poolOptions: {
       threads: {
         minThreads: 1,
-        maxThreads: process.env.VITE_RUN_LOCAL_ANVIL === 'true' ? 1 : MAX_TEST_PARALLELISM,
+        maxThreads: MAX_TEST_PARALLELISM,
       },
     },
     globals: true,
@@ -19,6 +19,7 @@ export default defineConfig({
       reporter: ['text', 'json', 'html', 'json-summary'],
       provider: 'v8',
       exclude: [
+        ...configDefaults.exclude,
         'packages/test',
         'scripts',
         'packages/**/scripts/**',
