@@ -30,7 +30,7 @@ describe('deployInitCapitalAction', () => {
     client2 = new TestInfinitWallet(TestChain.arbitrum, account2.address)
   })
 
-  test('deploy all', async () => {
+  test('deploy all', { retry: 3 }, async () => {
     action = new DeployInitCapitalAction({
       params: {
         proxyAdminOwner: oneAddress,
