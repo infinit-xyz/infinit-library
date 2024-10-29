@@ -22,7 +22,6 @@ export const getRpcUrls = (chain: TestChain) => {
 
 export const getForkRpcUrl = (chain: TestChain) => {
   if (process.env.VITE_RUN_LOCAL_ANVIL === 'true') {
-    console.log('ℹ️ VITE_RUN_LOCAL_ANVIL is true')
     return `${FORK_RPC_URL[chain]}`
   }
 

@@ -6,7 +6,7 @@ export default defineProject({
   test: {
     name: 'core',
     mockReset: true,
-    testTimeout: 30_000,
+    testTimeout: 15_000,
   },
   plugins: [tsconfigPaths()], // to resolve imports using Typescipt's path mapping
 })

@@ -1,5 +1,13 @@
 # @infinit-xyz/aave-v3
 
+## 0.0.0-alpha.23
+
+### Patch Changes
+
+- [#111](https://github.com/infinit-xyz/infinit-library/pull/111)
+  [`7ed8c28`](https://github.com/infinit-xyz/infinit-library/commit/7ed8c2885e96b8d9b34e3fb0f07dccd6edb85734) Thanks
+  [@mintcnn](https://github.com/mintcnn)! - Bump core version
+
 ## 0.0.0-alpha.22
 
 ### Patch Changes
