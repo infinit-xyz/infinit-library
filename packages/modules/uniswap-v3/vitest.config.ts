@@ -9,7 +9,6 @@ export default defineProject({
     testTimeout: 20_000,
     hookTimeout: 30_000,
     setupFiles: [path.resolve(__dirname, '../../test/src/setupFiles/resetTestClient.ts')],
-    retry: 3,
   },
   plugins: [tsconfigPaths()], // to resolve imports using Typescipt's path mapping
 })
