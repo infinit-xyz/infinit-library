@@ -3,13 +3,15 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 
 import { defineConfig } from 'vitest/config'
 
+const MAX_TEST_PARALLELISM = 6
+
 export default defineConfig({
   test: {
     pool: 'threads',
     poolOptions: {
       threads: {
         minThreads: 1,
-        maxThreads: 6,
+        maxThreads: process.env.VITE_RUN_LOCAL_ANVIL === 'true' ? 1 : MAX_TEST_PARALLELISM,
       },
     },
     globals: true,
@@ -32,7 +34,6 @@ export default defineConfig({
     testTimeout: 25000,
     hookTimeout: 15000,
     globalSetup: [path.resolve(__dirname, 'packages/test/src/globalSetup.ts')],
-    setupFiles: [path.resolve(__dirname, 'packages/test/src/setup.ts')],
   },
   plugins: [tsconfigPaths()], // to resolve imports using Typescipt's path mapping
 })
