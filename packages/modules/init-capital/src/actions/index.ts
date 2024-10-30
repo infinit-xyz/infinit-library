@@ -4,6 +4,7 @@ import { DeployDoubleSlopeIRMsAction, DeployDoubleSlopeIRMsActionParamsSchema } 
 import { DeployInitCapitalAction, DeployInitCapitalActionParamsSchema } from '@actions/deployInitCapital'
 import { SetIrmAction, SetIrmActionParamsSchema } from '@actions/setIrm'
 import { SetModeStatusAction, SetModeStatusActionParamsSchema } from '@actions/setModeStatus'
+import { SetOracleAction, SetOracleActionParamsSchema } from '@actions/setOracle'
 import { SetPoolConfigAction, SetPoolConfigParamsSchema } from '@actions/setPoolConfig'
 
 export const actions = {
@@ -36,6 +37,12 @@ export const actions = {
     actionClassName: SetPoolConfigAction.name,
     paramsSchema: SetPoolConfigParamsSchema,
     signers: ['guardian'],
+  },
+  setOracle: {
+    name: 'Set Oracle',
+    actionClassName: SetOracleAction.name,
+    paramsSchema: SetOracleActionParamsSchema,
+    signers: ['governor'],
   },
 } satisfies InfinitActionRecord
 
