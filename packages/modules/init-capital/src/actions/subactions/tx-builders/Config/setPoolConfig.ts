@@ -1,7 +1,7 @@
-import { Address, encodeFunctionData, getAddress, keccak256, toHex } from 'viem'
+import { Address, encodeFunctionData, getAddress, keccak256, toHex, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ContractValidateError } from '@infinit-xyz/core/errors'
+import { ContractValidateError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -48,6 +48,9 @@ export class SetPoolConfigTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
+    if (this.config === zeroAddress) throw new ValidateInputZeroAddressError('CONFIG')
+    if (this.pool === zeroAddress) throw new ValidateInputZeroAddressError('POOL')
+
     const [configArtifact, acmArtifact] = await Promise.all([readArtifact('Config'), readArtifact('AccessControlManager')])
     const acm: Address = await this.client.publicClient.readContract({
       address: this.config,
