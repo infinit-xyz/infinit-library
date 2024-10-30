@@ -1,5 +1,60 @@
 # @infinit-xyz/core
 
+## 0.1.0-alpha.9
+
+### Patch Changes
+
+- [#109](https://github.com/infinit-xyz/infinit-library/pull/109)
+  [`fffb9f8`](https://github.com/infinit-xyz/infinit-library/commit/fffb9f887a476a39b6fcdf19d54b7fed49023403) Thanks
+  [@mintcnn](https://github.com/mintcnn)! - Fix export path of callback
+
+## 0.1.0-alpha.8
+
+### Minor Changes
+
+- [`b9624e1`](https://github.com/infinit-xyz/infinit-library/commit/b9624e1797c500b33ffe4695013ee4d07191c737) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - update callback export
+
+## 0.1.0-alpha.7
+
+### Minor Changes
+
+- [#99](https://github.com/infinit-xyz/infinit-library/pull/99)
+  [`99f7d41`](https://github.com/infinit-xyz/infinit-library/commit/99f7d41f39712ee23742d13f6c772b35e50d8a82) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - change `InfinitCallback` to `ActionCallback`
+
+### Patch Changes
+
+- [#99](https://github.com/infinit-xyz/infinit-library/pull/99)
+  [`99f7d41`](https://github.com/infinit-xyz/infinit-library/commit/99f7d41f39712ee23742d13f6c772b35e50d8a82) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - add `OffChainAction`
+
+- [#99](https://github.com/infinit-xyz/infinit-library/pull/99)
+  [`99f7d41`](https://github.com/infinit-xyz/infinit-library/commit/99f7d41f39712ee23742d13f6c772b35e50d8a82) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - add `validateZodObject`
+
+## 0.1.0-alpha.6
+
+### Minor Changes
+
+- [#95](https://github.com/infinit-xyz/infinit-library/pull/95)
+  [`da76f14`](https://github.com/infinit-xyz/infinit-library/commit/da76f1429408ec25f7ca0e084c847e96aad33009) Thanks
+  [@mintcnn](https://github.com/mintcnn)! - Add wallet address to transaction callbacks
+
+## 0.1.0-alpha.5
+
+### Minor Changes
+
+- [#85](https://github.com/infinit-xyz/infinit-library/pull/85)
+  [`128f5d5`](https://github.com/infinit-xyz/infinit-library/commit/128f5d53bb344eb5078436684413ecd12e86a05b) Thanks
+  [@Kittikornl](https://github.com/Kittikornl)! - update to support init-capital module
+
+### Patch Changes
+
+- [#91](https://github.com/infinit-xyz/infinit-library/pull/91)
+  [`51eb6d4`](https://github.com/infinit-xyz/infinit-library/commit/51eb6d4ddc3906459a4f6df23b9b992100331919) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - bump viem version from 2.21.16 to 2.21.28
+
 ## 0.1.0-alpha.4
 
 ### Minor Changes

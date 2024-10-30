@@ -1,24 +1,20 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
+import { encodeFunctionData } from 'viem'
 import { Address, privateKeyToAccount } from 'viem/accounts'
-import { arbitrum } from 'viem/chains'
-
-import { InfinitWallet } from '@infinit-xyz/core'
 
 import { ANVIL_PRIVATE_KEY } from '@actions/__mocks__/account'
 import { TEST_ADDRESSES } from '@actions/__mocks__/address'
 import { DeployInfinitERC20BurnableAction } from '@actions/deployInfinitERC20Burnable'
 
-import { TestChain, TestInfinitWallet, getForkRpcUrl } from '@infinit-xyz/test'
+import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'
 
 describe('deployInfinitERC20BurnableBurnableAction', () => {
   let action: DeployInfinitERC20BurnableAction
-  let client: InfinitWallet
-  let bobClient: InfinitWallet
+  let client: TestInfinitWallet
+  let bobClient: TestInfinitWallet
 
-  // anvil rpc endpoint
-  const rpcEndpoint = getForkRpcUrl(TestChain.arbitrum)
   const bob = TEST_ADDRESSES.bob
   // anvil tester pk
   const privateKey = ANVIL_PRIVATE_KEY
@@ -26,7 +22,7 @@ describe('deployInfinitERC20BurnableBurnableAction', () => {
   beforeAll(() => {
     const account = privateKeyToAccount(privateKey)
     bobClient = new TestInfinitWallet(TestChain.arbitrum, bob)
-    client = new InfinitWallet(arbitrum, rpcEndpoint, account)
+    client = new TestInfinitWallet(TestChain.arbitrum, account.address)
   })
 
   test('deploy token, owner is deployer', async () => {
@@ -86,12 +82,20 @@ describe('deployInfinitERC20BurnableBurnableAction', () => {
       args: [client.walletClient.account.address],
     })
 
-    await client.walletClient.writeContract({
-      address: ttToken,
-      abi: infinitERC20.abi,
-      functionName: 'mint',
-      args: [client.walletClient.account.address, mintAmount],
-    })
+    await client.sendTransactions([
+      {
+        name: 'mint',
+        txData: {
+          to: ttToken,
+          data: encodeFunctionData({
+            abi: infinitERC20.abi,
+            functionName: 'mint',
+            args: [client.walletClient.account.address, mintAmount],
+          }),
+        },
+      },
+    ])
+
     const balanceAfterMint = await client.publicClient.readContract({
       address: ttToken,
       abi: infinitERC20.abi,
@@ -182,17 +186,26 @@ describe('deployInfinitERC20BurnableBurnableAction', () => {
 
     const mintAmount = BigInt(100000000000000000000000)
 
-    try {
-      // Attempt to mint tokens as a non-owner
-      await bobClient.walletClient.writeContract({
-        address: ttToken,
-        abi: infinitERC20.abi,
-        functionName: 'mint',
-        args: [bob, mintAmount],
-      })
-    } catch (e) {
-      expect(e).not.toBeUndefined()
-    }
+    // Attempt to mint tokens as a non-owner
+    await expect(
+      bobClient.sendTransactions(
+        [
+          {
+            name: 'mint',
+            txData: {
+              to: ttToken,
+              data: encodeFunctionData({
+                abi: infinitERC20.abi,
+                functionName: 'mint',
+                args: [bob, mintAmount],
+              }),
+            },
+          },
+        ],
+        undefined,
+        { hideErrorMessage: true },
+      ),
+    ).rejects.toThrowError()
   })
 
   // test deploy token, test burn token
@@ -223,12 +236,20 @@ describe('deployInfinitERC20BurnableBurnableAction', () => {
       functionName: 'balanceOf',
       args: [client.walletClient.account.address],
     })
-    await client.walletClient.writeContract({
-      address: ttToken,
-      abi: infinitERC20.abi,
-      functionName: 'burn',
-      args: [burnAmount],
-    })
+
+    await client.sendTransactions([
+      {
+        name: 'burn',
+        txData: {
+          to: ttToken,
+          data: encodeFunctionData({
+            abi: infinitERC20.abi,
+            functionName: 'burn',
+            args: [burnAmount],
+          }),
+        },
+      },
+    ])
     const balanceAfterBurn = await client.publicClient.readContract({
       address: ttToken,
       abi: infinitERC20.abi,

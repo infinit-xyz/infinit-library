@@ -1,7 +1,7 @@
 import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ContractValidateError, ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ContractValidateError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -27,7 +27,7 @@ export class AcceptDefaultAdminTransferTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.accessControlManager === zeroAddress) throw new ValidateInputValueError('ProxyAdmin cannot be zero address')
+    if (this.accessControlManager === zeroAddress) throw new ValidateInputZeroAddressError('ACCESS_CONTROL_MANAGER')
     const accessControlManagerArtifact = await readArtifact('AccessControlManager')
     const [newOwner, schedule] = await this.client.publicClient.readContract({
       address: this.accessControlManager,
@@ -38,6 +38,6 @@ export class AcceptDefaultAdminTransferTxBuilder extends TxBuilder {
     if (this.client.walletClient.account.address !== newOwner) throw new ContractValidateError('only owner can transfer owner')
     // get block timestamp
     const block = await this.client.publicClient.getBlock()
-    if (Number(block.timestamp) < schedule) throw new ContractValidateError('transfer delay not passed')
+    if (block.timestamp < schedule) throw new ContractValidateError('transfer delay not passed')
   }
 }

@@ -11,6 +11,8 @@ await Promise.all(
   }),
 )
 
+await linkContractDirectory(`../../../node_modules/fee-vault/src`, `fee-vault/contracts`)
+
 await targetRepositories.map(async (repo) => {
   linkContractDirectory(`../../../node_modules/${repo}/contracts`, `${repo}/contracts`)
 })

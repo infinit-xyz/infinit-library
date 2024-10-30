@@ -1,6 +1,6 @@
 {
   "name": "@infinit-xyz/token",
-  "version": "0.0.0-alpha.16",
+  "version": "0.0.0-alpha.20",
   "homepage": "https://infinit.tech",
   "repository": {
     "type": "git",
@@ -28,12 +28,15 @@
     }
   },
   "scripts": {
+    "postinstall": "bun ./scripts/postInstall.ts",
     "build": "tsup",
-    "clean": "rm -rf cache artifacts node_modules dist",
+    "clean": "rm -rf cache artifacts node_modules dist && find . -type l -delete",
     "typecheck_temp": "tsc --noEmit",
     "compile": "ENABLE_HARDHAT_TOOLBOX=true bun ../../../node_modules/@infinit-xyz/core/dist/exports/internal/hardhat-compile.js $PWD",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepack": "bun ./scripts/prepack.ts",
+    "postpack": "bun ./scripts/postpack.ts"
   },
   "files": [
     "/dist",
@@ -43,10 +46,9 @@
     "extends": "../../../.eslintrc.js"
   },
   "dependencies": {
-    "@infinit-xyz/core": "^0.1.0-alpha.4",
-    "@openzeppelin/contracts": "5.0.0",
-    "@openzeppelin/contracts-upgradeable": "4.9.3",
+    "@infinit-xyz/core": "^0.1.0-alpha.8",
     "@openzeppelin/merkle-tree": "^1.0.7",
+    "infinit-erc20-contracts": "https://github.com/infinit-xyz/infinit-erc20-contracts.git",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
@@ -56,7 +58,7 @@
   },
   "peerDependencies": {
     "zod": "^3.23.8",
-    "viem": "2.21.16"
+    "viem": "2.21.28"
   },
   "engines": {
     "node": ">=22"

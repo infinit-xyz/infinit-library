@@ -3,9 +3,14 @@ import { Address, Hex } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
 
+import { InitializeConfigTxBuilder } from '@actions/subactions/tx-builders/Config/initialize'
 import { InitializeInitCoreTxBuilder } from '@actions/subactions/tx-builders/InitCore/initialize'
 import { DeployInitLensTxBuilder } from '@actions/subactions/tx-builders/InitLens/deploy'
+import { InitializeInitOracleTxBuilder } from '@actions/subactions/tx-builders/InitOracle/initialize'
+import { InitializeLiqIncentiveCalculatorTxBuilder } from '@actions/subactions/tx-builders/LiqIncentiveCalculator/initialize'
+import { InitializeMoneyMarketHookTxBuilder } from '@actions/subactions/tx-builders/MoneyMarketHook/initialize'
 import { InitializePosManagerTxBuilder } from '@actions/subactions/tx-builders/PosManager/initialize'
+import { InitializeRiskManagerTxBuilder } from '@actions/subactions/tx-builders/RiskManager/initialize'
 
 import { InitCapitalRegistry } from '@/src/type'
 
@@ -19,6 +24,9 @@ export type DeployInitCapitalContracts_6SubActionParams = {
   configProxy: Address
   initOracleProxy: Address
   riskManagerProxy: Address
+  moneyMarketHookProxy: Address
+  liqIncentiveCalculatorProxy: Address
+  maxLiqIncentiveMultiplier: bigint
 }
 
 export type DeployInitCapitalMsg_6 = {
@@ -36,6 +44,22 @@ export class DeployInitCapitalContracts6SubAction extends SubAction<
 
   protected setTxBuilders(): void {
     // ----------- initialize -----------
+    // initialize init oracle
+    this.txBuilders.push(new InitializeInitOracleTxBuilder(this.client, { initOracle: this.params.initOracleProxy }))
+    // initialize config
+    this.txBuilders.push(new InitializeConfigTxBuilder(this.client, { config: this.params.configProxy }))
+    // initialize liq incentive calculator
+    this.txBuilders.push(
+      new InitializeLiqIncentiveCalculatorTxBuilder(this.client, {
+        liqIncentiveCalculator: this.params.liqIncentiveCalculatorProxy,
+        maxLiqIncentiveMultiplier: this.params.maxLiqIncentiveMultiplier,
+      }),
+    )
+    // initialize risk manager
+    this.txBuilders.push(new InitializeRiskManagerTxBuilder(this.client, { riskManager: this.params.riskManagerProxy }))
+    // initialize money market hook
+    this.txBuilders.push(new InitializeMoneyMarketHookTxBuilder(this.client, { moneyMarketHook: this.params.moneyMarketHookProxy }))
+    // initialize pos manager
     this.txBuilders.push(
       new InitializePosManagerTxBuilder(this.client, {
         posManager: this.params.posManagerProxy,
@@ -45,6 +69,7 @@ export class DeployInitCapitalContracts6SubAction extends SubAction<
         maxCollCount: this.params.maxCollCount,
       }),
     )
+    // initialize init core
     this.txBuilders.push(
       new InitializeInitCoreTxBuilder(this.client, {
         initCore: this.params.initCoreProxy,
@@ -73,7 +98,16 @@ export class DeployInitCapitalContracts6SubAction extends SubAction<
       throw new TxNotFoundError()
     }
 
-    const [_initializePosManagerHash, _initializeInitCoreHash, deployInitLensHash] = txHashes
+    const [
+      _initializeInitOracleHash,
+      _initializeConfigHash,
+      _initializeLiqIncentiveCalculatorHash,
+      _initializeRiskManagerHash,
+      _initializeMoneyMarketHookHash,
+      _initializePosManagerHash,
+      _initializeInitCoreHash,
+      deployInitLensHash,
+    ] = txHashes
 
     const { contractAddress: initLens } = await this.client.publicClient.waitForTransactionReceipt({
       hash: deployInitLensHash,

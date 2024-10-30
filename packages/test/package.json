@@ -10,10 +10,6 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
-    },
-    "./actions": {
-      "types": "./dist/actions/index.d.ts",
-      "default": "./dist/actions/index.js"
     }
   },
   "scripts": {
@@ -23,7 +19,7 @@
   },
   "dependencies": {
     "tsup": "^8.1.0",
-    "viem": "2.21.16",
+    "viem": "2.21.28",
     "@infinit-xyz/core": "workspace:*"
   },
   "engines": {
