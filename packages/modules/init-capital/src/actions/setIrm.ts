@@ -7,31 +7,31 @@ import { SetIrmSubAction } from '@actions/subactions/setIrm'
 
 import { InitCapitalRegistry } from '@/src/type'
 
-export const SetIrmParamsSchema = z.object({
+export const SetIrmActionParamsSchema = z.object({
   pool: zodAddressNonZero.describe(`Address of lending pool e.g. '0x123...abc'`),
   irm: zodAddress.describe(`Address of interest rate model e.g. '0x123...abc'`),
 })
 
-export type SetIrmParams = z.infer<typeof SetIrmParamsSchema>
+export type SetIrmActionParams = z.infer<typeof SetIrmActionParamsSchema>
 
 export type SetIrmActionData = {
-  params: SetIrmParams
+  params: SetIrmActionParams
   signer: Record<'guardian', InfinitWallet>
 }
 
 export class SetIrmAction extends Action<SetIrmActionData, InitCapitalRegistry> {
   constructor(data: SetIrmActionData) {
-    validateActionData(data, SetIrmParamsSchema, ['guardian'])
+    validateActionData(data, SetIrmActionParamsSchema, ['guardian'])
     super(SetIrmAction.name, data)
   }
 
   protected getSubActions(): SubAction[] {
     const guardian = this.data.signer['guardian']
-    const SetIrmParams: SetIrmParams = {
+    const setIrmActionParams: SetIrmActionParams = {
       pool: this.data.params.pool,
       irm: this.data.params.irm,
     }
 
-    return [new SetIrmSubAction(guardian, SetIrmParams)]
+    return [new SetIrmSubAction(guardian, setIrmActionParams)]
   }
 }

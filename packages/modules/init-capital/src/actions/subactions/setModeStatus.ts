@@ -7,14 +7,14 @@ import { SetModeStatusTxBuilder, SetModeStatusTxBuilderParams } from '@actions/s
 
 import { InitCapitalRegistry } from '@/src/type'
 
-export type SetModeStatusesSubActionParams = {
+export type SetModeStatusSubActionParams = {
   config: Address
   modeStatuses: Omit<SetModeStatusTxBuilderParams, 'config'>[]
 }
 
-export class SetModeStatusesSubAction extends SubAction<SetModeStatusesSubActionParams, InitCapitalRegistry, object> {
-  constructor(client: InfinitWallet, params: SetModeStatusesSubActionParams) {
-    super(SetModeStatusesSubAction.name, client, params)
+export class SetModeStatusSubAction extends SubAction<SetModeStatusSubActionParams, InitCapitalRegistry, object> {
+  constructor(client: InfinitWallet, params: SetModeStatusSubActionParams) {
+    super(SetModeStatusSubAction.name, client, params)
   }
 
   protected setTxBuilders(): void {

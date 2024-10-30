@@ -4,25 +4,25 @@ import { SubAction } from '@infinit-xyz/core'
 
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
 
-import { SetModeStatusesAction, SetModeStatusesActionData } from './setModeStatuses'
-import { SetModeStatusesSubAction } from './subactions/setModeStatuses'
+import { SetModeStatusAction, SetModeStatusActionData } from './setModeStatus'
+import { SetModeStatusSubAction } from './subactions/setModeStatus'
 import { ModeStatus, SetModeStatusTxBuilder } from './subactions/tx-builders/Config/setModeStatus'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
-class SetModeStatusesActionTest extends SetModeStatusesAction {
+class SetModeStatusActionTest extends SetModeStatusAction {
   public override getSubActions(): SubAction[] {
     return super.getSubActions()
   }
 }
 
 const tester = ARBITRUM_TEST_ADDRESSES.tester
-describe('SetModeStatuses', async () => {
+describe('SetModeStatus', async () => {
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
   test('test correct name', async () => {
-    expect(SetModeStatusesAction.name).toStrictEqual('SetModeStatusesAction')
+    expect(SetModeStatusAction.name).toStrictEqual('SetModeStatusAction')
   })
   test('test correct calldata', async () => {
-    const data: SetModeStatusesActionData = {
+    const data: SetModeStatusActionData = {
       signer: { guardian: client },
       params: {
         config: '0xCD399994982B3a3836B8FE81f7127cC5148e9BaE',
@@ -33,8 +33,8 @@ describe('SetModeStatuses', async () => {
       },
     }
     // data.
-    const SetModeStatusesAction = new SetModeStatusesActionTest(data)
-    const subActions: SetModeStatusesSubAction[] = SetModeStatusesAction.getSubActions() as SetModeStatusesSubAction[]
+    const SetModeStatusAction = new SetModeStatusActionTest(data)
+    const subActions: SetModeStatusSubAction[] = SetModeStatusAction.getSubActions() as SetModeStatusSubAction[]
     console.log()
     expect(subActions[0].params.config).toStrictEqual(data.params.config)
 
