@@ -37,7 +37,7 @@ export class DeployLendingPoolTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.initCore === zeroAddress) throw new ValidateInputZeroAddressError('INIT_ORACLE_CANNOT_BE_ZERO_ADDRESS')
-    if (this.accessControlManager === zeroAddress) throw new ValidateInputZeroAddressError('ACCESS_CONTROL_MANAGER_CANNOT_BE_ZERO_ADDRESS')
+    if (this.initCore === zeroAddress) throw new ValidateInputZeroAddressError('INIT_ORACLE')
+    if (this.accessControlManager === zeroAddress) throw new ValidateInputZeroAddressError('ACCESS_CONTROL_MANAGER')
   }
 }

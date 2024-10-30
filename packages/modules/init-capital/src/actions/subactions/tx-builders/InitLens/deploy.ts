@@ -43,9 +43,9 @@ export class DeployInitLensTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.initCore === zeroAddress) throw new ValidateInputZeroAddressError('INIT_ORACLE_CANNOT_BE_ZERO_ADDRESS')
-    if (this.posManager === zeroAddress) throw new ValidateInputZeroAddressError('POS_MANAGER_CANNOT_BE_ZERO_ADDRESS')
-    if (this.riskManager === zeroAddress) throw new ValidateInputZeroAddressError('RISK_MANAGER_CANNOT_BE_ZERO_ADDRESS')
-    if (this.config === zeroAddress) throw new ValidateInputZeroAddressError('CONFIG_CANNOT_BE_ZERO_ADDRESS')
+    if (this.initCore === zeroAddress) throw new ValidateInputZeroAddressError('INIT_ORACLE')
+    if (this.posManager === zeroAddress) throw new ValidateInputZeroAddressError('POS_MANAGER')
+    if (this.riskManager === zeroAddress) throw new ValidateInputZeroAddressError('RISK_MANAGER')
+    if (this.config === zeroAddress) throw new ValidateInputZeroAddressError('CONFIG')
   }
 }

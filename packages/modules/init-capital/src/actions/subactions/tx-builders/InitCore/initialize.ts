@@ -46,11 +46,10 @@ export class InitializeInitCoreTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.initCore === zeroAddress) throw new ValidateInputZeroAddressError('INIT_CORE_CANNOT_BE_ZERO_ADDRESS')
-    if (this.config === zeroAddress) throw new ValidateInputZeroAddressError('CONFIG_CANNOT_BE_ZERO_ADDRESS')
-    if (this.initOracle === zeroAddress) throw new ValidateInputZeroAddressError('INIT_ORACLE_CANNOT_BE_ZERO_ADDRESS')
-    if (this.liqIncentiveCalculator === zeroAddress)
-      throw new ValidateInputZeroAddressError('LIQ_INCENTIVE_CALCULATOR_CANNOT_BE_ZERO_ADDRESS')
-    if (this.riskManager === zeroAddress) throw new ValidateInputZeroAddressError('RISK_MANAGER_CANNOT_BE_ZERO_ADDRESS')
+    if (this.initCore === zeroAddress) throw new ValidateInputZeroAddressError('INIT_CORE')
+    if (this.config === zeroAddress) throw new ValidateInputZeroAddressError('CONFIG')
+    if (this.initOracle === zeroAddress) throw new ValidateInputZeroAddressError('INIT_ORACLE')
+    if (this.liqIncentiveCalculator === zeroAddress) throw new ValidateInputZeroAddressError('LIQ_INCENTIVE_CALCULATOR')
+    if (this.riskManager === zeroAddress) throw new ValidateInputZeroAddressError('RISK_MANAGER')
   }
 }

@@ -34,6 +34,6 @@ export class InitializeRiskManagerTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.riskManager === zeroAddress) throw new ValidateInputZeroAddressError('RISK_MANAGER_CANNOT_BE_ZERO_ADDRESS')
+    if (this.riskManager === zeroAddress) throw new ValidateInputZeroAddressError('RISK_MANAGER')
   }
 }

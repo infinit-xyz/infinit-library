@@ -34,6 +34,6 @@ export class InitializeInitOracleTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.initOracle === zeroAddress) throw new ValidateInputValueError('INIT_ORACLE_CANNOT_BE_ZERO_ADDRESS')
+    if (this.initOracle === zeroAddress) throw new ValidateInputValueError('INIT_ORACLE')
   }
 }

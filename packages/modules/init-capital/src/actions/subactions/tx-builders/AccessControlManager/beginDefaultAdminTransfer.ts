@@ -34,8 +34,8 @@ export class BeginDefaultAdminTransferTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.accessControlManager === zeroAddress) throw new ValidateInputZeroAddressError('PROXY_ADMIN_CANNOT_BE_ZERO_ADDRESS')
-    if (this.newOwner === zeroAddress) throw new ValidateInputZeroAddressError('NEW_OWNER_CANNOT_BE_ZERO_ADDRESS')
+    if (this.accessControlManager === zeroAddress) throw new ValidateInputZeroAddressError('PROXY_ADMIN')
+    if (this.newOwner === zeroAddress) throw new ValidateInputZeroAddressError('NEW_OWNER')
     const accessControlManagerArtifact = await readArtifact('AccessControlManager')
     const owner = await this.client.publicClient.readContract({
       address: this.accessControlManager,

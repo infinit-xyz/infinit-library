@@ -39,7 +39,7 @@ export class DeployTransparentUpgradeableProxyReceiveETHTxBuilder extends TxBuil
   }
 
   public async validate(): Promise<void> {
-    if (this.logic === zeroAddress) throw new ValidateInputZeroAddressError('LOGIC_CANNOT_BE_ZERO_ADDRESS')
-    if (this.admin === zeroAddress) throw new ValidateInputZeroAddressError('ADMIN_CANNOT_BE_ZERO_ADDRESS')
+    if (this.logic === zeroAddress) throw new ValidateInputZeroAddressError('LOGIC')
+    if (this.admin === zeroAddress) throw new ValidateInputZeroAddressError('ADMIN')
   }
 }

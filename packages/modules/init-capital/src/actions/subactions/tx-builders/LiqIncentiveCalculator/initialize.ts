@@ -37,8 +37,7 @@ export class InitializeLiqIncentiveCalculatorTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.liqIncentiveCalculator === zeroAddress)
-      throw new ValidateInputZeroAddressError('LIQ_INCENTIVE_CALCULATOR_CANNOT_BE_ZERO_ADDRESS')
+    if (this.liqIncentiveCalculator === zeroAddress) throw new ValidateInputZeroAddressError('LIQ_INCENTIVE_CALCULATOR')
     if (this.maxLiqIncentiveMultiplier < 0n) throw new ValidateInputValueError('Max Liquidation Incentive Multiplier cannot be negative')
     if (this.maxLiqIncentiveMultiplier > maxUint256)
       throw new ValidateInputValueError(`Max Liquidation Incentive Multiplier cannot be greater than ${maxUint256}`)

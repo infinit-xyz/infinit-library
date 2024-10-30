@@ -33,6 +33,6 @@ export class InitializeMoneyMarketHookTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.moneyMarketHook === zeroAddress) throw new ValidateInputZeroAddressError('MONEY_MARKET_HOOK_CANNOT_BE_ZERO_ADDRESS')
+    if (this.moneyMarketHook === zeroAddress) throw new ValidateInputZeroAddressError('MONEY_MARKET_HOOK')
   }
 }

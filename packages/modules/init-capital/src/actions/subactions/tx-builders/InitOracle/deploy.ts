@@ -34,6 +34,6 @@ export class DeployInitOracleTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.accessControlManager === zeroAddress) throw new ValidateInputZeroAddressError('ACCESS_CONTROL_MANAGER_CANNOT_BE_ZERO_ADDRESS')
+    if (this.accessControlManager === zeroAddress) throw new ValidateInputZeroAddressError('ACCESS_CONTROL_MANAGER')
   }
 }

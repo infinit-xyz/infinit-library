@@ -37,7 +37,7 @@ export class DeployInitCoreTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.posManager === zeroAddress) throw new ValidateInputZeroAddressError('POS_MANAGER_CANNOT_BE_ZERO_ADDRESS')
-    if (this.accessControlManager === zeroAddress) throw new ValidateInputZeroAddressError('ACCESS_CONTROL_MANAGER_CANNOT_BE_ZERO_ADDRESS')
+    if (this.posManager === zeroAddress) throw new ValidateInputZeroAddressError('POS_MANAGER')
+    if (this.accessControlManager === zeroAddress) throw new ValidateInputZeroAddressError('ACCESS_CONTROL_MANAGER')
   }
 }

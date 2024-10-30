@@ -34,6 +34,6 @@ export class InitializeConfigTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.config === zeroAddress) throw new ValidateInputZeroAddressError('CONFIG_CANNOT_BE_ZERO_ADDRESS')
+    if (this.config === zeroAddress) throw new ValidateInputZeroAddressError('CONFIG')
   }
 }

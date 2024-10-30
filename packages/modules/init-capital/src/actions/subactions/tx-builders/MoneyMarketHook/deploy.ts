@@ -40,8 +40,8 @@ export class DeployMoneyMarketHookTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.initCore === zeroAddress) throw new ValidateInputZeroAddressError('INIT_CORE_CANNOT_BE_ZERO_ADDRESS')
-    if (this.wrappedNativeToken === zeroAddress) throw new ValidateInputZeroAddressError('WRAPPED_NATIVE_TOKEN_CANNOT_BE_ZERO_ADDRESS')
-    if (this.accessControlManager === zeroAddress) throw new ValidateInputZeroAddressError('ACCESS_CONTROL_MANAGER_CANNOT_BE_ZERO_ADDRESS')
+    if (this.initCore === zeroAddress) throw new ValidateInputZeroAddressError('INIT_CORE')
+    if (this.wrappedNativeToken === zeroAddress) throw new ValidateInputZeroAddressError('WRAPPED_NATIVE_TOKEN')
+    if (this.accessControlManager === zeroAddress) throw new ValidateInputZeroAddressError('ACCESS_CONTROL_MANAGER')
   }
 }
