@@ -1,5 +1,6 @@
 import { InfinitActionRecord } from '@infinit-xyz/core'
 
+import { DeployDoubleSlopeIRMsAction, DeployDoubleSlopeIRMsActionParamsSchema } from '@actions/deployDoubleSlopeIRMs'
 import { DeployInitCapitalAction, DeployInitCapitalParamsSchema } from '@actions/deployInitCapital'
 
 export const actions = {
@@ -9,6 +10,12 @@ export const actions = {
     paramsSchema: DeployInitCapitalParamsSchema,
     signers: ['deployer', 'accessControlManagerOwner'],
   },
+  deployDoubleSlopeIRMs: {
+    name: 'Deploy Double Slope IRMs',
+    actionClassName: DeployDoubleSlopeIRMsAction.name,
+    paramsSchema: DeployDoubleSlopeIRMsActionParamsSchema,
+    signers: ['deployer'],
+  },
 } satisfies InfinitActionRecord
 
-export { DeployInitCapitalAction }
+export { DeployDoubleSlopeIRMsAction, DeployInitCapitalAction }

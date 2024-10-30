@@ -3,6 +3,7 @@ import { Address, Hex } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
 
+import { DeployFeeVaultTxBuilder } from '@actions/subactions/tx-builders/FeeVault/deploy'
 import { DeployLendingPoolTxBuilder } from '@actions/subactions/tx-builders/LendingPool/deploy'
 import { DeployMoneyMarketHookTxBuilder } from '@actions/subactions/tx-builders/MoneyMarketHook/deploy'
 import { DeployRiskManagerTxBuilder } from '@actions/subactions/tx-builders/RiskManager/deploy'
@@ -13,6 +14,8 @@ export type DeployInitCapitalContracts_4SubActionParams = {
   accessControlManager: Address
   initCoreProxy: Address
   wrappedNativeToken: Address
+  feeAdmin: Address
+  treasury: Address
 }
 
 export type DeployInitCapitalMsg_4 = {
@@ -31,6 +34,14 @@ export class DeployInitCapitalContracts4SubAction extends SubAction<
   }
 
   protected setTxBuilders(): void {
+    // ----------- Fee Vault -----------
+    this.txBuilders.push(
+      new DeployFeeVaultTxBuilder(this.client, {
+        wrappedNativeToken: this.params.wrappedNativeToken,
+        admin: this.params.feeAdmin,
+        treasury: this.params.treasury,
+      }),
+    )
     // ----------- implementation -----------
     this.txBuilders.push(
       new DeployRiskManagerTxBuilder(this.client, {
@@ -61,7 +72,15 @@ export class DeployInitCapitalContracts4SubAction extends SubAction<
       throw new TxNotFoundError()
     }
 
-    const [deployRiskManagerHash, deployLendingPoolHash, deployMoneyMarketHookHash] = txHashes
+    const [DeployFeeVaultHash, deployRiskManagerHash, deployLendingPoolHash, deployMoneyMarketHookHash] = txHashes
+
+    const { contractAddress: feeVault } = await this.client.publicClient.waitForTransactionReceipt({
+      hash: DeployFeeVaultHash,
+    })
+    if (!feeVault) {
+      throw new ContractNotFoundError(DeployFeeVaultHash, 'FeeVault')
+    }
+    registry['feeVault'] = feeVault
 
     const { contractAddress: riskManagerImpl } = await this.client.publicClient.waitForTransactionReceipt({
       hash: deployRiskManagerHash,

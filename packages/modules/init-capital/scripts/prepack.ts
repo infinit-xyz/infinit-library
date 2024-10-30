@@ -2,7 +2,7 @@
 import { $ } from 'bun'
 import fs from 'fs'
 
-const targetRepositories: string[] = ['init-capital']
+const targetRepositories: string[] = ['init-capital', 'fee-vault']
 
 const symLinks: string[] = []
 
