@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest'
 
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
 
-import { SetPoolConfigSubAction, SetPoolConfigSubActionParams } from './setPoolConfigs'
+import { SetPoolConfigSubAction, SetPoolConfigSubActionParams } from './setPoolConfig'
 import { PoolConfig, SetPoolConfigTxBuilder } from './tx-builders/Config/setPoolConfig'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
