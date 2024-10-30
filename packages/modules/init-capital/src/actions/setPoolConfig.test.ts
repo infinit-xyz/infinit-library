@@ -57,7 +57,6 @@ describe('SetPoolConfig', async () => {
     // data.
     const setPoolConfigAction = new SetPoolConfigActionTest(data)
     const subActions: SetPoolConfigSubAction[] = setPoolConfigAction.getSubActions() as SetPoolConfigSubAction[]
-    console.log()
     expect(subActions[0].params.config).toStrictEqual(data.params.config)
 
     for (let j = 0; j < subActions.length; j++) {

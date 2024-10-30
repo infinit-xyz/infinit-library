@@ -35,7 +35,6 @@ describe('SetModeStatus', async () => {
     // data.
     const SetModeStatusAction = new SetModeStatusActionTest(data)
     const subActions: SetModeStatusSubAction[] = SetModeStatusAction.getSubActions() as SetModeStatusSubAction[]
-    console.log()
     expect(subActions[0].params.config).toStrictEqual(data.params.config)
 
     for (let j = 0; j < subActions.length; j++) {
