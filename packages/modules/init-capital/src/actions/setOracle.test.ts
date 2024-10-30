@@ -31,7 +31,7 @@ describe('SetOracle', async () => {
     // data.
     const SetOracleAction = new SetOracleActionTest(data)
     const subActions: SetOracleSubAction[] = SetOracleAction.getSubActions() as SetOracleSubAction[]
-    console.log()
+
     expect(subActions.length).toStrictEqual(1)
     expect(subActions[0].params.initCore).toStrictEqual(data.params.initCore)
     expect(subActions[0].params.oracle).toStrictEqual(data.params.oracle)
