@@ -16,7 +16,7 @@ class SetMaxPriceDeviationActionTest extends SetMaxPriceDeviationAction {
 }
 
 const tester = ARBITRUM_TEST_ADDRESSES.tester
-describe('SetMaxPriceDeviations_e18', async () => {
+describe('SetMaxPriceDeviation', async () => {
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
   test('test correct name', async () => {
     expect(SetMaxPriceDeviationAction.name).toStrictEqual('SetMaxPriceDeviationAction')
