@@ -3,6 +3,7 @@ import { InfinitActionRecord } from '@infinit-xyz/core'
 import { DeployDoubleSlopeIRMsAction, DeployDoubleSlopeIRMsActionParamsSchema } from '@actions/deployDoubleSlopeIRMs'
 import { DeployInitCapitalAction, DeployInitCapitalActionParamsSchema } from '@actions/deployInitCapital'
 import { SetIrmAction, SetIrmActionParamsSchema } from '@actions/setIrm'
+import { SetMaxPriceDeviationAction, SetMaxPriceDeviationActionParamsSchema } from '@actions/setMaxPriceDeviation'
 import { SetModeStatusAction, SetModeStatusActionParamsSchema } from '@actions/setModeStatus'
 import { SetOracleAction, SetOracleActionParamsSchema } from '@actions/setOracle'
 import { SetPoolConfigAction, SetPoolConfigParamsSchema } from '@actions/setPoolConfig'
@@ -44,6 +45,20 @@ export const actions = {
     paramsSchema: SetOracleActionParamsSchema,
     signers: ['governor'],
   },
+  setMaxPriceDeviations: {
+    name: 'Set Max Price Deviation',
+    actionClassName: SetMaxPriceDeviationAction.name,
+    paramsSchema: SetMaxPriceDeviationActionParamsSchema,
+    signers: ['governor'],
+  },
 } satisfies InfinitActionRecord
 
-export { DeployDoubleSlopeIRMsAction, DeployInitCapitalAction, SetIrmAction, SetModeStatusAction, SetOracleAction, SetPoolConfigAction }
+export {
+  DeployDoubleSlopeIRMsAction,
+  DeployInitCapitalAction,
+  SetIrmAction,
+  SetMaxPriceDeviationAction,
+  SetModeStatusAction,
+  SetOracleAction,
+  SetPoolConfigAction,
+}
