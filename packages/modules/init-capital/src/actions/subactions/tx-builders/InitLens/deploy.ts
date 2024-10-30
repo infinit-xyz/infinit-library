@@ -1,6 +1,7 @@
-import { Address, Hex, encodeDeployData, getAddress } from 'viem'
+import { Address, Hex, encodeDeployData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -26,11 +27,11 @@ export class DeployInitLensTxBuilder extends TxBuilder {
   }
 
   async buildTx(): Promise<TransactionData> {
-    const InitLensArtifact = await readArtifact('InitLens')
+    const initLensArtifact = await readArtifact('InitLens')
 
     const deployData: Hex = encodeDeployData({
-      abi: InitLensArtifact.abi,
-      bytecode: InitLensArtifact.bytecode as Hex,
+      abi: initLensArtifact.abi,
+      bytecode: initLensArtifact.bytecode as Hex,
       args: [this.initCore, this.posManager, this.riskManager, this.config],
     })
 
@@ -41,5 +42,10 @@ export class DeployInitLensTxBuilder extends TxBuilder {
     return tx
   }
 
-  public async validate(): Promise<void> {}
+  public async validate(): Promise<void> {
+    if (this.initCore === zeroAddress) throw new ValidateInputZeroAddressError('INIT_ORACLE')
+    if (this.posManager === zeroAddress) throw new ValidateInputZeroAddressError('POS_MANAGER')
+    if (this.riskManager === zeroAddress) throw new ValidateInputZeroAddressError('RISK_MANAGER')
+    if (this.config === zeroAddress) throw new ValidateInputZeroAddressError('CONFIG')
+  }
 }

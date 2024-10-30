@@ -1,8 +1,7 @@
 import { encodeFunctionData, parseUnits, zeroAddress } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
-import { arbitrum } from 'viem/chains'
 
-import { InfinitWallet, TransactionData } from '@infinit-xyz/core'
+import { TransactionData } from '@infinit-xyz/core'
 
 import { ANVIL_PRIVATE_KEY } from '@actions/__mock__/account'
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
@@ -11,10 +10,11 @@ import { SupportNewReserveAction } from '@actions/supportNewReserve'
 
 import { AaveV3Registry } from '@/src/type'
 import { readArtifact } from '@/src/utils/artifact'
-import { TestChain, TestInfinitWallet, getForkRpcUrl } from '@infinit-xyz/test'
+import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
 export const setupAaveV3 = async (): Promise<AaveV3Registry> => {
-  const client = new InfinitWallet(arbitrum, getForkRpcUrl(TestChain.arbitrum), privateKeyToAccount(ANVIL_PRIVATE_KEY))
+  const account = privateKeyToAccount(ANVIL_PRIVATE_KEY)
+  const client = new TestInfinitWallet(TestChain.arbitrum, account.address)
   const deployer = client.walletClient.account.address
   const weth = ARBITRUM_TEST_ADDRESSES.weth
   const usdt = ARBITRUM_TEST_ADDRESSES.usdt
@@ -77,7 +77,7 @@ export const setupAaveV3 = async (): Promise<AaveV3Registry> => {
     to: weth,
     value: BigInt(10 ** 18),
   }
-  await client.walletClient.sendTransaction({ ...tx, account: client.walletClient.account.address, chain: client.walletClient.chain })
+  await client.sendTransactions([{ name: 'deposit', txData: tx }])
   // note: there is no erc20mintable
   const usdtArtifact = await readArtifact('IERC20')
   // transfer 100 wei to the client

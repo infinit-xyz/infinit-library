@@ -62,10 +62,15 @@ describe('createIncentivesAction', () => {
       functionName: 'approve',
       args: [registry.uniswapV3Staker!, 100n],
     })
-    await client.walletClient.sendTransaction({
-      to: weth,
-      data: approveData,
-    })
+    await client.sendTransactions([
+      {
+        name: 'approve rewardToken',
+        txData: {
+          to: weth,
+          data: approveData,
+        },
+      },
+    ])
     const newRegistry = await action.run(registry)
     expect(newRegistry).toStrictEqual(registry)
   })

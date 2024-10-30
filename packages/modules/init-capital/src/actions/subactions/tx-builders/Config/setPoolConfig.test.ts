@@ -19,8 +19,8 @@ describe('SetPoolConfigTxBuilder', async () => {
       config: '0xCD399994982B3a3836B8FE81f7127cC5148e9BaE',
       pool: '0x2a9bDCFF37aB68B95A53435ADFd8892e86084F93',
       poolConfig: {
-        supplyCap: BigInt(12345),
-        borrowCap: BigInt(9999),
+        supplyCap: 12345n,
+        borrowCap: 9999n,
         canMint: false,
         canBurn: false,
         canBorrow: false,
@@ -38,8 +38,8 @@ describe('SetPoolConfigTxBuilder', async () => {
       args: [
         '0x2a9bDCFF37aB68B95A53435ADFd8892e86084F93',
         {
-          supplyCap: BigInt(12345),
-          borrowCap: BigInt(9999),
+          supplyCap: 12345n,
+          borrowCap: 9999n,
           canMint: false,
           canBurn: false,
           canBorrow: false,
