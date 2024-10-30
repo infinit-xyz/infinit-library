@@ -31,8 +31,6 @@ describe('SetCollFactorsSubAction', async () => {
     const setModeFactorsSubAction = new TestSetCollFactorsSubAction(client, params)
 
     const txBuilder = setModeFactorsSubAction.txBuilders[0] as SetCollFactorE18TxBuilder
-    console.log(txBuilder.pools)
-    console.log(params.pools)
     expect(compareArrays(txBuilder.pools, params.pools)).toBeTruthy()
     expect(compareArrays(txBuilder.pools, params.pools)).toBeTruthy()
   })

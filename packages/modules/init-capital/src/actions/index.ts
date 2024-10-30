@@ -4,6 +4,7 @@ import { DeployDoubleSlopeIRMsAction, DeployDoubleSlopeIRMsActionParamsSchema } 
 import { DeployInitCapitalAction, DeployInitCapitalActionParamsSchema } from '@actions/deployInitCapital'
 import { SetIrmAction, SetIrmActionParamsSchema } from '@actions/setIrm'
 import { SetMaxPriceDeviationAction, SetMaxPriceDeviationActionParamsSchema } from '@actions/setMaxPriceDeviation'
+import { SetModeFactorsAction, SetModeFactorsActionParamsSchema } from '@actions/setModeFactors'
 import { SetModeStatusAction, SetModeStatusActionParamsSchema } from '@actions/setModeStatus'
 import { SetOracleAction, SetOracleActionParamsSchema } from '@actions/setOracle'
 import { SetPoolConfigAction, SetPoolConfigParamsSchema } from '@actions/setPoolConfig'
@@ -51,6 +52,12 @@ export const actions = {
     paramsSchema: SetMaxPriceDeviationActionParamsSchema,
     signers: ['governor'],
   },
+  SetModeFactorsAction: {
+    name: 'Set Mode Factors Action',
+    actionClassName: SetModeFactorsAction.name,
+    paramsSchema: SetModeFactorsActionParamsSchema,
+    signers: ['guardian'],
+  },
 } satisfies InfinitActionRecord
 
 export {
@@ -61,4 +68,5 @@ export {
   SetModeStatusAction,
   SetOracleAction,
   SetPoolConfigAction,
+  SetModeFactorsAction,
 }

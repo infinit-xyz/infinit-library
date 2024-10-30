@@ -31,8 +31,6 @@ describe('SetBorrFactorsSubAction', async () => {
     const setModeFactorsSubAction = new TestSetBorrFactorsSubAction(client, params)
 
     const txBuilder = setModeFactorsSubAction.txBuilders[0] as SetBorrFactorE18TxBuilder
-    console.log(txBuilder.pools)
-    console.log(params.pools)
     expect(compareArrays(txBuilder.pools, params.pools)).toBeTruthy()
     expect(compareArrays(txBuilder.pools, params.pools)).toBeTruthy()
   })

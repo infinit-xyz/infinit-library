@@ -43,6 +43,8 @@ export class SetCollFactorE18TxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
+    // config should not be zero address
+    if (this.config === zeroAddress) throw new ValidateInputZeroAddressError('CONFIG')
     // pools and factors should have the same length
     if (this.pools.length !== this.factors_e18.length) throw new ValidateLengthError()
 
