@@ -3,6 +3,7 @@ import { InfinitActionRecord } from '@infinit-xyz/core'
 import { DeployDoubleSlopeIRMsAction, DeployDoubleSlopeIRMsActionParamsSchema } from '@actions/deployDoubleSlopeIRMs'
 import { DeployInitCapitalAction, DeployInitCapitalActionParamsSchema } from '@actions/deployInitCapital'
 import { SetIrmAction, SetIrmActionParamsSchema } from '@actions/setIrm'
+import { SetMaxCollWLpCountAction, SetMaxCollWLpCountActionParamsSchema } from '@actions/setMaxCollWLpCount'
 import { SetMaxPriceDeviationAction, SetMaxPriceDeviationActionParamsSchema } from '@actions/setMaxPriceDeviation'
 import { SetModeStatusAction, SetModeStatusActionParamsSchema } from '@actions/setModeStatus'
 import { SetOracleAction, SetOracleActionParamsSchema } from '@actions/setOracle'
@@ -51,6 +52,12 @@ export const actions = {
     paramsSchema: SetMaxPriceDeviationActionParamsSchema,
     signers: ['governor'],
   },
+  setMaxWLpCount: {
+    name: 'Set Max WLp Count',
+    actionClassName: SetMaxCollWLpCountAction.name,
+    paramsSchema: SetMaxCollWLpCountActionParamsSchema,
+    signers: ['governor'],
+  },
 } satisfies InfinitActionRecord
 
 export {
@@ -61,4 +68,5 @@ export {
   SetModeStatusAction,
   SetOracleAction,
   SetPoolConfigAction,
+  SetMaxCollWLpCountAction,
 }

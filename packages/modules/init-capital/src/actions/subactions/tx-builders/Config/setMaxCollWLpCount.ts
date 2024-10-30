@@ -1,7 +1,7 @@
-import { Address, encodeFunctionData, keccak256, toHex } from 'viem'
+import { Address, encodeFunctionData, keccak256, toHex, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ContractValidateError } from '@infinit-xyz/core/errors'
+import { ContractValidateError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -39,6 +39,7 @@ export class SetMaxCollWLpCountTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
+    if (this.config === zeroAddress) throw new ValidateInputZeroAddressError('CONFIG')
     const acmArtifact = await readArtifact('AccessControlManager')
     const hasRole: boolean = await this.client.publicClient.readContract({
       address: this.config,
