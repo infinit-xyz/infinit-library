@@ -82,7 +82,6 @@ export class DeployInitCapitalAction extends Action<DeployInitCapitalActionData,
           configImpl: message.configImpl,
           liqIncentiveCalculatorImpl: message.liqIncentiveCalculatorImpl,
           posManagerImpl: message.posManagerImpl,
-          maxLiqIncentiveMultiplier: params.maxLiqIncentiveMultiplier,
         }),
       (message: DeployInitCapitalMsg & DeployInitCapitalMsg_2 & DeployInitCapitalMsg_3) =>
         new DeployInitCoreImplSubAction(deployer, {
@@ -165,6 +164,9 @@ export class DeployInitCapitalAction extends Action<DeployInitCapitalActionData,
           configProxy: message.configProxy,
           initOracleProxy: message.initOracleProxy,
           riskManagerProxy: message.riskManagerProxy,
+          moneyMarketHookProxy: message.moneyMarketHookProxy,
+          liqIncentiveCalculatorProxy: message.liqIncentiveCalculatorProxy,
+          maxLiqIncentiveMultiplier: params.maxLiqIncentiveMultiplier,
         }),
       () => new DeployDoubleSlopeIRMsSubAction(deployer, { doubleSlopeIRMConfigs: params.doubleSlopeIRMConfigs }),
       (

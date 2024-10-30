@@ -7,20 +7,14 @@ import { readArtifact } from '@/src/utils/artifact'
 
 export type InitializeMoneyMarketHookTxBuilderParams = {
   moneyMarketHook: Address
-  logic: Address
-  admin: Address
 }
 
 export class InitializeMoneyMarketHookTxBuilder extends TxBuilder {
   private moneyMarketHook: Address
-  private logic: Address
-  private admin: Address
 
   constructor(client: InfinitWallet, params: InitializeMoneyMarketHookTxBuilderParams) {
     super(InitializeMoneyMarketHookTxBuilder.name, client)
     this.moneyMarketHook = getAddress(params.moneyMarketHook)
-    this.logic = getAddress(params.logic)
-    this.admin = getAddress(params.admin)
   }
 
   async buildTx(): Promise<TransactionData> {
@@ -40,7 +34,5 @@ export class InitializeMoneyMarketHookTxBuilder extends TxBuilder {
 
   public async validate(): Promise<void> {
     if (this.moneyMarketHook === zeroAddress) throw new ValidateInputZeroAddressError('MONEY_MARKET_HOOK_CANNOT_BE_ZERO_ADDRESS')
-    if (this.logic === zeroAddress) throw new ValidateInputZeroAddressError('LOGIC_CANNOT_BE_ZERO_ADDRESS')
-    if (this.admin === zeroAddress) throw new ValidateInputZeroAddressError('ADMIN_CANNOT_BE_ZERO_ADDRESS')
   }
 }
