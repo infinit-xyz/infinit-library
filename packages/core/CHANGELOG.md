@@ -1,5 +1,20 @@
 # @infinit-xyz/core
 
+## 0.1.0-alpha.9
+
+### Patch Changes
+
+- [#109](https://github.com/infinit-xyz/infinit-library/pull/109)
+  [`fffb9f8`](https://github.com/infinit-xyz/infinit-library/commit/fffb9f887a476a39b6fcdf19d54b7fed49023403) Thanks
+  [@mintcnn](https://github.com/mintcnn)! - Fix export path of callback
+
+## 0.1.0-alpha.8
+
+### Minor Changes
+
+- [`b9624e1`](https://github.com/infinit-xyz/infinit-library/commit/b9624e1797c500b33ffe4695013ee4d07191c737) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - update callback export
+
 ## 0.1.0-alpha.7
 
 ### Minor Changes

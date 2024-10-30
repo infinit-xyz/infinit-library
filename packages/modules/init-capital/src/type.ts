@@ -1,6 +1,7 @@
 import { Address } from 'viem'
 
 export type InitCapitalRegistry = {
+  feeVault?: Address
   proxyAdmin?: Address
   accessControlManager?: Address
   api3ProxyOracleReaderProxy?: Address
@@ -26,10 +27,10 @@ export type InitCapitalRegistry = {
   moneyMarketHookImpl?: Address
   lendingPoolImpl?: Address
   irms?: Record<string, Address>
-  lendingPools?: Record<string, LendingPools>
+  lendingPools?: Record<string, LendingPool>
 }
 
-export type LendingPools = {
+export type LendingPool = {
   underlyingToken: Address
   lendingPool: Address
   irm: Address

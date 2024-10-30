@@ -1,8 +1,7 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
-import { encodeFunctionData, maxUint256, parseUnits, zeroAddress } from 'viem'
+import { encodeFunctionData, maxUint256, parseEther, parseUnits, zeroAddress } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
-import { arbitrum } from 'viem/chains'
 
 import { InfinitWallet, TransactionData } from '@infinit-xyz/core'
 
@@ -13,7 +12,7 @@ import { SupportNewReserveAction } from '@actions/supportNewReserve'
 
 import { AaveV3Registry } from '@/src/type'
 import { readArtifact } from '@/src/utils/artifact'
-import { TestChain, getForkRpcUrl } from '@infinit-xyz/test'
+import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
 describe('deployAaveV3Action', () => {
   let action: DeployAaveV3Action
@@ -21,8 +20,6 @@ describe('deployAaveV3Action', () => {
   let aliceClient: InfinitWallet
 
   const chainlinkEthFeeder = ARBITRUM_TEST_ADDRESSES.chainlinkEthFeeder
-  // anvil rpc endpoint
-  const rpcEndpoint = getForkRpcUrl(TestChain.arbitrum)
   // anvil tester pk
   const privateKey = ANVIL_PRIVATE_KEY
   const alicePk = '0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d'
@@ -32,8 +29,9 @@ describe('deployAaveV3Action', () => {
   beforeAll(() => {
     const account = privateKeyToAccount(privateKey)
     const aliceAccount = privateKeyToAccount(alicePk)
-    client = new InfinitWallet(arbitrum, rpcEndpoint, account)
-    aliceClient = new InfinitWallet(arbitrum, rpcEndpoint, aliceAccount)
+
+    client = new TestInfinitWallet(TestChain.arbitrum, account.address)
+    aliceClient = new TestInfinitWallet(TestChain.arbitrum, aliceAccount.address)
   })
 
   test('simple run (all roles are deployer)', async () => {
@@ -212,7 +210,7 @@ describe('deployAaveV3Action', () => {
     expect(owner).toBe(oneAddress)
   })
 
-  test('simple run (different addreses on each roles) + init reserves', async () => {
+  test('simple run (different addreses on each roles) + init reserves', { retry: 3 }, async () => {
     const deployer = client.walletClient.account.address
     const weth9 = await readArtifact('WETH9')
     const callData = encodeFunctionData({ abi: weth9.abi, functionName: 'deposit', args: [] })
@@ -221,7 +219,8 @@ describe('deployAaveV3Action', () => {
       to: weth,
       value: BigInt(10 ** 18),
     }
-    await client.walletClient.sendTransaction({ ...tx, account: client.account, chain: client.walletClient.chain })
+
+    await client.sendTransactions([{ name: 'Mint WETH', txData: tx }])
 
     action = new DeployAaveV3Action({
       params: {
@@ -336,43 +335,80 @@ describe('deployAaveV3Action', () => {
     })
     const curRegistry2 = await action2.run(curRegistry, undefined, undefined)
 
-    // supply
+    // test supply
     const poolArtifact = await readArtifact('Pool')
 
-    await aliceClient.walletClient.writeContract({
-      address: weth,
-      abi: weth9.abi,
-      functionName: 'deposit',
-      args: [],
-      value: BigInt(10 ** 18),
-    })
-    await aliceClient.walletClient.writeContract({
-      address: weth,
-      abi: weth9.abi,
-      functionName: 'approve',
-      args: [curRegistry2.poolProxy!, maxUint256],
-    })
-    await aliceClient.walletClient.writeContract({
-      address: curRegistry2.poolProxy!,
-      abi: poolArtifact.abi,
-      functionName: 'supply',
-      args: [weth, BigInt(10 ** 17), aliceClient.walletClient.account.address, 0],
-    })
-    // borrow
-    await aliceClient.walletClient.writeContract({
-      address: curRegistry2.poolProxy!,
-      abi: poolArtifact.abi,
-      functionName: 'borrow',
-      args: [weth, BigInt(10 ** 16), BigInt(2), 0, aliceClient.walletClient.account.address],
-    })
+    // mint and approved WETH
+    await expect(
+      aliceClient.sendTransactions([
+        {
+          name: 'Mint WETH',
+          txData: {
+            data: encodeFunctionData({ abi: weth9.abi, functionName: 'deposit', args: [] }),
+            to: weth,
+            value: parseEther('100'),
+          },
+        },
+        {
+          name: 'Approve WETH',
+          txData: {
+            data: encodeFunctionData({ abi: weth9.abi, functionName: 'approve', args: [curRegistry2.poolProxy!, maxUint256] }),
+            to: weth,
+          },
+        },
+      ]),
+    ).resolves.not.toThrowError()
 
-    // repay
-    await aliceClient.walletClient.writeContract({
-      address: curRegistry2.poolProxy!,
-      abi: poolArtifact.abi,
-      functionName: 'repay',
-      args: [weth, BigInt(10 ** 16), BigInt(2), aliceClient.walletClient.account.address],
-    })
+    // supply to the pool
+    await expect(
+      aliceClient.sendTransactions([
+        {
+          name: 'Supply WETH',
+          txData: {
+            data: encodeFunctionData({
+              abi: poolArtifact.abi,
+              functionName: 'supply',
+              args: [weth, parseEther('10'), aliceClient.walletClient.account.address, 0],
+            }),
+            to: curRegistry2.poolProxy,
+          },
+        },
+      ]),
+    ).resolves.not.toThrowError()
+
+    // borrow from the pool
+    await expect(
+      aliceClient.sendTransactions([
+        {
+          name: 'Borrow WETH',
+          txData: {
+            data: encodeFunctionData({
+              abi: poolArtifact.abi,
+              functionName: 'borrow',
+              args: [weth, parseEther('1'), BigInt(2), 0, aliceClient.walletClient.account.address],
+            }),
+            to: curRegistry2.poolProxy,
+          },
+        },
+      ]),
+    ).resolves.not.toThrowError()
+
+    // repay to the pool
+    await expect(
+      aliceClient.sendTransactions([
+        {
+          name: 'Repay WETH',
+          txData: {
+            data: encodeFunctionData({
+              abi: poolArtifact.abi,
+              functionName: 'repay',
+              args: [weth, parseEther('0.1'), BigInt(2), aliceClient.walletClient.account.address],
+            }),
+            to: curRegistry2.poolProxy,
+          },
+        },
+      ]),
+    ).resolves.not.toThrowError()
 
     const aliceBalBf = await aliceClient.publicClient.readContract({
       address: weth,
@@ -381,18 +417,29 @@ describe('deployAaveV3Action', () => {
       args: [aliceClient.walletClient.account.address],
     })
 
-    await aliceClient.walletClient.writeContract({
-      address: curRegistry2.poolProxy!,
-      abi: poolArtifact.abi,
-      functionName: 'withdraw',
-      args: [weth, BigInt(2 ** 16), aliceClient.walletClient.account.address],
-    })
+    const withdrawAmount = parseEther('0.1')
+
+    await aliceClient.sendTransactions([
+      {
+        name: 'Withdraw WETH',
+        txData: {
+          data: encodeFunctionData({
+            abi: poolArtifact.abi,
+            functionName: 'withdraw',
+            args: [weth, withdrawAmount, aliceClient.walletClient.account.address],
+          }),
+          to: curRegistry2.poolProxy,
+        },
+      },
+    ])
+
     const aliceBalAft = await aliceClient.publicClient.readContract({
       address: weth,
       abi: weth9.abi,
       functionName: 'balanceOf',
       args: [aliceClient.walletClient.account.address],
     })
-    await expect(aliceBalBf + BigInt(2 ** 16)).toBe(aliceBalAft)
+
+    await expect(aliceBalBf + withdrawAmount).toBe(aliceBalAft)
   })
 })

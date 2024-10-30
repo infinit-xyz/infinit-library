@@ -6,20 +6,26 @@ import { anvil } from 'prool/instances'
 export default async function () {
   console.log('⚡️ [INFINIT] Running Global Setup...')
 
-  const servers = Object.values(chains).map((chain) =>
-    createServer({
-      instance: anvil({
-        chainId: chain.id,
-        forkUrl: chain.fork.url,
-        // forkBlockNumber: chain.fork.blockNumber,
-        // noMining: true,
-        // configOut: './anvil-config.json',
-      }),
-      port: chain.port,
-    }),
-  )
+  let serverResults: (() => Promise<void>)[] = []
 
-  const serverResults = await Promise.all(servers.map((server) => server.start()))
+  if (process.env.VITE_RUN_LOCAL_ANVIL === 'true') {
+    console.log('ℹ️ VITE_RUN_LOCAL_ANVIL is true')
+  } else {
+    const servers = Object.values(chains).map((chain) =>
+      createServer({
+        instance: anvil({
+          chainId: chain.id,
+          forkUrl: chain.fork.url,
+          // forkBlockNumber: chain.fork.blockNumber,
+          // noMining: true,
+          // configOut: './anvil-config.json',
+        }),
+        port: chain.port,
+      }),
+    )
+
+    serverResults = await Promise.all(servers.map((server) => server.start()))
+  }
 
   console.log('⚡️ [INFINIT] Global Setup Done')
 
