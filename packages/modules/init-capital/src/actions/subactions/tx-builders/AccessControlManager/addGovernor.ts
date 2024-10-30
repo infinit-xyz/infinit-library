@@ -42,7 +42,7 @@ export class AddGovernorTxBuilder extends TxBuilder {
 
   public async validate(): Promise<void> {
     // check zero address
-    if (this.governor === zeroAddress) throw new ValidateInputZeroAddressError('POOL_ADMIN')
+    if (this.governor === zeroAddress) throw new ValidateInputZeroAddressError('GOVERNOR')
     if (this.accessControlManager === zeroAddress) throw new ValidateInputZeroAddressError('ACL_MANAGER')
 
     // check role

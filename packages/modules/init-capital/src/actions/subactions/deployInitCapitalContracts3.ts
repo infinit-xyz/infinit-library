@@ -3,9 +3,6 @@ import { Address, Hex } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
 
-import { DeployConfigProxyTxBuilder } from '@actions/subactions/tx-builders/Config/deployProxy'
-import { DeployInitOracleProxyTxBuilder } from '@actions/subactions/tx-builders/InitOracle/deployProxy'
-import { DeployLiqIncentiveCalculatorProxyTxBuilder } from '@actions/subactions/tx-builders/LiqIncentiveCalculator/deployProxy'
 import { DeployTransparentUpgradeableProxyTxBuilder } from '@actions/subactions/tx-builders/TransparentUpgradeableProxy/deploy'
 
 import { InitCapitalRegistry } from '@/src/type'
@@ -16,7 +13,6 @@ export type DeployInitCapitalContracts_3SubActionParams = {
   configImpl: Address
   liqIncentiveCalculatorImpl: Address
   posManagerImpl: Address
-  maxLiqIncentiveMultiplier: bigint
 }
 
 export type DeployInitCapitalMsg_3 = {
@@ -37,25 +33,31 @@ export class DeployInitCapitalContracts3SubAction extends SubAction<
 
   protected setTxBuilders(): void {
     // ----------- proxy -----------
+    // deployInitOracleProxy
     this.txBuilders.push(
-      new DeployInitOracleProxyTxBuilder(this.client, {
+      new DeployTransparentUpgradeableProxyTxBuilder(this.client, {
         admin: this.params.proxyAdmin,
         logic: this.params.initOracleImpl,
+        data: '0x',
       }),
     )
+    // deployConfigProxy
     this.txBuilders.push(
-      new DeployConfigProxyTxBuilder(this.client, {
+      new DeployTransparentUpgradeableProxyTxBuilder(this.client, {
         admin: this.params.proxyAdmin,
         logic: this.params.configImpl,
+        data: '0x',
       }),
     )
+    // deployLiqIncentiveCalculatorProxy
     this.txBuilders.push(
-      new DeployLiqIncentiveCalculatorProxyTxBuilder(this.client, {
+      new DeployTransparentUpgradeableProxyTxBuilder(this.client, {
         admin: this.params.proxyAdmin,
         logic: this.params.liqIncentiveCalculatorImpl,
-        maxLiqIncentiveMultiplier: this.params.maxLiqIncentiveMultiplier,
+        data: '0x',
       }),
     )
+    // deployPosManagerProxy
     this.txBuilders.push(
       new DeployTransparentUpgradeableProxyTxBuilder(this.client, {
         admin: this.params.proxyAdmin,
