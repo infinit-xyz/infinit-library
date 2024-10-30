@@ -12,12 +12,12 @@ import { InitCapitalRegistry } from '@/src/type'
 
 export const SetModeFactorsActionParamsSchema = z.object({
   config: zodAddressNonZero.describe(`Address of protocol config e.g. '0x123...abc'`),
-  mode: z.number().describe(`mode number`),
+  mode: z.number().nonnegative().describe(`Mode number start from 0 e.g. 1`),
   poolFactors: z.array(
     z.object({
       pool: zodAddressNonZero.describe(`Address of pool e.g. '0x123...abc'`),
-      collFactor: z.bigint().optional().describe('Collateral factor in E18'),
-      borrFactor: z.bigint().optional().describe('Borrow factor in E18'),
+      collFactor: z.bigint().optional().describe('Collateral factor in E18 e.g. 11n * 10n ** 17n'),
+      borrFactor: z.bigint().optional().describe('Borrow factor in E18 e.g. 9n * 10n ** 17n'),
     }),
   ),
 })
