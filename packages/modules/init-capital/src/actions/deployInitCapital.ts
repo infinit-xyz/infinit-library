@@ -21,7 +21,7 @@ import { BeginDefaultAdminTransferSubAction } from '@/src/actions/subactions/beg
 import { TransferProxyAdminOwnerSubAction } from '@/src/actions/subactions/transferProxyAdminOwner'
 import { InitCapitalRegistry } from '@/src/type'
 
-export const DeployInitCapitalParamsSchema = z.object({
+export const DeployInitCapitalActionParamsSchema = z.object({
   proxyAdminOwner: zodAddress.describe(`Address of the owner of the proxy admin`),
   wrappedNativeToken: zodAddress.describe(`Address of the wrapped native token (e.g., WETH)`),
   posManagerNftName: z.string().describe(`Name of the position NFT token`),
@@ -51,16 +51,16 @@ export const DeployInitCapitalParamsSchema = z.object({
   ),
 })
 
-export type DeployInitCapitalParams = z.infer<typeof DeployInitCapitalParamsSchema>
+export type DeployInitCapitalActionParams = z.infer<typeof DeployInitCapitalActionParamsSchema>
 
 export type DeployInitCapitalActionData = {
-  params: DeployInitCapitalParams
+  params: DeployInitCapitalActionParams
   signer: Record<'deployer' | 'accessControlManagerOwner', InfinitWallet>
 }
 
 export class DeployInitCapitalAction extends Action<DeployInitCapitalActionData, InitCapitalRegistry> {
   constructor(data: DeployInitCapitalActionData) {
-    validateActionData(data, DeployInitCapitalParamsSchema, ['deployer'])
+    validateActionData(data, DeployInitCapitalActionParamsSchema, ['deployer'])
     super(DeployInitCapitalAction.name, data)
   }
 
