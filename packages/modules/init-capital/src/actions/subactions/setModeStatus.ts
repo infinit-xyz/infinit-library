@@ -9,7 +9,7 @@ import { InitCapitalRegistry } from '@/src/type'
 
 export type SetModeStatusSubActionParams = {
   config: Address
-  modeStatuses: Omit<SetModeStatusTxBuilderParams, 'config'>[]
+  modeStatus: Omit<SetModeStatusTxBuilderParams, 'config'>[]
 }
 
 export class SetModeStatusSubAction extends SubAction<SetModeStatusSubActionParams, InitCapitalRegistry, object> {
@@ -18,7 +18,7 @@ export class SetModeStatusSubAction extends SubAction<SetModeStatusSubActionPara
   }
 
   protected setTxBuilders(): void {
-    for (const modeStatus of this.params.modeStatuses) {
+    for (const modeStatus of this.params.modeStatus) {
       const txBuilderParams: SetModeStatusTxBuilderParams = {
         config: this.params.config,
         mode: modeStatus.mode,

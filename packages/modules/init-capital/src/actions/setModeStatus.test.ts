@@ -26,7 +26,7 @@ describe('SetModeStatus', async () => {
       signer: { guardian: client },
       params: {
         config: '0xCD399994982B3a3836B8FE81f7127cC5148e9BaE',
-        modeStatuses: [
+        modeStatus: [
           { mode: 1, status: { canCollateralize: true, canDecollateralize: false, canBorrow: true, canRepay: false } },
           { mode: 2, status: { canCollateralize: false, canDecollateralize: false, canBorrow: false, canRepay: false } },
         ],
@@ -41,7 +41,7 @@ describe('SetModeStatus', async () => {
     for (let j = 0; j < subActions.length; j++) {
       for (let i = 0; i < subActions[j].txBuilders.length; i++) {
         const txBuilder = subActions[j].txBuilders[i] as SetModeStatusTxBuilder
-        const mockTxBuilder = data.params.modeStatuses[i]
+        const mockTxBuilder = data.params.modeStatus[i]
         expect(txBuilder.mode === mockTxBuilder.mode).toBeTruthy()
 
         Object.keys(txBuilder.status).forEach((key) => {

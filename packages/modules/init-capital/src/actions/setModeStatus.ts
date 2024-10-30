@@ -10,7 +10,7 @@ import { InitCapitalRegistry } from '@/src/type'
 
 export const SetModeStatusActionParamsSchema = z.object({
   config: zodAddressNonZero.describe(`Address of protocol config e.g. '0x123...abc'`),
-  modeStatuses: z.custom<Omit<SetModeStatusTxBuilderParams, 'config'>[]>().describe(`pool config parameters`),
+  modeStatus: z.custom<Omit<SetModeStatusTxBuilderParams, 'config'>[]>().describe(`mode status parameters`),
 })
 
 export type SetModeStatusActionParams = z.infer<typeof SetModeStatusActionParamsSchema>
@@ -30,7 +30,7 @@ export class SetModeStatusAction extends Action<SetModeStatusActionData, InitCap
     const guardian = this.data.signer['guardian']
     const setModeStatusActionParams: SetModeStatusActionParams = {
       config: this.data.params.config,
-      modeStatuses: this.data.params.modeStatuses,
+      modeStatus: this.data.params.modeStatus,
     }
 
     return [new SetModeStatusSubAction(guardian, setModeStatusActionParams)]
