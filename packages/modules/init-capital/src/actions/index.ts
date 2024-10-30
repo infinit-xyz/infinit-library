@@ -46,4 +46,11 @@ export const actions = {
   },
 } satisfies InfinitActionRecord
 
-export { DeployDoubleSlopeIRMsAction, DeployInitCapitalAction, SetIrmAction, SetModeStatusAction, SetPoolConfigAction }
+export {
+  DeployDoubleSlopeIRMsAction,
+  DeployInitCapitalAction,
+  SetIrmAction,
+  SetMaxPriceDeviationAction,
+  SetModeStatusAction,
+  SetPoolConfigAction,
+}
