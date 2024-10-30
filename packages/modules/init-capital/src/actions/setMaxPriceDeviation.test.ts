@@ -3,13 +3,13 @@ import { describe, expect, test } from 'vitest'
 import { SubAction } from '@infinit-xyz/core'
 
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
-import { SetMaxPriceDeviations_e18Action, SetMaxPriceDeviations_e18ActionData } from '@actions/setMaxPriceDeviations_e18'
+import { SetMaxPriceDeviationAction, SetMaxPriceDeviationActionData } from '@actions/setMaxPriceDeviation'
 import { SetMaxPriceDeviations_e18SubAction } from '@actions/subactions/setMaxPriceDeviations_e18'
 import { SetMaxPriceDeviations_e18TxBuilder } from '@actions/subactions/tx-builders/InitOracle/setMaxPriceDeviations_e18'
 
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
-class SetMaxPriceDeviations_e18ActionTest extends SetMaxPriceDeviations_e18Action {
+class SetMaxPriceDeviationActionTest extends SetMaxPriceDeviationAction {
   public override getSubActions(): SubAction[] {
     return super.getSubActions()
   }
@@ -19,10 +19,10 @@ const tester = ARBITRUM_TEST_ADDRESSES.tester
 describe('SetMaxPriceDeviations_e18', async () => {
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
   test('test correct name', async () => {
-    expect(SetMaxPriceDeviations_e18Action.name).toStrictEqual('SetMaxPriceDeviations_e18Action')
+    expect(SetMaxPriceDeviationAction.name).toStrictEqual('SetMaxPriceDeviationAction')
   })
   test('test correct calldata', async () => {
-    const data: SetMaxPriceDeviations_e18ActionData = {
+    const data: SetMaxPriceDeviationActionData = {
       signer: { governor: client },
       params: {
         initOracle: '0xCD399994982B3a3836B8FE81f7127cC5148e9BaE',
@@ -39,9 +39,9 @@ describe('SetMaxPriceDeviations_e18', async () => {
       },
     }
     // data.
-    const SetMaxPriceDeviations_e18Action = new SetMaxPriceDeviations_e18ActionTest(data)
+    const SetMaxPriceDeviationAction = new SetMaxPriceDeviationActionTest(data)
     const subActions: SetMaxPriceDeviations_e18SubAction[] =
-      SetMaxPriceDeviations_e18Action.getSubActions() as SetMaxPriceDeviations_e18SubAction[]
+      SetMaxPriceDeviationAction.getSubActions() as SetMaxPriceDeviations_e18SubAction[]
     expect(subActions[0].params.initOracle).toStrictEqual(data.params.initOracle)
 
     for (let j = 0; j < subActions.length; j++) {
