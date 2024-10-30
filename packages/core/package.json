@@ -1,6 +1,6 @@
 {
   "name": "@infinit-xyz/core",
-  "version": "0.1.0-alpha.7",
+  "version": "0.1.0-alpha.9",
   "homepage": "https://infinit.tech",
   "repository": {
     "type": "git",
@@ -43,8 +43,8 @@
       "default": "./dist/types/action.js"
     },
     "./types/callback": {
-      "types": "./dist/types/callback.d.ts",
-      "default": "./dist/types/callback.js"
+      "types": "./dist/types/callback/index.d.ts",
+      "default": "./dist/types/callback/index.js"
     },
     "./types/cache": {
       "types": "./dist/types/cache.d.ts",

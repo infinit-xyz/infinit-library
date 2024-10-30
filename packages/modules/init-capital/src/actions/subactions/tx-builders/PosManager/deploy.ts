@@ -1,6 +1,7 @@
-import { Address, Hex, encodeDeployData, getAddress } from 'viem'
+import { Address, Hex, encodeDeployData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -17,11 +18,11 @@ export class DeployPosManagerTxBuilder extends TxBuilder {
   }
 
   async buildTx(): Promise<TransactionData> {
-    const configArtifact = await readArtifact('PosManager')
+    const posManagerArtifact = await readArtifact('PosManager')
 
     const deployData: Hex = encodeDeployData({
-      abi: configArtifact.abi,
-      bytecode: configArtifact.bytecode as Hex,
+      abi: posManagerArtifact.abi,
+      bytecode: posManagerArtifact.bytecode as Hex,
       args: [this.accessControlManager],
     })
 
@@ -32,5 +33,7 @@ export class DeployPosManagerTxBuilder extends TxBuilder {
     return tx
   }
 
-  public async validate(): Promise<void> {}
+  public async validate(): Promise<void> {
+    if (this.accessControlManager === zeroAddress) throw new ValidateInputZeroAddressError('ACCESS_CONTROL_MANAGER')
+  }
 }

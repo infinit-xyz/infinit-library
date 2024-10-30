@@ -42,7 +42,7 @@ export class AddGuardianTxBuilder extends TxBuilder {
 
   public async validate(): Promise<void> {
     // check zero address
-    if (this.guardian === zeroAddress) throw new ValidateInputZeroAddressError('POOL_ADMIN')
+    if (this.guardian === zeroAddress) throw new ValidateInputZeroAddressError('GUARDIAN')
     if (this.accessControlManager === zeroAddress) throw new ValidateInputZeroAddressError('ACL_MANAGER')
 
     // check role

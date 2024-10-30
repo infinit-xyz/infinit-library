@@ -1,6 +1,6 @@
 {
   "name": "@infinit-xyz/aave-v3",
-  "version": "0.0.0-alpha.21",
+  "version": "0.0.0-alpha.23",
   "homepage": "https://infinit.tech",
   "repository": {
     "type": "git",
@@ -46,7 +46,7 @@
     "extends": "../../../.eslintrc.js"
   },
   "dependencies": {
-    "@infinit-xyz/core": "^0.1.0-alpha.7",
+    "@infinit-xyz/core": "^0.1.0-alpha.8",
     "aave-v3-core": "https://github.com/aave/aave-v3-core#b74526a7bc67a3a117a1963fc871b3eb8cea8435",
     "aave-v3-periphery": "https://github.com/aave/aave-v3-periphery#803c3e7d6d1c6da8d91411f4d085494f7189ea0b",
     "lodash": "^4.17.21"

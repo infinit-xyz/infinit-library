@@ -1,6 +1,6 @@
 {
   "name": "@infinit-xyz/uniswap-v3",
-  "version": "0.0.0-alpha.19",
+  "version": "0.0.0-alpha.21",
   "homepage": "https://infinit.tech",
   "repository": {
     "type": "git",
@@ -46,7 +46,7 @@
     "extends": "../../../.eslintrc.js"
   },
   "dependencies": {
-    "@infinit-xyz/core": "^0.1.0-alpha.7",
+    "@infinit-xyz/core": "^0.1.0-alpha.8",
     "@openzeppelin/contracts-3.4.1-solc-0.7-2": "npm:@openzeppelin/contracts@3.4.1-solc-0.7-2",
     "@openzeppelin/contracts-3.4.2-solc-0.7": "npm:@openzeppelin/contracts@3.4.2-solc-0.7",
     "@openzeppelin/contracts-4.7.0": "npm:@openzeppelin/contracts@4.7.0",
