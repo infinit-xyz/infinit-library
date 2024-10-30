@@ -40,8 +40,8 @@ export class GrantRoleTxBuilder extends TxBuilder {
 
   public async validate(): Promise<void> {
     // check zeroAddress
-    if (this.account == zeroAddress) throw new ValidateInputZeroAddressError('ROLE_RECEIVER')
-    if (this.aclManager == zeroAddress) throw new ValidateInputZeroAddressError('ACL_MANAGER')
+    if (this.account === zeroAddress) throw new ValidateInputZeroAddressError('ROLE_RECEIVER')
+    if (this.aclManager === zeroAddress) throw new ValidateInputZeroAddressError('ACL_MANAGER')
 
     // check role
     const DEFAULT_ADMIN = toHex(0x00, { size: 32 })
