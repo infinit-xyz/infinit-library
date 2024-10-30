@@ -14,6 +14,7 @@ import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
 export const setupUniswapV3 = async (): Promise<UniswapV3Registry> => {
   const MAX_RETRY = 3
+
   for (let i = 0; i < MAX_RETRY; i++) {
     try {
       const account = privateKeyToAccount(ANVIL_PRIVATE_KEY)
@@ -157,7 +158,7 @@ export const setupUniswapV3 = async (): Promise<UniswapV3Registry> => {
   }
 
   // if it run successfully, it should not reach here
-  throw new Error('Failed to setup Uniswap V3')
+  throw new Error(`Failed to setup Uniswap V3 after ${MAX_RETRY} retries`)
 }
 
 export const swap = async (client: InfinitWallet, router: Address, tokenIn: Address, tokenOut: Address, fee: number, amountIn: bigint) => {
