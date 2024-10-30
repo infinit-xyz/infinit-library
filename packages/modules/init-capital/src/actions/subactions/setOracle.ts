@@ -6,8 +6,10 @@ import { SetOracleTxBuilder, SetOracleTxBuilderParams } from '@actions/subaction
 
 import { InitCapitalRegistry } from '@/src/type'
 
+export type SetOracleSubActionParams = SetOracleTxBuilderParams
+
 export class SetOracleSubAction extends SubAction<SetOracleTxBuilderParams, InitCapitalRegistry, object> {
-  constructor(client: InfinitWallet, params: SetOracleTxBuilderParams) {
+  constructor(client: InfinitWallet, params: SetOracleSubActionParams) {
     super(SetOracleSubAction.name, client, params)
   }
 
