@@ -5,6 +5,7 @@ import { DeployInitCapitalAction, DeployInitCapitalActionParamsSchema } from '@a
 import { SetIrmAction, SetIrmActionParamsSchema } from '@actions/setIrm'
 import { SetMaxPriceDeviationAction, SetMaxPriceDeviationActionParamsSchema } from '@actions/setMaxPriceDeviation'
 import { SetModeStatusAction, SetModeStatusActionParamsSchema } from '@actions/setModeStatus'
+import { SetOracleAction, SetOracleActionParamsSchema } from '@actions/setOracle'
 import { SetPoolConfigAction, SetPoolConfigParamsSchema } from '@actions/setPoolConfig'
 
 export const actions = {
@@ -38,7 +39,13 @@ export const actions = {
     paramsSchema: SetPoolConfigParamsSchema,
     signers: ['guardian'],
   },
-  SetMaxPriceDeviations: {
+  setOracle: {
+    name: 'Set Oracle',
+    actionClassName: SetOracleAction.name,
+    paramsSchema: SetOracleActionParamsSchema,
+    signers: ['governor'],
+  },
+  setMaxPriceDeviations: {
     name: 'Set Max Price Deviation',
     actionClassName: SetMaxPriceDeviationAction.name,
     paramsSchema: SetMaxPriceDeviationActionParamsSchema,
@@ -52,5 +59,6 @@ export {
   SetIrmAction,
   SetMaxPriceDeviationAction,
   SetModeStatusAction,
+  SetOracleAction,
   SetPoolConfigAction,
 }
