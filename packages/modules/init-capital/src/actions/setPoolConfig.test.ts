@@ -5,7 +5,7 @@ import { SubAction } from '@infinit-xyz/core'
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
 
 import { SetPoolConfigAction, SetPoolConfigActionData } from './setPoolConfig'
-import { SetPoolConfigSubAction } from './subactions/setPoolConfigs'
+import { SetPoolConfigSubAction } from './subactions/setPoolConfig'
 import { PoolConfig, SetPoolConfigTxBuilder } from './subactions/tx-builders/Config/setPoolConfig'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
@@ -57,7 +57,6 @@ describe('SetPoolConfig', async () => {
     // data.
     const setPoolConfigAction = new SetPoolConfigActionTest(data)
     const subActions: SetPoolConfigSubAction[] = setPoolConfigAction.getSubActions() as SetPoolConfigSubAction[]
-    console.log()
     expect(subActions[0].params.config).toStrictEqual(data.params.config)
 
     for (let j = 0; j < subActions.length; j++) {

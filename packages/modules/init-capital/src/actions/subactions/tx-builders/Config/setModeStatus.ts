@@ -5,31 +5,29 @@ import { ContractValidateError, ValidateInputZeroAddressError } from '@infinit-x
 
 import { readArtifact } from '@/src/utils/artifact'
 
-export type PoolConfig = {
-  supplyCap: bigint
-  borrowCap: bigint
-  canMint: boolean
-  canBurn: boolean
+export type ModeStatus = {
+  canCollateralize: boolean
+  canDecollateralize: boolean
   canBorrow: boolean
   canRepay: boolean
-  canFlash: boolean
 }
-export type SetPoolConfigTxBuilderParams = {
+
+export type SetModeStatusTxBuilderParams = {
   config: Address
-  pool: Address
-  poolConfig: PoolConfig
+  mode: number
+  status: ModeStatus
 }
 
-export class SetPoolConfigTxBuilder extends TxBuilder {
-  public config: Address
-  public pool: Address
-  public poolConfig: PoolConfig
+export class SetModeStatusTxBuilder extends TxBuilder {
+  config: Address
+  mode: number
+  status: ModeStatus
 
-  constructor(client: InfinitWallet, params: SetPoolConfigTxBuilderParams) {
-    super(SetPoolConfigTxBuilder.name, client)
+  constructor(client: InfinitWallet, params: SetModeStatusTxBuilderParams) {
+    super(SetModeStatusTxBuilder.name, client)
     this.config = getAddress(params.config)
-    this.pool = getAddress(params.pool)
-    this.poolConfig = params.poolConfig
+    this.mode = params.mode
+    this.status = params.status
   }
 
   async buildTx(): Promise<TransactionData> {
@@ -37,8 +35,8 @@ export class SetPoolConfigTxBuilder extends TxBuilder {
 
     const callData = encodeFunctionData({
       abi: configArtifact.abi,
-      functionName: 'setPoolConfig',
-      args: [this.pool, this.poolConfig],
+      functionName: 'setModeStatus',
+      args: [this.mode, this.status],
     })
     const tx: TransactionData = {
       data: callData,
@@ -48,8 +46,9 @@ export class SetPoolConfigTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.config === zeroAddress) throw new ValidateInputZeroAddressError('CONFIG')
-    if (this.pool === zeroAddress) throw new ValidateInputZeroAddressError('POOL')
+    if (this.config === zeroAddress) {
+      throw new ValidateInputZeroAddressError('CONFIG')
+    }
 
     const [configArtifact, acmArtifact] = await Promise.all([readArtifact('Config'), readArtifact('AccessControlManager')])
     const acm: Address = await this.client.publicClient.readContract({
