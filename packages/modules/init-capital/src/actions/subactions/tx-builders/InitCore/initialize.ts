@@ -1,6 +1,7 @@
-import { Address, encodeFunctionData, getAddress } from 'viem'
+import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -44,5 +45,12 @@ export class InitializeInitCoreTxBuilder extends TxBuilder {
     return tx
   }
 
-  public async validate(): Promise<void> {}
+  public async validate(): Promise<void> {
+    if (this.initCore === zeroAddress) throw new ValidateInputZeroAddressError('INIT_CORE_CANNOT_BE_ZERO_ADDRESS')
+    if (this.config === zeroAddress) throw new ValidateInputZeroAddressError('CONFIG_CANNOT_BE_ZERO_ADDRESS')
+    if (this.initOracle === zeroAddress) throw new ValidateInputZeroAddressError('INIT_ORACLE_CANNOT_BE_ZERO_ADDRESS')
+    if (this.liqIncentiveCalculator === zeroAddress)
+      throw new ValidateInputZeroAddressError('LIQ_INCENTIVE_CALCULATOR_CANNOT_BE_ZERO_ADDRESS')
+    if (this.riskManager === zeroAddress) throw new ValidateInputZeroAddressError('RISK_MANAGER_CANNOT_BE_ZERO_ADDRESS')
+  }
 }

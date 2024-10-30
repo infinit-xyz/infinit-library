@@ -1,7 +1,7 @@
 import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -34,6 +34,6 @@ export class InitializeConfigTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.config === zeroAddress) throw new ValidateInputValueError('CONFIG_CANNOT_BE_ZERO_ADDRESS')
+    if (this.config === zeroAddress) throw new ValidateInputZeroAddressError('CONFIG_CANNOT_BE_ZERO_ADDRESS')
   }
 }

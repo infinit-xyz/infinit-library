@@ -1,7 +1,7 @@
 import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ContractValidateError, ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { ContractValidateError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -27,7 +27,7 @@ export class AcceptDefaultAdminTransferTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.accessControlManager === zeroAddress) throw new ValidateInputValueError('ProxyAdmin cannot be zero address')
+    if (this.accessControlManager === zeroAddress) throw new ValidateInputZeroAddressError('PROXYADMIN_CANNOT_BE_ZERO_ADDRESS')
     const accessControlManagerArtifact = await readArtifact('AccessControlManager')
     const [newOwner, schedule] = await this.client.publicClient.readContract({
       address: this.accessControlManager,
