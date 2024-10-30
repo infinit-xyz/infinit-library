@@ -13,10 +13,10 @@ export interface SetBorrFactorE18TxBuilderParams {
 }
 
 export class SetBorrFactorE18TxBuilder extends TxBuilder {
-  private config: Address
-  private mode: number
-  private pools: Address[]
-  private factors_e18: bigint[]
+  public config: Address
+  public mode: number
+  public pools: Address[]
+  public factors_e18: bigint[]
 
   constructor(client: InfinitWallet, params: SetBorrFactorE18TxBuilderParams) {
     super(SetBorrFactorE18TxBuilder.name, client)
