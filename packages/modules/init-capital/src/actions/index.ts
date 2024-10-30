@@ -56,7 +56,7 @@ export const actions = {
     name: 'Set Max WLp Count',
     actionClassName: SetMaxCollWLpCountAction.name,
     paramsSchema: SetMaxCollWLpCountActionParamsSchema,
-    signers: ['governor'],
+    signers: ['guardian'],
   },
 } satisfies InfinitActionRecord
 
