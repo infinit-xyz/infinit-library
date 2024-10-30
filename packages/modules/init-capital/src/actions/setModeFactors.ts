@@ -10,7 +10,7 @@ import { SetCollFactorsSubAction, SetCollFactorsSubActionParams } from '@actions
 
 import { InitCapitalRegistry } from '@/src/type'
 
-export const SetModeFactorsParamsSchema = z.object({
+export const SetModeFactorsActionParamsSchema = z.object({
   config: zodAddressNonZero.describe(`Address of protocol config e.g. '0x123...abc'`),
   mode: z.number().describe(`mode number`),
   poolFactors: z.array(
@@ -22,16 +22,16 @@ export const SetModeFactorsParamsSchema = z.object({
   ),
 })
 
-export type SetModeFactorsParams = z.infer<typeof SetModeFactorsParamsSchema>
+export type SetModeFactorsActionParams = z.infer<typeof SetModeFactorsActionParamsSchema>
 
 export type SetModeFactorsActionData = {
-  params: SetModeFactorsParams
+  params: SetModeFactorsActionParams
   signer: Record<'guardian', InfinitWallet>
 }
 
 export class SetModeFactorsAction extends Action<SetModeFactorsActionData, InitCapitalRegistry> {
   constructor(data: SetModeFactorsActionData) {
-    validateActionData(data, SetModeFactorsParamsSchema, ['guardian'])
+    validateActionData(data, SetModeFactorsActionParamsSchema, ['guardian'])
     super(SetModeFactorsAction.name, data)
   }
 

@@ -14,7 +14,7 @@ export class SetCollFactorsSubAction extends SubAction<SetCollFactorsSubActionPa
   }
 
   protected setTxBuilders(): void {
-    // ----------- set mode pools borrow factors -----------
+    // ----------- set mode pools collateral factors -----------
     this.txBuilders.push(
       new SetCollFactorE18TxBuilder(this.client, {
         config: this.params.config,
