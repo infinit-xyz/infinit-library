@@ -42,7 +42,7 @@ export class DeployInitCapitalContracts5SubAction extends SubAction<
     // deployMoneyMarketHookProxyHash
     this.txBuilders.push(
       new DeployTransparentUpgradeableProxyTxBuilder(this.client, {
-        logic: this.params.riskManagerImpl,
+        logic: this.params.moneyMarketHookImpl,
         admin: this.params.proxyAdmin,
         data: '0x',
       }),
