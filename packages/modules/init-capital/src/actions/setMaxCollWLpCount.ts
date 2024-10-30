@@ -7,36 +7,36 @@ import { SetMaxCollWLpCountSubAction, SetMaxCollWLpCountSubActionParams } from '
 
 import { InitCapitalRegistry } from '@/src/type'
 
-export const SetMaxCollWLpCountParamsSchema = z.object({
+export const SetMaxCollWLpCountActionParamsSchema = z.object({
   config: zodAddressNonZero.describe(`Address of protocol config e.g. '0x123...abc'`),
   modeMaxCollWLpCount: z
     .array(
       z
         .object({
-          mode: z.number().positive().describe(`Number of mode to set max collateral Wrapped Lp count`),
-          maxCollWLpCount: z.number().positive().describe(`Number of max collateral Wrapped Lp count to set`),
+          mode: z.number().positive().describe(`Number of mode start from 0 e.g. 1`),
+          maxCollWLpCount: z.number().positive().describe(`Number of max collateral Wrapped Lp count to set e.g. 10`),
         })
         .describe('Object containing mode and maxCollWLpCount to set max collateral Wrapped Lp count'),
     )
     .describe('Array of mode and maxCollWLpCount to set max collateral Wrapped Lp count'),
 }) satisfies z.ZodSchema<SetMaxCollWLpCountSubActionParams>
 
-export type SetMaxCollWLpCountParams = z.infer<typeof SetMaxCollWLpCountParamsSchema>
+export type SetMaxCollWLpCountActionParams = z.infer<typeof SetMaxCollWLpCountActionParamsSchema>
 
 export type SetMaxCollWLpCountActionData = {
-  params: SetMaxCollWLpCountParams
+  params: SetMaxCollWLpCountActionParams
   signer: Record<'guardian', InfinitWallet>
 }
 
 export class SetMaxCollWLpCountAction extends Action<SetMaxCollWLpCountActionData, InitCapitalRegistry> {
   constructor(data: SetMaxCollWLpCountActionData) {
-    validateActionData(data, SetMaxCollWLpCountParamsSchema, ['guardian'])
+    validateActionData(data, SetMaxCollWLpCountActionParamsSchema, ['guardian'])
     super(SetMaxCollWLpCountAction.name, data)
   }
 
   protected getSubActions(): SubAction[] {
     const guardian = this.data.signer['guardian']
-    const setMaxCollWLpCountParams: SetMaxCollWLpCountParams = {
+    const setMaxCollWLpCountParams: SetMaxCollWLpCountActionParams = {
       config: this.data.params.config,
       modeMaxCollWLpCount: this.data.params.modeMaxCollWLpCount,
     }
