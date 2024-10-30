@@ -3,8 +3,7 @@ import { Address, Hex } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
 
-import { DeployMoneyMarketHookProxyTxBuilder } from '@actions/subactions/tx-builders/MoneyMarketHook/deployProxy'
-import { DeployRiskManagerProxyTxBuilder } from '@actions/subactions/tx-builders/RiskManager/deployProxy'
+import { DeployTransparentUpgradeableProxyTxBuilder } from '@actions/subactions/tx-builders/TransparentUpgradeableProxy/deploy'
 
 import { InitCapitalRegistry } from '@/src/type'
 
@@ -32,16 +31,20 @@ export class DeployInitCapitalContracts5SubAction extends SubAction<
 
   protected setTxBuilders(): void {
     // ----------- proxy -----------
+    // deployRiskManagerProxyHash
     this.txBuilders.push(
-      new DeployRiskManagerProxyTxBuilder(this.client, {
+      new DeployTransparentUpgradeableProxyTxBuilder(this.client, {
         logic: this.params.riskManagerImpl,
         admin: this.params.proxyAdmin,
+        data: '0x',
       }),
     )
+    // deployMoneyMarketHookProxyHash
     this.txBuilders.push(
-      new DeployMoneyMarketHookProxyTxBuilder(this.client, {
+      new DeployTransparentUpgradeableProxyTxBuilder(this.client, {
         logic: this.params.moneyMarketHookImpl,
         admin: this.params.proxyAdmin,
+        data: '0x',
       }),
     )
   }

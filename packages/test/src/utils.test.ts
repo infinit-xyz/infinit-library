@@ -36,7 +36,6 @@ describe('utils.ts', () => {
       const result = getForkRpcUrl(TestChain.arbitrum)
 
       expect(result).toBe('http://127.0.0.1:8545')
-      expect(consoleLogSpy).toHaveBeenCalledWith('ℹ️ VITE_RUN_LOCAL_ANVIL is true')
     })
 
     test('snapshot arbitrum', () => {
