@@ -32,6 +32,6 @@ export class InitializeAaveEcosystemReserveV2TxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.aaveEcosystemReserveV2 == zeroAddress) throw new ValidateInputZeroAddressError('AAVE_ECOSYSTEM_RESERVE_V2')
+    if (this.aaveEcosystemReserveV2 === zeroAddress) throw new ValidateInputZeroAddressError('AAVE_ECOSYSTEM_RESERVE_V2')
   }
 }
