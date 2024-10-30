@@ -29,8 +29,7 @@ describe('SetIrm', async () => {
       },
     }
     // data.
-    const setIrmAction: SetIrmAction = new SetIrmActionTest(data)
-    console.log(setIrmAction)
+    const setIrmAction: SetIrmActionTest = new SetIrmActionTest(data)
     const subActions: SetIrmSubAction[] = setIrmAction.getSubActions() as SetIrmSubAction[]
 
     expect(subActions.length).toStrictEqual(1)
