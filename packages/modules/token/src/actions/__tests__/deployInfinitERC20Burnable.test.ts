@@ -188,19 +188,23 @@ describe('deployInfinitERC20BurnableBurnableAction', () => {
 
     // Attempt to mint tokens as a non-owner
     await expect(
-      bobClient.sendTransactions([
-        {
-          name: 'mint',
-          txData: {
-            to: ttToken,
-            data: encodeFunctionData({
-              abi: infinitERC20.abi,
-              functionName: 'mint',
-              args: [bob, mintAmount],
-            }),
+      bobClient.sendTransactions(
+        [
+          {
+            name: 'mint',
+            txData: {
+              to: ttToken,
+              data: encodeFunctionData({
+                abi: infinitERC20.abi,
+                functionName: 'mint',
+                args: [bob, mintAmount],
+              }),
+            },
           },
-        },
-      ]),
+        ],
+        undefined,
+        { hideErrorMessage: true },
+      ),
     ).rejects.toThrowError()
   })
 

@@ -1,6 +1,6 @@
 {
   "name": "@infinit-xyz/init-capital",
-  "version": "0.0.0-alpha.2",
+  "version": "0.0.0-alpha.3",
   "homepage": "https://infinit.tech",
   "repository": {
     "type": "git",
@@ -51,7 +51,9 @@
     "zod": "^3.23.8",
     "@openzeppelin/contracts-4.9.3": "npm:@openzeppelin/contracts@4.9.3",
     "@openzeppelin/contracts-upgradeable-4.9.3": "npm:@openzeppelin/contracts-upgradeable@4.9.3",
-    "init-capital": "https://github.com/init-capital/init-capital-contracts#59208ba34be2bf9dc65ecda32991540b4d067bb6"
+    "@openzeppelin/contracts-5.0.2": "npm:@openzeppelin/contracts@5.0.2",
+    "init-capital": "https://github.com/init-capital/init-capital-contracts#59208ba34be2bf9dc65ecda32991540b4d067bb6",
+    "fee-vault": "https://github.com/infinit-xyz/fee-vault-contracts.git#e61ae298cd78ee9d25086e35fdaba10bfe2768e9"
   },
   "devDependencies": {
     "hardhat": "^2.22.5",
