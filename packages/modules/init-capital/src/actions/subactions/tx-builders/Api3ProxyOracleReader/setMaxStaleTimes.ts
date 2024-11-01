@@ -1,7 +1,12 @@
 import { Address, encodeFunctionData, getAddress, keccak256, maxUint256, toHex, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ContractValidateError, ValidateInputValueError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
+import {
+  ContractValidateError,
+  ValidateInputValueError,
+  ValidateInputZeroAddressError,
+  ValidateLengthError,
+} from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -42,6 +47,11 @@ export class SetMaxStaleTimesTxBuilder extends TxBuilder {
     // api3ProxyOracleReader should not be zero address
     if (this.api3ProxyOracleReader === zeroAddress) {
       throw new ValidateInputZeroAddressError('API3_PROXY_ORACLE_READER')
+    }
+
+    // check length of tokens and maxStaleTimes
+    if (this.tokens.length != this.maxStaleTimes.length) {
+      throw new ValidateLengthError()
     }
 
     // max stale time should be between 0 and maxUint256

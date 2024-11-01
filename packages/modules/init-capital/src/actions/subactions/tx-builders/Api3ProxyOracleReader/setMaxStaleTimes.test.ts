@@ -35,6 +35,5 @@ describe('SetMaxStalesTimes', async () => {
   })
   // TODO after deploy all base test
   test('test validate tx builder zero address should be failed.', async () => {})
-  // TODO after deploy all base test
-  test('test validate tx builder mismatched lenght should be failed.', async () => {})
+  test('test validate tx builder mismatched length should be failed.', async () => {})
 })

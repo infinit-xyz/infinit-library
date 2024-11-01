@@ -1,7 +1,7 @@
 import { Address, encodeFunctionData, getAddress, keccak256, toHex, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ContractValidateError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
+import { ContractValidateError, ValidateInputZeroAddressError, ValidateLengthError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -39,14 +39,23 @@ export class SetDataFeedProxiesTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
+    // check zero address
     if (this.api3ProxyOracleReader === zeroAddress) {
       throw new ValidateInputZeroAddressError('API3_PROXY_ORACLE_READER')
     }
 
+    // check length of tokens and dataFeedProxies
+    if (this.tokens.length != this.dataFeedProxies.length) {
+      throw new ValidateLengthError()
+    }
+
+    // get artifacts
     const [api3ProxyOracleReaderArtifact, acmArtifact] = await Promise.all([
       readArtifact('Api3ProxyOracleReader'),
       readArtifact('AccessControlManager'),
     ])
+
+    // check role
     const acm: Address = await this.client.publicClient.readContract({
       address: this.api3ProxyOracleReader,
       abi: api3ProxyOracleReaderArtifact.abi,
