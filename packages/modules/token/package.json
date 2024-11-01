@@ -22,6 +22,10 @@
       "types": "./dist/actions/index.d.ts",
       "default": "./dist/actions/index.js"
     },
+    "./offChainActions": {
+      "types": "./dist/off-chain-actions/index.d.ts",
+      "default": "./dist/off-chain-actions/index.js"
+    },
     "./utils": {
       "types": "./dist/utils/index.d.ts",
       "default": "./dist/utils/index.js"
