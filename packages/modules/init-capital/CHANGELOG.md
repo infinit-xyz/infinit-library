@@ -1,5 +1,33 @@
 # @infinit-xyz/init-capital
 
+## 0.0.0-alpha.4
+
+### Minor Changes
+
+- [#100](https://github.com/infinit-xyz/infinit-library/pull/100)
+  [`113596c`](https://github.com/infinit-xyz/infinit-library/commit/113596cbb5279e8d66b07a676a3719a835512053) Thanks
+  [@Kittikornl](https://github.com/Kittikornl)! - add deploy all action
+
+- [#105](https://github.com/infinit-xyz/infinit-library/pull/105)
+  [`0b732c2`](https://github.com/infinit-xyz/infinit-library/commit/0b732c2a9b9202bc5e34c477a65345a60178bd00) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - add `SetOracleAction`
+
+- [#93](https://github.com/infinit-xyz/infinit-library/pull/93)
+  [`7eb8cb0`](https://github.com/infinit-xyz/infinit-library/commit/7eb8cb00405d6d2b0a63b7db9fbd2180f64f6855) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - add `SetPoolConfigAction`
+
+- [#112](https://github.com/infinit-xyz/infinit-library/pull/112)
+  [`a6cb626`](https://github.com/infinit-xyz/infinit-library/commit/a6cb626716ebda548bc43aa5edf94a53385e5df1) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - add `SetMaxPriceDeviationAction`
+
+- [#94](https://github.com/infinit-xyz/infinit-library/pull/94)
+  [`a07a3dc`](https://github.com/infinit-xyz/infinit-library/commit/a07a3dc5a9507f2dc37634e0e91bec09caadd766) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - add `SetIrmAction`
+
+- [#96](https://github.com/infinit-xyz/infinit-library/pull/96)
+  [`4042885`](https://github.com/infinit-xyz/infinit-library/commit/40428852184d0b299b1ea65cda414f3121843508) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - add `SetModeStatusAction`
+
 ## 0.0.0-alpha.3
 
 ### Patch Changes
