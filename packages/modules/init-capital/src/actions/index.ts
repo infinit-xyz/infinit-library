@@ -60,7 +60,7 @@ export const actions = {
     name: 'Deploy Api3 Proxy Oracle Reader',
     actionClassName: DeployApi3ProxyOracleReaderAction.name,
     paramsSchema: DeployApi3ProxyOracleReaderActionParamsSchema,
-    signers: ['governor'],
+    signers: ['deployer'],
   },
   setApi3ProxyOracleReaderTokensInfo: {
     name: 'Set Api3 Proxy Oracle Reader Tokens Info Action',
@@ -78,4 +78,6 @@ export {
   SetModeStatusAction,
   SetOracleAction,
   SetPoolConfigAction,
+  DeployApi3ProxyOracleReaderAction,
+  SetApi3ProxyOracleReaderTokensInfoAction,
 }
