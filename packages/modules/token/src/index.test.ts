@@ -8,6 +8,7 @@ describe('index.ts', () => {
     [
       "Registry",
       "actions",
+      "offChainActions",
     ]
   `)
   })
