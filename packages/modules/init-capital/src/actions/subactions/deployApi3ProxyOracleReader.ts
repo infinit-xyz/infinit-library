@@ -1,4 +1,4 @@
-import { Hash } from 'viem'
+import { Address, Hash } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
@@ -11,6 +11,10 @@ import {
 import { InitCapitalRegistry } from '@/src/type'
 
 export type DeployApi3ProxyOracleReaderSubActionParams = DeployApi3ProxyOracleReaderTxBuilderParams
+
+export type DeployApi3ProxyOracleReaderMsg = {
+  api3ProxyOracleReaderImpl: Address
+}
 
 export class DeployApi3ProxyOracleReaderSubAction extends SubAction<
   DeployApi3ProxyOracleReaderSubActionParams,
@@ -29,7 +33,7 @@ export class DeployApi3ProxyOracleReaderSubAction extends SubAction<
   protected async updateRegistryAndMessage(
     registry: InitCapitalRegistry,
     txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<InitCapitalRegistry>> {
+  ): Promise<SubActionExecuteResponse<InitCapitalRegistry, DeployApi3ProxyOracleReaderMsg>> {
     if (txHashes.some((v) => !v)) {
       throw new TxNotFoundError()
     }
@@ -50,7 +54,11 @@ export class DeployApi3ProxyOracleReaderSubAction extends SubAction<
     // assign the contract address to the registry
     registry['api3ProxyOracleReaderImpl'] = api3ProxyOracleReaderImpl
 
+    const newMessage: DeployApi3ProxyOracleReaderMsg = {
+      api3ProxyOracleReaderImpl,
+    }
+
     // return the new registry and message
-    return { newRegistry: registry, newMessage: {} }
+    return { newRegistry: registry, newMessage: newMessage }
   }
 }
