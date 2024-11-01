@@ -1,7 +1,13 @@
 import { InfinitActionRecord } from '@infinit-xyz/core'
 
+import { DeployApi3ProxyOracleReaderAction, DeployApi3ProxyOracleReaderActionParamsSchema } from '@actions/deployApi3ProxyOracleReader'
 import { DeployDoubleSlopeIRMsAction, DeployDoubleSlopeIRMsActionParamsSchema } from '@actions/deployDoubleSlopeIRMs'
 import { DeployInitCapitalAction, DeployInitCapitalActionParamsSchema } from '@actions/deployInitCapital'
+import {
+  SetApi3ProxyOracleReaderTokensInfoAction,
+  SetApi3ProxyOracleReaderTokensInfoActionParams,
+  SetApi3ProxyOracleReaderTokensInfoActionParamsSchema,
+} from '@actions/setApi3ProxyOracleReaderTokensInfo'
 import { SetIrmAction, SetIrmActionParamsSchema } from '@actions/setIrm'
 import { SetMaxPriceDeviationAction, SetMaxPriceDeviationActionParamsSchema } from '@actions/setMaxPriceDeviation'
 import { SetModeStatusAction, SetModeStatusActionParamsSchema } from '@actions/setModeStatus'
@@ -49,6 +55,18 @@ export const actions = {
     name: 'Set Max Price Deviation',
     actionClassName: SetMaxPriceDeviationAction.name,
     paramsSchema: SetMaxPriceDeviationActionParamsSchema,
+    signers: ['governor'],
+  },
+  deployApi3ProxyOracleReader: {
+    name: 'Deploy Api3 Proxy Oracle Reader',
+    actionClassName: DeployApi3ProxyOracleReaderAction.name,
+    paramsSchema: DeployApi3ProxyOracleReaderActionParamsSchema,
+    signers: ['governor'],
+  },
+  setApi3ProxyOracleReaderTokensInfo: {
+    name: 'Set Api3 Proxy Oracle Reader Tokens Info Action',
+    actionClassName: SetApi3ProxyOracleReaderTokensInfoAction.name,
+    paramsSchema: SetApi3ProxyOracleReaderTokensInfoActionParamsSchema,
     signers: ['governor'],
   },
 } satisfies InfinitActionRecord

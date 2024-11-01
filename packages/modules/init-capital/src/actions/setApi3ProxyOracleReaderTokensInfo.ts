@@ -22,7 +22,7 @@ type TokenInfo = {
   maxStaleTime: bigint
 }
 
-export const SetTokensApi3ProxyOracleReaderActionParamsSchema = z.object({
+export const SetApi3ProxyOracleReaderTokensInfoActionParamsSchema = z.object({
   api3ProxyOracleReader: zodAddress.describe(`Address of API3 proxy oracle reader e.g. '0x123...abc'`),
   tokensInfo: z.array(
     z.object({
@@ -33,17 +33,17 @@ export const SetTokensApi3ProxyOracleReaderActionParamsSchema = z.object({
   ) satisfies z.ZodType<TokenInfo[]>,
 })
 
-export type SetTokensApi3ProxyOracleReaderActionParams = z.infer<typeof SetTokensApi3ProxyOracleReaderActionParamsSchema>
+export type SetApi3ProxyOracleReaderTokensInfoActionParams = z.infer<typeof SetApi3ProxyOracleReaderTokensInfoActionParamsSchema>
 
-export type SetMaxPriceDeviationActionData = {
-  params: SetTokensApi3ProxyOracleReaderActionParams
+export type SetApi3ProxyOracleReaderTokensInfoActionData = {
+  params: SetApi3ProxyOracleReaderTokensInfoActionParams
   signer: Record<'governor', InfinitWallet>
 }
 
-export class SetMaxPriceDeviationAction extends Action<SetMaxPriceDeviationActionData, InitCapitalRegistry> {
-  constructor(data: SetMaxPriceDeviationActionData) {
-    validateActionData(data, SetTokensApi3ProxyOracleReaderActionParamsSchema, ['governor'])
-    super(SetMaxPriceDeviationAction.name, data)
+export class SetApi3ProxyOracleReaderTokensInfoAction extends Action<SetApi3ProxyOracleReaderTokensInfoActionData, InitCapitalRegistry> {
+  constructor(data: SetApi3ProxyOracleReaderTokensInfoActionData) {
+    validateActionData(data, SetApi3ProxyOracleReaderTokensInfoActionParamsSchema, ['governor'])
+    super(SetApi3ProxyOracleReaderTokensInfoAction.name, data)
   }
 
   protected getSubActions(): SubAction[] {
