@@ -5,7 +5,6 @@ import { DeployDoubleSlopeIRMsAction, DeployDoubleSlopeIRMsActionParamsSchema } 
 import { DeployInitCapitalAction, DeployInitCapitalActionParamsSchema } from '@actions/deployInitCapital'
 import {
   SetApi3ProxyOracleReaderTokensInfoAction,
-  SetApi3ProxyOracleReaderTokensInfoActionParams,
   SetApi3ProxyOracleReaderTokensInfoActionParamsSchema,
 } from '@actions/setApi3ProxyOracleReaderTokensInfo'
 import { SetIrmAction, SetIrmActionParamsSchema } from '@actions/setIrm'
