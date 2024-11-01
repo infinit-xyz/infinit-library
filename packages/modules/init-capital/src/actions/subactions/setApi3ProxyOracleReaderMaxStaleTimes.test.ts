@@ -15,15 +15,15 @@ class TestSetApi3ProxyOracleReaderMaxStaleTimesSubAction extends SetApi3ProxyOra
   }
 }
 
-const tester = ARBITRUM_TEST_ADDRESSES.tester
-describe('SetMaxPriceDeviations_e18SubAction', async () => {
+describe('SetApi3ProxyOracleReaderMaxStaleTimesSubAction', async () => {
+  const tester = ARBITRUM_TEST_ADDRESSES.tester
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
-
-  test('test correct calldata', async () => {
+  const oneDay = 60n * 60n * 24n
+  test('test calldata should be matched', async () => {
     const params: SetApi3ProxyOracleReaderMaxStaleTimesSubActionParams = {
       api3ProxyOracleReader: '0xCD399994982B3a3836B8FE81f7127cC5148e9BaE',
-      tokens: ['0xCD399994982B3a3836B8FE81f7127cC5148e9BaE'],
-      maxStaleTimes: [2n],
+      tokens: ['0x0000000000000000000000000000000000000001', '0x0000000000000000000000000000000000000002'],
+      maxStaleTimes: [oneDay, 2n * oneDay],
     }
     const setApi3ProxyOracleReaderDataFeedProxiesSubAction = new TestSetApi3ProxyOracleReaderMaxStaleTimesSubAction(client, params)
 

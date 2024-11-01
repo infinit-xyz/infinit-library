@@ -15,15 +15,15 @@ class TestSetApi3ProxyOracleReaderDataFeedProxiesSubAction extends SetApi3ProxyO
   }
 }
 
-const tester = ARBITRUM_TEST_ADDRESSES.tester
-describe('SetMaxPriceDeviations_e18SubAction', async () => {
+describe('SetApi3ProxyOracleReaderDataFeedProxiesSubAction', async () => {
+  const tester = ARBITRUM_TEST_ADDRESSES.tester
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
 
-  test('test correct calldata', async () => {
+  test('test calldata should be matched', async () => {
     const params: SetApi3ProxyOracleReaderDataFeedProxiesSubActionParams = {
       api3ProxyOracleReader: '0xCD399994982B3a3836B8FE81f7127cC5148e9BaE',
-      tokens: ['0xCD399994982B3a3836B8FE81f7127cC5148e9BaE'],
-      dataFeedProxies: ['0xCD399994982B3a3836B8FE81f7127cC5148e9BaE'],
+      tokens: ['0x0000000000000000000000000000000000000001', '0x0000000000000000000000000000000000000002'],
+      dataFeedProxies: ['0x0000000000000000000000000000000000000003', '0x0000000000000000000000000000000000000004'],
     }
     const setApi3ProxyOracleReaderDataFeedProxiesSubAction = new TestSetApi3ProxyOracleReaderDataFeedProxiesSubAction(client, params)
 

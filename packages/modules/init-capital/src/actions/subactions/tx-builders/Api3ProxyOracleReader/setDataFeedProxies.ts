@@ -43,7 +43,10 @@ export class SetDataFeedProxiesTxBuilder extends TxBuilder {
       throw new ValidateInputZeroAddressError('API3_PROXY_ORACLE_READER')
     }
 
-    const [api3ProxyOracleReaderArtifact, acmArtifact] = await Promise.all([readArtifact('Config'), readArtifact('AccessControlManager')])
+    const [api3ProxyOracleReaderArtifact, acmArtifact] = await Promise.all([
+      readArtifact('Api3ProxyOracleReader'),
+      readArtifact('AccessControlManager'),
+    ])
     const acm: Address = await this.client.publicClient.readContract({
       address: this.api3ProxyOracleReader,
       abi: api3ProxyOracleReaderArtifact.abi,

@@ -15,11 +15,11 @@ describe('SetDataFeedProxies', async () => {
   let txBuilder: SetDataFeedProxiesTxBuilder
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
 
-  test('test calldata', async () => {
+  test('test mock calldata should be matched to txBuider calldata', async () => {
     txBuilder = new SetDataFeedProxiesTxBuilder(client, {
       api3ProxyOracleReader: '0xCD399994982B3a3836B8FE81f7127cC5148e9BaE',
-      tokens: ['0xCD399994982B3a3836B8FE81f7127cC5148e9BaE'],
-      dataFeedProxies: ['0xCD399994982B3a3836B8FE81f7127cC5148e9BaE'],
+      tokens: ['0x0000000000000000000000000000000000000001'],
+      dataFeedProxies: ['0x0000000000000000000000000000000000000002'],
     })
     const txData = await txBuilder.buildTx()
 
@@ -28,10 +28,15 @@ describe('SetDataFeedProxies', async () => {
     const mockTxData = encodeFunctionData({
       abi: api3ProxyOracleReaderArtifact.abi,
       functionName: 'setDataFeedProxies',
-      args: [['0xCD399994982B3a3836B8FE81f7127cC5148e9BaE'], ['0xCD399994982B3a3836B8FE81f7127cC5148e9BaE']],
+      args: [['0x0000000000000000000000000000000000000001'], ['0x0000000000000000000000000000000000000002']],
     })
 
     expect(mockTxData === txData.data).toBeTruthy()
     expect('0xCD399994982B3a3836B8FE81f7127cC5148e9BaE' === txData.to).toBeTruthy()
   })
+
+  // TODO after deploy all base test
+  test('test validate tx builder zero address should be failed.', async () => {})
+  // TODO after deploy all base test
+  test('test validate tx builder mismatched lenght should be failed.', async () => {})
 })
