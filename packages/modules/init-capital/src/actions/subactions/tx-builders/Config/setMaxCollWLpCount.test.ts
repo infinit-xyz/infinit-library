@@ -33,4 +33,7 @@ describe('SetMaxCollWLpCountTxBuilder', async () => {
     expect(mockTxData === txData.data).toBeTruthy()
     expect('0xCD399994982B3a3836B8FE81f7127cC5148e9BaE' === txData.to).toBeTruthy()
   })
+
+  // TODO: test validate after has base init test setup
+  test('test validate', async () => {})
 })
