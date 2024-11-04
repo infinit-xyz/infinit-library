@@ -12,7 +12,7 @@ export type DeployApi3ProxyOracleProxySubActionParams = {
   api3ProxyOracleReaderImpl: Address
 }
 
-export class DeployApi3ProxyOracleProxySubAction extends SubAction<DeployApi3ProxyOracleProxySubActionParams, InitCapitalRegistry> {
+export class DeployApi3ProxyOracleProxySubAction extends SubAction<DeployApi3ProxyOracleProxySubActionParams, InitCapitalRegistry, object> {
   constructor(client: InfinitWallet, params: DeployApi3ProxyOracleProxySubActionParams) {
     super(DeployApi3ProxyOracleProxySubAction.name, client, params)
   }

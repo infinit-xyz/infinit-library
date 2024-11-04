@@ -19,7 +19,7 @@ export type DeployApi3ProxyOracleReaderMsg = {
 export class DeployApi3ProxyOracleReaderSubAction extends SubAction<
   DeployApi3ProxyOracleReaderSubActionParams,
   InitCapitalRegistry,
-  object
+  DeployApi3ProxyOracleReaderMsg
 > {
   constructor(client: InfinitWallet, params: DeployApi3ProxyOracleReaderSubActionParams) {
     super(DeployApi3ProxyOracleReaderSubAction.name, client, params)
