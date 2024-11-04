@@ -1,5 +1,13 @@
 # @infinit-xyz/token
 
+## 0.0.0-alpha.21
+
+### Patch Changes
+
+- [#123](https://github.com/infinit-xyz/infinit-library/pull/123)
+  [`89589ab`](https://github.com/infinit-xyz/infinit-library/commit/89589abcee542db42dd2b8c8fc4ad728717af3c6) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - export offChainActions
+
 ## 0.0.0-alpha.20
 
 ### Patch Changes

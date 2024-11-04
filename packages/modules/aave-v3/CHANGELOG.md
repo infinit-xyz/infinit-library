@@ -1,5 +1,13 @@
 # @infinit-xyz/aave-v3
 
+## 0.0.0-alpha.24
+
+### Patch Changes
+
+- [#117](https://github.com/infinit-xyz/infinit-library/pull/117)
+  [`d055430`](https://github.com/infinit-xyz/infinit-library/commit/d0554309f9ba5a93d622e1156b25fb932e4012d1) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - fix if-statement from == to use ===
+
 ## 0.0.0-alpha.23
 
 ### Patch Changes
