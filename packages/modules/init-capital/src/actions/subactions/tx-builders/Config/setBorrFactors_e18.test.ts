@@ -67,4 +67,6 @@ describe('SetBorrFactorsE18', async () => {
       `Borrow factor (index: 1) is out of range (min: 0n, max: 340282366920938463463374607431768211455), got ${maxUint256}`,
     )
   })
+  // TODO: test validate after has base init test setup
+  test('test validate', async () => {})
 })

@@ -56,7 +56,7 @@ export const actions = {
     name: 'Set Mode Factors Action',
     actionClassName: SetModeFactorsAction.name,
     paramsSchema: SetModeFactorsActionParamsSchema,
-    signers: ['guardian'],
+    signers: ['governor'],
   },
 } satisfies InfinitActionRecord
 

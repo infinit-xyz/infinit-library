@@ -1,7 +1,12 @@
-import { Address, encodeFunctionData, getAddress, maxUint128, zeroAddress } from 'viem'
+import { Address, encodeFunctionData, getAddress, keccak256, maxUint128, toHex, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputValueError, ValidateInputZeroAddressError, ValidateLengthError } from '@infinit-xyz/core/errors'
+import {
+  ContractValidateError,
+  ValidateInputValueError,
+  ValidateInputZeroAddressError,
+  ValidateLengthError,
+} from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -58,6 +63,26 @@ export class SetBorrFactorE18TxBuilder extends TxBuilder {
       if (factor < 0n || factor > maxUint128) {
         throw new ValidateInputValueError(`Borrow factor (index: ${index}) is out of range (min: 0n, max: ${maxUint128}), got ${factor}`)
       }
+    }
+
+    // get artifacts
+    const [configArtifact, acmArtifact] = await Promise.all([readArtifact('Config'), readArtifact('AccessControlManager')])
+
+    // check role should be governor
+    const acm: Address = await this.client.publicClient.readContract({
+      address: this.config,
+      abi: configArtifact.abi,
+      functionName: 'ACM',
+      args: [],
+    })
+    const hasRole: boolean = await this.client.publicClient.readContract({
+      address: acm,
+      abi: acmArtifact.abi,
+      functionName: 'hasRole',
+      args: [keccak256(toHex('governor')), this.client.walletClient.account.address],
+    })
+    if (!hasRole) {
+      throw new ContractValidateError('NOT_GOVERNOR')
     }
   }
 }

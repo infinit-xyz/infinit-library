@@ -26,17 +26,17 @@ export type SetModeFactorsActionParams = z.infer<typeof SetModeFactorsActionPara
 
 export type SetModeFactorsActionData = {
   params: SetModeFactorsActionParams
-  signer: Record<'guardian', InfinitWallet>
+  signer: Record<'governor', InfinitWallet>
 }
 
 export class SetModeFactorsAction extends Action<SetModeFactorsActionData, InitCapitalRegistry> {
   constructor(data: SetModeFactorsActionData) {
-    validateActionData(data, SetModeFactorsActionParamsSchema, ['guardian'])
+    validateActionData(data, SetModeFactorsActionParamsSchema, ['governor'])
     super(SetModeFactorsAction.name, data)
   }
 
   protected getSubActions(): SubAction[] {
-    const guardian = this.data.signer['guardian']
+    const governor = this.data.signer['governor']
     const collPools: Address[] = []
     const borrPools: Address[] = []
     const collFactors: bigint[] = []
@@ -67,6 +67,6 @@ export class SetModeFactorsAction extends Action<SetModeFactorsActionData, InitC
       factors_e18: borrFactors,
     }
 
-    return [new SetCollFactorsSubAction(guardian, setCollFactorsParams), new SetBorrFactorsSubAction(guardian, setBorrFactorsParams)]
+    return [new SetCollFactorsSubAction(governor, setCollFactorsParams), new SetBorrFactorsSubAction(governor, setBorrFactorsParams)]
   }
 }
