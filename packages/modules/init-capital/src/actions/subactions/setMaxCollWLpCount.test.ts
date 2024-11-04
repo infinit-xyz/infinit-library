@@ -13,6 +13,7 @@ class TestSetMaxCollWLpCountSubAction extends SetMaxCollWLpCountSubAction {
   }
 }
 
+// TODO update config to use the address from base init capital test setup
 const tester = ARBITRUM_TEST_ADDRESSES.tester
 describe('SetPoolConfigSubAction', async () => {
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
