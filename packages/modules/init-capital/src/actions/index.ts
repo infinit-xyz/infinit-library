@@ -2,11 +2,16 @@ import { InfinitActionRecord } from '@infinit-xyz/core'
 
 import { DeployDoubleSlopeIRMsAction, DeployDoubleSlopeIRMsActionParamsSchema } from '@actions/deployDoubleSlopeIRMs'
 import { DeployInitCapitalAction, DeployInitCapitalActionParamsSchema } from '@actions/deployInitCapital'
+import { DeployPythOracleReaderAction, DeployPythOracleReaderActionParamsSchema } from '@actions/deployPythOracleReader'
 import { SetIrmAction, SetIrmActionParamsSchema } from '@actions/setIrm'
 import { SetMaxPriceDeviationAction, SetMaxPriceDeviationActionParamsSchema } from '@actions/setMaxPriceDeviation'
 import { SetModeStatusAction, SetModeStatusActionParamsSchema } from '@actions/setModeStatus'
 import { SetOracleAction, SetOracleActionParamsSchema } from '@actions/setOracle'
 import { SetPoolConfigAction, SetPoolConfigParamsSchema } from '@actions/setPoolConfig'
+import {
+  SetPythOracleReaderTokensInfoAction,
+  SetPythOracleReaderTokensInfoActionParamsSchema,
+} from '@actions/setPythOracleReaderTokensInfo'
 
 export const actions = {
   init: {
@@ -51,14 +56,28 @@ export const actions = {
     paramsSchema: SetMaxPriceDeviationActionParamsSchema,
     signers: ['governor'],
   },
+  deployPythOracleReader: {
+    name: 'Deploy Pyth Oracle Reader',
+    actionClassName: DeployPythOracleReaderAction.name,
+    paramsSchema: DeployPythOracleReaderActionParamsSchema,
+    signers: ['deployer'],
+  },
+  setPythOracleReaderTokenInfo: {
+    name: 'Set Pyth Oracle Reader Token Info (priceId, maxStaleTime)',
+    actionClassName: SetPythOracleReaderTokensInfoAction.name,
+    paramsSchema: SetPythOracleReaderTokensInfoActionParamsSchema,
+    signers: ['governor'],
+  },
 } satisfies InfinitActionRecord
 
 export {
   DeployDoubleSlopeIRMsAction,
   DeployInitCapitalAction,
+  DeployPythOracleReaderAction,
   SetIrmAction,
   SetMaxPriceDeviationAction,
   SetModeStatusAction,
   SetOracleAction,
   SetPoolConfigAction,
+  SetPythOracleReaderTokensInfoAction,
 }
