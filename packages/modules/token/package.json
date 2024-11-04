@@ -1,6 +1,6 @@
 {
   "name": "@infinit-xyz/token",
-  "version": "0.0.0-alpha.20",
+  "version": "0.0.0-alpha.21",
   "homepage": "https://infinit.tech",
   "repository": {
     "type": "git",
@@ -21,6 +21,10 @@
     "./actions": {
       "types": "./dist/actions/index.d.ts",
       "default": "./dist/actions/index.js"
+    },
+    "./offChainActions": {
+      "types": "./dist/off-chain-actions/index.d.ts",
+      "default": "./dist/off-chain-actions/index.js"
     },
     "./utils": {
       "types": "./dist/utils/index.d.ts",
