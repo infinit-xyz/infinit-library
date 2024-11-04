@@ -52,7 +52,6 @@ describe('SetPoolConfigSubAction', async () => {
     const subAction = new TestSetMaxCollWLpCountSubAction(client, params)
 
     const result = await subAction.execute(registry, {})
-    console.log('result', result)
     expect(result.newRegistry).toEqual(registry)
     expect(result.newMessage).toEqual({})
   })
