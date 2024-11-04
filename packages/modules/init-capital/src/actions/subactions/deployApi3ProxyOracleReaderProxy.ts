@@ -36,19 +36,23 @@ export class DeployApi3ProxyOracleProxySubAction extends SubAction<DeployApi3Pro
       throw new TxNotFoundError()
     }
 
-    const [deployInitCoreProxyHash] = txHashes
+    // destruct the tx hashes
+    const [deployApi3ProxyOracleReaderProxyHash] = txHashes
 
+    // get the deployed address from the txHash
     const { contractAddress: api3ProxyOracleReaderProxy } = await this.client.publicClient.waitForTransactionReceipt({
-      hash: deployInitCoreProxyHash,
+      hash: deployApi3ProxyOracleReaderProxyHash,
     })
 
-    // get contract address
+    // check if the contract address is not found
     if (!api3ProxyOracleReaderProxy) {
-      throw new ContractNotFoundError(deployInitCoreProxyHash, 'InitCore')
+      throw new ContractNotFoundError(deployApi3ProxyOracleReaderProxyHash, 'Api3ProxyOracleReaderProxy')
     }
 
+    // assign the contract address to the registry
     registry['api3ProxyOracleReaderProxy'] = api3ProxyOracleReaderProxy
 
+    // return the new registry and new message
     return { newRegistry: registry, newMessage: {} }
   }
 }

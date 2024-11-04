@@ -58,7 +58,7 @@ export class DeployApi3ProxyOracleReaderSubAction extends SubAction<
       api3ProxyOracleReaderImpl,
     }
 
-    // return the new registry and message
+    // return the new registry and new message
     return { newRegistry: registry, newMessage: newMessage }
   }
 }
