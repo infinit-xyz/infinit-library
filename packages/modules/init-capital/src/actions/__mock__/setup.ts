@@ -13,7 +13,7 @@ export const setupInitCapital = async (): Promise<InitCapitalRegistry> => {
   const client = new TestInfinitWallet(TestChain.arbitrum, account.address)
   const client2 = new TestInfinitWallet(TestChain.arbitrum, account2.address)
   const deployer = client.walletClient.account.address
-  const accessControlManagerOwner = client.walletClient.account.address
+  const accessControlManagerOwner = client2.walletClient.account.address
   const weth = ARBITRUM_TEST_ADDRESSES.weth
 
   const deployInitCapitalAction = new DeployInitCapitalAction({
