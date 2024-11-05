@@ -19,3 +19,8 @@ afterEach(async () => {
     id: snapshotId,
   })
 })
+
+afterAll(async () => {
+  const client = new TestInfinitWallet(TestChain.arbitrum, ARBITRUM_TEST_ADDRESSES.tester)
+  await client.testClient.reset()
+})
