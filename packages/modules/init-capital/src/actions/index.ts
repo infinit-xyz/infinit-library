@@ -4,7 +4,10 @@ import { DeployApi3ProxyOracleReaderAction, DeployApi3ProxyOracleReaderActionPar
 import { DeployDoubleSlopeIRMsAction, DeployDoubleSlopeIRMsActionParamsSchema } from '@actions/deployDoubleSlopeIRMs'
 import { DeployInitCapitalAction, DeployInitCapitalActionParamsSchema } from '@actions/deployInitCapital'
 import { DeployPythOracleReaderAction, DeployPythOracleReaderActionParamsSchema } from '@actions/deployPythOracleReader'
-import { SetApi3ProxyOracleReaderTokensInfoAction, SetApi3ProxyOracleReaderTokensInfoActionParamsSchema } from '@actions/setApi3ProxyOracleReaderTokensInfo'
+import {
+  SetApi3ProxyOracleReaderTokensInfoAction,
+  SetApi3ProxyOracleReaderTokensInfoActionParamsSchema,
+} from '@actions/setApi3ProxyOracleReaderTokensInfo'
 import { SetIrmAction, SetIrmActionParamsSchema } from '@actions/setIrm'
 import { SetMaxPriceDeviationAction, SetMaxPriceDeviationActionParamsSchema } from '@actions/setMaxPriceDeviation'
 import { SetModeStatusAction, SetModeStatusActionParamsSchema } from '@actions/setModeStatus'
