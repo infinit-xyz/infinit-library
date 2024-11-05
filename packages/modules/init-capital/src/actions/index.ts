@@ -1,8 +1,10 @@
 import { InfinitActionRecord } from '@infinit-xyz/core'
 
+import { DeployApi3ProxyOracleReaderAction, DeployApi3ProxyOracleReaderActionParamsSchema } from '@actions/deployApi3ProxyOracleReader'
 import { DeployDoubleSlopeIRMsAction, DeployDoubleSlopeIRMsActionParamsSchema } from '@actions/deployDoubleSlopeIRMs'
 import { DeployInitCapitalAction, DeployInitCapitalActionParamsSchema } from '@actions/deployInitCapital'
 import { DeployPythOracleReaderAction, DeployPythOracleReaderActionParamsSchema } from '@actions/deployPythOracleReader'
+import { SetApi3ProxyOracleReaderTokensInfoAction, SetApi3ProxyOracleReaderTokensInfoActionParamsSchema } from '@actions/setApi3ProxyOracleReaderTokensInfo'
 import { SetIrmAction, SetIrmActionParamsSchema } from '@actions/setIrm'
 import { SetMaxPriceDeviationAction, SetMaxPriceDeviationActionParamsSchema } from '@actions/setMaxPriceDeviation'
 import { SetModeStatusAction, SetModeStatusActionParamsSchema } from '@actions/setModeStatus'
@@ -56,14 +58,26 @@ export const actions = {
     paramsSchema: SetMaxPriceDeviationActionParamsSchema,
     signers: ['governor'],
   },
+  deployApi3ProxyOracleReader: {
+    name: 'Deploy Api3 Proxy Oracle Reader',
+    actionClassName: DeployApi3ProxyOracleReaderAction.name,
+    paramsSchema: DeployApi3ProxyOracleReaderActionParamsSchema,
+    signers: ['deployer'],
+  },
+  setApi3ProxyOracleReaderTokensInfo: {
+    name: 'Set Api3 Proxy Oracle Reader Tokens Info Action',
+    actionClassName: SetApi3ProxyOracleReaderTokensInfoAction.name,
+    paramsSchema: SetApi3ProxyOracleReaderTokensInfoActionParamsSchema,
+    signers: ['governor'],
+  },
   deployPythOracleReader: {
     name: 'Deploy Pyth Oracle Reader',
     actionClassName: DeployPythOracleReaderAction.name,
     paramsSchema: DeployPythOracleReaderActionParamsSchema,
     signers: ['deployer'],
   },
-  setPythOracleReaderTokenInfo: {
-    name: 'Set Pyth Oracle Reader Token Info (priceId, maxStaleTime)',
+  setPythOracleReaderTokensInfo: {
+    name: 'Set Pyth Oracle Reader Tokens Info',
     actionClassName: SetPythOracleReaderTokensInfoAction.name,
     paramsSchema: SetPythOracleReaderTokensInfoActionParamsSchema,
     signers: ['governor'],
@@ -79,5 +93,6 @@ export {
   SetModeStatusAction,
   SetOracleAction,
   SetPoolConfigAction,
-  SetPythOracleReaderTokensInfoAction,
+  DeployApi3ProxyOracleReaderAction,
+  SetApi3ProxyOracleReaderTokensInfoAction,
 }
