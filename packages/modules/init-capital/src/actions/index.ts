@@ -98,4 +98,5 @@ export {
   SetPoolConfigAction,
   DeployApi3ProxyOracleReaderAction,
   SetApi3ProxyOracleReaderTokensInfoAction,
+  SetPythOracleReaderTokensInfoAction,
 }
