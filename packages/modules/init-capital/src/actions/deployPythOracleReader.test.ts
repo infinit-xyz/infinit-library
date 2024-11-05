@@ -7,10 +7,10 @@ import { arbitrum } from 'viem/chains'
 import { InfinitWallet } from '@infinit-xyz/core'
 
 import { ANVIL_PRIVATE_KEY } from '@actions/__mock__/account'
-
-import { InitCapitalRegistry } from '@/src/type'
 import { setupInitCapital } from '@actions/__mock__/setup'
 import { DeployPythOracleReaderAction } from '@actions/deployPythOracleReader'
+
+import { InitCapitalRegistry } from '@/src/type'
 import { TestChain, getForkRpcUrl } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'
 
