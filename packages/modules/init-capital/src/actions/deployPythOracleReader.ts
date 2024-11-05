@@ -25,7 +25,7 @@ export type DeployPythOracleReaderActionParams = z.infer<typeof DeployPythOracle
 
 export type deployPythOracleReaderActionData = {
   params: DeployPythOracleReaderActionParams
-  signer: Record<string, InfinitWallet>
+  signer: Record<'deployer', InfinitWallet>
 }
 
 export class DeployPythOracleReaderAction extends Action<deployPythOracleReaderActionData, InitCapitalRegistry> {
