@@ -3,19 +3,19 @@ import { beforeAll, describe, expect, test } from 'vitest'
 import { privateKeyToAccount } from 'viem/accounts'
 import { arbitrum } from 'viem/chains'
 
-import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
 import { InfinitWallet } from '@infinit-xyz/core'
 
 import { ANVIL_PRIVATE_KEY, ANVIL_PRIVATE_KEY_2 } from '@actions/__mock__/account'
-
-import { InitCapitalRegistry } from '@/src/type'
+import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
 import { setupInitCapital } from '@actions/__mock__/setup'
 import { DeployPythOracleReaderAction } from '@actions/deployPythOracleReader'
 import { SetPythOracleReaderTokensInfoAction } from '@actions/setPythOracleReaderTokensInfo'
+
+import { InitCapitalRegistry } from '@/src/type'
 import { TestChain, getForkRpcUrl } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'
 
-describe('deployDoubleSlopeIRMsAction', () => {
+describe('set tokenInfos on PythOracleReader', () => {
   let action: any
   let client: InfinitWallet
   let client2: InfinitWallet
@@ -60,7 +60,7 @@ describe('deployDoubleSlopeIRMsAction', () => {
             token: usdt,
             priceId: '0x2b89b9dc8fdf9f34709a5b106b472f0f39bb6ca9ce04b0fd7f2e971688e2e53b',
             maxStaleTime: 86400n,
-          }
+          },
         ],
       },
       signer: {
@@ -68,7 +68,7 @@ describe('deployDoubleSlopeIRMsAction', () => {
       },
     })
     await action.run(registry, undefined, undefined)
-    
+
     // check price from pythOracleReaderProxy not zero
     const pythOracleReaderArtifact = await readArtifact('PythOracleReader')
     let price = await client.publicClient.readContract({
