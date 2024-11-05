@@ -1,21 +1,19 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
-import { SubAction } from '@infinit-xyz/core'
-
-import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
-
-import { InitCapitalRegistry } from '@/src/type'
-import { ANVIL_PRIVATE_KEY } from '@actions/__mock__/account'
-import { setupInitCapital } from '@actions/__mock__/setup'
-import { InfinitWallet } from '@infinit-xyz/core'
-import { getForkRpcUrl, TestChain } from '@infinit-xyz/test'
-import { readArtifact } from '@utils/artifact'
 import { privateKeyToAccount } from 'viem/accounts'
 import { arbitrum } from 'viem/chains'
+
+import { InfinitWallet, SubAction } from '@infinit-xyz/core'
+
+import { ANVIL_PRIVATE_KEY } from '@actions/__mock__/account'
+import { setupInitCapital } from '@actions/__mock__/setup'
+
 import { SetModeStatusAction, SetModeStatusActionData } from './setModeStatus'
 import { SetModeStatusSubAction } from './subactions/setModeStatus'
 import { ModeStatus, SetModeStatusTxBuilder } from './subactions/tx-builders/Config/setModeStatus'
-
+import { InitCapitalRegistry } from '@/src/type'
+import { TestChain, getForkRpcUrl } from '@infinit-xyz/test'
+import { readArtifact } from '@utils/artifact'
 
 class SetModeStatusActionTest extends SetModeStatusAction {
   public override getSubActions(): SubAction[] {
@@ -23,7 +21,6 @@ class SetModeStatusActionTest extends SetModeStatusAction {
   }
 }
 
-const tester = ARBITRUM_TEST_ADDRESSES.tester
 describe('SetModeStatus', async () => {
   let client: InfinitWallet
   let registry: InitCapitalRegistry
@@ -35,7 +32,7 @@ describe('SetModeStatus', async () => {
     client = new InfinitWallet(arbitrum, rpcEndpoint, account1)
     registry = await setupInitCapital()
   })
-  
+
   test('set all status to true', async () => {
     const modeStatus = [
       { mode: 1, status: { canCollateralize: true, canDecollateralize: true, canBorrow: true, canRepay: true } },
@@ -47,7 +44,7 @@ describe('SetModeStatus', async () => {
         config: registry.configProxy!,
         modeStatus: modeStatus,
       },
-      signer: { guardian: client }
+      signer: { guardian: client },
     })
     await action.run(registry)
     const configArtifact = await readArtifact('Config')
@@ -80,7 +77,7 @@ describe('SetModeStatus', async () => {
         config: registry.configProxy!,
         modeStatus: modeStatus,
       },
-      signer: { guardian: client }
+      signer: { guardian: client },
     })
     await action.run(registry)
     // change all status to false
@@ -92,7 +89,7 @@ describe('SetModeStatus', async () => {
         config: registry.configProxy!,
         modeStatus: modeStatus,
       },
-      signer: { guardian: client }
+      signer: { guardian: client },
     })
     await action.run(registry)
     const configArtifact = await readArtifact('Config')
@@ -112,7 +109,6 @@ describe('SetModeStatus', async () => {
       expect(onChainConfig.canRepay).toStrictEqual(false)
     }
   })
-
 
   test('test correct name', async () => {
     expect(SetModeStatusAction.name).toStrictEqual('SetModeStatusAction')
