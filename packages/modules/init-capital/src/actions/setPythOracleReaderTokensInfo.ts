@@ -23,11 +23,11 @@ type TokenInfo = {
 }
 
 export const SetPythOracleReaderTokensInfoActionParamsSchema = z.object({
-  pythOracleReaderProxy: zodAddress.describe(`Address of API3 proxy oracle reader e.g. '0x123...abc'`),
+  pythOracleReaderProxy: zodAddress.describe(`Address of PythOracleReaderProxy in the registry`),
   tokensInfo: z.array(
     z.object({
       token: zodAddress.describe(`Address of tokenInfo e.g. '0x123...abc'`),
-      priceId: zodHex.describe(`Pyth's priceId to use for fetching price`),
+      priceId: zodHex.describe(`Pyth's priceId to use for fetching price check https://www.pyth.network/developers/price-feed-ids`),
       maxStaleTime: z.bigint().describe(`Max stale time in seconds e.g. 86400n for 1 day`),
     }),
   ) satisfies z.ZodType<TokenInfo[]>,
