@@ -2,6 +2,7 @@ import { privateKeyToAccount } from 'viem/accounts'
 
 import { ANVIL_PRIVATE_KEY, ANVIL_PRIVATE_KEY_2 } from '@actions/__mock__/account'
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
+import { DeployApi3ProxyOracleReaderAction } from '@actions/deployApi3ProxyOracleReader'
 import { DeployInitCapitalAction } from '@actions/deployInitCapital'
 
 import { InitCapitalRegistry } from '@/src/type'
@@ -15,6 +16,8 @@ export const setupInitCapital = async (): Promise<InitCapitalRegistry> => {
   const deployer = client.walletClient.account.address
   const accessControlManagerOwner = client2.walletClient.account.address
   const weth = ARBITRUM_TEST_ADDRESSES.weth
+
+  let registry: InitCapitalRegistry
 
   const deployInitCapitalAction = new DeployInitCapitalAction({
     params: {
@@ -54,6 +57,19 @@ export const setupInitCapital = async (): Promise<InitCapitalRegistry> => {
       accessControlManagerOwner: client2,
     },
   })
+  // 1. deploy init capital
+  registry = await deployInitCapitalAction.run({})
+  const deployApi3ProxyOracleReaderAction = new DeployApi3ProxyOracleReaderAction({
+    params: {
+      accessControlManager: registry.accessControlManager!,
+      proxyAdmin: registry.proxyAdmin!,
+    },
+    signer: {
+      deployer: client,
+    },
+  })
+  // 2. deploy api3 proxy oracle reader
+  registry = await deployApi3ProxyOracleReaderAction.run(registry)
 
-  return await deployInitCapitalAction.run({})
+  return registry
 }
