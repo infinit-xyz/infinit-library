@@ -27,7 +27,9 @@ export const SetApi3ProxyOracleReaderTokensInfoActionParamsSchema = z.object({
   tokensInfo: z.array(
     z.object({
       token: zodAddress.describe(`Address of tokenInfo e.g. '0x123...abc'`),
-      dataFeedProxy: zodAddress.describe(`Address of data feed proxy e.g. '0x123...abc'`),
+      dataFeedProxy: zodAddress.describe(
+        `Address of data feed proxy e.g. '0x123...abc', access https://market.api3.org to find the DataFeedProxy`,
+      ),
       maxStaleTime: z.bigint().describe(`Max stale time in seconds e.g. 86400n for 1 day`),
     }),
   ) satisfies z.ZodType<TokenInfo[]>,

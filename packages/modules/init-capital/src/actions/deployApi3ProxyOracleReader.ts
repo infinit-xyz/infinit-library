@@ -21,7 +21,7 @@ export type DeployApi3ProxyOracleReaderActionParams = z.infer<typeof DeployApi3P
 
 export type deployApi3ProxyOracleReaderActionData = {
   params: DeployApi3ProxyOracleReaderActionParams
-  signer: Record<string, InfinitWallet>
+  signer: Record<'deployer', InfinitWallet>
 }
 
 export class DeployApi3ProxyOracleReaderAction extends Action<deployApi3ProxyOracleReaderActionData, InitCapitalRegistry> {
