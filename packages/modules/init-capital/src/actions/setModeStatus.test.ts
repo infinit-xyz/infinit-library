@@ -1,13 +1,19 @@
-import { describe, expect, test } from 'vitest'
+import { beforeAll, describe, expect, test } from 'vitest'
 
-import { SubAction } from '@infinit-xyz/core'
+import { privateKeyToAccount } from 'viem/accounts'
+import { arbitrum } from 'viem/chains'
 
-import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
+import { InfinitWallet, SubAction } from '@infinit-xyz/core'
+
+import { ANVIL_PRIVATE_KEY } from '@actions/__mock__/account'
+import { setupInitCapital } from '@actions/__mock__/setup'
 
 import { SetModeStatusAction, SetModeStatusActionData } from './setModeStatus'
 import { SetModeStatusSubAction } from './subactions/setModeStatus'
 import { ModeStatus, SetModeStatusTxBuilder } from './subactions/tx-builders/Config/setModeStatus'
-import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
+import { InitCapitalRegistry } from '@/src/type'
+import { TestChain, getForkRpcUrl } from '@infinit-xyz/test'
+import { readArtifact } from '@utils/artifact'
 
 class SetModeStatusActionTest extends SetModeStatusAction {
   public override getSubActions(): SubAction[] {
@@ -15,9 +21,95 @@ class SetModeStatusActionTest extends SetModeStatusAction {
   }
 }
 
-const tester = ARBITRUM_TEST_ADDRESSES.tester
 describe('SetModeStatus', async () => {
-  const client = new TestInfinitWallet(TestChain.arbitrum, tester)
+  let client: InfinitWallet
+  let registry: InitCapitalRegistry
+
+  const rpcEndpoint = getForkRpcUrl(TestChain.arbitrum)
+
+  beforeAll(async () => {
+    const account1 = privateKeyToAccount(ANVIL_PRIVATE_KEY)
+    client = new InfinitWallet(arbitrum, rpcEndpoint, account1)
+    registry = await setupInitCapital()
+  })
+
+  test('set all status to true', async () => {
+    const modeStatus = [
+      { mode: 1, status: { canCollateralize: true, canDecollateralize: true, canBorrow: true, canRepay: true } },
+      { mode: 2, status: { canCollateralize: true, canDecollateralize: true, canBorrow: true, canRepay: true } },
+    ]
+
+    const action = new SetModeStatusAction({
+      params: {
+        config: registry.configProxy!,
+        modeStatus: modeStatus,
+      },
+      signer: { guardian: client },
+    })
+    await action.run(registry)
+    const configArtifact = await readArtifact('Config')
+    // check mode status
+    for (let i = 0; i < modeStatus.length; i++) {
+      const mode = modeStatus[i]
+      const onChainConfig = await client.publicClient.readContract({
+        address: registry.configProxy!,
+        abi: configArtifact.abi,
+        functionName: 'getModeStatus',
+        args: [mode.mode],
+      })
+
+      expect(onChainConfig.canCollateralize).toStrictEqual(true)
+      expect(onChainConfig.canDecollateralize).toStrictEqual(true)
+      expect(onChainConfig.canBorrow).toStrictEqual(true)
+      expect(onChainConfig.canRepay).toStrictEqual(true)
+    }
+  })
+
+  test('set all status from true to false', async () => {
+    // set up all status to true
+    const modeStatus = [
+      { mode: 1, status: { canCollateralize: true, canDecollateralize: true, canBorrow: true, canRepay: true } },
+      { mode: 2, status: { canCollateralize: true, canDecollateralize: true, canBorrow: true, canRepay: true } },
+    ]
+
+    let action = new SetModeStatusAction({
+      params: {
+        config: registry.configProxy!,
+        modeStatus: modeStatus,
+      },
+      signer: { guardian: client },
+    })
+    await action.run(registry)
+    // change all status to false
+    for (let i = 0; i < modeStatus.length; i++) {
+      modeStatus[i].status = { canCollateralize: false, canDecollateralize: false, canBorrow: false, canRepay: false }
+    }
+    action = new SetModeStatusAction({
+      params: {
+        config: registry.configProxy!,
+        modeStatus: modeStatus,
+      },
+      signer: { guardian: client },
+    })
+    await action.run(registry)
+    const configArtifact = await readArtifact('Config')
+    // check mode status
+    for (let i = 0; i < modeStatus.length; i++) {
+      const mode = modeStatus[i]
+      const onChainConfig = await client.publicClient.readContract({
+        address: registry.configProxy!,
+        abi: configArtifact.abi,
+        functionName: 'getModeStatus',
+        args: [mode.mode],
+      })
+
+      expect(onChainConfig.canCollateralize).toStrictEqual(false)
+      expect(onChainConfig.canDecollateralize).toStrictEqual(false)
+      expect(onChainConfig.canBorrow).toStrictEqual(false)
+      expect(onChainConfig.canRepay).toStrictEqual(false)
+    }
+  })
+
   test('test correct name', async () => {
     expect(SetModeStatusAction.name).toStrictEqual('SetModeStatusAction')
   })

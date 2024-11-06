@@ -72,6 +72,11 @@ export class DeployInitCapitalAction extends Action<DeployInitCapitalActionData,
     return [
       () => new DeployInitCapitalContracts1SubAction(deployer, {}),
       (message: DeployInitCapitalMsg) =>
+        new BeginDefaultAdminTransferSubAction(deployer, {
+          accessControlManager: message.accessControlManager,
+          newOwner: accessControlManagerOwner.walletClient.account.address,
+        }),
+      (message: DeployInitCapitalMsg) =>
         new DeployInitCapitalContracts2SubAction(deployer, {
           accessControlManager: message.accessControlManager,
         }),
@@ -116,20 +121,6 @@ export class DeployInitCapitalAction extends Action<DeployInitCapitalActionData,
           wrappedNativeToken: params.wrappedNativeToken,
           riskManagerImpl: message.riskManagerImpl,
           moneyMarketHookImpl: message.moneyMarketHookImpl,
-        }),
-      (
-        message: DeployInitCapitalMsg &
-          DeployInitCapitalMsg_2 &
-          DeployInitCapitalMsg_3 &
-          DeployInitCoreImplMsg &
-          DeployInitCoreProxyMsg &
-          DeployInitCapitalMsg_4 &
-          DeployInitCapitalMsg_5 &
-          DeployInitCapitalMsg_6,
-      ) =>
-        new BeginDefaultAdminTransferSubAction(deployer, {
-          accessControlManager: message.accessControlManager,
-          newOwner: accessControlManagerOwner.walletClient.account.address,
         }),
       (
         message: DeployInitCapitalMsg &
