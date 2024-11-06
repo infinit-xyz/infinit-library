@@ -10,6 +10,7 @@ import { DeployDoubleSlopeIRMTxBuilderParams } from '@actions/subactions/tx-buil
 
 import { DeployLendingPoolProxySubAction, DeployLendingPoolSubActionMsg } from './subactions/deployLendingPoolProxy'
 import { InitializeLendingPoolSubAction } from './subactions/initializePool'
+import { SetPoolConfigSubAction} from './subactions/setPoolConfig'}
 import { InitCapitalRegistry } from '@/src/type'
 
 export type ModeConfig = {
@@ -46,6 +47,7 @@ const oracleReader = z.discriminatedUnion('type', [
 export const SupportNewLendingParamsSchema = z.object({
   name: z.string().describe(`Name of the pool`),
   token: zodAddressNonZero.describe(`Address of the token`),
+  config: zodAddressNonZero.describe(`Address of Config contract`),
   modeConfigs: z
     .array(z.tuple([z.custom<ModeConfig>()]))
     .describe(`mode configs for adding new mode`)
@@ -82,7 +84,7 @@ export type SupportNewLendingParams = z.infer<typeof SupportNewLendingParamsSche
 
 export type SupportNewLendingActionData = {
   params: SupportNewLendingParams
-  signer: Record<'deployer' | 'governor', InfinitWallet>
+  signer: Record<'deployer' | 'guardian'| 'governor', InfinitWallet>
 }
 
 export class SetOracleAction extends Action<SupportNewLendingActionData, InitCapitalRegistry> {
@@ -93,20 +95,19 @@ export class SetOracleAction extends Action<SupportNewLendingActionData, InitCap
 
   protected getSubActions(): ((message: any) => SubAction)[] {
     const deployer = this.data.signer['deployer']
+    const guardian = this.data.signer['guardian']
     const governor = this.data.signer['governor']
 
     const doubleSlopeIRMConfig = this.data.params.doubleSlopeIRMConfig
-
-    const initializePoolParams = {
+    const initializePoolConfig = {
       underlyingToken: this.data.params.token,
       name: this.data.params.name,
       symbol: this.data.params.name,
-      irm: '0x',
       reserveFactor: this.data.params.reserveFactor,
       treasury: this.data.params.treasury,
     }
 
-    // const initializePoolParams = {
+    // const initializePoolConfig = {
     //   name: this.data.params.name,
     //   token: this.data.params.token,
     //   modeConfigs: this.data.params.modeConfigs,
@@ -156,18 +157,34 @@ export class SetOracleAction extends Action<SupportNewLendingActionData, InitCap
       (message: DeployLendingPoolSubActionMsg & DeployDoubleSlopeIRMSubActionMsg) =>
         new InitializeLendingPoolSubAction(deployer, {
           lendingPool: message.lendingPoolProxy,
-          underlingToken: initializePoolParams.underlyingToken,
-          name: initializePoolParams.name,
-          symbol: initializePoolParams.symbol,
+          underlingToken: initializePoolConfig.underlyingToken,
+          name: initializePoolConfig.name,
+          symbol: initializePoolConfig.symbol,
           irm: message.doubleSlopeIrms[doubleSlopeIRMConfig.name],
-          reserveFactor: initializePoolParams.reserveFactor,
-          treasury: initializePoolParams.treasury,
+          reserveFactor: initializePoolConfig.reserveFactor,
+          treasury: initializePoolConfig.treasury,
         }),
       // 4. set pool config
+      (message: DeployLendingPoolSubActionMsg) => new SetPoolConfigSubAction(guardian, {
+        config: this.data.params.config,
+        batchPoolConfigParams: [{
+          pool: message.lendingPoolProxy,
+          poolConfig:{
+            // set pool caps
+            supplyCap: this.data.params.supplyCap,
+            borrowCap: this.data.params.borrowCap,
+            // enable all as default
+            canMint: true,
+            canBurn: true,
+            canBorrow:true,
+            canRepay:true,
+            canFlash:true
+          }
+        }]
+      })
       // 5. add lending pool to mode
       // 6. set token oracle if needed
       // 7. set risk manager mode debt ceiling
     ]
-    // return [new SetOracleSubAction(governor, initializePoolParams)]
   }
 }
