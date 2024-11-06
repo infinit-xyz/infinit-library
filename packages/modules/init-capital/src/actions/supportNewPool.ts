@@ -14,7 +14,7 @@ import { SetPoolConfigSubAction } from './subactions/setPoolConfig'
 import { InitCapitalRegistry } from '@/src/type'
 
 export type ModeConfig = {
-  mode: bigint
+  mode: number
   collFactor: bigint
   borrFactor: bigint
   liqIncentiveMultiplier_e18?: bigint
@@ -44,14 +44,10 @@ const oracleReader = z.discriminatedUnion('type', [
   z.object({ type: z.literal('pyth'), params: z.custom<PythParams>() }),
 ])
 
-export const SupportNewLendingParamsSchema = z.object({
+export const SupportNewPoolParamsSchema = z.object({
   name: z.string().describe(`Name of the pool`),
   token: zodAddressNonZero.describe(`Address of the token`),
-  config: zodAddressNonZero.describe(`Address of Config contract`),
-  modeConfigs: z
-    .array(z.tuple([z.custom<ModeConfig>()]))
-    .describe(`mode configs for adding new mode`)
-    .optional(),
+  modeConfigs: z.tuple([z.custom<ModeConfig>()]).describe(`mode configs for adding new mode`).optional(),
   liqcentiveMultiplier_e18: z.bigint().describe(`liq incentive multiplier e18`),
   supplyCap: z.bigint().describe(`lending pool supply cap`),
   borrowCap: z.bigint().describe(`lending pool borrow cap`),
@@ -80,17 +76,17 @@ export const SupportNewLendingParamsSchema = z.object({
   }),
 })
 
-export type SupportNewLendingParams = z.infer<typeof SupportNewLendingParamsSchema>
+export type SupportNewPoolParams = z.infer<typeof SupportNewPoolParamsSchema>
 
-export type SupportNewLendingActionData = {
-  params: SupportNewLendingParams
+export type SupportNewPoolActionData = {
+  params: SupportNewPoolParams
   signer: Record<'deployer' | 'guardian' | 'governor', InfinitWallet>
 }
 
-export class SetOracleAction extends Action<SupportNewLendingActionData, InitCapitalRegistry> {
-  constructor(data: SupportNewLendingActionData) {
-    validateActionData(data, SupportNewLendingParamsSchema, ['governor'])
-    super(SetOracleAction.name, data)
+export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitCapitalRegistry> {
+  constructor(data: SupportNewPoolActionData) {
+    validateActionData(data, SupportNewPoolParamsSchema, ['governor'])
+    super(SupportNewPoolAction.name, data)
   }
 
   protected getSubActions(registry: InitCapitalRegistry): ((message: any) => SubAction)[] {
@@ -169,9 +165,11 @@ export class SetOracleAction extends Action<SupportNewLendingActionData, InitCap
           treasury: initializePoolConfig.treasury,
         }),
       // 4. set pool config
-      (message: DeployLendingPoolSubActionMsg) =>
-        new SetPoolConfigSubAction(guardian, {
-          config: this.data.params.config,
+      (message: DeployLendingPoolSubActionMsg) => {
+        // validate registry
+        if (!registry.configProxy) throw new Error('registry: configProxy not found')
+        return new SetPoolConfigSubAction(guardian, {
+          config: registry.configProxy,
           batchPoolConfigParams: [
             {
               pool: message.lendingPoolProxy,
@@ -188,7 +186,8 @@ export class SetOracleAction extends Action<SupportNewLendingActionData, InitCap
               },
             },
           ],
-        }),
+        })
+      },
       // 5. create new mode if needed
       // 6. set pool mode factor
       // 7. set token oracle if needed
