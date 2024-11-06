@@ -10,6 +10,7 @@ import {
 } from '@actions/setApi3ProxyOracleReaderTokensInfo'
 import { SetIrmAction, SetIrmActionParamsSchema } from '@actions/setIrm'
 import { SetMaxPriceDeviationAction, SetMaxPriceDeviationActionParamsSchema } from '@actions/setMaxPriceDeviation'
+import { SetModeFactorsAction, SetModeFactorsActionParamsSchema } from '@actions/setModeFactors'
 import { SetModeStatusAction, SetModeStatusActionParamsSchema } from '@actions/setModeStatus'
 import { SetOracleAction, SetOracleActionParamsSchema } from '@actions/setOracle'
 import { SetPoolConfigAction, SetPoolConfigParamsSchema } from '@actions/setPoolConfig'
@@ -61,6 +62,12 @@ export const actions = {
     paramsSchema: SetMaxPriceDeviationActionParamsSchema,
     signers: ['governor'],
   },
+  SetModeFactorsAction: {
+    name: 'Set Mode Factors Action',
+    actionClassName: SetModeFactorsAction.name,
+    paramsSchema: SetModeFactorsActionParamsSchema,
+    signers: ['governor'],
+  },
   deployApi3ProxyOracleReader: {
     name: 'Deploy Api3 Proxy Oracle Reader',
     actionClassName: DeployApi3ProxyOracleReaderAction.name,
@@ -88,15 +95,16 @@ export const actions = {
 } satisfies InfinitActionRecord
 
 export {
+  DeployApi3ProxyOracleReaderAction,
   DeployDoubleSlopeIRMsAction,
   DeployInitCapitalAction,
   DeployPythOracleReaderAction,
+  SetApi3ProxyOracleReaderTokensInfoAction,
   SetIrmAction,
   SetMaxPriceDeviationAction,
+  SetModeFactorsAction,
   SetModeStatusAction,
   SetOracleAction,
   SetPoolConfigAction,
-  DeployApi3ProxyOracleReaderAction,
-  SetApi3ProxyOracleReaderTokensInfoAction,
   SetPythOracleReaderTokensInfoAction,
 }
