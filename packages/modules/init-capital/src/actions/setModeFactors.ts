@@ -41,6 +41,7 @@ export class SetModeFactorsAction extends Action<SetModeFactorsActionData, InitC
     const borrPools: Address[] = []
     const collFactors: bigint[] = []
     const borrFactors: bigint[] = []
+    const subActions: SubAction[] = []
 
     this.data.params.poolFactors.forEach((poolFactor) => {
       if (poolFactor.collFactor && poolFactor.collFactor > 0n) {
@@ -52,21 +53,27 @@ export class SetModeFactorsAction extends Action<SetModeFactorsActionData, InitC
         borrFactors.push(poolFactor.borrFactor)
       }
     })
-
-    const setCollFactorsParams: SetCollFactorsSubActionParams = {
-      config: this.data.params.config,
-      mode: this.data.params.mode,
-      pools: collPools,
-      factors_e18: collFactors,
+    // set coll factors if exist
+    if (collPools.length > 0) {
+      const setCollFactorsParams: SetCollFactorsSubActionParams = {
+        config: this.data.params.config,
+        mode: this.data.params.mode,
+        pools: collPools,
+        factors_e18: collFactors,
+      }
+      subActions.push(new SetCollFactorsSubAction(governor, setCollFactorsParams))
+    }
+    // set borr factors if exist
+    if (borrPools.length > 0) {
+      const setBorrFactorsParams: SetBorrFactorsSubActionParams = {
+        config: this.data.params.config,
+        mode: this.data.params.mode,
+        pools: borrPools,
+        factors_e18: borrFactors,
+      }
+      subActions.push(new SetBorrFactorsSubAction(governor, setBorrFactorsParams))
     }
 
-    const setBorrFactorsParams: SetBorrFactorsSubActionParams = {
-      config: this.data.params.config,
-      mode: this.data.params.mode,
-      pools: borrPools,
-      factors_e18: borrFactors,
-    }
-
-    return [new SetCollFactorsSubAction(governor, setCollFactorsParams), new SetBorrFactorsSubAction(governor, setBorrFactorsParams)]
+    return subActions
   }
 }
