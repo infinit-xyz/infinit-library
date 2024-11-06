@@ -6,8 +6,8 @@ import { arbitrum } from 'viem/chains'
 import { InfinitWallet } from '@infinit-xyz/core'
 
 import { ANVIL_PRIVATE_KEY } from '@actions/__mocks__/account'
-import { DeployAccumulativeMerkleDistributorAction } from '@actions/deployAccumulativeMerkleDistributor'
-import { DeployInfinitERC20Action } from '@actions/deployInfinitERC20'
+import { DeployAccumulativeMerkleDistributorAction } from '@actions/on-chain/deployAccumulativeMerkleDistributor'
+import { DeployInfinitERC20Action } from '@actions/on-chain/deployInfinitERC20'
 
 import { TestChain, getForkRpcUrl } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'

@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
 import { validateActionData, zodAddressNonZero, zodHex } from '@infinit-xyz/core/internal'
 
-import { SetMerkleRootSubAction, SetMerkleRootSubActionParams } from '@actions/subactions/setMerkleRoot'
+import { SetMerkleRootSubAction, SetMerkleRootSubActionParams } from '@actions/on-chain/subactions/setMerkleRoot'
 
 import { TokenRegistry } from '@/src/type'
 
