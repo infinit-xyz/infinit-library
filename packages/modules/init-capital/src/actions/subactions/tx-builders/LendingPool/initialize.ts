@@ -16,19 +16,23 @@ export type InitializeLendingPoolTxBuilderParams = {
 }
 
 export class InitializeLendingPoolTxBuilder extends TxBuilder {
-  private params: InitializeLendingPoolTxBuilderParams
+  public lendingPool: Address
+  public underlingToken: Address
+  public _name: string
+  public symbol: string
+  public irm: Address
+  public reserveFactor: bigint
+  public treasury: Address
 
   constructor(client: InfinitWallet, params: InitializeLendingPoolTxBuilderParams) {
     super(InitializeLendingPoolTxBuilder.name, client)
-    this.params = {
-      lendingPool: getAddress(params.lendingPool),
-      underlingToken: getAddress(params.underlingToken),
-      name: params.name,
-      symbol: params.symbol,
-      irm: getAddress(params.irm),
-      reserveFactor: params.reserveFactor,
-      treasury: getAddress(params.treasury),
-    }
+    this.lendingPool = getAddress(params.lendingPool)
+    this.underlingToken = getAddress(params.underlingToken)
+    this._name = params.name
+    this.symbol = params.symbol
+    this.irm = getAddress(params.irm)
+    this.reserveFactor = params.reserveFactor
+    this.treasury = getAddress(params.treasury)
   }
 
   async buildTx(): Promise<TransactionData> {
@@ -36,19 +40,12 @@ export class InitializeLendingPoolTxBuilder extends TxBuilder {
     const functionData = encodeFunctionData({
       abi: riskManagerArtifact.abi,
       functionName: 'initialize',
-      args: [
-        this.params.underlingToken,
-        this.params.name,
-        this.params.symbol,
-        this.params.irm,
-        this.params.reserveFactor,
-        this.params.treasury,
-      ],
+      args: [this.underlingToken, this.name, this.symbol, this.irm, this.reserveFactor, this.treasury],
     })
 
     const tx: TransactionData = {
       data: functionData,
-      to: this.params.lendingPool,
+      to: this.lendingPool,
     }
 
     return tx
@@ -56,12 +53,11 @@ export class InitializeLendingPoolTxBuilder extends TxBuilder {
 
   public async validate(): Promise<void> {
     // check zero address
-    if (this.params.lendingPool === zeroAddress) throw new ValidateInputZeroAddressError('LENDING_POOL')
-    if (this.params.underlingToken === zeroAddress) throw new ValidateInputZeroAddressError('UNDERLING_TOKEN')
-    if (this.params.irm === zeroAddress) throw new ValidateInputZeroAddressError('IRM')
-    if (this.params.treasury === zeroAddress) throw new ValidateInputZeroAddressError('TREASURY')
+    if (this.lendingPool === zeroAddress) throw new ValidateInputZeroAddressError('LENDING_POOL')
+    if (this.underlingToken === zeroAddress) throw new ValidateInputZeroAddressError('UNDERLING_TOKEN')
+    if (this.irm === zeroAddress) throw new ValidateInputZeroAddressError('IRM')
+    if (this.treasury === zeroAddress) throw new ValidateInputZeroAddressError('TREASURY')
     // check value
-    if (this.params.reserveFactor < 0n)
-      throw new ValidateInputValueError(`Reserve factor must be greater than 0n, found ${this.params.reserveFactor}`)
+    if (this.reserveFactor < 0n) throw new ValidateInputValueError(`Reserve factor must be greater than 0n, found ${this.reserveFactor}`)
   }
 }

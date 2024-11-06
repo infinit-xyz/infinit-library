@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import { Hash } from 'viem'
+import { Address, Hash } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError, ValidateInputValueError } from '@infinit-xyz/core/errors'
@@ -13,12 +13,19 @@ export type DoubleSlopeIRMConfig = {
   name: string
   params: DeployDoubleSlopeIRMTxBuilderParams
 }
+export type DeployDoubleSlopeIRMSubActionMsg = {
+  doubleSlopeIrms: Record<string, Address>
+}
 
 export type DeployDoubleSlopeIRMsSubActionParams = {
   doubleSlopeIRMConfigs: DoubleSlopeIRMConfig[]
 }
 
-export class DeployDoubleSlopeIRMsSubAction extends SubAction<DeployDoubleSlopeIRMsSubActionParams, InitCapitalRegistry, object> {
+export class DeployDoubleSlopeIRMsSubAction extends SubAction<
+  DeployDoubleSlopeIRMsSubActionParams,
+  InitCapitalRegistry,
+  DeployDoubleSlopeIRMSubActionMsg
+> {
   constructor(client: InfinitWallet, params: DeployDoubleSlopeIRMsSubActionParams) {
     super(DeployDoubleSlopeIRMsSubAction.name, client, params)
   }
@@ -34,7 +41,10 @@ export class DeployDoubleSlopeIRMsSubAction extends SubAction<DeployDoubleSlopeI
   protected async updateRegistryAndMessage(
     registry: InitCapitalRegistry,
     txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<InitCapitalRegistry>> {
+  ): Promise<SubActionExecuteResponse<InitCapitalRegistry, DeployDoubleSlopeIRMSubActionMsg>> {
+    const message: DeployDoubleSlopeIRMSubActionMsg = {
+      doubleSlopeIrms: {},
+    }
     // update registry mapping name from txHashes
     for (const [index, txHash] of txHashes.entries()) {
       const irmName = this.params.doubleSlopeIRMConfigs[index]?.name
@@ -47,10 +57,11 @@ export class DeployDoubleSlopeIRMsSubAction extends SubAction<DeployDoubleSlopeI
       // set contract address to registry
       if (!contractAddress) throw new ContractNotFoundError(txHash, 'DoubleSlopeIRM: ' + irmName)
       _.set(registry, ['irms', irmName], contractAddress)
+      _.set(message, ['doubleSlopeIrms', irmName], contractAddress)
     }
     return {
       newRegistry: registry,
-      newMessage: {},
+      newMessage: message,
     }
   }
 }
