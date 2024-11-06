@@ -50,6 +50,24 @@ export const setupInitCapital = async (): Promise<InitCapitalRegistry> => {
             jumpRateMultiplierE18: 10000000000000000n,
           },
         },
+        {
+          name: 'MemecoinIRM',
+          params: {
+            baseBorrowRateE18: 300000000000000000n,
+            jumpUtilizationRateE18: 500000000000000000n,
+            borrowRateMultiplierE18: 20000000000000000n,
+            jumpRateMultiplierE18: 50000000000000000n,
+          },
+        },
+        {
+          name: 'LrtcoinIRM',
+          params: {
+            baseBorrowRateE18: 100000000000000000n,
+            jumpUtilizationRateE18: 500000000000000000n,
+            borrowRateMultiplierE18: 10000000000000000n,
+            jumpRateMultiplierE18: 10000000000000000n,
+          },
+        },
       ],
     },
     signer: {
