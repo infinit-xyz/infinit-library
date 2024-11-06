@@ -10,7 +10,7 @@ import { DeployDoubleSlopeIRMTxBuilderParams } from '@actions/subactions/tx-buil
 
 import { DeployLendingPoolProxySubAction, DeployLendingPoolSubActionMsg } from './subactions/deployLendingPoolProxy'
 import { InitializeLendingPoolSubAction } from './subactions/initializePool'
-import { SetPoolConfigSubAction} from './subactions/setPoolConfig'}
+import { SetPoolConfigSubAction } from './subactions/setPoolConfig'
 import { InitCapitalRegistry } from '@/src/type'
 
 export type ModeConfig = {
@@ -84,7 +84,7 @@ export type SupportNewLendingParams = z.infer<typeof SupportNewLendingParamsSche
 
 export type SupportNewLendingActionData = {
   params: SupportNewLendingParams
-  signer: Record<'deployer' | 'guardian'| 'governor', InfinitWallet>
+  signer: Record<'deployer' | 'guardian' | 'governor', InfinitWallet>
 }
 
 export class SetOracleAction extends Action<SupportNewLendingActionData, InitCapitalRegistry> {
@@ -93,7 +93,7 @@ export class SetOracleAction extends Action<SupportNewLendingActionData, InitCap
     super(SetOracleAction.name, data)
   }
 
-  protected getSubActions(): ((message: any) => SubAction)[] {
+  protected getSubActions(registry: InitCapitalRegistry): ((message: any) => SubAction)[] {
     const deployer = this.data.signer['deployer']
     const guardian = this.data.signer['guardian']
     const governor = this.data.signer['governor']
@@ -147,12 +147,16 @@ export class SetOracleAction extends Action<SupportNewLendingActionData, InitCap
           ],
         }),
       // 2. deploy lending pool proxy
-      () =>
-        new DeployLendingPoolProxySubAction(deployer, {
-          name: 'asdf',
-          proxyAdmin: '0x',
-          lendingPoolImpl: '0x',
-        }),
+      () => {
+        // validate registry
+        if (!registry.lendingPoolImpl) throw new Error('registry: lendingPoolImpl not found')
+        if (!registry.proxyAdmin) throw new Error('registry: proxy admin not found')
+        return new DeployLendingPoolProxySubAction(deployer, {
+          name: this.data.params.name,
+          proxyAdmin: registry.proxyAdmin,
+          lendingPoolImpl: registry.lendingPoolImpl,
+        })
+      },
       // 3. initialize lending proxy
       (message: DeployLendingPoolSubActionMsg & DeployDoubleSlopeIRMSubActionMsg) =>
         new InitializeLendingPoolSubAction(deployer, {
@@ -165,26 +169,30 @@ export class SetOracleAction extends Action<SupportNewLendingActionData, InitCap
           treasury: initializePoolConfig.treasury,
         }),
       // 4. set pool config
-      (message: DeployLendingPoolSubActionMsg) => new SetPoolConfigSubAction(guardian, {
-        config: this.data.params.config,
-        batchPoolConfigParams: [{
-          pool: message.lendingPoolProxy,
-          poolConfig:{
-            // set pool caps
-            supplyCap: this.data.params.supplyCap,
-            borrowCap: this.data.params.borrowCap,
-            // enable all as default
-            canMint: true,
-            canBurn: true,
-            canBorrow:true,
-            canRepay:true,
-            canFlash:true
-          }
-        }]
-      })
-      // 5. add lending pool to mode
-      // 6. set token oracle if needed
-      // 7. set risk manager mode debt ceiling
+      (message: DeployLendingPoolSubActionMsg) =>
+        new SetPoolConfigSubAction(guardian, {
+          config: this.data.params.config,
+          batchPoolConfigParams: [
+            {
+              pool: message.lendingPoolProxy,
+              poolConfig: {
+                // set pool caps
+                supplyCap: this.data.params.supplyCap,
+                borrowCap: this.data.params.borrowCap,
+                // enable all as default
+                canMint: true,
+                canBurn: true,
+                canBorrow: true,
+                canRepay: true,
+                canFlash: true,
+              },
+            },
+          ],
+        }),
+      // 5. create new mode if needed
+      // 6. set pool mode factor
+      // 7. set token oracle if needed
+      // 8. set risk manager mode debt ceiling
     ]
   }
 }
