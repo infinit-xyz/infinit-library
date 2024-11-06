@@ -20,7 +20,7 @@ export class AcceptDefaultAdminTransferTxBuilder extends TxBuilder {
   async buildTx(): Promise<TransactionData> {
     const accessControlManagerArtifact = await readArtifact('AccessControlManager')
     const encodedData = encodeFunctionData({ abi: accessControlManagerArtifact.abi, functionName: 'acceptDefaultAdminTransfer', args: [] })
-    console.log("bf send tx", (await this.client.publicClient.getBlock()).timestamp)
+    console.log('bf send tx', (await this.client.publicClient.getBlock()).timestamp)
     return {
       to: this.accessControlManager,
       data: encodedData,
@@ -39,8 +39,8 @@ export class AcceptDefaultAdminTransferTxBuilder extends TxBuilder {
     if (this.client.walletClient.account.address !== newOwner) throw new ContractValidateError('only owner can transfer owner')
     // get block timestamp
     const block = await this.client.publicClient.getBlock()
-    console.log("block", block.timestamp)
-    console.log("schedule", schedule)
+    console.log('block', block.timestamp)
+    console.log('schedule', schedule)
 
     if (block.timestamp < schedule) throw new ContractValidateError('transfer delay not passed')
   }
