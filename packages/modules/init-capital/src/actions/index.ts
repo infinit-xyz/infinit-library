@@ -3,6 +3,7 @@ import { InfinitActionRecord } from '@infinit-xyz/core'
 import { DeployApi3ProxyOracleReaderAction, DeployApi3ProxyOracleReaderActionParamsSchema } from '@actions/deployApi3ProxyOracleReader'
 import { DeployDoubleSlopeIRMsAction, DeployDoubleSlopeIRMsActionParamsSchema } from '@actions/deployDoubleSlopeIRMs'
 import { DeployInitCapitalAction, DeployInitCapitalActionParamsSchema } from '@actions/deployInitCapital'
+import { DeployPythOracleReaderAction, DeployPythOracleReaderActionParamsSchema } from '@actions/deployPythOracleReader'
 import {
   SetApi3ProxyOracleReaderTokensInfoAction,
   SetApi3ProxyOracleReaderTokensInfoActionParamsSchema,
@@ -12,6 +13,10 @@ import { SetMaxPriceDeviationAction, SetMaxPriceDeviationActionParamsSchema } fr
 import { SetModeStatusAction, SetModeStatusActionParamsSchema } from '@actions/setModeStatus'
 import { SetOracleAction, SetOracleActionParamsSchema } from '@actions/setOracle'
 import { SetPoolConfigAction, SetPoolConfigParamsSchema } from '@actions/setPoolConfig'
+import {
+  SetPythOracleReaderTokensInfoAction,
+  SetPythOracleReaderTokensInfoActionParamsSchema,
+} from '@actions/setPythOracleReaderTokensInfo'
 
 export const actions = {
   init: {
@@ -68,11 +73,24 @@ export const actions = {
     paramsSchema: SetApi3ProxyOracleReaderTokensInfoActionParamsSchema,
     signers: ['governor'],
   },
+  deployPythOracleReader: {
+    name: 'Deploy Pyth Oracle Reader',
+    actionClassName: DeployPythOracleReaderAction.name,
+    paramsSchema: DeployPythOracleReaderActionParamsSchema,
+    signers: ['deployer'],
+  },
+  setPythOracleReaderTokensInfo: {
+    name: 'Set Pyth Oracle Reader Tokens Info',
+    actionClassName: SetPythOracleReaderTokensInfoAction.name,
+    paramsSchema: SetPythOracleReaderTokensInfoActionParamsSchema,
+    signers: ['governor'],
+  },
 } satisfies InfinitActionRecord
 
 export {
   DeployDoubleSlopeIRMsAction,
   DeployInitCapitalAction,
+  DeployPythOracleReaderAction,
   SetIrmAction,
   SetMaxPriceDeviationAction,
   SetModeStatusAction,
@@ -80,4 +98,5 @@ export {
   SetPoolConfigAction,
   DeployApi3ProxyOracleReaderAction,
   SetApi3ProxyOracleReaderTokensInfoAction,
+  SetPythOracleReaderTokensInfoAction,
 }
