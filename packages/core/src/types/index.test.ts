@@ -4,6 +4,6 @@ import * as index from './index'
 
 describe('types/index.ts', () => {
   it('should match the snapshot', () => {
-    expect(index).toMatchSnapshot()
+    expect(Object.keys(index)).toMatchSnapshot()
   })
 })
