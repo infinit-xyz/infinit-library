@@ -12,7 +12,7 @@ import {
   http,
 } from 'viem'
 
-import { ActionCallback, ToSendTransaction } from '@/types'
+import { OnChainActionCallback, ToSendTransaction } from '@/types'
 
 import { TransactionError } from '@errors/index'
 
@@ -70,7 +70,7 @@ export class InfinitWallet {
    * @returns A promise that resolves to an array of transaction receipts, providing details about each completed transaction.
    * @throws {TransactionError} If any transaction fails, the function throws a `TransactionError` with the failed transaction's hash.
    */
-  sendTransactions = async (transactions: ToSendTransaction[], callback?: ActionCallback): Promise<TransactionReceipt[]> => {
+  sendTransactions = async (transactions: ToSendTransaction[], callback?: OnChainActionCallback): Promise<TransactionReceipt[]> => {
     const txReceipts: TransactionReceipt[] = []
 
     for (const transaction of transactions) {

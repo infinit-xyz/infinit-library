@@ -7,7 +7,7 @@ import { MockSubAction } from '@base/__mock__/subAction.mock'
 import { SubAction, SubActionData } from '@base/subAction'
 import { TxBuilder } from '@base/txBuilder'
 
-import { ActionCallback } from '@/types'
+import { OnChainActionCallback } from '@/types'
 import { TransactionCache } from '@/types/cache'
 
 import { MOCK_PRIVATE_KEY } from '@infinit-wallet/__mock__/constants.mock'
@@ -74,7 +74,7 @@ describe('subAction', () => {
         { name: 'failTx', txHash: failTxHash },
       ]
 
-      const callback: ActionCallback = vi.fn()
+      const callback: OnChainActionCallback = vi.fn()
 
       await subAction.checkCache(txCaches, callback)
 

@@ -1,4 +1,4 @@
-import { OffChainActionCallback } from '@/types/callback/offChainAction'
+import { OffChainActionCallback } from '@/types/callback/action'
 
 /**
  * The return type for off-chain actions.

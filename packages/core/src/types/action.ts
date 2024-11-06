@@ -1,21 +1,27 @@
 import { ZodObject } from 'zod'
 
 /**
- * An Infinit action.
+ * Base details for an action.
  */
-type InfinitAction = {
+type BaseActionDetail = {
   /**
-   * Name of the action.
+   * The name of the action.
    */
   name: string
   /**
-   * Class name of the action.
+   * The class name of the action.
    */
   actionClassName: string
   /**
-   * Schema for the action parameters.
+   * The schema for the action parameters.
    */
   paramsSchema: ZodObject<any>
+}
+
+/**
+ * Details for an on-chain action.
+ */
+type OnChainActionDetail = BaseActionDetail & {
   /**
    * Signers for the action.
    */
@@ -23,8 +29,18 @@ type InfinitAction = {
 }
 
 /**
- * Record of Infinit actions.
+ * Details for an off-chain action.
  */
-type InfinitActionRecord = Record<string, InfinitAction>
+type OffChainActionDetail = BaseActionDetail
 
-export { InfinitAction, InfinitActionRecord }
+/**
+ * Record of on-chain actions.
+ */
+type OnChainActionRecord = Record<string, OnChainActionDetail>
+
+/**
+ * Record of off-chain actions.
+ */
+type OffChainActionRecord = Record<string, OffChainActionDetail>
+
+export { BaseActionDetail, OffChainActionDetail, OffChainActionRecord, OnChainActionDetail, OnChainActionRecord }

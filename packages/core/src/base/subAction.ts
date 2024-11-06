@@ -2,7 +2,7 @@ import { Hex } from 'viem'
 
 import { TxBuilder } from '@base/txBuilder'
 
-import { ActionCallback, ToSendTransaction } from '@/types'
+import { OnChainActionCallback, ToSendTransaction } from '@/types'
 import { SubActionCache, TransactionCache } from '@/types/cache'
 
 import { FoundInvalidCachedTxError, IncorrectCacheError, TxNotFoundError } from '@errors/index'
@@ -127,7 +127,7 @@ abstract class SubAction<P extends object = {}, R extends object = {}, M extends
    * @throws {TxNotFoundError} If a transaction hash is missing.
    * @throws {FoundInvalidCachedTxError} If a failed transaction is followed by a successful one.
    */
-  public async checkCache(transactionCaches?: TransactionCache[], callback?: ActionCallback): Promise<number> {
+  public async checkCache(transactionCaches?: TransactionCache[], callback?: OnChainActionCallback): Promise<number> {
     let failedIdx: number | undefined = undefined
     const txHashes: (Hex | undefined)[] = transactionCaches?.map((tx) => tx.txHash) ?? []
 
@@ -165,7 +165,7 @@ abstract class SubAction<P extends object = {}, R extends object = {}, M extends
    * @param callback - Optional callback for status updates during execution.
    * @returns A promise resolving to an object containing the updated registry and an optional new message.
    */
-  public async execute(registry: R, data?: SubActionData, callback?: ActionCallback): Promise<SubActionExecuteResponse<R, M>> {
+  public async execute(registry: R, data?: SubActionData, callback?: OnChainActionCallback): Promise<SubActionExecuteResponse<R, M>> {
     await callback?.('subActionStarted', { name: this.name })
 
     const { cache } = data ?? {}
