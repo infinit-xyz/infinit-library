@@ -58,6 +58,7 @@ export const setupInitCapital = async (): Promise<InitCapitalRegistry> => {
     },
   })
   // 1. deploy init capital
+  console.log("bf run action", (await client.publicClient.getBlock()).timestamp)
   registry = await deployInitCapitalAction.run({})
   const deployApi3ProxyOracleReaderAction = new DeployApi3ProxyOracleReaderAction({
     params: {
@@ -68,6 +69,7 @@ export const setupInitCapital = async (): Promise<InitCapitalRegistry> => {
       deployer: client,
     },
   })
+  console.log("af run action", (await client.publicClient.getBlock()).timestamp)
   // 2. deploy api3 proxy oracle reader
   registry = await deployApi3ProxyOracleReaderAction.run(registry)
 
