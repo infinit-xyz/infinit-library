@@ -67,7 +67,7 @@ export const setupInitCapital = async (): Promise<InitCapitalRegistry> => {
             borrowRateMultiplierE18: 10000000000000000n,
             jumpRateMultiplierE18: 10000000000000000n,
           },
-        }
+        },
       ],
     },
     signer: {
