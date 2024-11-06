@@ -2,7 +2,7 @@ import type { Address, Client, Hash, TestActions, TransactionReceipt, WalletActi
 import { parseEther, walletActions } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
-import { ActionCallback, InfinitWallet, ToSendTransaction } from '@infinit-xyz/core'
+import { InfinitWallet, OnChainActionCallback, ToSendTransaction } from '@infinit-xyz/core'
 import { TransactionError } from '@infinit-xyz/core/errors'
 
 import { testClients } from './client.js'
@@ -28,7 +28,7 @@ export class TestInfinitWallet extends InfinitWallet {
 
   override sendTransactions = async (
     transactions: ToSendTransaction[],
-    callback?: ActionCallback,
+    callback?: OnChainActionCallback,
     { hideErrorMessage = false }: { hideErrorMessage?: boolean } = {},
   ): Promise<TransactionReceipt[]> => {
     await this.testClient.impersonateAccount({
