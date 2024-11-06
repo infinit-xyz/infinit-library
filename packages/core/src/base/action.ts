@@ -100,6 +100,7 @@ abstract class Action<D extends ActionData = { params: {}; signer: {} }, R exten
    * @param cache - Optional cache object for temporary data, such as transaction hashes.
    * @param callback - Optional callback function for communicating data during execution.
    * @returns A promise that resolves with the updated registry after all sub-actions have been executed.
+   * @throws {IncorrectCacheError} If the cache name does not match the expected action name.
    */
   public async run(registry: R, cache?: InfinitCache, callback?: ActionCallback): Promise<R> {
     let currentMessages = {}
@@ -111,7 +112,7 @@ abstract class Action<D extends ActionData = { params: {}; signer: {} }, R exten
       throw new IncorrectCacheError(`Action name is incorrect (expected: ${this.name}, got: ${cache.name})`)
     }
 
-    const subActions = this.getSubActions()
+    const subActions = this.getSubActions(registry)
 
     if (callback) {
       await callback('actionInfo', this.getActionInfo(subActions))
@@ -138,11 +139,12 @@ abstract class Action<D extends ActionData = { params: {}; signer: {} }, R exten
    * Subclasses must implement this method to specify the sub-actions
    * that make up the action.
    *
+   * @param registry - The current project registry.
    * @returns An array of sub-actions or functions that return sub-actions.
    * @protected
    * @abstract
    */
-  protected abstract getSubActions<M extends object>(): SubAction<any, R>[] | ((message?: M) => SubAction<any, R>)[]
+  protected abstract getSubActions<M extends object>(registry: R): SubAction<any, R>[] | ((message?: M) => SubAction<any, R>)[]
 }
 
 export { Action, ActionClients, ActionData }
