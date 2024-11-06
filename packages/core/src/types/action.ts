@@ -5,6 +5,10 @@ import { ZodObject } from 'zod'
  */
 type BaseActionDetail = {
   /**
+   * The type of the action, either 'on-chain' or 'off-chain'.
+   */
+  type: 'on-chain' | 'off-chain'
+  /**
    * The name of the action.
    */
   name: string
@@ -23,6 +27,10 @@ type BaseActionDetail = {
  */
 type OnChainActionDetail = BaseActionDetail & {
   /**
+   * The type of the action, which is 'on-chain'.
+   */
+  type: 'on-chain'
+  /**
    * Signers for the action.
    */
   signers: string[]
@@ -31,16 +39,16 @@ type OnChainActionDetail = BaseActionDetail & {
 /**
  * Details for an off-chain action.
  */
-type OffChainActionDetail = BaseActionDetail
+type OffChainActionDetail = BaseActionDetail & {
+  /**
+   * The type of the action, which is 'off-chain'.
+   */
+  type: 'off-chain'
+}
 
 /**
- * Record of on-chain actions.
+ * Record of action details, which can be either on-chain or off-chain.
  */
-type OnChainActionRecord = Record<string, OnChainActionDetail>
+type ActionDetailRecord = Record<string, OnChainActionDetail | OffChainActionDetail>
 
-/**
- * Record of off-chain actions.
- */
-type OffChainActionRecord = Record<string, OffChainActionDetail>
-
-export { BaseActionDetail, OffChainActionDetail, OffChainActionRecord, OnChainActionDetail, OnChainActionRecord }
+export { ActionDetailRecord, BaseActionDetail, OffChainActionDetail, OnChainActionDetail }
