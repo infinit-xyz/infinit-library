@@ -8,7 +8,7 @@ import { ContractNotFoundError } from '@infinit-xyz/core/errors'
 import {
   DeployInfinitERC20BurnableTxBuilderParams,
   deployInfinitERC20BurnableTxBuilder,
-} from '@actions/subactions/txBuilders/InfinitERC20Burnable/deployInfinitERC20Burnable'
+} from '@actions/on-chain/subactions/txBuilders/InfinitERC20Burnable/deployInfinitERC20Burnable'
 
 import { Token, TokenRegistry, TokenType } from '@/src/type'
 

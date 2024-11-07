@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from 'vitest'
 
-import { OffChainActionCallback } from '@/types/callback/offChainAction'
+import { OffChainActionCallback } from '@/types/callback/action'
 
 import { OffChainAction, OffChainActionReturn } from './offChainAction'
 

@@ -5,7 +5,7 @@ import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz
 import {
   SetMerkleRootTxBuilder,
   SetMerkleRootTxBuilderParams,
-} from '@actions/subactions/txBuilders/AccumulativeMerkleDistributor/setMerkleRoot'
+} from '@actions/on-chain/subactions/txBuilders/AccumulativeMerkleDistributor/setMerkleRoot'
 
 import { TokenRegistry } from '@/src/type'
 

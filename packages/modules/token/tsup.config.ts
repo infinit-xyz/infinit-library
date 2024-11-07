@@ -2,7 +2,7 @@ import { defineConfig } from 'tsup'
 
 export default defineConfig({
   name: 'token',
-  entry: ['src/index.ts', 'src/actions/index.ts', 'src/off-chain-actions/index.ts', 'src/utils/index.ts'],
+  entry: ['src/index.ts', 'src/actions/index.ts', 'src/utils/index.ts'],
   format: ['esm', 'cjs'], // Build for ESmodules and Commonjs
   dts: true, // Generate declaration file (.d.ts)
   sourcemap: false,

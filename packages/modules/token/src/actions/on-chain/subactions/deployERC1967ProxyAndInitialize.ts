@@ -5,7 +5,7 @@ import { Hash } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError } from '@infinit-xyz/core/errors'
 
-import { DeployERC1967ProxyTxBuilder, DeployERC1967ProxyTxBuilderParams } from '@actions/subactions/txBuilders/ERC1967Proxy/deploy'
+import { DeployERC1967ProxyTxBuilder, DeployERC1967ProxyTxBuilderParams } from '@actions/on-chain/subactions/txBuilders/ERC1967Proxy/deploy'
 
 import { MerkleDistributor, TokenRegistry } from '@/src/type'
 

@@ -6,7 +6,7 @@ import { ContractNotFoundError } from '@infinit-xyz/core/errors'
 import {
   DeployAccumulativeMerkleDistributorTxBuilder,
   DeployAccumulativeMerkleDistributorTxBuilderParams,
-} from '@actions/subactions/txBuilders/AccumulativeMerkleDistributor/deploy'
+} from '@actions/on-chain/subactions/txBuilders/AccumulativeMerkleDistributor/deploy'
 
 import { TokenRegistry } from '@/src/type'
 

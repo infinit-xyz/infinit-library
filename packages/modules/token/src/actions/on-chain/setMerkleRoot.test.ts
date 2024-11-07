@@ -5,9 +5,9 @@ import { Address, privateKeyToAccount } from 'viem/accounts'
 
 import { ANVIL_PRIVATE_KEY } from '@actions/__mocks__/account'
 import { TEST_ADDRESSES } from '@actions/__mocks__/address'
-import { DeployAccumulativeMerkleDistributorAction } from '@actions/deployAccumulativeMerkleDistributor'
-import { DeployInfinitERC20Action } from '@actions/deployInfinitERC20'
-import { SetMerkleRootAction } from '@actions/setMerkleRoot'
+import { DeployAccumulativeMerkleDistributorAction } from '@actions/on-chain/deployAccumulativeMerkleDistributor'
+import { DeployInfinitERC20Action } from '@actions/on-chain/deployInfinitERC20'
+import { SetMerkleRootAction } from '@actions/on-chain/setMerkleRoot'
 
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'

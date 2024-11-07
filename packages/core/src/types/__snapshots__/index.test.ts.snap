@@ -1,16 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`exports - index: should match snapshot 1`] = `
+exports[`types/index.ts > should match the snapshot 1`] = `
 [
-  "InfinitWallet",
-  "ContractProvider",
   "InfinitCache",
   "OffChainActionCallback",
   "OnChainActionCallback",
   "ContractVerifierCallback",
-  "Action",
-  "OffChainAction",
-  "SubAction",
-  "TxBuilder",
 ]
 `;

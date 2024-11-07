@@ -5,11 +5,10 @@ import * as index from './index'
 describe('index.ts', () => {
   test('export: should match snapshot', () => {
     expect(Object.keys(index)).toMatchInlineSnapshot(`
-    [
-      "Registry",
-      "actions",
-      "offChainActions",
-    ]
-  `)
+      [
+        "Registry",
+        "actions",
+      ]
+    `)
   })
 })

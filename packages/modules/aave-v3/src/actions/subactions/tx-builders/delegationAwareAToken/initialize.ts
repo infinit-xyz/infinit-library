@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 import { Address, Hex, encodeFunctionData, getAddress } from 'viem'
 
-import { ActionCallback, InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
+import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
@@ -45,7 +45,7 @@ export class DelegationAwareATokenInitializeTxBuilder extends TxBuilder {
     this.params = params.params
   }
 
-  async buildTx(_callback: ActionCallback): Promise<TransactionData> {
+  async buildTx(): Promise<TransactionData> {
     const aTokenArtifact = await readArtifact('AToken')
 
     const callData = encodeFunctionData({

@@ -7,8 +7,8 @@ import { InfinitWallet } from '@infinit-xyz/core'
 
 import { ANVIL_PRIVATE_KEY } from '@actions/__mocks__/account'
 import { TEST_ADDRESSES } from '@actions/__mocks__/address'
-import { DeployInfinitERC20Action } from '@actions/deployInfinitERC20'
-import { MintInfinitERC20Action } from '@actions/mintInfinitERC20'
+import { DeployInfinitERC20Action } from '@actions/on-chain/deployInfinitERC20'
+import { MintInfinitERC20Action } from '@actions/on-chain/mintInfinitERC20'
 
 import { TestChain, TestInfinitWallet, getForkRpcUrl } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'

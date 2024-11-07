@@ -1,17 +1,17 @@
-import { beforeAll, describe, expect, test } from 'vitest'
+import { beforeAll, describe, expect, test, vi } from 'vitest'
 
 import { encodeFunctionData } from 'viem'
 import { Address, privateKeyToAccount } from 'viem/accounts'
 
 import { ANVIL_PRIVATE_KEY } from '@actions/__mocks__/account'
 import { TEST_ADDRESSES } from '@actions/__mocks__/address'
-import { DeployInfinitERC20BurnableAction } from '@actions/deployInfinitERC20Burnable'
+import { DeployInfinitERC20Action } from '@actions/on-chain/deployInfinitERC20'
 
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'
 
-describe('deployInfinitERC20BurnableBurnableAction', () => {
-  let action: DeployInfinitERC20BurnableAction
+describe('deployInfinitERC20Action', () => {
+  let action: DeployInfinitERC20Action
   let client: TestInfinitWallet
   let bobClient: TestInfinitWallet
 
@@ -26,7 +26,7 @@ describe('deployInfinitERC20BurnableBurnableAction', () => {
   })
 
   test('deploy token, owner is deployer', async () => {
-    action = new DeployInfinitERC20BurnableAction({
+    action = new DeployInfinitERC20Action({
       params: {
         owner: client.walletClient.account.address,
         name: 'TestToken',
@@ -45,10 +45,11 @@ describe('deployInfinitERC20BurnableBurnableAction', () => {
     expect(curRegistry.tokens).not.toBe(null)
     // get all values of curRegistry.tokens
     const tokens: Address[] = Object.keys(curRegistry.tokens!) as Address[]
+    // for (const token of tokens) {
     const ttToken = tokens[0]
-    expect(curRegistry.tokens![tokens[0]].type).toBe('InfinitERC20Burnable')
+    expect(curRegistry.tokens![tokens[0]].type).toBe('InfinitERC20')
 
-    const infinitERC20 = await readArtifact('InfinitERC20Burnable')
+    const infinitERC20 = await readArtifact('InfinitERC20')
     const ownerBal = await client.publicClient.readContract({
       address: ttToken,
       abi: infinitERC20.abi,
@@ -57,6 +58,7 @@ describe('deployInfinitERC20BurnableBurnableAction', () => {
     })
     expect(ownerBal).toBe(BigInt(500000000000000000000000))
 
+    // test totalsupply
     const totalSupply = await client.publicClient.readContract({
       address: ttToken,
       abi: infinitERC20.abi,
@@ -107,7 +109,7 @@ describe('deployInfinitERC20BurnableBurnableAction', () => {
 
   // test deploy token, owner is not deployer
   test('deploy token, owner is not deployer', async () => {
-    action = new DeployInfinitERC20BurnableAction({
+    action = new DeployInfinitERC20Action({
       params: {
         owner: bob,
         name: 'TestToken',
@@ -126,10 +128,11 @@ describe('deployInfinitERC20BurnableBurnableAction', () => {
     expect(curRegistry.tokens).not.toBe(null)
     // get all values of curRegistry.tokens
     const tokens: Address[] = Object.keys(curRegistry.tokens!) as Address[]
+    // for (const token of tokens) {
     const ttToken = tokens[0]
-    expect(curRegistry.tokens![tokens[0]].type).toBe('InfinitERC20Burnable')
+    expect(curRegistry.tokens![tokens[0]].type).toBe('InfinitERC20')
 
-    const infinitERC20 = await readArtifact('InfinitERC20Burnable')
+    const infinitERC20 = await readArtifact('InfinitERC20')
     const deployerBal = await client.publicClient.readContract({
       address: ttToken,
       abi: infinitERC20.abi,
@@ -146,6 +149,7 @@ describe('deployInfinitERC20BurnableBurnableAction', () => {
     })
     expect(ownerBal).toBe(BigInt(500000000000000000000000))
 
+    // test totalsupply
     const totalSupply = await client.publicClient.readContract({
       address: ttToken,
       abi: infinitERC20.abi,
@@ -165,7 +169,7 @@ describe('deployInfinitERC20BurnableBurnableAction', () => {
 
   // test deploy token, not owner cant mint
   test('deploy token, not owner cant mint', async () => {
-    action = new DeployInfinitERC20BurnableAction({
+    action = new DeployInfinitERC20Action({
       params: {
         owner: client.walletClient.account.address,
         name: 'TestToken',
@@ -182,7 +186,7 @@ describe('deployInfinitERC20BurnableBurnableAction', () => {
     const tokens: Address[] = Object.keys(curRegistry.tokens!) as Address[]
     // owner mint tokens
     const ttToken = tokens[0]
-    const infinitERC20 = await readArtifact('InfinitERC20Burnable')
+    const infinitERC20 = await readArtifact('InfinitERC20')
 
     const mintAmount = BigInt(100000000000000000000000)
 
@@ -208,54 +212,24 @@ describe('deployInfinitERC20BurnableBurnableAction', () => {
     ).rejects.toThrowError()
   })
 
-  // test deploy token, test burn token
-  test('deploy token, burn token', async () => {
-    action = new DeployInfinitERC20BurnableAction({
-      params: {
-        owner: client.walletClient.account.address,
-        name: 'TestToken',
-        symbol: 'TT',
-        maxSupply: BigInt(1000000000000000000000000000),
-        initialSupply: BigInt(500000000000000000000000),
-      },
-      signer: {
-        deployer: client,
-      },
-    })
-    const curRegistry = await action.run({}, undefined, undefined)
-
-    const tokens: Address[] = Object.keys(curRegistry.tokens!) as Address[]
-    // owner mint tokens
-    const ttToken = tokens[0]
-    const infinitERC20 = await readArtifact('InfinitERC20Burnable')
-
-    const burnAmount = BigInt(100000000000000000000000)
-    const balanceBeforeBurn = await client.publicClient.readContract({
-      address: ttToken,
-      abi: infinitERC20.abi,
-      functionName: 'balanceOf',
-      args: [client.walletClient.account.address],
-    })
-
-    await client.sendTransactions([
-      {
-        name: 'burn',
-        txData: {
-          to: ttToken,
-          data: encodeFunctionData({
-            abi: infinitERC20.abi,
-            functionName: 'burn',
-            args: [burnAmount],
-          }),
+  test('deploy token, test initial supply > max supply', async () => {
+    vi.spyOn(console, 'error').mockImplementationOnce(() => {})
+    try {
+      action = new DeployInfinitERC20Action({
+        params: {
+          owner: client.walletClient.account.address,
+          name: 'TestToken',
+          symbol: 'TT',
+          maxSupply: BigInt(1000000000000000000000000000),
+          initialSupply: BigInt(2000000000000000000000000000),
         },
-      },
-    ])
-    const balanceAfterBurn = await client.publicClient.readContract({
-      address: ttToken,
-      abi: infinitERC20.abi,
-      functionName: 'balanceOf',
-      args: [client.walletClient.account.address],
-    })
-    expect(balanceAfterBurn).toBe(balanceBeforeBurn - burnAmount)
+        signer: {
+          deployer: client,
+        },
+      })
+      await action.run({}, undefined, undefined)
+    } catch (e: any) {
+      expect(e.details.includes('9e79f854'))
+    }
   })
 })
