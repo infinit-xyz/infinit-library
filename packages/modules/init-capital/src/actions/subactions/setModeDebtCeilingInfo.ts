@@ -12,9 +12,9 @@ import { InitCapitalRegistry } from '@/src/type'
 
 export type SetModeDebtCeilingInfoSubActionParams = SetModeDebtCeilingInfoTxBuilderParams
 
-export class SetModeStatusSubAction extends SubAction<SetModeDebtCeilingInfoSubActionParams, InitCapitalRegistry, object> {
+export class SetModeDebtCeilingInfoSubAction extends SubAction<SetModeDebtCeilingInfoSubActionParams, InitCapitalRegistry, object> {
   constructor(client: InfinitWallet, params: SetModeDebtCeilingInfoSubActionParams) {
-    super(SetModeStatusSubAction.name, client, params)
+    super(SetModeDebtCeilingInfoSubAction.name, client, params)
   }
 
   protected setTxBuilders(): void {

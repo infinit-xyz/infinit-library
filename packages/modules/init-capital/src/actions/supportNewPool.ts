@@ -10,6 +10,7 @@ import { DeployDoubleSlopeIRMTxBuilderParams } from '@actions/subactions/tx-buil
 
 import { DeployLendingPoolProxySubAction, DeployLendingPoolSubActionMsg } from './subactions/deployLendingPoolProxy'
 import { InitializeLendingPoolSubAction } from './subactions/initializePool'
+import { SetModeDebtCeilingInfoSubAction } from './subactions/setModeDebtCeilingInfo'
 import { SetPoolConfigSubAction } from './subactions/setPoolConfig'
 import { InitCapitalRegistry } from '@/src/type'
 
@@ -19,7 +20,7 @@ export type ModeConfig = {
   borrFactor: bigint
   liqIncentiveMultiplier_e18?: bigint
   minLiqIncentiveMultiplier_e18?: bigint
-  debtCeiling?: bigint
+  debtCeiling: bigint
 }
 
 export type PythParams = {
@@ -47,7 +48,7 @@ const oracleReader = z.discriminatedUnion('type', [
 export const SupportNewPoolParamsSchema = z.object({
   name: z.string().describe(`Name of the pool`),
   token: zodAddressNonZero.describe(`Address of the token`),
-  modeConfigs: z.tuple([z.custom<ModeConfig>()]).describe(`mode configs for adding new mode`).optional(),
+  modeConfigs: z.tuple([z.custom<ModeConfig>()]).describe(`mode configs for adding new mode`),
   liqcentiveMultiplier_e18: z.bigint().describe(`liq incentive multiplier e18`),
   supplyCap: z.bigint().describe(`lending pool supply cap`),
   borrowCap: z.bigint().describe(`lending pool borrow cap`),
@@ -102,28 +103,6 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
       reserveFactor: this.data.params.reserveFactor,
       treasury: this.data.params.treasury,
     }
-
-    // const initializePoolConfig = {
-    //   name: this.data.params.name,
-    //   token: this.data.params.token,
-    //   modeConfigs: this.data.params.modeConfigs,
-    //   liqcentiveMultiplier_e18: this.data.params.liqcentiveMultiplier_e18,
-    //   supplyCap: this.data.params.supplyCap,
-    //   borrowCap: this.data.params.borrowCap,
-    //   reserveFactor: this.data.params.reserveFactor,
-    //   treasury: this.data.params.treasury,
-    //   oracleConfig: this.data.params.oracleConfig,
-    // }
-
-    // steps
-    // 1. create new mode if needed
-    // 1. deploy irm
-    // 2. deploy lending pool proxy
-    // 3. initialize lending proxy
-    // 3. set pool config
-    // 3. add lending pool to mode
-    // 4. set token oracle if needed
-    //  set risk manager mode debt ceiling
 
     return [
       // steps
@@ -188,10 +167,26 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
           ],
         })
       },
-      // 5. create new mode if needed
-      // 6. set pool mode factor
-      // 7. set token oracle if needed
-      // 8. set risk manager mode debt ceiling
+      // 5. set token oracle (if needed)
+      // 6. set token liq calculator (liq incentive multiplier)
+      // 7. set mode liq calculator (min, max liq incentive multiplier) (if needed)
+      // 8. set pool mode factor (if needed)
+      // 9. set mode status (if needed)
+      //(NOPE) 10. set pool config
+      // 10. set risk manager mode debt ceiling
+      () => {
+        // validate registry
+        if (!registry.riskManagerProxy) throw new Error('registry: riskManagerProxy not found')
+        if (!registry.lendingPools) throw new Error('registry: lendingPools not found')
+        if (registry.lendingPools && !registry.lendingPools[this.data.params.name]) throw new Error('registry: riskManagerProxy not found')
+        // TODO: add subactions to handle multiple set mode debt ceiling
+        return new SetModeDebtCeilingInfoSubAction(guardian, {
+          riskManager: registry.riskManagerProxy,
+          mode: this.data.params.modeConfigs[0].mode,
+          pools: [registry.lendingPools[this.data.params.name].lendingPool],
+          ceilAmts: [this.data.params.modeConfigs[0].debtCeiling],
+        })
+      },
     ]
   }
 }

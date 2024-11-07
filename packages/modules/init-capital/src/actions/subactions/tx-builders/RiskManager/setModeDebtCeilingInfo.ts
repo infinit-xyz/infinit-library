@@ -44,5 +44,6 @@ export class SetModeDebtCeilingInfoTxBuilder extends TxBuilder {
 
   public async validate(): Promise<void> {
     if (this.riskManager === zeroAddress) throw new ValidateInputZeroAddressError('RISK_MANAGER')
+    // TODO: check guardian
   }
 }
