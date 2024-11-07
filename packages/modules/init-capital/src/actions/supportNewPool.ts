@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { Address } from 'viem'
+import { Address, zeroAddress } from 'viem'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
 import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/internal'
@@ -10,10 +10,20 @@ import { DeployDoubleSlopeIRMTxBuilderParams } from '@actions/subactions/tx-buil
 
 import { DeployLendingPoolProxySubAction, DeployLendingPoolSubActionMsg } from './subactions/deployLendingPoolProxy'
 import { InitializeLendingPoolSubAction } from './subactions/initializePool'
+// import { SetMaxPriceDeviationAction } from '@/dist/actions/index.cjs'
+import { SetInitOracleConfigSubAction } from './subactions/setInitOracle'
 import { SetModeAndTokenLiqMultiplierSubAction } from './subactions/setModeAndTokenLiqMultiplier'
 import { SetModeDebtCeilingInfosSubAction } from './subactions/setModeDebtCeilingInfos'
 import { SetModePoolFactorsSubAction } from './subactions/setModePoolFactors'
 import { SetModeStatusesDefaultSubAction } from './subactions/setModeStatusesDefault'
+import {
+  Api3Params,
+  LsdApi3Params,
+  PythParams,
+  SetNewPoolOracleReaderSubAction,
+  SetNewPoolOracleReaderSubActionParams,
+  SourceConfig,
+} from './subactions/setNewPoolOracleReader'
 import { SetPoolConfigSubAction } from './subactions/setPoolConfig'
 import { InitCapitalRegistry } from '@/src/type'
 
@@ -30,21 +40,21 @@ export type ModeConfig = {
   }
 }
 
-export type PythParams = {
-  priceFeed: Address
-  maxStaleTime: bigint
-}
+// export type PythParams = {
+//   priceFeed: Address
+//   maxStaleTime: bigint
+// }
 
-export type Api3Params = {
-  dataFeedProxy: Address
-  maxStaleTime: bigint
-}
+// export type Api3Params = {
+//   dataFeedProxy: Address
+//   maxStaleTime: bigint
+// }
 
-export type LsdApi3Params = {
-  dataFeedProxy?: Address
-  maxStaleTime?: bigint
-  setQuoteToken?: Address
-}
+// export type LsdApi3Params = {
+//   dataFeedProxy: Address
+//   maxStaleTime: bigint
+//   setQuoteToken: Address
+// }
 
 const oracleReader = z.discriminatedUnion('type', [
   z.object({ type: z.literal('api3'), params: z.custom<Api3Params>() }),
@@ -52,10 +62,16 @@ const oracleReader = z.discriminatedUnion('type', [
   z.object({ type: z.literal('pyth'), params: z.custom<PythParams>() }),
 ])
 
+const oracleReaderRegistryName: Record<'api3' | 'lsdApi3' | 'pyth', keyof InitCapitalRegistry> = {
+  api3: 'api3ProxyOracleReaderProxy',
+  lsdApi3: 'lsdApi3ProxyOracleReaderProxy',
+  pyth: 'pythOracleReaderProxy',
+}
+
 export const SupportNewPoolParamsSchema = z.object({
   name: z.string().describe(`Name of the pool`),
   token: zodAddressNonZero.describe(`Address of the token`),
-  modeConfigs: z.tuple([z.custom<ModeConfig>()]).describe(`mode configs for adding new mode`),
+  modeConfigs: z.array(z.custom<ModeConfig>()).describe(`mode configs for adding new mode`),
   liqcentiveMultiplier_e18: z.bigint().describe(`liq incentive multiplier e18`).optional(),
   supplyCap: z.bigint().describe(`lending pool supply cap`),
   borrowCap: z.bigint().describe(`lending pool borrow cap`),
@@ -63,8 +79,9 @@ export const SupportNewPoolParamsSchema = z.object({
   treasury: zodAddressNonZero.describe(`fee receiver address`),
   oracleConfig: z
     .object({
-      primarySource: oracleReader.describe(`Primary source address e.g. deployed api3ProxyOracleReaderProxy address`),
+      primarySource: oracleReader.optional().describe(`Primary source address e.g. deployed api3ProxyOracleReaderProxy address`),
       secondarySource: oracleReader.optional().describe(`Secondary source address e.g. deployed api3ProxyOracleReaderProxy address`),
+      maxPriceDeviationE18: z.bigint().optional().describe(`Max price deviation between primary and secondary sources in E18 `),
     })
     .optional(),
   doubleSlopeIRMConfig: z.object({
@@ -133,6 +150,7 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
         // validate registry
         if (!registry.lendingPoolImpl) throw new Error('registry: lendingPoolImpl not found')
         if (!registry.proxyAdmin) throw new Error('registry: proxy admin not found')
+
         return new DeployLendingPoolProxySubAction(deployer, {
           name: this.data.params.name,
           proxyAdmin: registry.proxyAdmin,
@@ -154,6 +172,7 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
       (message: DeployLendingPoolSubActionMsg) => {
         // validate registry
         if (!registry.configProxy) throw new Error('registry: configProxy not found')
+
         return new SetPoolConfigSubAction(guardian, {
           config: registry.configProxy,
           batchPoolConfigParams: [
@@ -174,10 +193,77 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
           ],
         })
       },
-      // 5. set token oracle (if needed)
-      // set primary token, secondary token
-      // set token oracle reader
-      // TODO
+      // 5.1 set token oracle (if needed)
+      // set primary token, secondary token, maxPriceDeviations
+      () => {
+        let primarySourceAddress: Address | undefined
+        let secondarySourceAddress: Address | undefined
+        const oracleConfig = this.data.params.oracleConfig
+        // validate registry
+        if (!registry.initOracleProxy) throw new Error('registry: initOracleProxy not found')
+        // get primary address
+        if (oracleConfig && oracleConfig.primarySource) {
+          const primarySourceRegistryName = oracleReaderRegistryName[oracleConfig.primarySource.type]
+          if (!registry[primarySourceRegistryName]) throw new Error(`registry: ${primarySourceRegistryName} not found`)
+          primarySourceAddress = registry[primarySourceRegistryName] as Address
+        }
+        // get secondary address
+        if (oracleConfig && oracleConfig.secondarySource) {
+          const secondarySourceRegistryName = oracleReaderRegistryName[oracleConfig.secondarySource.type]
+          if (!registry[secondarySourceRegistryName]) throw new Error(`registry: ${secondarySourceRegistryName} not found`)
+          secondarySourceAddress = registry[secondarySourceRegistryName] as Address
+        }
+
+        return new SetInitOracleConfigSubAction(governor, {
+          initOracle: registry.initOracleProxy,
+          tokenConfigs: [
+            {
+              token: this.data.params.token,
+              primarySource: primarySourceAddress,
+              secondarySource: secondarySourceAddress,
+              maxPriceDeviation_e18: this.data.params.oracleConfig?.maxPriceDeviationE18,
+            },
+          ],
+        })
+      },
+      // 5.2 set token oracle reader
+      () => {
+        const setNewPoolOracleReaderSubActionParams: SetNewPoolOracleReaderSubActionParams = {
+          primarySource: undefined,
+          secondarySource: undefined,
+        }
+        let primarySourceAddress: Address = zeroAddress
+        let secondarySourceAddress: Address = zeroAddress
+        const oracleConfig = this.data.params.oracleConfig
+        // validate registry
+        if (!registry.initOracleProxy) throw new Error('registry: initOracleProxy not found')
+        // set primary source
+        if (oracleConfig && oracleConfig.primarySource) {
+          const primarySourceRegistryName = oracleReaderRegistryName[oracleConfig.primarySource.type]
+          if (!registry[primarySourceRegistryName]) throw new Error(`registry: ${primarySourceRegistryName} not found`)
+          primarySourceAddress = registry[primarySourceRegistryName] as Address
+
+          setNewPoolOracleReaderSubActionParams.primarySource = {
+            type: oracleConfig?.primarySource?.type,
+            token: this.data.params.token,
+            oracleReader: primarySourceAddress,
+            params: oracleConfig?.primarySource?.params,
+          }
+        }
+        // set secondary source
+        if (oracleConfig && oracleConfig.secondarySource) {
+          const secondarySourceRegistryName = oracleReaderRegistryName[oracleConfig.secondarySource.type]
+          if (!registry[secondarySourceRegistryName]) throw new Error(`registry: ${secondarySourceRegistryName} not found`)
+          secondarySourceAddress = registry[secondarySourceRegistryName] as Address
+          setNewPoolOracleReaderSubActionParams.secondarySource = {
+            type: oracleConfig?.secondarySource?.type,
+            token: this.data.params.token,
+            oracleReader: secondarySourceAddress,
+            params: oracleConfig?.secondarySource?.params,
+          }
+        }
+        return new SetNewPoolOracleReaderSubAction(governor, setNewPoolOracleReaderSubActionParams)
+      },
       // 6. set liq sub actions
       // set token liq calculator (liq incentive multiplier) (if needed) (governor)
       // set mode liq calculator (min, max liq incentive multiplier) (if needed)(governor)
@@ -199,25 +285,29 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
         })
       },
       // 7. setModeConfigs (governor)
-      // TODO
+      // TODO set max health after liq also?
       //set pool mode factor (if needed) (governor)
       (message: DeployLendingPoolSubActionMsg) => {
         // validate registry
         if (!registry.configProxy) throw new Error('registry: configProxy not found')
+
+        // map mode pool factors
+        const modePoolFactors = this.data.params.modeConfigs.map((modeConfig) => {
+          return {
+            mode: modeConfig.mode,
+            poolFactors: [
+              {
+                pool: message.lendingPoolProxy,
+                collFactor_e18: modeConfig.poolConfig.collFactor,
+                borrFactor_e18: modeConfig.poolConfig.borrFactor,
+              },
+            ],
+          }
+        })
+
         return new SetModePoolFactorsSubAction(governor, {
           config: registry.configProxy,
-          modePoolFactors: this.data.params.modeConfigs.map((modeConfig) => {
-            return {
-              mode: modeConfig.mode,
-              poolFactors: [
-                {
-                  pool: message.lendingPoolProxy,
-                  collFactor_e18: modeConfig.poolConfig.collFactor,
-                  borrFactor_e18: modeConfig.poolConfig.borrFactor,
-                },
-              ],
-            }
-          }),
+          modePoolFactors: modePoolFactors,
         })
       },
       // 8. set mode status(guardian)

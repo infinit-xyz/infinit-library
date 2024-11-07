@@ -37,7 +37,7 @@ describe('SupportNewPoolTest', async () => {
   test('support new pool', async () => {
     const action = new SupportNewPoolAction({
       params: {
-        name: 'Test_Pool',
+        name: 'test_new_pool',
         token: ARBITRUM_TEST_ADDRESSES.weth,
         modeConfigs: [
           {
@@ -52,7 +52,28 @@ describe('SupportNewPoolTest', async () => {
               minLiqIncentiveMultiplier_e18: parseUnits('1.1', 18),
             },
           },
+          {
+            mode: 2,
+            poolConfig: {
+              collFactor: parseUnits('0.8', 18),
+              borrFactor: parseUnits('1.1', 18),
+              debtCeiling: parseUnits('1000000', 18),
+            },
+            config: {
+              liqIncentiveMultiplier_e18: parseUnits('1.1', 18),
+              minLiqIncentiveMultiplier_e18: parseUnits('1.1', 18),
+            },
+          },
         ],
+        oracleConfig: {
+          primarySource: {
+            type: 'api3',
+            params: {
+              dataFeedProxy: '0xf624881ac131210716F7708C28403cCBe346cB73',
+              maxStaleTime: 86400n,
+            },
+          },
+        },
         liqcentiveMultiplier_e18: parseUnits('1.1', 18),
         supplyCap: parseUnits('1000000', 18),
         borrowCap: parseUnits('1000000', 18),

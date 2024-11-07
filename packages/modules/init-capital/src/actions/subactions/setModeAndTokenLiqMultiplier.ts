@@ -95,22 +95,20 @@ export class SetModeAndTokenLiqMultiplierSubAction extends SubAction<SetModeAndT
     }
   }
 
-  protected override async internalValidate(registry?: InitCapitalRegistry): Promise<void> {
+  protected override async internalValidate(_registry?: InitCapitalRegistry): Promise<void> {
     // read artifact
-    const [liqIncentiveCalculatorArtifact] = await Promise.all([readArtifact('LiqIncentiveCalculator')])
-    // check if token parameter is set
+    const liqIncentiveCalculatorArtifact = await readArtifact('LiqIncentiveCalculator')
+    // check if token parameter has already been set
     const token = this.params.tokenLiqIncentiveMultiplierConfig.token
     const multiplier = this.params.tokenLiqIncentiveMultiplierConfig.multiplier_e18
-    if (multiplier) {
-      const liqIncentiveMultiplier = await this.client.publicClient.readContract({
-        address: this.params.liqIncentiveCalculator,
-        abi: liqIncentiveCalculatorArtifact.abi,
-        functionName: 'tokenLiqIncentiveMultiplier_e18',
-        args: [token],
-      })
-      if (liqIncentiveMultiplier > 0n) {
-        throw new ContractValidateError('Token Liquidation Incentive Multiplier already set')
-      }
+    const liqIncentiveMultiplier = await this.client.publicClient.readContract({
+      address: this.params.liqIncentiveCalculator,
+      abi: liqIncentiveCalculatorArtifact.abi,
+      functionName: 'tokenLiqIncentiveMultiplier_e18',
+      args: [token],
+    })
+    if (multiplier && liqIncentiveMultiplier > 0n) {
+      throw new ContractValidateError('Token Liquidation Incentive Multiplier already set')
     }
     // check if modes parameter is set
     for (const modeLiqIncentiveMultiplierConfig of this.params.modeLiqIncentiveMultiplierConfigs) {
