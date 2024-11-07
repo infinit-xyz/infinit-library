@@ -12,6 +12,7 @@ import { DeployLendingPoolProxySubAction, DeployLendingPoolSubActionMsg } from '
 import { InitializeLendingPoolSubAction } from './subactions/initializePool'
 import { SetModeAndTokenLiqMultiplierSubAction } from './subactions/setModeAndTokenLiqMultiplier'
 import { SetModeDebtCeilingInfosSubAction } from './subactions/setModeDebtCeilingInfos'
+import { SetModeStatusesDefaultSubAction } from './subactions/setModeStatusesDefault'
 import { SetPoolConfigSubAction } from './subactions/setPoolConfig'
 import { InitCapitalRegistry } from '@/src/type'
 
@@ -173,6 +174,7 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
         })
       },
       // 5. set token oracle (if needed)
+      // TODO
       // 6. set liq sub actions
       // set token liq calculator (liq incentive multiplier) (if needed) (governor)
       // set mode liq calculator (min, max liq incentive multiplier) (if needed)(governor)
@@ -194,15 +196,25 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
         })
       },
       // 7. setModeConfigs (governor)
+      // TODO
       // set pool mode factor (if needed) (governor)
-      // set mode status
-      // set mode status(guardian)
-      // 8. set risk manager mode debt ceiling (guardian)
+      // 8. set mode status(guardian)
+      () => {
+        // validate registry
+        if (!registry.configProxy) throw new Error('registry: configProxy not found')
+        const modeStatuses = this.data.params.modeConfigs.map((modeConfig) => {
+          const isNew = modeConfig.config ? true : false
+          return { mode: modeConfig.mode, isNew: isNew }
+        })
+        return new SetModeStatusesDefaultSubAction(guardian, {
+          config: registry.configProxy,
+          modeStatuses: modeStatuses,
+        })
+      },
+      // 9. set risk manager mode debt ceiling (guardian)
       (message: DeployLendingPoolSubActionMsg) => {
         // validate registry
         if (!registry.riskManagerProxy) throw new Error('registry: riskManagerProxy not found')
-        // if (!registry.lendingPools) throw new Error('registry: lendingPools not found')
-        // if (registry.lendingPools && !registry.lendingPools[this.data.params.name]) throw new Error('registry: riskManagerProxy not found')
 
         const modeDebtCeilingInfos = this.data.params.modeConfigs.map((modeConfig) => {
           return {
