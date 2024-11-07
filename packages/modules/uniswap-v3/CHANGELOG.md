@@ -1,5 +1,19 @@
 # @infinit-xyz/uniswap-v3
 
+## 0.0.0-alpha.22
+
+### Minor Changes
+
+- [#132](https://github.com/infinit-xyz/infinit-library/pull/132)
+  [`2291b5c`](https://github.com/infinit-xyz/infinit-library/commit/2291b5c1fd681a54ddb28aababd24aae995aaccb) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - update on-chain and off-chain action detail record
+
+### Patch Changes
+
+- Updated dependencies [[`0a148df`](https://github.com/infinit-xyz/infinit-library/commit/0a148df5a878cbec73a25fcf13ed2278fd8d13db),
+  [`2291b5c`](https://github.com/infinit-xyz/infinit-library/commit/2291b5c1fd681a54ddb28aababd24aae995aaccb)]:
+  - @infinit-xyz/core@0.1.0-alpha.10
+
 ## 0.0.0-alpha.21
 
 ### Patch Changes

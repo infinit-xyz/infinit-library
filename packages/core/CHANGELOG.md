@@ -1,5 +1,19 @@
 # @infinit-xyz/core
 
+## 0.1.0-alpha.10
+
+### Minor Changes
+
+- [#132](https://github.com/infinit-xyz/infinit-library/pull/132)
+  [`2291b5c`](https://github.com/infinit-xyz/infinit-library/commit/2291b5c1fd681a54ddb28aababd24aae995aaccb) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - update action callback and record to be OnChainAction
+
+### Patch Changes
+
+- [#130](https://github.com/infinit-xyz/infinit-library/pull/130)
+  [`0a148df`](https://github.com/infinit-xyz/infinit-library/commit/0a148df5a878cbec73a25fcf13ed2278fd8d13db) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - send `registry` when getSubactions
+
 ## 0.1.0-alpha.9
 
 ### Patch Changes
