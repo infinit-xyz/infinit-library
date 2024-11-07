@@ -10,17 +10,21 @@ import { DeployDoubleSlopeIRMTxBuilderParams } from '@actions/subactions/tx-buil
 
 import { DeployLendingPoolProxySubAction, DeployLendingPoolSubActionMsg } from './subactions/deployLendingPoolProxy'
 import { InitializeLendingPoolSubAction } from './subactions/initializePool'
-import { SetModeDebtCeilingInfoSubAction } from './subactions/setModeDebtCeilingInfo'
+import { SetModeDebtCeilingInfosSubAction } from './subactions/setModeDebtCeilingInfos'
 import { SetPoolConfigSubAction } from './subactions/setPoolConfig'
 import { InitCapitalRegistry } from '@/src/type'
 
 export type ModeConfig = {
   mode: number
-  collFactor: bigint
-  borrFactor: bigint
-  liqIncentiveMultiplier_e18?: bigint
-  minLiqIncentiveMultiplier_e18?: bigint
-  debtCeiling: bigint
+  tokenConfig: {
+    collFactor: bigint
+    borrFactor: bigint
+    debtCeiling: bigint
+  }
+  config?: {
+    liqIncentiveMultiplier_e18: bigint
+    minLiqIncentiveMultiplier_e18: bigint
+  }
 }
 
 export type PythParams = {
@@ -49,7 +53,7 @@ export const SupportNewPoolParamsSchema = z.object({
   name: z.string().describe(`Name of the pool`),
   token: zodAddressNonZero.describe(`Address of the token`),
   modeConfigs: z.tuple([z.custom<ModeConfig>()]).describe(`mode configs for adding new mode`),
-  liqcentiveMultiplier_e18: z.bigint().describe(`liq incentive multiplier e18`),
+  liqcentiveMultiplier_e18: z.bigint().describe(`liq incentive multiplier e18`).optional(),
   supplyCap: z.bigint().describe(`lending pool supply cap`),
   borrowCap: z.bigint().describe(`lending pool borrow cap`),
   reserveFactor: z.bigint().describe(`lending pool reserve factor`),
@@ -168,10 +172,14 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
         })
       },
       // 5. set token oracle (if needed)
-      // 6. set token liq calculator (liq incentive multiplier)
+      // 6. set token liq calculator (liq incentive multiplier) (if needed)
+      // () => {},
       // 7. set mode liq calculator (min, max liq incentive multiplier) (if needed)
+      // TODO: add subactions that will failed on validate if the mode liq min, max multiplier already set
       // 8. set pool mode factor (if needed)
-      // 9. set mode status (if needed)
+      // TODO: add subactions that will failed on validate if the mode factor already set
+      // set mode
+      // TODO: add subactions that will failed on validate if the mode status already set
       //(NOPE) 10. set pool config
       // 10. set risk manager mode debt ceiling
       () => {
@@ -179,12 +187,18 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
         if (!registry.riskManagerProxy) throw new Error('registry: riskManagerProxy not found')
         if (!registry.lendingPools) throw new Error('registry: lendingPools not found')
         if (registry.lendingPools && !registry.lendingPools[this.data.params.name]) throw new Error('registry: riskManagerProxy not found')
-        // TODO: add subactions to handle multiple set mode debt ceiling
-        return new SetModeDebtCeilingInfoSubAction(guardian, {
+
+        const modeDebtCeilingInfos = this.data.params.modeConfigs.map((modeConfig) => {
+          return {
+            mode: modeConfig.mode,
+            pools: [registry.lendingPools![this.data.params.name].lendingPool],
+            ceilAmts: [modeConfig.tokenConfig?.debtCeiling],
+          }
+        })
+
+        return new SetModeDebtCeilingInfosSubAction(guardian, {
           riskManager: registry.riskManagerProxy,
-          mode: this.data.params.modeConfigs[0].mode,
-          pools: [registry.lendingPools[this.data.params.name].lendingPool],
-          ceilAmts: [this.data.params.modeConfigs[0].debtCeiling],
+          modeDebtCeilingInfos: modeDebtCeilingInfos,
         })
       },
     ]
