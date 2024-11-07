@@ -42,9 +42,9 @@ describe('SupportNewPoolTest', async () => {
         modeConfigs: [
           {
             mode: 1,
-            tokenConfig: {
+            poolConfig: {
               collFactor: parseUnits('0.8', 18),
-              borrFactor: parseUnits('0.8', 18),
+              borrFactor: parseUnits('1.1', 18),
               debtCeiling: parseUnits('1000000', 18),
             },
             config: {

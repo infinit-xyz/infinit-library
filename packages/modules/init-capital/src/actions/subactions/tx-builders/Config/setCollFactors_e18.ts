@@ -1,4 +1,4 @@
-import { Address, encodeFunctionData, getAddress, keccak256, maxUint128, toHex, zeroAddress } from 'viem'
+import { Address, encodeFunctionData, getAddress, keccak256, parseUnits, toHex, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import {
@@ -58,10 +58,11 @@ export class SetCollFactorE18TxBuilder extends TxBuilder {
       if (pool === zeroAddress) throw new ValidateInputZeroAddressError(`POOL (INDEX:${index})`)
     }
 
-    // factor should be with in [0, maxUint128)
+    // factor should be with in [0, 1e18]
     for (const [index, factor] of this.factors_e18.entries()) {
-      if (factor < 0n || factor > maxUint128) {
-        throw new ValidateInputValueError(`Borrow factor (index: ${index}) is out of range (min: 0n, max: ${maxUint128}), got ${factor}`)
+      const oneE18 = parseUnits('1', 18)
+      if (factor < 0n || factor > oneE18) {
+        throw new ValidateInputValueError(`Borrow factor (index: ${index}) is out of range (min: 0n, max: ${oneE18}), got ${factor}`)
       }
     }
 

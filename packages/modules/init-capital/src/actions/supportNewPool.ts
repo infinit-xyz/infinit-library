@@ -1,9 +1,9 @@
 import { z } from 'zod'
 
-import { Address, zeroAddress } from 'viem'
+import { Address } from 'viem'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
-import { validateActionData, zodAddress, zodAddressNonZero } from '@infinit-xyz/core/internal'
+import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/internal'
 
 import { DeployDoubleSlopeIRMSubActionMsg, DeployDoubleSlopeIRMsSubAction } from '@actions/subactions/deployDoubleSlopeIRMs'
 import { DeployDoubleSlopeIRMTxBuilderParams } from '@actions/subactions/tx-builders/DoubleSlopeIRM/deploy'
@@ -12,13 +12,14 @@ import { DeployLendingPoolProxySubAction, DeployLendingPoolSubActionMsg } from '
 import { InitializeLendingPoolSubAction } from './subactions/initializePool'
 import { SetModeAndTokenLiqMultiplierSubAction } from './subactions/setModeAndTokenLiqMultiplier'
 import { SetModeDebtCeilingInfosSubAction } from './subactions/setModeDebtCeilingInfos'
+import { SetModePoolFactorsSubAction } from './subactions/setModePoolFactors'
 import { SetModeStatusesDefaultSubAction } from './subactions/setModeStatusesDefault'
 import { SetPoolConfigSubAction } from './subactions/setPoolConfig'
 import { InitCapitalRegistry } from '@/src/type'
 
 export type ModeConfig = {
   mode: number
-  tokenConfig: {
+  poolConfig: {
     collFactor: bigint
     borrFactor: bigint
     debtCeiling: bigint
@@ -174,6 +175,8 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
         })
       },
       // 5. set token oracle (if needed)
+      // set primary token, secondary token
+      // set token oracle reader
       // TODO
       // 6. set liq sub actions
       // set token liq calculator (liq incentive multiplier) (if needed) (governor)
@@ -197,7 +200,26 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
       },
       // 7. setModeConfigs (governor)
       // TODO
-      // set pool mode factor (if needed) (governor)
+      //set pool mode factor (if needed) (governor)
+      (message: DeployLendingPoolSubActionMsg) => {
+        // validate registry
+        if (!registry.configProxy) throw new Error('registry: configProxy not found')
+        return new SetModePoolFactorsSubAction(governor, {
+          config: registry.configProxy,
+          modePoolFactors: this.data.params.modeConfigs.map((modeConfig) => {
+            return {
+              mode: modeConfig.mode,
+              poolFactors: [
+                {
+                  pool: message.lendingPoolProxy,
+                  collFactor_e18: modeConfig.poolConfig.collFactor,
+                  borrFactor_e18: modeConfig.poolConfig.borrFactor,
+                },
+              ],
+            }
+          }),
+        })
+      },
       // 8. set mode status(guardian)
       () => {
         // validate registry
@@ -220,7 +242,7 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
           return {
             mode: modeConfig.mode,
             pools: [message.lendingPoolProxy],
-            ceilAmts: [modeConfig.tokenConfig?.debtCeiling],
+            ceilAmts: [modeConfig.poolConfig?.debtCeiling],
           }
         })
 
