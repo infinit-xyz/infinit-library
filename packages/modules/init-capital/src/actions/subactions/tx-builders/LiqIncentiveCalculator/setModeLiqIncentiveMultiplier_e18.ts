@@ -5,21 +5,21 @@ import { ContractValidateError, ValidateInputValueError, ValidateInputZeroAddres
 
 import { readArtifact } from '@/src/utils/artifact'
 
-export type SetTokenLiqIncentiveMultiplierE18TxBuilderParams = {
+export type SetModeLiqIncentiveMultiplierE18TxBuilderParams = {
   liqIncentiveCalculator: Address
-  tokens: Address[]
+  modes: number[]
   multipliers_e18: bigint[]
 }
 
-export class SetTokenLiqIncentiveMultiplierE18TxBuilder extends TxBuilder {
+export class SetModeLiqIncentiveMultiplierE18TxBuilder extends TxBuilder {
   private liqIncentiveCalculator: Address
-  private tokens: Address[]
+  private modes: number[]
   private multipliers_e18: bigint[]
 
-  constructor(client: InfinitWallet, params: SetTokenLiqIncentiveMultiplierE18TxBuilderParams) {
-    super(SetTokenLiqIncentiveMultiplierE18TxBuilder.name, client)
+  constructor(client: InfinitWallet, params: SetModeLiqIncentiveMultiplierE18TxBuilderParams) {
+    super(SetModeLiqIncentiveMultiplierE18TxBuilder.name, client)
     this.liqIncentiveCalculator = getAddress(params.liqIncentiveCalculator)
-    this.tokens = params.tokens.map((token) => getAddress(token))
+    this.modes = params.modes
     this.multipliers_e18 = params.multipliers_e18
   }
 
@@ -27,8 +27,8 @@ export class SetTokenLiqIncentiveMultiplierE18TxBuilder extends TxBuilder {
     const liqIncentiveCalculatorArtifact = await readArtifact('LiqIncentiveCalculator')
     const functionData = encodeFunctionData({
       abi: liqIncentiveCalculatorArtifact.abi,
-      functionName: 'setTokenLiqIncentiveMultiplier_e18',
-      args: [this.tokens, this.multipliers_e18],
+      functionName: 'setModeLiqIncentiveMultiplier_e18',
+      args: [this.modes, this.multipliers_e18],
     })
 
     const tx: TransactionData = {
@@ -43,7 +43,7 @@ export class SetTokenLiqIncentiveMultiplierE18TxBuilder extends TxBuilder {
     if (this.liqIncentiveCalculator === zeroAddress) throw new ValidateInputZeroAddressError('LIQ_INCENTIVE_CALCULATOR')
 
     this.multipliers_e18.forEach((multiplier_e18) => {
-      if (multiplier_e18 < 0n) throw new ValidateInputValueError('Token Liquidation Incentive Multiplier cannot be negative')
+      if (multiplier_e18 < 0n) throw new ValidateInputValueError('Mode Liquidation Incentive Multiplier cannot be negative')
     })
 
     // check governor role

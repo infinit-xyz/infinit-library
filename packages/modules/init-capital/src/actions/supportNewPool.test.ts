@@ -37,13 +37,20 @@ describe('SupportNewPoolTest', async () => {
   test('support new pool', async () => {
     const action = new SupportNewPoolAction({
       params: {
-        name: 'Test Pool',
+        name: 'Test_Pool',
         token: ARBITRUM_TEST_ADDRESSES.weth,
         modeConfigs: [
           {
             mode: 1,
-            collFactor: parseUnits('1.1', 18),
-            borrFactor: parseUnits('0.9', 18),
+            tokenConfig: {
+              collFactor: parseUnits('0.8', 18),
+              borrFactor: parseUnits('0.8', 18),
+              debtCeiling: parseUnits('1000000', 18),
+            },
+            config: {
+              liqIncentiveMultiplier_e18: parseUnits('1.1', 18),
+              minLiqIncentiveMultiplier_e18: parseUnits('1.1', 18),
+            },
           },
         ],
         liqcentiveMultiplier_e18: parseUnits('1.1', 18),

@@ -10,6 +10,7 @@ import { DeployDoubleSlopeIRMTxBuilderParams } from '@actions/subactions/tx-buil
 
 import { DeployLendingPoolProxySubAction, DeployLendingPoolSubActionMsg } from './subactions/deployLendingPoolProxy'
 import { InitializeLendingPoolSubAction } from './subactions/initializePool'
+import { SetModeAndTokenLiqMultiplierSubAction } from './subactions/setModeAndTokenLiqMultiplier'
 import { SetModeDebtCeilingInfosSubAction } from './subactions/setModeDebtCeilingInfos'
 import { SetPoolConfigSubAction } from './subactions/setPoolConfig'
 import { InitCapitalRegistry } from '@/src/type'
@@ -147,7 +148,7 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
           reserveFactor: initializePoolConfig.reserveFactor,
           treasury: initializePoolConfig.treasury,
         }),
-      // 4. set pool config
+      // 4. set pool config (guardian)
       (message: DeployLendingPoolSubActionMsg) => {
         // validate registry
         if (!registry.configProxy) throw new Error('registry: configProxy not found')
@@ -172,26 +173,41 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
         })
       },
       // 5. set token oracle (if needed)
-      // 6. set token liq calculator (liq incentive multiplier) (if needed)
-      // () => {},
-      // 7. set mode liq calculator (min, max liq incentive multiplier) (if needed)
-      // TODO: add subactions that will failed on validate if the mode liq min, max multiplier already set
-      // 8. set pool mode factor (if needed)
-      // TODO: add subactions that will failed on validate if the mode factor already set
-      // set mode
-      // TODO: add subactions that will failed on validate if the mode status already set
-      //(NOPE) 10. set pool config
-      // 10. set risk manager mode debt ceiling
+      // 6. set liq sub actions
+      // set token liq calculator (liq incentive multiplier) (if needed) (governor)
+      // set mode liq calculator (min, max liq incentive multiplier) (if needed)(governor)
       () => {
         // validate registry
+        if (!registry.liqIncentiveCalculatorProxy) throw new Error('registry: liqIncentiveCalculatorProxy not found')
+        return new SetModeAndTokenLiqMultiplierSubAction(governor, {
+          liqIncentiveCalculator: registry.liqIncentiveCalculatorProxy,
+          tokenLiqIncentiveMultiplierConfig: {
+            token: this.data.params.token,
+            multiplier_e18: this.data.params.liqcentiveMultiplier_e18,
+          },
+          modeLiqIncentiveMultiplierConfigs: this.data.params.modeConfigs.map((modeConfig) => {
+            return {
+              mode: modeConfig.mode,
+              config: modeConfig.config,
+            }
+          }),
+        })
+      },
+      // 7. setModeConfigs (governor)
+      // set pool mode factor (if needed) (governor)
+      // set mode status
+      // set mode status(guardian)
+      // 8. set risk manager mode debt ceiling (guardian)
+      (message: DeployLendingPoolSubActionMsg) => {
+        // validate registry
         if (!registry.riskManagerProxy) throw new Error('registry: riskManagerProxy not found')
-        if (!registry.lendingPools) throw new Error('registry: lendingPools not found')
-        if (registry.lendingPools && !registry.lendingPools[this.data.params.name]) throw new Error('registry: riskManagerProxy not found')
+        // if (!registry.lendingPools) throw new Error('registry: lendingPools not found')
+        // if (registry.lendingPools && !registry.lendingPools[this.data.params.name]) throw new Error('registry: riskManagerProxy not found')
 
         const modeDebtCeilingInfos = this.data.params.modeConfigs.map((modeConfig) => {
           return {
             mode: modeConfig.mode,
-            pools: [registry.lendingPools![this.data.params.name].lendingPool],
+            pools: [message.lendingPoolProxy],
             ceilAmts: [modeConfig.tokenConfig?.debtCeiling],
           }
         })

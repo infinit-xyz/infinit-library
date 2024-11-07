@@ -58,7 +58,7 @@ export class DeployLendingPoolProxySubAction extends SubAction<
       throw new ContractNotFoundError(deployLendingPoolProxyHash, 'LendingPoolProxy')
     }
     // add new lending pool to the registry
-    _.set(registry, ['lendingPools', this.name], lendingPoolProxy)
+    _.set(registry, ['lendingPools', this.params.name], lendingPoolProxy)
     // add deployed lending pool to the message
     const newMessage: DeployLendingPoolSubActionMsg = {
       lendingPoolProxy,
