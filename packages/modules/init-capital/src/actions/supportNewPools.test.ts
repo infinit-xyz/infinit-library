@@ -7,13 +7,13 @@ import { ANVIL_PRIVATE_KEY, ANVIL_PRIVATE_KEY_2 } from '@actions/__mock__/accoun
 import { setupInitCapital } from '@actions/__mock__/setup'
 
 import { ARBITRUM_TEST_ADDRESSES } from './__mock__/address'
-import { SupportNewPoolAction, SupportNewPoolActionParams } from './supportNewPool'
+import { SupportNewPoolActionParams, SupportNewPoolsAction } from './supportNewPools'
 // import { ModeStatus, SetModeStatusTxBuilder } from './subactions/tx-builders/Config/setModeStatus'
 import { InitCapitalRegistry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'
 
-describe('SupportNewPoolTest', async () => {
+describe('SupportNewPoolsTest', async () => {
   // let client: InfinitWallet
   let registry: InitCapitalRegistry
   const account1 = privateKeyToAccount(ANVIL_PRIVATE_KEY)
@@ -25,7 +25,7 @@ describe('SupportNewPoolTest', async () => {
     registry = await setupInitCapital()
   })
 
-  test('support new pool', async () => {
+  test('support new pools', async () => {
     const actionParams: SupportNewPoolActionParams = {
       name: 'test_new_pool',
       token: ARBITRUM_TEST_ADDRESSES.weth,
@@ -82,8 +82,10 @@ describe('SupportNewPoolTest', async () => {
       },
     }
 
-    const action = new SupportNewPoolAction({
-      params: actionParams,
+    const action = new SupportNewPoolsAction({
+      params: {
+        pools: [actionParams],
+      },
       signer: { deployer: client1, guardian: client1, governor: client2 },
     })
     await action.run(registry)

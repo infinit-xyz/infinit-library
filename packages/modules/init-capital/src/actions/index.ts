@@ -18,7 +18,7 @@ import {
   SetPythOracleReaderTokensInfoAction,
   SetPythOracleReaderTokensInfoActionParamsSchema,
 } from '@actions/setPythOracleReaderTokensInfo'
-import { SupportNewPoolAction, SupportNewPoolActionParamsSchema } from '@actions/supportNewPool'
+import { SupportNewPoolsAction, SupportNewPoolsActionParamsSchema } from '@actions/supportNewPools'
 
 export const actions = {
   init: {
@@ -114,5 +114,5 @@ export {
   SetOracleAction,
   SetPoolConfigAction,
   SetPythOracleReaderTokensInfoAction,
-  SupportNewPoolAction,
+  SupportNewPoolsAction,
 }

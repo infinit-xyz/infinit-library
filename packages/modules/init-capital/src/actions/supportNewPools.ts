@@ -12,7 +12,7 @@ import { DeployDoubleSlopeIRMTxBuilderParams } from '@actions/subactions/tx-buil
 import { DeployLendingPoolProxySubAction, DeployLendingPoolSubActionMsg } from './subactions/deployLendingPoolProxy'
 import { InitializeLendingPoolSubAction } from './subactions/initializePool'
 import { SetInitOracleConfigSubAction } from './subactions/setInitOracle'
-import { SetMaxHealthAfterLiqSubAction, SetMaxHealthAfterLiqSubActionParams } from './subactions/setMaxHealthAfterLiq'
+import { SetMaxHealthAfterLiqSubAction } from './subactions/setMaxHealthAfterLiq'
 import { SetModeAndTokenLiqMultiplierSubAction } from './subactions/setModeAndTokenLiqMultiplier'
 import { SetModeDebtCeilingInfosSubAction } from './subactions/setModeDebtCeilingInfos'
 import { SetModePoolFactorsSubAction } from './subactions/setModePoolFactors'
@@ -110,18 +110,24 @@ export const SupportNewPoolActionParamsSchema = z.object({
 
 export type SupportNewPoolActionParams = z.infer<typeof SupportNewPoolActionParamsSchema>
 
-export type SupportNewPoolActionData = {
-  params: SupportNewPoolActionParams
+export const SupportNewPoolsActionParamsSchema = z.object({
+  pools: z.array(SupportNewPoolActionParamsSchema),
+})
+
+export type SupportNewPoolsActionParams = z.infer<typeof SupportNewPoolsActionParamsSchema>
+
+export type SupportNewPoolsActionData = {
+  params: SupportNewPoolsActionParams
   signer: Record<'deployer' | 'guardian' | 'governor', InfinitWallet>
 }
 
-export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitCapitalRegistry> {
-  constructor(data: SupportNewPoolActionData) {
-    validateActionData(data, SupportNewPoolActionParamsSchema, ['governor'])
-    super(SupportNewPoolAction.name, data)
+export class SupportNewPoolsAction extends Action<SupportNewPoolsActionData, InitCapitalRegistry> {
+  constructor(data: SupportNewPoolsActionData) {
+    validateActionData(data, SupportNewPoolsActionParamsSchema, ['governor'])
+    super(SupportNewPoolsAction.name, data)
   }
 
-  protected getSubActions(registry: InitCapitalRegistry): ((message: any) => SubAction)[] {
+  private newPoolSubActions(registry: InitCapitalRegistry, newPoolParams: SupportNewPoolActionParams): ((message: any) => SubAction)[] {
     const deployer = this.data.signer['deployer']
     const guardian = this.data.signer['guardian']
     const governor = this.data.signer['governor']
@@ -130,7 +136,7 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
       // steps
       // 1. deploy irm
       () => {
-        const doubleSlopeIRMConfig = this.data.params.doubleSlopeIRMConfig
+        const doubleSlopeIRMConfig = newPoolParams.doubleSlopeIRMConfig
         return new DeployDoubleSlopeIRMsSubAction(governor, {
           doubleSlopeIRMConfigs: [
             {
@@ -152,7 +158,7 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
         if (!registry.proxyAdmin) throw new ValidateInputValueError('registry: proxy admin not found')
 
         return new DeployLendingPoolProxySubAction(deployer, {
-          name: this.data.params.name,
+          name: newPoolParams.name,
           proxyAdmin: registry.proxyAdmin,
           lendingPoolImpl: registry.lendingPoolImpl,
         })
@@ -160,18 +166,18 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
       // 3. initialize lending proxy
       (message: DeployLendingPoolSubActionMsg & DeployDoubleSlopeIRMSubActionMsg) => {
         const initializePoolConfig = {
-          underlyingToken: this.data.params.token,
-          name: this.data.params.name,
-          symbol: this.data.params.name,
-          reserveFactor: this.data.params.reserveFactor,
-          treasury: this.data.params.treasury,
+          underlyingToken: newPoolParams.token,
+          name: newPoolParams.name,
+          symbol: newPoolParams.name,
+          reserveFactor: newPoolParams.reserveFactor,
+          treasury: newPoolParams.treasury,
         }
         return new InitializeLendingPoolSubAction(deployer, {
           lendingPool: message.lendingPoolProxy,
           underlingToken: initializePoolConfig.underlyingToken,
           name: initializePoolConfig.name,
           symbol: initializePoolConfig.symbol,
-          irm: message.doubleSlopeIrms[this.data.params.doubleSlopeIRMConfig.name],
+          irm: message.doubleSlopeIrms[newPoolParams.doubleSlopeIRMConfig.name],
           reserveFactor: initializePoolConfig.reserveFactor,
           treasury: initializePoolConfig.treasury,
         })
@@ -188,8 +194,8 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
               pool: message.lendingPoolProxy,
               poolConfig: {
                 // set pool caps
-                supplyCap: this.data.params.supplyCap,
-                borrowCap: this.data.params.borrowCap,
+                supplyCap: newPoolParams.supplyCap,
+                borrowCap: newPoolParams.borrowCap,
                 // enable all as default
                 canMint: true,
                 canBurn: true,
@@ -206,7 +212,7 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
       () => {
         let primarySourceAddress: Address | undefined
         let secondarySourceAddress: Address | undefined
-        const oracleConfig = this.data.params.oracleConfig
+        const oracleConfig = newPoolParams.oracleConfig
         // validate registry
         if (!registry.initOracleProxy) throw new ValidateInputValueError('registry: initOracleProxy not found')
         // get primary address
@@ -227,10 +233,10 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
           initOracle: registry.initOracleProxy,
           tokenConfigs: [
             {
-              token: this.data.params.token,
+              token: newPoolParams.token,
               primarySource: primarySourceAddress,
               secondarySource: secondarySourceAddress,
-              maxPriceDeviation_e18: this.data.params.oracleConfig?.maxPriceDeviationE18,
+              maxPriceDeviation_e18: newPoolParams.oracleConfig?.maxPriceDeviationE18,
             },
           ],
         })
@@ -243,7 +249,7 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
         }
         let primarySourceAddress: Address = zeroAddress
         let secondarySourceAddress: Address = zeroAddress
-        const oracleConfig = this.data.params.oracleConfig
+        const oracleConfig = newPoolParams.oracleConfig
         // validate registry
         if (!registry.initOracleProxy) throw new ValidateInputValueError('registry: initOracleProxy not found')
         // set primary source
@@ -254,7 +260,7 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
 
           setNewPoolOracleReaderSubActionParams.primarySource = {
             type: oracleConfig?.primarySource?.type,
-            token: this.data.params.token,
+            token: newPoolParams.token,
             oracleReader: primarySourceAddress,
             params: oracleConfig?.primarySource?.params,
           }
@@ -267,7 +273,7 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
           secondarySourceAddress = registry[secondarySourceRegistryName] as Address
           setNewPoolOracleReaderSubActionParams.secondarySource = {
             type: oracleConfig?.secondarySource?.type,
-            token: this.data.params.token,
+            token: newPoolParams.token,
             oracleReader: secondarySourceAddress,
             params: oracleConfig?.secondarySource?.params,
           }
@@ -283,10 +289,10 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
         return new SetModeAndTokenLiqMultiplierSubAction(governor, {
           liqIncentiveCalculator: registry.liqIncentiveCalculatorProxy,
           tokenLiqIncentiveMultiplierConfig: {
-            token: this.data.params.token,
-            multiplier_e18: this.data.params.liqcentiveMultiplier_e18,
+            token: newPoolParams.token,
+            multiplier_e18: newPoolParams.liqcentiveMultiplier_e18,
           },
-          modeLiqIncentiveMultiplierConfigs: this.data.params.modeConfigs.map((modeConfig) => {
+          modeLiqIncentiveMultiplierConfigs: newPoolParams.modeConfigs.map((modeConfig) => {
             return {
               mode: modeConfig.mode,
               config: {
@@ -303,7 +309,7 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
         if (!registry.configProxy) throw new ValidateInputValueError('registry: configProxy not found')
         return new SetMaxHealthAfterLiqSubAction(guardian, {
           config: registry.configProxy,
-          maxHealthAfterLiqConfigs: this.data.params.modeConfigs.map((modeConfig) => {
+          maxHealthAfterLiqConfigs: newPoolParams.modeConfigs.map((modeConfig) => {
             return {
               mode: modeConfig.mode,
               maxHealthAfterLiqE18: modeConfig.config.maxHealthAfterLiqE18,
@@ -317,7 +323,7 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
         if (!registry.configProxy) throw new ValidateInputValueError('registry: configProxy not found')
 
         // map mode pool factors
-        const modePoolFactors = this.data.params.modeConfigs.map((modeConfig) => {
+        const modePoolFactors = newPoolParams.modeConfigs.map((modeConfig) => {
           return {
             mode: modeConfig.mode,
             poolFactors: [
@@ -339,7 +345,7 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
       () => {
         // validate registry
         if (!registry.configProxy) throw new ValidateInputValueError('registry: configProxy not found')
-        const modeStatuses = this.data.params.modeConfigs.map((modeConfig) => {
+        const modeStatuses = newPoolParams.modeConfigs.map((modeConfig) => {
           const isNew = modeConfig.config ? true : false
           return { mode: modeConfig.mode, isNew: isNew }
         })
@@ -353,7 +359,7 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
         // validate registry
         if (!registry.riskManagerProxy) throw new ValidateInputValueError('registry: riskManagerProxy not found')
 
-        const modeDebtCeilingInfos = this.data.params.modeConfigs.map((modeConfig) => {
+        const modeDebtCeilingInfos = newPoolParams.modeConfigs.map((modeConfig) => {
           return {
             mode: modeConfig.mode,
             pools: [message.lendingPoolProxy],
@@ -367,5 +373,14 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
         })
       },
     ]
+  }
+
+  protected getSubActions(registry: InitCapitalRegistry): ((message: any) => SubAction)[] {
+    const subActions = []
+    for (const pool of this.data.params.pools) {
+      const poolSubAction = this.newPoolSubActions(registry, pool)
+      subActions.push(...poolSubAction)
+    }
+    return subActions
   }
 }
