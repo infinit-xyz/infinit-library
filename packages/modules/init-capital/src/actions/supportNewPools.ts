@@ -79,7 +79,7 @@ export const SupportNewPoolActionParamsSchema = z.object({
       }) satisfies z.ZodType<ModeConfig>,
     )
     .describe(`mode configs for adding new mode`),
-  liqcentiveMultiplier_e18: z.bigint().describe(`liq incentive multiplier e18`).optional(),
+  liqIncentiveMultiplierE18: z.bigint().describe(`liq incentive multiplier e18`).optional(),
   supplyCap: z.bigint().describe(`lending pool supply cap`),
   borrowCap: z.bigint().describe(`lending pool borrow cap`),
   reserveFactor: z.bigint().describe(`lending pool reserve factor`),
@@ -290,7 +290,7 @@ export class SupportNewPoolsAction extends Action<SupportNewPoolsActionData, Ini
           liqIncentiveCalculator: registry.liqIncentiveCalculatorProxy,
           tokenLiqIncentiveMultiplierConfig: {
             token: newPoolParams.token,
-            multiplier_e18: newPoolParams.liqcentiveMultiplier_e18,
+            multiplier_e18: newPoolParams.liqIncentiveMultiplierE18,
           },
           modeLiqIncentiveMultiplierConfigs: newPoolParams.modeConfigs.map((modeConfig) => {
             return {

@@ -74,7 +74,7 @@ describe('SupportNewPoolsTest', async () => {
         },
         maxPriceDeviationE18: parseUnits('1.1', 18),
       },
-      liqcentiveMultiplier_e18: parseUnits('1.1', 18),
+      liqIncentiveMultiplierE18: parseUnits('1.1', 18),
       supplyCap: parseUnits('1000000', 18),
       borrowCap: parseUnits('1000000', 18),
       reserveFactor: parseUnits('0.1', 18),
@@ -108,11 +108,32 @@ describe('SupportNewPoolsTest', async () => {
       await validateInitOracle(client1, pool, newRegistry)
       // validate lending pool
       await validateLendingPool(client1, pool, newRegistry)
+      // validate pool config
+      await validatePoolConfig(client1, pool, newRegistry)
+      // validate irm
+      await validateIrm(client1, pool, newRegistry)
     }
   })
 })
 
 // validate functions
+const validatePoolConfig = async (client: TestInfinitWallet, pool: SupportNewPoolActionParams, registry: InitCapitalRegistry) => {
+  const configArtifact = await readArtifact('Config')
+
+  const poolConfig = await client.publicClient.readContract({
+    address: registry.configProxy!,
+    abi: configArtifact.abi,
+    functionName: 'getPoolConfig',
+    args: [registry.lendingPools![pool.name].lendingPool],
+  })
+  expect(poolConfig.borrowCap).toStrictEqual(pool.borrowCap)
+  expect(poolConfig.supplyCap).toStrictEqual(pool.supplyCap)
+  expect(poolConfig.canBurn).toStrictEqual(true)
+  expect(poolConfig.canMint).toStrictEqual(true)
+  expect(poolConfig.canBorrow).toStrictEqual(true)
+  expect(poolConfig.canFlash).toStrictEqual(true)
+  expect(poolConfig.canRepay).toStrictEqual(true)
+}
 const validateModeStatus = async (client: TestInfinitWallet, pool: SupportNewPoolActionParams, registry: InitCapitalRegistry) => {
   const configArtifact = await readArtifact('Config')
   const modes = pool.modeConfigs.map((modeConfig) => modeConfig.mode)
@@ -132,11 +153,14 @@ const validateModeStatus = async (client: TestInfinitWallet, pool: SupportNewPoo
 }
 
 const validateModeConfig = async (client: TestInfinitWallet, pool: SupportNewPoolActionParams, registry: InitCapitalRegistry) => {
-  const configArtifact = await readArtifact('Config')
-  const modes = pool.modeConfigs.map((modeConfig) => modeConfig.mode)
-  for (let i = 0; i < modes.length; i++) {
-    const mode = modes[i]
-    const [collTokens, borrTokens, _maxHealthAfterLiq, maxCollWLpCount] = await client.publicClient.readContract({
+  const [configArtifact, riskManagerArtifact, liqIncentiveCalculatorArtifact] = await Promise.all([
+    readArtifact('Config'),
+    readArtifact('RiskManager'),
+    readArtifact('LiqIncentiveCalculator'),
+  ])
+  for (const modeConfig of pool.modeConfigs) {
+    const mode = modeConfig.mode
+    const [collTokens, borrTokens, maxHealthAfterLiq, maxCollWLpCount] = await client.publicClient.readContract({
       address: registry.configProxy!,
       abi: configArtifact.abi,
       functionName: 'getModeConfig',
@@ -144,12 +168,50 @@ const validateModeConfig = async (client: TestInfinitWallet, pool: SupportNewPoo
     })
     expect(collTokens).toStrictEqual([getAddress(registry.lendingPools![pool.name].lendingPool)])
     expect(borrTokens).toStrictEqual([getAddress(registry.lendingPools![pool.name].lendingPool)])
+    expect(maxHealthAfterLiq).toStrictEqual(modeConfig.config.maxHealthAfterLiqE18)
     expect(maxCollWLpCount).toStrictEqual(0)
+    // validate factors
+    const factors = await client.publicClient.readContract({
+      address: registry.configProxy!,
+      abi: configArtifact.abi,
+      functionName: 'getTokenFactors',
+      args: [mode, getAddress(registry.lendingPools![pool.name].lendingPool)],
+    })
+    expect(factors.collFactor_e18).toStrictEqual(modeConfig.poolConfig.collFactorE18)
+    expect(factors.borrFactor_e18).toStrictEqual(modeConfig.poolConfig.borrFactorE18)
+    // validate debtCeiling
+    const debtCeiling = await client.publicClient.readContract({
+      address: registry.riskManagerProxy!,
+      abi: riskManagerArtifact.abi,
+      functionName: 'getModeDebtCeilingAmt',
+      args: [mode, getAddress(registry.lendingPools![pool.name].lendingPool)],
+    })
+    expect(debtCeiling).toStrictEqual(modeConfig.poolConfig.debtCeiling)
+    // --- validate mode liquidation ----
+    // validate mode liquidation incentive
+    const modeLiqIncentiveMultiplierE18 = await client.publicClient.readContract({
+      address: registry.liqIncentiveCalculatorProxy!,
+      abi: liqIncentiveCalculatorArtifact.abi,
+      functionName: 'modeLiqIncentiveMultiplier_e18',
+      args: [mode],
+    })
+    expect(modeLiqIncentiveMultiplierE18).toStrictEqual(modeConfig.config.liqIncentiveMultiplierE18)
+    // validate mode min liquidation incentive
+    const minLiqIncentiveMultiplierE18 = await client.publicClient.readContract({
+      address: registry.liqIncentiveCalculatorProxy!,
+      abi: liqIncentiveCalculatorArtifact.abi,
+      functionName: 'minLiqIncentiveMultiplier_e18',
+      args: [mode],
+    })
+    expect(minLiqIncentiveMultiplierE18).toStrictEqual(modeConfig.config.minLiqIncentiveMultiplierE18)
   }
 }
 
 const validateLendingPool = async (client: TestInfinitWallet, pool: SupportNewPoolActionParams, registry: InitCapitalRegistry) => {
-  const lendingPoolArtifact = await readArtifact('LendingPool')
+  const [lendingPoolArtifact, liqIncentiveCalculatorArtifact] = await Promise.all([
+    readArtifact('LendingPool'),
+    readArtifact('LiqIncentiveCalculator'),
+  ])
   // validate reserve factor
   const reserveFactor = await client.publicClient.readContract({
     address: registry.lendingPools![pool.name].lendingPool,
@@ -182,6 +244,14 @@ const validateLendingPool = async (client: TestInfinitWallet, pool: SupportNewPo
     args: [],
   })
   expect(irm).toStrictEqual(getAddress(registry.irms![pool.doubleSlopeIRMConfig.name]))
+  // validate token liq incentive
+  const tokenLiqIncentiveMultiplier = await client.publicClient.readContract({
+    address: registry.liqIncentiveCalculatorProxy!,
+    abi: liqIncentiveCalculatorArtifact.abi,
+    functionName: 'tokenLiqIncentiveMultiplier_e18',
+    args: [pool.token],
+  })
+  expect(tokenLiqIncentiveMultiplier).toStrictEqual(pool.liqIncentiveMultiplierE18)
 }
 const validateInitOracle = async (client: TestInfinitWallet, pool: SupportNewPoolActionParams, registry: InitCapitalRegistry) => {
   const initOracleArtifact = await readArtifact('InitOracle')
@@ -214,4 +284,38 @@ const validateInitOracle = async (client: TestInfinitWallet, pool: SupportNewPoo
     })
     expect(primarySource).toStrictEqual(getAddress(registry[primarySourceConfigName] as Address))
   }
+}
+const validateIrm = async (client: TestInfinitWallet, pool: SupportNewPoolActionParams, registry: InitCapitalRegistry) => {
+  const doubleSlopeIRMArtifact = await readArtifact('DoubleSlopeIRM')
+
+  const baseBorrowRate = await client.publicClient.readContract({
+    address: registry.irms![pool.doubleSlopeIRMConfig.name],
+    abi: doubleSlopeIRMArtifact.abi,
+    functionName: 'BASE_BORR_RATE_E18',
+    args: [],
+  })
+  const jumpUtil = await client.publicClient.readContract({
+    address: registry.irms![pool.doubleSlopeIRMConfig.name],
+    abi: doubleSlopeIRMArtifact.abi,
+    functionName: 'JUMP_UTIL_E18',
+    args: [],
+  })
+  const borrRateMultiplier = await client.publicClient.readContract({
+    address: registry.irms![pool.doubleSlopeIRMConfig.name],
+    abi: doubleSlopeIRMArtifact.abi,
+    functionName: 'BORR_RATE_MULTIPLIER_E18',
+    args: [],
+  })
+  const jumpMultiplier = await client.publicClient.readContract({
+    address: registry.irms![pool.doubleSlopeIRMConfig.name],
+    abi: doubleSlopeIRMArtifact.abi,
+    functionName: 'JUMP_MULTIPLIER_E18',
+    args: [],
+  })
+
+  // validate
+  expect(borrRateMultiplier).toStrictEqual(pool.doubleSlopeIRMConfig.params.borrowRateMultiplierE18)
+  expect(baseBorrowRate).toStrictEqual(pool.doubleSlopeIRMConfig.params.baseBorrowRateE18)
+  expect(jumpUtil).toStrictEqual(pool.doubleSlopeIRMConfig.params.jumpUtilizationRateE18)
+  expect(jumpMultiplier).toStrictEqual(pool.doubleSlopeIRMConfig.params.jumpRateMultiplierE18)
 }
