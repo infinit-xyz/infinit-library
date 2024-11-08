@@ -10,7 +10,6 @@ import { DeployDoubleSlopeIRMTxBuilderParams } from '@actions/subactions/tx-buil
 
 import { DeployLendingPoolProxySubAction, DeployLendingPoolSubActionMsg } from './subactions/deployLendingPoolProxy'
 import { InitializeLendingPoolSubAction } from './subactions/initializePool'
-// import { SetMaxPriceDeviationAction } from '@/dist/actions/index.cjs'
 import { SetInitOracleConfigSubAction } from './subactions/setInitOracle'
 import { SetModeAndTokenLiqMultiplierSubAction } from './subactions/setModeAndTokenLiqMultiplier'
 import { SetModeDebtCeilingInfosSubAction } from './subactions/setModeDebtCeilingInfos'
@@ -22,7 +21,6 @@ import {
   PythParams,
   SetNewPoolOracleReaderSubAction,
   SetNewPoolOracleReaderSubActionParams,
-  SourceConfig,
 } from './subactions/setNewPoolOracleReader'
 import { SetPoolConfigSubAction } from './subactions/setPoolConfig'
 import { InitCapitalRegistry } from '@/src/type'
@@ -30,8 +28,8 @@ import { InitCapitalRegistry } from '@/src/type'
 export type ModeConfig = {
   mode: number
   poolConfig: {
-    collFactor: bigint
-    borrFactor: bigint
+    collFactorE18: bigint
+    borrFactorE18: bigint
     debtCeiling: bigint
   }
   config?: {
@@ -39,22 +37,6 @@ export type ModeConfig = {
     minLiqIncentiveMultiplier_e18: bigint
   }
 }
-
-// export type PythParams = {
-//   priceFeed: Address
-//   maxStaleTime: bigint
-// }
-
-// export type Api3Params = {
-//   dataFeedProxy: Address
-//   maxStaleTime: bigint
-// }
-
-// export type LsdApi3Params = {
-//   dataFeedProxy: Address
-//   maxStaleTime: bigint
-//   setQuoteToken: Address
-// }
 
 const oracleReader = z.discriminatedUnion('type', [
   z.object({ type: z.literal('api3'), params: z.custom<Api3Params>() }),
@@ -68,10 +50,31 @@ const oracleReaderRegistryName: Record<'api3' | 'lsdApi3' | 'pyth', keyof InitCa
   pyth: 'pythOracleReaderProxy',
 }
 
-export const SupportNewPoolParamsSchema = z.object({
-  name: z.string().describe(`Name of the pool`),
-  token: zodAddressNonZero.describe(`Address of the token`),
-  modeConfigs: z.array(z.custom<ModeConfig>()).describe(`mode configs for adding new mode`),
+export const SupportNewPoolActionParamsSchema = z.object({
+  name: z.string().describe(`Name of the pool e.g. POOL_WBTC`),
+  token: zodAddressNonZero.describe(`Address of the token e.g. WBTC`),
+  modeConfigs: z
+    .array(
+      z.object({
+        mode: z.number().describe(`Mode number starting from 0`),
+        poolConfig: z
+          .object({
+            collFactorE18: z.bigint().describe(`Collateral factor in E18, should be less than 1e18, e.g. parseUnit('0.8', 18)`),
+            borrFactorE18: z.bigint().describe(`Borrow factor in E18, should be greater than 1e18, e.g. parseUnit('1.1', 18)`),
+            debtCeiling: z
+              .bigint()
+              .describe(
+                `Debt ceiling for the pool in this mode, user could no longer borrow from the pool for this mode if the debt ceiling is reached`,
+              ),
+          })
+          .describe(`Pool config`),
+        config: z.object({
+          liqIncentiveMultiplier_e18: z.bigint().describe(`Liq incentive multiplier e18`),
+          minLiqIncentiveMultiplier_e18: z.bigint().describe(`Min liq incentive multiplier e18`),
+        }),
+      }) satisfies z.ZodType<ModeConfig>,
+    )
+    .describe(`mode configs for adding new mode`),
   liqcentiveMultiplier_e18: z.bigint().describe(`liq incentive multiplier e18`).optional(),
   supplyCap: z.bigint().describe(`lending pool supply cap`),
   borrowCap: z.bigint().describe(`lending pool borrow cap`),
@@ -101,16 +104,16 @@ export const SupportNewPoolParamsSchema = z.object({
   }),
 })
 
-export type SupportNewPoolParams = z.infer<typeof SupportNewPoolParamsSchema>
+export type SupportNewPoolActionParams = z.infer<typeof SupportNewPoolActionParamsSchema>
 
 export type SupportNewPoolActionData = {
-  params: SupportNewPoolParams
+  params: SupportNewPoolActionParams
   signer: Record<'deployer' | 'guardian' | 'governor', InfinitWallet>
 }
 
 export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitCapitalRegistry> {
   constructor(data: SupportNewPoolActionData) {
-    validateActionData(data, SupportNewPoolParamsSchema, ['governor'])
+    validateActionData(data, SupportNewPoolActionParamsSchema, ['governor'])
     super(SupportNewPoolAction.name, data)
   }
 
@@ -119,20 +122,12 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
     const guardian = this.data.signer['guardian']
     const governor = this.data.signer['governor']
 
-    const doubleSlopeIRMConfig = this.data.params.doubleSlopeIRMConfig
-    const initializePoolConfig = {
-      underlyingToken: this.data.params.token,
-      name: this.data.params.name,
-      symbol: this.data.params.name,
-      reserveFactor: this.data.params.reserveFactor,
-      treasury: this.data.params.treasury,
-    }
-
     return [
       // steps
       // 1. deploy irm
-      () =>
-        new DeployDoubleSlopeIRMsSubAction(governor, {
+      () => {
+        const doubleSlopeIRMConfig = this.data.params.doubleSlopeIRMConfig
+        return new DeployDoubleSlopeIRMsSubAction(governor, {
           doubleSlopeIRMConfigs: [
             {
               name: doubleSlopeIRMConfig.name,
@@ -144,7 +139,8 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
               },
             },
           ],
-        }),
+        })
+      },
       // 2. deploy lending pool proxy
       () => {
         // validate registry
@@ -158,16 +154,24 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
         })
       },
       // 3. initialize lending proxy
-      (message: DeployLendingPoolSubActionMsg & DeployDoubleSlopeIRMSubActionMsg) =>
-        new InitializeLendingPoolSubAction(deployer, {
+      (message: DeployLendingPoolSubActionMsg & DeployDoubleSlopeIRMSubActionMsg) => {
+        const initializePoolConfig = {
+          underlyingToken: this.data.params.token,
+          name: this.data.params.name,
+          symbol: this.data.params.name,
+          reserveFactor: this.data.params.reserveFactor,
+          treasury: this.data.params.treasury,
+        }
+        return new InitializeLendingPoolSubAction(deployer, {
           lendingPool: message.lendingPoolProxy,
           underlingToken: initializePoolConfig.underlyingToken,
           name: initializePoolConfig.name,
           symbol: initializePoolConfig.symbol,
-          irm: message.doubleSlopeIrms[doubleSlopeIRMConfig.name],
+          irm: message.doubleSlopeIrms[this.data.params.doubleSlopeIRMConfig.name],
           reserveFactor: initializePoolConfig.reserveFactor,
           treasury: initializePoolConfig.treasury,
-        }),
+        })
+      },
       // 4. set pool config (guardian)
       (message: DeployLendingPoolSubActionMsg) => {
         // validate registry
@@ -298,8 +302,8 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
             poolFactors: [
               {
                 pool: message.lendingPoolProxy,
-                collFactor_e18: modeConfig.poolConfig.collFactor,
-                borrFactor_e18: modeConfig.poolConfig.borrFactor,
+                collFactor_e18: modeConfig.poolConfig.collFactorE18,
+                borrFactor_e18: modeConfig.poolConfig.borrFactorE18,
               },
             ],
           }
