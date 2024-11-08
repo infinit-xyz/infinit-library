@@ -1,4 +1,4 @@
-import { Address, PublicClient } from 'viem'
+import { PublicClient } from 'viem'
 
 import { BaseContractVerifier, BlockExplorerParams, ContractInfo } from '@infinit-xyz/core/internal'
 
@@ -7,7 +7,7 @@ import { Artifacts } from 'hardhat/types'
 import { InitCapitalRegistry } from '@/src/type'
 import { getArtifacts } from '@/src/utils/artifact'
 
-export class TokenContractVerifier extends BaseContractVerifier<InitCapitalRegistry> {
+export class InitCapitalContractVerifier extends BaseContractVerifier<InitCapitalRegistry> {
   constructor(client: PublicClient, params: BlockExplorerParams) {
     super(client, params)
   }
