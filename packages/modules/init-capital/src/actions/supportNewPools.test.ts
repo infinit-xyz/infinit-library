@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
-import { parseUnits } from 'viem'
+import { getAddress, parseUnits } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 import { ANVIL_PRIVATE_KEY, ANVIL_PRIVATE_KEY_2 } from '@actions/__mock__/account'
@@ -26,7 +26,7 @@ describe('SupportNewPoolsTest', async () => {
   })
 
   test('support new pools', async () => {
-    const actionParams: SupportNewPoolActionParams = {
+    const pool1ActionParams: SupportNewPoolActionParams = {
       name: 'test_new_pool',
       token: ARBITRUM_TEST_ADDRESSES.weth,
       modeConfigs: [
@@ -82,30 +82,56 @@ describe('SupportNewPoolsTest', async () => {
       },
     }
 
+    const pools = [pool1ActionParams]
     const action = new SupportNewPoolsAction({
       params: {
-        pools: [actionParams],
+        pools: pools,
       },
       signer: { deployer: client1, guardian: client1, governor: client2 },
     })
-    await action.run(registry)
+    const newRegistry = await action.run(registry)
 
-    // validation
-    const configArtifact = await readArtifact('Config')
-    // check mode status
-    const modes = actionParams.modeConfigs.map((modeConfig) => modeConfig.mode)
-    for (let i = 0; i < modes.length; i++) {
-      const mode = modes[i]
-      const onChainConfig = await client1.publicClient.readContract({
-        address: registry.configProxy!,
-        abi: configArtifact.abi,
-        functionName: 'getModeStatus',
-        args: [mode],
-      })
-      expect(onChainConfig.canCollateralize).toStrictEqual(true)
-      expect(onChainConfig.canDecollateralize).toStrictEqual(true)
-      expect(onChainConfig.canBorrow).toStrictEqual(true)
-      expect(onChainConfig.canRepay).toStrictEqual(true)
+    for (const pool of pools) {
+      await validateModeStatus(client1, pool, newRegistry)
+      await validateModeConfig(client1, pool, newRegistry)
     }
   })
 })
+
+// validate functions
+const validateModeStatus = async (client: TestInfinitWallet, pool: SupportNewPoolActionParams, registry: InitCapitalRegistry) => {
+  const configArtifact = await readArtifact('Config')
+  const modes = pool.modeConfigs.map((modeConfig) => modeConfig.mode)
+  for (let i = 0; i < modes.length; i++) {
+    const mode = modes[i]
+    const onChainConfig = await client.publicClient.readContract({
+      address: registry.configProxy!,
+      abi: configArtifact.abi,
+      functionName: 'getModeStatus',
+      args: [mode],
+    })
+    expect(onChainConfig.canCollateralize).toStrictEqual(true)
+    expect(onChainConfig.canDecollateralize).toStrictEqual(true)
+    expect(onChainConfig.canBorrow).toStrictEqual(true)
+    expect(onChainConfig.canRepay).toStrictEqual(true)
+  }
+}
+
+const validateModeConfig = async (client: TestInfinitWallet, pool: SupportNewPoolActionParams, registry: InitCapitalRegistry) => {
+  const configArtifact = await readArtifact('Config')
+  const modes = pool.modeConfigs.map((modeConfig) => modeConfig.mode)
+  for (let i = 0; i < modes.length; i++) {
+    const mode = modes[i]
+    const [collTokens, borrTokens, _maxHealthAfterLiq, maxCollWLpCount] = await client.publicClient.readContract({
+      address: registry.configProxy!,
+      abi: configArtifact.abi,
+      functionName: 'getModeConfig',
+      args: [mode],
+    })
+    // const poolAddress = registry.lendingPools![pool.name]
+    console.log('registrylatest', registry)
+    expect(collTokens).toStrictEqual([getAddress(registry.lendingPools![pool.name].lendingPool)])
+    expect(borrTokens).toStrictEqual([getAddress(registry.lendingPools![pool.name].lendingPool)])
+    expect(maxCollWLpCount).toStrictEqual(0)
+  }
+}

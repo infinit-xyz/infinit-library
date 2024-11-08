@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import { Address, Hex } from 'viem'
+import { Address, Hex, getAddress } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
@@ -57,8 +57,9 @@ export class DeployLendingPoolProxySubAction extends SubAction<
     if (!lendingPoolProxy) {
       throw new ContractNotFoundError(deployLendingPoolProxyHash, 'LendingPoolProxy')
     }
+
     // add new lending pool to the registry
-    _.set(registry, ['lendingPools', this.params.name], lendingPoolProxy)
+    _.set(registry, ['lendingPools', this.params.name, 'lendingPool'], lendingPoolProxy)
     // add deployed lending pool to the message
     const newMessage: DeployLendingPoolSubActionMsg = {
       lendingPoolProxy,

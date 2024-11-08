@@ -1,6 +1,9 @@
+import _ from 'lodash'
+
 import { Hex } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
+import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
 
 import { InitializeLendingPoolTxBuilder, InitializeLendingPoolTxBuilderParams } from './tx-builders/LendingPool/initialize'
 import { InitCapitalRegistry } from '@/src/type'
@@ -30,8 +33,17 @@ export class InitializeLendingPoolSubAction extends SubAction<InitilizeLendingPo
 
   public async updateRegistryAndMessage(
     registry: InitCapitalRegistry,
-    _txHashes: Hex[],
+    txHashes: Hex[],
   ): Promise<SubActionExecuteResponse<InitCapitalRegistry>> {
+    // the txHashes should have at least one txHash
+    if (txHashes.some((v) => !v)) {
+      throw new TxNotFoundError()
+    }
+
+    // add new lending pool's irm and underlying token to the registry
+    _.set(registry, ['lendingPools', this.params.name, 'underlyingtoken'], this.params.underlingToken)
+    _.set(registry, ['lendingPools', this.params.name, 'irm'], this.params.irm)
+
     return { newRegistry: registry, newMessage: {} }
   }
 }
