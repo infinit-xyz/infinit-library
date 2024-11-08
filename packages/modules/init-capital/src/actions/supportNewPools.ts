@@ -41,13 +41,13 @@ export type ModeConfig = {
   }
 }
 
-const oracleReader = z.discriminatedUnion('type', [
+export const oracleReader = z.discriminatedUnion('type', [
   z.object({ type: z.literal('api3'), params: z.custom<Api3Params>() }),
   z.object({ type: z.literal('lsdApi3'), params: z.custom<LsdApi3Params>() }),
   z.object({ type: z.literal('pyth'), params: z.custom<PythParams>() }),
 ])
 
-const oracleReaderRegistryName: Record<'api3' | 'lsdApi3' | 'pyth', keyof InitCapitalRegistry> = {
+export const oracleReaderRegistryName: Record<'api3' | 'lsdApi3' | 'pyth', keyof InitCapitalRegistry> = {
   api3: 'api3ProxyOracleReaderProxy',
   lsdApi3: 'lsdApi3ProxyOracleReaderProxy',
   pyth: 'pythOracleReaderProxy',

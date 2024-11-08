@@ -108,6 +108,22 @@ export class SetNewPoolOracleReaderSubAction extends SubAction<SetNewPoolOracleR
     }
     //TODO: handle oracle has already been set
     if (oracle.type === 'pyth') {
+      const pythOracleReaderArtifact = await readArtifact('PythOracleReader')
+      const priceId = await this.client.publicClient.readContract({
+        address: oracle.oracleReader,
+        abi: pythOracleReaderArtifact.abi,
+        functionName: 'priceIds',
+        args: [oracle.token],
+      })
+      const maxStaleTime = await this.client.publicClient.readContract({
+        address: oracle.oracleReader,
+        abi: pythOracleReaderArtifact.abi,
+        functionName: 'maxStaleTimes',
+        args: [oracle.token],
+      })
+      if (maxStaleTime !== 0n && priceId !== zeroAddress) {
+        throw new ContractValidateError('PythOracleReader Token parameters has been already set')
+      }
     }
   }
   private handleTxBuilders(oracle: SourceConfig): TxBuilder[] {

@@ -4,6 +4,7 @@ import { ANVIL_PRIVATE_KEY, ANVIL_PRIVATE_KEY_2 } from '@actions/__mock__/accoun
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
 import { DeployApi3ProxyOracleReaderAction } from '@actions/deployApi3ProxyOracleReader'
 import { DeployInitCapitalAction } from '@actions/deployInitCapital'
+import { DeployPythOracleReaderAction } from '@actions/deployPythOracleReader'
 
 import { InitCapitalRegistry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
@@ -19,6 +20,7 @@ export const setupInitCapital = async (): Promise<InitCapitalRegistry> => {
 
   let registry: InitCapitalRegistry
 
+  // 1. deploy init capital
   const deployInitCapitalAction = new DeployInitCapitalAction({
     params: {
       proxyAdminOwner: accessControlManagerOwner,
@@ -75,8 +77,9 @@ export const setupInitCapital = async (): Promise<InitCapitalRegistry> => {
       accessControlManagerOwner: client2,
     },
   })
-  // 1. deploy init capital
   registry = await deployInitCapitalAction.run({})
+
+  // 2. deploy api3 proxy oracle reader
   const deployApi3ProxyOracleReaderAction = new DeployApi3ProxyOracleReaderAction({
     params: {
       accessControlManager: registry.accessControlManager!,
@@ -86,8 +89,20 @@ export const setupInitCapital = async (): Promise<InitCapitalRegistry> => {
       deployer: client,
     },
   })
-  // 2. deploy api3 proxy oracle reader
   registry = await deployApi3ProxyOracleReaderAction.run(registry)
+
+  // 3. deploy pyth proxy oracle reader
+  const deployPythOracleReaderAction = new DeployPythOracleReaderAction({
+    params: {
+      accessControlManager: registry.accessControlManager!,
+      proxyAdmin: registry.proxyAdmin!,
+      pyth: ARBITRUM_TEST_ADDRESSES.pyth,
+    },
+    signer: {
+      deployer: client,
+    },
+  })
+  registry = await deployPythOracleReaderAction.run(registry)
 
   return registry
 }
