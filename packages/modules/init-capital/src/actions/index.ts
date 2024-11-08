@@ -94,9 +94,9 @@ export const actions = {
     signers: ['governor'],
   },
   supportNewPool: {
-    name: 'Support New Pool',
-    actionClassName: SupportNewPoolAction.name,
-    paramsSchema: SupportNewPoolActionParamsSchema,
+    name: 'Support New Pools',
+    actionClassName: SupportNewPoolsAction.name,
+    paramsSchema: SupportNewPoolsActionParamsSchema,
     signers: ['deployer', 'guardian', 'governor'],
   },
 } satisfies InfinitActionRecord
