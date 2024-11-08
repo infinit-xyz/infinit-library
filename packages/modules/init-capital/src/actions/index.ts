@@ -18,6 +18,7 @@ import {
   SetPythOracleReaderTokensInfoAction,
   SetPythOracleReaderTokensInfoActionParamsSchema,
 } from '@actions/setPythOracleReaderTokensInfo'
+import { SupportNewPoolAction, SupportNewPoolActionParamsSchema } from '@actions/supportNewPool'
 
 export const actions = {
   init: {
@@ -92,6 +93,12 @@ export const actions = {
     paramsSchema: SetPythOracleReaderTokensInfoActionParamsSchema,
     signers: ['governor'],
   },
+  supportNewPool: {
+    name: 'Support New Pool',
+    actionClassName: SupportNewPoolAction.name,
+    paramsSchema: SupportNewPoolActionParamsSchema,
+    signers: ['deployer', 'guardian', 'governor'],
+  },
 } satisfies InfinitActionRecord
 
 export {
@@ -107,4 +114,5 @@ export {
   SetOracleAction,
   SetPoolConfigAction,
   SetPythOracleReaderTokensInfoAction,
+  SupportNewPoolAction,
 }
