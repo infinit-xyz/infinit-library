@@ -1,5 +1,31 @@
 # @infinit-xyz/init-capital
 
+## 0.0.0-alpha.5
+
+### Minor Changes
+
+- [#119](https://github.com/infinit-xyz/infinit-library/pull/119)
+  [`b6f8227`](https://github.com/infinit-xyz/infinit-library/commit/b6f8227f768e4d5d94a4fbee1fa0fefb29e1f199) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - add setModeFactorsAction
+
+- [#122](https://github.com/infinit-xyz/infinit-library/pull/122)
+  [`06bc8b4`](https://github.com/infinit-xyz/infinit-library/commit/06bc8b42875711a93c9e3b6ad8e9c92923e44bfd) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - add deploy Api3ProxyOracleReader and set its parameters actions
+
+- [#124](https://github.com/infinit-xyz/infinit-library/pull/124)
+  [`66d6a17`](https://github.com/infinit-xyz/infinit-library/commit/66d6a17b3b594b650ae0aa99735be0a26cc02c5c) Thanks
+  [@Kittikornl](https://github.com/Kittikornl)! - - add actions to support PythOracleReader
+
+- [#132](https://github.com/infinit-xyz/infinit-library/pull/132)
+  [`2291b5c`](https://github.com/infinit-xyz/infinit-library/commit/2291b5c1fd681a54ddb28aababd24aae995aaccb) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - update on-chain and off-chain action detail record
+
+### Patch Changes
+
+- Updated dependencies [[`0a148df`](https://github.com/infinit-xyz/infinit-library/commit/0a148df5a878cbec73a25fcf13ed2278fd8d13db),
+  [`2291b5c`](https://github.com/infinit-xyz/infinit-library/commit/2291b5c1fd681a54ddb28aababd24aae995aaccb)]:
+  - @infinit-xyz/core@0.1.0-alpha.10
+
 ## 0.0.0-alpha.4
 
 ### Minor Changes

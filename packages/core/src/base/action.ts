@@ -1,7 +1,7 @@
 import { SubAction } from '@base/subAction'
 
 import { InfinitCache } from '@/types'
-import { ActionCallback, ActionCallbackParams } from '@/types/callback/action'
+import { OnChainActionCallback, OnChainActionCallbackParams } from '@/types/callback/action'
 
 import { IncorrectCacheError } from '@errors/index'
 import { InfinitWallet } from '@infinit-wallet/index'
@@ -83,7 +83,7 @@ abstract class Action<D extends ActionData = { params: {}; signer: {} }, R exten
    */
   private getActionInfo(
     subActions: SubAction<any, R, {}>[] | ((message?: object) => SubAction<any, R>)[],
-  ): ActionCallbackParams['actionInfo'] {
+  ): OnChainActionCallbackParams['actionInfo'] {
     return {
       name: this.name,
       totalSubActions: subActions.length,
@@ -102,7 +102,7 @@ abstract class Action<D extends ActionData = { params: {}; signer: {} }, R exten
    * @returns A promise that resolves with the updated registry after all sub-actions have been executed.
    * @throws {IncorrectCacheError} If the cache name does not match the expected action name.
    */
-  public async run(registry: R, cache?: InfinitCache, callback?: ActionCallback): Promise<R> {
+  public async run(registry: R, cache?: InfinitCache, callback?: OnChainActionCallback): Promise<R> {
     let currentMessages = {}
     let currentRegistry: R = { ...registry }
 

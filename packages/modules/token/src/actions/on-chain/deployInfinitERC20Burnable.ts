@@ -6,7 +6,7 @@ import { validateActionData, zodAddress } from '@infinit-xyz/core/internal'
 import {
   DeployInfinitERC20BurnableSubAction,
   DeployInfinitERC20BurnableSubActionParams,
-} from '@actions/subactions/deployInfinitERC20Burnable'
+} from '@actions/on-chain/subactions/deployInfinitERC20Burnable'
 
 import { TokenRegistry } from '@/src/type'
 

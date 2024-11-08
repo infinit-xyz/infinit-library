@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
 import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/internal'
 
-import { DeployInfinitERC20SubAction, DeployInfinitERC20SubActionParams } from '@actions/subactions/deployInfinitERC20'
+import { DeployInfinitERC20SubAction, DeployInfinitERC20SubActionParams } from '@actions/on-chain/subactions/deployInfinitERC20'
 
 import { TokenRegistry } from '@/src/type'
 

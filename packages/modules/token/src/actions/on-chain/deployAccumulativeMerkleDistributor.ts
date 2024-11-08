@@ -9,7 +9,7 @@ import {
   DeployAccumulativeMerkleDistributorSubAction,
   DeployAccumulativeMerkleDistributorSubActionMsg,
   DeployAccumulativeMerkleDistributorSubActionParams,
-} from '@actions/subactions/deployAccumulativeMerkleDistributor'
+} from '@actions/on-chain/subactions/deployAccumulativeMerkleDistributor'
 
 import { DeployERC1967ProxyAndInitializeSubAction } from './subactions/deployERC1967ProxyAndInitialize'
 import { TokenRegistry } from '@/src/type'

@@ -1,6 +1,6 @@
 {
   "name": "@infinit-xyz/token",
-  "version": "0.0.0-alpha.21",
+  "version": "0.0.0-alpha.22",
   "homepage": "https://infinit.tech",
   "repository": {
     "type": "git",
@@ -21,10 +21,6 @@
     "./actions": {
       "types": "./dist/actions/index.d.ts",
       "default": "./dist/actions/index.js"
-    },
-    "./offChainActions": {
-      "types": "./dist/off-chain-actions/index.d.ts",
-      "default": "./dist/off-chain-actions/index.js"
     },
     "./utils": {
       "types": "./dist/utils/index.d.ts",
@@ -50,7 +46,7 @@
     "extends": "../../../.eslintrc.js"
   },
   "dependencies": {
-    "@infinit-xyz/core": "^0.1.0-alpha.8",
+    "@infinit-xyz/core": "^0.1.0-alpha.10",
     "@openzeppelin/merkle-tree": "^1.0.7",
     "infinit-erc20-contracts": "https://github.com/infinit-xyz/infinit-erc20-contracts.git",
     "lodash": "^4.17.21"
