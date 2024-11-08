@@ -39,26 +39,6 @@ export type LsdApi3Params = {
   maxStaleTime: bigint
   setQuoteToken: Address
 }
-export type PythConfig = {
-  type: 'pyth'
-  token: Address
-  oracleReader: Address
-  params: PythParams
-}
-
-export type Api3Config = {
-  type: 'api3'
-  token: Address
-  oracleReader: Address
-  params: Api3Params
-}
-
-export type LsdApi3Config = {
-  type: 'lsdApi3'
-  token: Address
-  oracleReader: Address
-  params: LsdApi3Params
-}
 
 export type SourceConfig = {
   type: 'api3' | 'lsdApi3' | 'pyth'
@@ -110,7 +90,7 @@ export class SetNewPoolOracleReaderSubAction extends SubAction<SetNewPoolOracleR
       newMessage: {},
     }
   }
-  private async handleInternalValidates(oracle: PythConfig | Api3Config | LsdApi3Config) {
+  private async handleInternalValidates(oracle: SourceConfig) {
     if (oracle.type === 'api3') {
       const api3ProxyOracleReaderArtifact = await readArtifact('Api3ProxyOracleReader')
       const [dataFeedProxy, maxStaleTime] = await this.client.publicClient.readContract({
@@ -130,13 +110,14 @@ export class SetNewPoolOracleReaderSubAction extends SubAction<SetNewPoolOracleR
     if (oracle.type === 'pyth') {
     }
   }
-  private handleTxBuilders(oracle: PythConfig | Api3Config | LsdApi3Config): TxBuilder[] {
+  private handleTxBuilders(oracle: SourceConfig): TxBuilder[] {
     const txBuilders: TxBuilder[] = []
     if (oracle.type === 'api3') {
+      const params = oracle.params as Api3Params
       const dataFeedProxiesTxBuilderParams: Api3SetDataFeedProxiesTxBuilderParams = {
         api3ProxyOracleReader: oracle.oracleReader,
         tokens: [oracle.token],
-        dataFeedProxies: [oracle.params.dataFeedProxy],
+        dataFeedProxies: [params.dataFeedProxy],
       }
       txBuilders.push(new Api3SetDataFeedProxiesTxBuilder(this.client, dataFeedProxiesTxBuilderParams))
       const maxStaleTimesTxBuilderParams: Api3SetMaxStaleTimesTxBuilderParams = {
@@ -148,10 +129,11 @@ export class SetNewPoolOracleReaderSubAction extends SubAction<SetNewPoolOracleR
     }
 
     if (oracle.type === 'pyth') {
+      const params = oracle.params as PythParams
       const priceIdsTxBuilderParams: PythSetPriceIdsTxBuilderParams = {
         pythOracleReader: oracle.oracleReader,
         tokens: [oracle.token],
-        priceIds: [oracle.params.priceFeed],
+        priceIds: [params.priceFeed],
       }
       this.txBuilders.push(new PythSetPriceIdsTxBuilder(this.client, priceIdsTxBuilderParams))
       const maxStaleTimesTxBuilderParams: PythSetMaxStaleTimesTxBuilderParams = {
