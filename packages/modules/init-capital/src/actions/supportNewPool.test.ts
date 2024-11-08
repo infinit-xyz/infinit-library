@@ -2,7 +2,6 @@ import { beforeAll, describe, expect, test } from 'vitest'
 
 import { parseUnits } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
-import { arbitrum } from 'viem/chains'
 
 import { ANVIL_PRIVATE_KEY, ANVIL_PRIVATE_KEY_2 } from '@actions/__mock__/account'
 import { setupInitCapital } from '@actions/__mock__/setup'
@@ -13,12 +12,6 @@ import { SupportNewPoolAction, SupportNewPoolActionParams } from './supportNewPo
 import { InitCapitalRegistry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'
-
-// class SupportNewPoolActionTest extends SupportNewPoolAction {
-// public override getSubActions(): SubAction[] {
-//   return super.getSubActions()
-// }
-// }
 
 describe('SupportNewPoolTest', async () => {
   // let client: InfinitWallet
@@ -45,8 +38,9 @@ describe('SupportNewPoolTest', async () => {
             debtCeiling: parseUnits('1000000', 18),
           },
           config: {
-            liqIncentiveMultiplier_e18: parseUnits('1.1', 18),
-            minLiqIncentiveMultiplier_e18: parseUnits('1.1', 18),
+            liqIncentiveMultiplierE18: parseUnits('1.1', 18),
+            minLiqIncentiveMultiplierE18: parseUnits('1.1', 18),
+            maxHealthAfterLiqE18: parseUnits('1.1', 18),
           },
         },
         {
@@ -57,8 +51,9 @@ describe('SupportNewPoolTest', async () => {
             debtCeiling: parseUnits('1000000', 18),
           },
           config: {
-            liqIncentiveMultiplier_e18: parseUnits('1.1', 18),
-            minLiqIncentiveMultiplier_e18: parseUnits('1.1', 18),
+            liqIncentiveMultiplierE18: parseUnits('1.1', 18),
+            minLiqIncentiveMultiplierE18: parseUnits('1.1', 18),
+            maxHealthAfterLiqE18: parseUnits('1.2', 18),
           },
         },
       ],

@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { Address, zeroAddress } from 'viem'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/internal'
 
 import { DeployDoubleSlopeIRMSubActionMsg, DeployDoubleSlopeIRMsSubAction } from '@actions/subactions/deployDoubleSlopeIRMs'
@@ -11,6 +12,7 @@ import { DeployDoubleSlopeIRMTxBuilderParams } from '@actions/subactions/tx-buil
 import { DeployLendingPoolProxySubAction, DeployLendingPoolSubActionMsg } from './subactions/deployLendingPoolProxy'
 import { InitializeLendingPoolSubAction } from './subactions/initializePool'
 import { SetInitOracleConfigSubAction } from './subactions/setInitOracle'
+import { SetMaxHealthAfterLiqSubAction, SetMaxHealthAfterLiqSubActionParams } from './subactions/setMaxHealthAfterLiq'
 import { SetModeAndTokenLiqMultiplierSubAction } from './subactions/setModeAndTokenLiqMultiplier'
 import { SetModeDebtCeilingInfosSubAction } from './subactions/setModeDebtCeilingInfos'
 import { SetModePoolFactorsSubAction } from './subactions/setModePoolFactors'
@@ -33,8 +35,9 @@ export type ModeConfig = {
     debtCeiling: bigint
   }
   config?: {
-    liqIncentiveMultiplier_e18: bigint
-    minLiqIncentiveMultiplier_e18: bigint
+    liqIncentiveMultiplierE18: bigint
+    minLiqIncentiveMultiplierE18: bigint
+    maxHealthAfterLiqE18: bigint
   }
 }
 
@@ -69,8 +72,9 @@ export const SupportNewPoolActionParamsSchema = z.object({
           })
           .describe(`Pool config`),
         config: z.object({
-          liqIncentiveMultiplier_e18: z.bigint().describe(`Liq incentive multiplier e18`),
-          minLiqIncentiveMultiplier_e18: z.bigint().describe(`Min liq incentive multiplier e18`),
+          liqIncentiveMultiplierE18: z.bigint().describe(`Liq incentive multiplier e18`),
+          minLiqIncentiveMultiplierE18: z.bigint().describe(`Min liq incentive multiplier e18`),
+          maxHealthAfterLiqE18: z.bigint().describe(`Max Health after liq e18, if set to max uint64`),
         }),
       }) satisfies z.ZodType<ModeConfig>,
     )
@@ -144,8 +148,8 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
       // 2. deploy lending pool proxy
       () => {
         // validate registry
-        if (!registry.lendingPoolImpl) throw new Error('registry: lendingPoolImpl not found')
-        if (!registry.proxyAdmin) throw new Error('registry: proxy admin not found')
+        if (!registry.lendingPoolImpl) throw new ValidateInputValueError('registry: lendingPoolImpl not found')
+        if (!registry.proxyAdmin) throw new ValidateInputValueError('registry: proxy admin not found')
 
         return new DeployLendingPoolProxySubAction(deployer, {
           name: this.data.params.name,
@@ -175,7 +179,7 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
       // 4. set pool config (guardian)
       (message: DeployLendingPoolSubActionMsg) => {
         // validate registry
-        if (!registry.configProxy) throw new Error('registry: configProxy not found')
+        if (!registry.configProxy) throw new ValidateInputValueError('registry: configProxy not found')
 
         return new SetPoolConfigSubAction(guardian, {
           config: registry.configProxy,
@@ -204,17 +208,18 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
         let secondarySourceAddress: Address | undefined
         const oracleConfig = this.data.params.oracleConfig
         // validate registry
-        if (!registry.initOracleProxy) throw new Error('registry: initOracleProxy not found')
+        if (!registry.initOracleProxy) throw new ValidateInputValueError('registry: initOracleProxy not found')
         // get primary address
         if (oracleConfig && oracleConfig.primarySource) {
           const primarySourceRegistryName = oracleReaderRegistryName[oracleConfig.primarySource.type]
-          if (!registry[primarySourceRegistryName]) throw new Error(`registry: ${primarySourceRegistryName} not found`)
+          if (!registry[primarySourceRegistryName]) throw new ValidateInputValueError(`registry: ${primarySourceRegistryName} not found`)
           primarySourceAddress = registry[primarySourceRegistryName] as Address
         }
         // get secondary address
         if (oracleConfig && oracleConfig.secondarySource) {
           const secondarySourceRegistryName = oracleReaderRegistryName[oracleConfig.secondarySource.type]
-          if (!registry[secondarySourceRegistryName]) throw new Error(`registry: ${secondarySourceRegistryName} not found`)
+          if (!registry[secondarySourceRegistryName])
+            throw new ValidateInputValueError(`registry: ${secondarySourceRegistryName} not found`)
           secondarySourceAddress = registry[secondarySourceRegistryName] as Address
         }
 
@@ -240,11 +245,11 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
         let secondarySourceAddress: Address = zeroAddress
         const oracleConfig = this.data.params.oracleConfig
         // validate registry
-        if (!registry.initOracleProxy) throw new Error('registry: initOracleProxy not found')
+        if (!registry.initOracleProxy) throw new ValidateInputValueError('registry: initOracleProxy not found')
         // set primary source
         if (oracleConfig && oracleConfig.primarySource) {
           const primarySourceRegistryName = oracleReaderRegistryName[oracleConfig.primarySource.type]
-          if (!registry[primarySourceRegistryName]) throw new Error(`registry: ${primarySourceRegistryName} not found`)
+          if (!registry[primarySourceRegistryName]) throw new ValidateInputValueError(`registry: ${primarySourceRegistryName} not found`)
           primarySourceAddress = registry[primarySourceRegistryName] as Address
 
           setNewPoolOracleReaderSubActionParams.primarySource = {
@@ -257,7 +262,8 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
         // set secondary source
         if (oracleConfig && oracleConfig.secondarySource) {
           const secondarySourceRegistryName = oracleReaderRegistryName[oracleConfig.secondarySource.type]
-          if (!registry[secondarySourceRegistryName]) throw new Error(`registry: ${secondarySourceRegistryName} not found`)
+          if (!registry[secondarySourceRegistryName])
+            throw new ValidateInputValueError(`registry: ${secondarySourceRegistryName} not found`)
           secondarySourceAddress = registry[secondarySourceRegistryName] as Address
           setNewPoolOracleReaderSubActionParams.secondarySource = {
             type: oracleConfig?.secondarySource?.type,
@@ -273,7 +279,7 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
       // set mode liq calculator (min, max liq incentive multiplier) (if needed)(governor)
       () => {
         // validate registry
-        if (!registry.liqIncentiveCalculatorProxy) throw new Error('registry: liqIncentiveCalculatorProxy not found')
+        if (!registry.liqIncentiveCalculatorProxy) throw new ValidateInputValueError('registry: liqIncentiveCalculatorProxy not found')
         return new SetModeAndTokenLiqMultiplierSubAction(governor, {
           liqIncentiveCalculator: registry.liqIncentiveCalculatorProxy,
           tokenLiqIncentiveMultiplierConfig: {
@@ -283,17 +289,32 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
           modeLiqIncentiveMultiplierConfigs: this.data.params.modeConfigs.map((modeConfig) => {
             return {
               mode: modeConfig.mode,
-              config: modeConfig.config,
+              config: {
+                liqIncentiveMultiplier_e18: modeConfig.config.liqIncentiveMultiplierE18,
+                minLiqIncentiveMultiplier_e18: modeConfig.config.minLiqIncentiveMultiplierE18,
+              },
             }
           }),
         })
       },
-      // 7. setModeConfigs (governor)
-      // TODO set max health after liq also?
+      // 7. set max health after liq (guardian)
+      () => {
+        // validate registry
+        if (!registry.configProxy) throw new ValidateInputValueError('registry: configProxy not found')
+        return new SetMaxHealthAfterLiqSubAction(guardian, {
+          config: registry.configProxy,
+          maxHealthAfterLiqConfigs: this.data.params.modeConfigs.map((modeConfig) => {
+            return {
+              mode: modeConfig.mode,
+              maxHealthAfterLiqE18: modeConfig.config.maxHealthAfterLiqE18,
+            }
+          }),
+        })
+      },
       //set pool mode factor (if needed) (governor)
       (message: DeployLendingPoolSubActionMsg) => {
         // validate registry
-        if (!registry.configProxy) throw new Error('registry: configProxy not found')
+        if (!registry.configProxy) throw new ValidateInputValueError('registry: configProxy not found')
 
         // map mode pool factors
         const modePoolFactors = this.data.params.modeConfigs.map((modeConfig) => {
@@ -317,7 +338,7 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
       // 8. set mode status(guardian)
       () => {
         // validate registry
-        if (!registry.configProxy) throw new Error('registry: configProxy not found')
+        if (!registry.configProxy) throw new ValidateInputValueError('registry: configProxy not found')
         const modeStatuses = this.data.params.modeConfigs.map((modeConfig) => {
           const isNew = modeConfig.config ? true : false
           return { mode: modeConfig.mode, isNew: isNew }
@@ -330,7 +351,7 @@ export class SupportNewPoolAction extends Action<SupportNewPoolActionData, InitC
       // 9. set risk manager mode debt ceiling (guardian)
       (message: DeployLendingPoolSubActionMsg) => {
         // validate registry
-        if (!registry.riskManagerProxy) throw new Error('registry: riskManagerProxy not found')
+        if (!registry.riskManagerProxy) throw new ValidateInputValueError('registry: riskManagerProxy not found')
 
         const modeDebtCeilingInfos = this.data.params.modeConfigs.map((modeConfig) => {
           return {
