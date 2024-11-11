@@ -1,7 +1,7 @@
-import { Address, encodeFunctionData, getAddress, zeroAddress } from 'viem'
+import { Address, encodeFunctionData, getAddress, keccak256, toHex, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
+import { ContractValidateError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -43,7 +43,26 @@ export class SetModeDebtCeilingInfoTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
+    // validate zero address
     if (this.riskManager === zeroAddress) throw new ValidateInputZeroAddressError('RISK_MANAGER')
-    // TODO: check guardian
+    // get artifacts
+    const [riskManagerArtifact, acmArtifact] = await Promise.all([readArtifact('RiskManager'), readArtifact('AccessControlManager')])
+
+    // check role guardian
+    const acm: Address = await this.client.publicClient.readContract({
+      address: this.riskManager,
+      abi: riskManagerArtifact.abi,
+      functionName: 'ACM',
+      args: [],
+    })
+    const hasRole: boolean = await this.client.publicClient.readContract({
+      address: acm,
+      abi: acmArtifact.abi,
+      functionName: 'hasRole',
+      args: [keccak256(toHex('guardian')), this.client.walletClient.account.address],
+    })
+    if (!hasRole) {
+      throw new ContractValidateError('NOT_GUARDIAN')
+    }
   }
 }
