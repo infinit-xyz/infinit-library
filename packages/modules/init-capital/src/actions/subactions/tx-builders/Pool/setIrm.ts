@@ -41,7 +41,7 @@ export class SetIrmTxBuilder extends TxBuilder {
     }
 
     const [lendingPoolArtifact, acmArtifact] = await Promise.all([readArtifact('LendingPool'), readArtifact('AccessControlManager')])
-    await this.client.publicClient.readContract({
+    const acm = await this.client.publicClient.readContract({
       address: this.pool,
       abi: lendingPoolArtifact.abi,
       functionName: 'ACM',
@@ -49,7 +49,7 @@ export class SetIrmTxBuilder extends TxBuilder {
     })
 
     const hasRole: boolean = await this.client.publicClient.readContract({
-      address: this.pool,
+      address: acm,
       abi: acmArtifact.abi,
       functionName: 'hasRole',
       args: [keccak256(toHex('guardian')), this.client.walletClient.account.address],
