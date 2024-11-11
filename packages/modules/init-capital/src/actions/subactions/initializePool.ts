@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { Hex } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
-import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
+import { TxNotFoundError } from '@infinit-xyz/core/errors'
 
 import { InitializeLendingPoolTxBuilder, InitializeLendingPoolTxBuilderParams } from './tx-builders/LendingPool/initialize'
 import { InitCapitalRegistry } from '@/src/type'
