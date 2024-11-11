@@ -1,5 +1,6 @@
 import { ActionDetailRecord } from '@infinit-xyz/core'
 
+import { ChangeIrmAction, ChangeIrmActionParamsSchema } from '@actions//changeIRM'
 import { DeployApi3ProxyOracleReaderAction, DeployApi3ProxyOracleReaderActionParamsSchema } from '@actions/deployApi3ProxyOracleReader'
 import { DeployDoubleSlopeIRMsAction, DeployDoubleSlopeIRMsActionParamsSchema } from '@actions/deployDoubleSlopeIRMs'
 import { DeployInitCapitalAction, DeployInitCapitalActionParamsSchema } from '@actions/deployInitCapital'
@@ -112,9 +113,17 @@ export const actions = {
     paramsSchema: SupportNewPoolsActionParamsSchema,
     signers: ['deployer', 'guardian', 'governor'],
   },
+  changeIrm: {
+    type: 'on-chain',
+    name: 'Change IRM',
+    actionClassName: ChangeIrmAction.name,
+    paramsSchema: ChangeIrmActionParamsSchema,
+    signers: ['deployer', 'guardian'],
+  },
 } satisfies ActionDetailRecord
 
 export {
+  ChangeIrmAction,
   DeployApi3ProxyOracleReaderAction,
   DeployDoubleSlopeIRMsAction,
   DeployInitCapitalAction,
