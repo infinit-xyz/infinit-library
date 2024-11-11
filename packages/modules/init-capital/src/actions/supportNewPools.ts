@@ -6,17 +6,17 @@ import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/internal'
 
+import { SetModePoolFactorsSubAction } from '@actions//subactions/setModePoolFactors'
 import { DeployDoubleSlopeIRMSubActionMsg, DeployDoubleSlopeIRMsSubAction } from '@actions/subactions/deployDoubleSlopeIRMs'
+import { DeployLendingPoolProxySubAction, DeployLendingPoolSubActionMsg } from '@actions/subactions/deployLendingPoolProxy'
+import { InitializeLendingPoolSubAction } from '@actions/subactions/initializePool'
+import { SetInitOracleConfigSubAction } from '@actions/subactions/setInitOracle'
+import { SetMaxHealthAfterLiqSubAction } from '@actions/subactions/setMaxHealthAfterLiq'
+import { SetModeAndTokenLiqMultiplierSubAction } from '@actions/subactions/setModeAndTokenLiqMultiplier'
+import { SetModeDebtCeilingInfosSubAction } from '@actions/subactions/setModeDebtCeilingInfos'
+import { SetModeStatusesDefaultSubAction } from '@actions/subactions/setModeStatusesDefault'
 import { DeployDoubleSlopeIRMTxBuilderParams } from '@actions/subactions/tx-builders/DoubleSlopeIRM/deploy'
 
-import { DeployLendingPoolProxySubAction, DeployLendingPoolSubActionMsg } from './subactions/deployLendingPoolProxy'
-import { InitializeLendingPoolSubAction } from './subactions/initializePool'
-import { SetInitOracleConfigSubAction } from './subactions/setInitOracle'
-import { SetMaxHealthAfterLiqSubAction } from './subactions/setMaxHealthAfterLiq'
-import { SetModeAndTokenLiqMultiplierSubAction } from './subactions/setModeAndTokenLiqMultiplier'
-import { SetModeDebtCeilingInfosSubAction } from './subactions/setModeDebtCeilingInfos'
-import { SetModePoolFactorsSubAction } from './subactions/setModePoolFactors'
-import { SetModeStatusesDefaultSubAction } from './subactions/setModeStatusesDefault'
 import {
   Api3Params,
   LsdApi3Params,
@@ -54,8 +54,9 @@ export const oracleReaderRegistryName: Record<'api3' | 'lsdApi3' | 'pyth', keyof
 }
 
 export const SupportNewPoolActionParamsSchema = z.object({
-  name: z.string().describe(`Name of the pool e.g. POOL_WBTC`),
-  token: zodAddressNonZero.describe(`Address of the token e.g. WBTC`),
+  name: z.string().describe(`Name of the pool e.g. Init Wrapped Bitcoin`),
+  symbol: z.string().describe(`Name of the pool's symbol e.g. inWBTC`),
+  token: zodAddressNonZero.describe(`Address of the token e.g. '0x123...abc'`),
   modeConfigs: z
     .array(
       z.object({
@@ -79,39 +80,41 @@ export const SupportNewPoolActionParamsSchema = z.object({
           })
           .describe(`Pool config`),
         config: z.object({
-          liqIncentiveMultiplierE18: z.bigint().nonnegative().describe(`Liq incentive multiplier e18`),
+          liqIncentiveMultiplierE18: z.bigint().nonnegative().describe(`Liquidation incentive multiplier in E18 for the mode`),
           minLiqIncentiveMultiplierE18: z.bigint().nonnegative().describe(`Min liq incentive multiplier e18`),
-          maxHealthAfterLiqE18: z.bigint().describe(`Max Health after liq in E18, skip the if set to maxUint64 (${maxUint64})`),
+          maxHealthAfterLiqE18: z
+            .bigint()
+            .nonnegative()
+            .describe(`Max Health after liq in E18, skip the max health validation if set to maxUint64 (${maxUint64})`),
         }),
       }) satisfies z.ZodType<ModeConfig>,
     )
     .describe(`mode configs for adding new mode`),
-  liqIncentiveMultiplierE18: z.bigint().nonnegative().describe(`liq incentive multiplier e18`),
+  liqIncentiveMultiplierE18: z.bigint().nonnegative().describe(`Liquidation incentive multiplier in E18 for the token`),
   supplyCap: z.bigint().nonnegative().describe(`lending pool supply cap`),
   borrowCap: z.bigint().nonnegative().describe(`lending pool borrow cap`),
   reserveFactor: z.bigint().nonnegative().describe(`lending pool reserve factor`),
-  treasury: zodAddressNonZero.describe(`fee receiver address`),
   oracleConfig: z
     .object({
       primarySource: oracleReader.describe(`Primary source oracle reader config`),
-      secondarySource: oracleReader.optional().describe(`Secondary source oracle reader config, need to set maxPrivceDeviationE18 if set.`),
+      secondarySource: oracleReader.optional().describe(`Secondary source oracle reader config, need to set maxPrivceDeviationE18 if set`),
       maxPriceDeviationE18: z
         .bigint()
         .optional()
-        .describe(`Max price deviation between primary and secondary sources in E18, need to set secondarySource if set.`),
+        .describe(`Max price deviation between primary and secondary sources in E18, need to set secondarySource if set`),
     })
     .optional()
     .describe(''),
   doubleSlopeIRMConfig: z.object({
-    name: z.string().describe(`Name of the reserve interest rate model that will be displayed in the registry.`),
+    name: z.string().describe(`Name of the reserve interest rate model that will be displayed in the registry`),
     params: z
       .object({
-        baseBorrowRateE18: z.bigint().describe(`Base borrow rate in E18 (e.g., 10% = 0.1 * 1e18).`),
+        baseBorrowRateE18: z.bigint().describe(`Base borrow rate in E18 (e.g., 10% = 0.1 * 1e18)`),
         jumpUtilizationRateE18: z
           .bigint()
-          .describe(`Utilization rate in E18 where the jump multiplier is applied (e.g., 80% = 0.8 * 1e18).`),
-        borrowRateMultiplierE18: z.bigint().describe(`Borrow rate multiplier in E18 (e.g., 1% = 0.01 * 1e18).`),
-        jumpRateMultiplierE18: z.bigint().describe(`Jump multiplier rate in E18 (e.g., 1% = 0.01 * 1e18).`),
+          .describe(`Utilization rate in E18 where the jump multiplier is applied (e.g., 80% = 0.8 * 1e18)`),
+        borrowRateMultiplierE18: z.bigint().describe(`Borrow rate multiplier in E18 (e.g., 1% = 0.01 * 1e18)`),
+        jumpRateMultiplierE18: z.bigint().describe(`Jump multiplier rate in E18 (e.g., 1% = 0.01 * 1e18)`),
       })
       .describe(
         `Parameters for the reserve interest rate model => real borrow rate = baseRate + borrowRate * min(currentUtil, jumpUtil) + jumpRate * max(0, uti - jumpUtil)`,
@@ -176,21 +179,17 @@ export class SupportNewPoolsAction extends Action<SupportNewPoolsActionData, Ini
       },
       // 3. initialize lending proxy
       (message: DeployLendingPoolSubActionMsg & DeployDoubleSlopeIRMSubActionMsg) => {
-        const initializePoolConfig = {
-          underlyingToken: newPoolParams.token,
-          name: newPoolParams.name,
-          symbol: newPoolParams.name,
-          reserveFactor: newPoolParams.reserveFactor,
-          treasury: newPoolParams.treasury,
-        }
+        // validate registry
+        if (!registry.feeVault) throw new ValidateInputValueError('registry: feeVault not found')
+
         return new InitializeLendingPoolSubAction(deployer, {
           lendingPool: message.lendingPoolProxy,
-          underlingToken: initializePoolConfig.underlyingToken,
-          name: initializePoolConfig.name,
-          symbol: initializePoolConfig.symbol,
+          underlingToken: newPoolParams.token,
+          name: newPoolParams.name,
+          symbol: newPoolParams.symbol,
           irm: message.doubleSlopeIrms[newPoolParams.doubleSlopeIRMConfig.name],
-          reserveFactor: initializePoolConfig.reserveFactor,
-          treasury: initializePoolConfig.treasury,
+          reserveFactor: newPoolParams.reserveFactor,
+          treasury: registry.feeVault,
         })
       },
       // 4. set pool config (guardian)

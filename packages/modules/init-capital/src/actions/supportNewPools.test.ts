@@ -27,7 +27,8 @@ describe('SupportNewPoolsTest', async () => {
 
   test('support new pools', async () => {
     const pool1ActionParams: SupportNewPoolActionParams = {
-      name: 'test_new_pool',
+      name: 'INIT Ether',
+      symbol: 'inWETH',
       token: ARBITRUM_TEST_ADDRESSES.weth,
       modeConfigs: [
         {
@@ -78,7 +79,6 @@ describe('SupportNewPoolsTest', async () => {
       supplyCap: parseUnits('1000000', 18),
       borrowCap: parseUnits('1000000', 18),
       reserveFactor: parseUnits('0.1', 18),
-      treasury: ARBITRUM_TEST_ADDRESSES.oneAddress,
       doubleSlopeIRMConfig: {
         name: 'testIRM',
         params: {
@@ -227,7 +227,7 @@ const validateLendingPool = async (client: TestInfinitWallet, pool: SupportNewPo
     functionName: 'treasury',
     args: [],
   })
-  expect(treasury).toStrictEqual(getAddress(pool.treasury))
+  expect(treasury).toStrictEqual(getAddress(registry.feeVault!))
   // validate underlying token
   const underlyingToken = await client.publicClient.readContract({
     address: registry.lendingPools![pool.name].lendingPool,
