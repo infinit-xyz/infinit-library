@@ -18,7 +18,7 @@ type FeeInfo = {
 
 export class DeployFeeVaultTxBuilder extends TxBuilder {
   private wrappedNativeToken: Address
-  private initCapitalDefaultAdmin: Address = '0x60045e6DE3080D3a6271E635616dBbC20886dfCb'
+  private initCapitalDefaultAdmin: Address = '0x0b5e09bfff17b7ab0765dd077e69982cd554c567'
   private initCapitalFeeBps: bigint = 1_000n
   private feeInfos: FeeInfo[]
 
