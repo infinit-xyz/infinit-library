@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { Address, zeroAddress } from 'viem'
+import { Address, maxUint64, zeroAddress } from 'viem'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
@@ -62,45 +62,56 @@ export const SupportNewPoolActionParamsSchema = z.object({
         mode: z.number().describe(`Mode number starting from 0`),
         poolConfig: z
           .object({
-            collFactorE18: z.bigint().describe(`Collateral factor in E18, should be less than 1e18, e.g. parseUnit('0.8', 18)`),
-            borrFactorE18: z.bigint().describe(`Borrow factor in E18, should be greater than 1e18, e.g. parseUnit('1.1', 18)`),
+            collFactorE18: z
+              .bigint()
+              .nonnegative()
+              .describe(`Collateral factor in E18, should be less than 1e18, e.g. parseUnit('0.8', 18)`),
+            borrFactorE18: z
+              .bigint()
+              .nonnegative()
+              .describe(`Borrow factor in E18, should be greater than 1e18, e.g. parseUnit('1.1', 18)`),
             debtCeiling: z
               .bigint()
+              .nonnegative()
               .describe(
                 `Debt ceiling for the pool in this mode, user could no longer borrow from the pool for this mode if the debt ceiling is reached`,
               ),
           })
           .describe(`Pool config`),
         config: z.object({
-          liqIncentiveMultiplierE18: z.bigint().describe(`Liq incentive multiplier e18`),
-          minLiqIncentiveMultiplierE18: z.bigint().describe(`Min liq incentive multiplier e18`),
-          maxHealthAfterLiqE18: z.bigint().describe(`Max Health after liq e18, if set to max uint64`),
+          liqIncentiveMultiplierE18: z.bigint().nonnegative().describe(`Liq incentive multiplier e18`),
+          minLiqIncentiveMultiplierE18: z.bigint().nonnegative().describe(`Min liq incentive multiplier e18`),
+          maxHealthAfterLiqE18: z.bigint().describe(`Max Health after liq in E18, skip the if set to maxUint64 (${maxUint64})`),
         }),
       }) satisfies z.ZodType<ModeConfig>,
     )
     .describe(`mode configs for adding new mode`),
-  liqIncentiveMultiplierE18: z.bigint().describe(`liq incentive multiplier e18`).optional(),
-  supplyCap: z.bigint().describe(`lending pool supply cap`),
-  borrowCap: z.bigint().describe(`lending pool borrow cap`),
-  reserveFactor: z.bigint().describe(`lending pool reserve factor`),
+  liqIncentiveMultiplierE18: z.bigint().nonnegative().describe(`liq incentive multiplier e18`),
+  supplyCap: z.bigint().nonnegative().describe(`lending pool supply cap`),
+  borrowCap: z.bigint().nonnegative().describe(`lending pool borrow cap`),
+  reserveFactor: z.bigint().nonnegative().describe(`lending pool reserve factor`),
   treasury: zodAddressNonZero.describe(`fee receiver address`),
   oracleConfig: z
     .object({
-      primarySource: oracleReader.describe(`Primary source address e.g. deployed api3ProxyOracleReaderProxy address`),
-      secondarySource: oracleReader.optional().describe(`Secondary source address e.g. deployed api3ProxyOracleReaderProxy address`),
-      maxPriceDeviationE18: z.bigint().optional().describe(`Max price deviation between primary and secondary sources in E18 `),
+      primarySource: oracleReader.describe(`Primary source oracle reader config`),
+      secondarySource: oracleReader.optional().describe(`Secondary source oracle reader config, need to set maxPrivceDeviationE18 if set.`),
+      maxPriceDeviationE18: z
+        .bigint()
+        .optional()
+        .describe(`Max price deviation between primary and secondary sources in E18, need to set secondarySource if set.`),
     })
-    .optional(),
+    .optional()
+    .describe(''),
   doubleSlopeIRMConfig: z.object({
-    name: z.string().describe(`Name of the reserve interest rate model that will be displayed in the registry`),
+    name: z.string().describe(`Name of the reserve interest rate model that will be displayed in the registry.`),
     params: z
       .object({
-        baseBorrowRateE18: z.bigint().describe(`Base borrow rate in E18 (e.g., 10% = 0.1 * 1e18)`),
+        baseBorrowRateE18: z.bigint().describe(`Base borrow rate in E18 (e.g., 10% = 0.1 * 1e18).`),
         jumpUtilizationRateE18: z
           .bigint()
-          .describe(`Utilization rate in E18 where the jump multiplier is applied (e.g., 80% = 0.8 * 1e18)`),
-        borrowRateMultiplierE18: z.bigint().describe(`Borrow rate multiplier in E18 (e.g., 1% = 0.01 * 1e18)`),
-        jumpRateMultiplierE18: z.bigint().describe(`Jump multiplier rate in E18 (e.g., 1% = 0.01 * 1e18)`),
+          .describe(`Utilization rate in E18 where the jump multiplier is applied (e.g., 80% = 0.8 * 1e18).`),
+        borrowRateMultiplierE18: z.bigint().describe(`Borrow rate multiplier in E18 (e.g., 1% = 0.01 * 1e18).`),
+        jumpRateMultiplierE18: z.bigint().describe(`Jump multiplier rate in E18 (e.g., 1% = 0.01 * 1e18).`),
       })
       .describe(
         `Parameters for the reserve interest rate model => real borrow rate = baseRate + borrowRate * min(currentUtil, jumpUtil) + jumpRate * max(0, uti - jumpUtil)`,
