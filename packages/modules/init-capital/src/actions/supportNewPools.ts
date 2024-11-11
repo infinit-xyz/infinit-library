@@ -86,7 +86,7 @@ export const SupportNewPoolActionParamsSchema = z.object({
   treasury: zodAddressNonZero.describe(`fee receiver address`),
   oracleConfig: z
     .object({
-      primarySource: oracleReader.optional().describe(`Primary source address e.g. deployed api3ProxyOracleReaderProxy address`),
+      primarySource: oracleReader.describe(`Primary source address e.g. deployed api3ProxyOracleReaderProxy address`),
       secondarySource: oracleReader.optional().describe(`Secondary source address e.g. deployed api3ProxyOracleReaderProxy address`),
       maxPriceDeviationE18: z.bigint().optional().describe(`Max price deviation between primary and secondary sources in E18 `),
     })

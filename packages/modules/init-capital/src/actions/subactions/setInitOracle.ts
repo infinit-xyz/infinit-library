@@ -1,6 +1,7 @@
 import { Address, Hash } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 
 import { SetMaxPriceDeviations_e18TxBuilder } from '@actions/subactions/tx-builders/InitOracle/setMaxPriceDeviations_e18'
 
@@ -63,6 +64,17 @@ export class SetInitOracleConfigSubAction extends SubAction<SetInitOracleConfigS
           maxPriceDeviations_e18s: maxPriceDeviationsFilteredParams.map((tokenConfig) => tokenConfig.maxPriceDeviation_e18 as bigint),
         }),
       )
+    }
+  }
+
+  protected override async internalValidate(_registry?: InitCapitalRegistry): Promise<void> {
+    for (const tokenConfig of this.params.tokenConfigs) {
+      if (
+        (tokenConfig.secondarySource && !tokenConfig.maxPriceDeviation_e18) ||
+        (tokenConfig.maxPriceDeviation_e18 && !tokenConfig.secondarySource)
+      ) {
+        throw new ValidateInputValueError('Need to provide both secondary source and max price deviation if one of them is provided')
+      }
     }
   }
 
