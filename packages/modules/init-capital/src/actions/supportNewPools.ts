@@ -4,7 +4,12 @@ import { Address, maxUint64, zeroAddress } from 'viem'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
-import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/internal'
+import {
+  // zodAddress
+  validateActionData,
+  zodAddressNonZero,
+  zodHex,
+} from '@infinit-xyz/core/internal'
 
 import { SetModePoolFactorsSubAction } from '@actions//subactions/setModePoolFactors'
 import { DeployDoubleSlopeIRMSubActionMsg, DeployDoubleSlopeIRMsSubAction } from '@actions/subactions/deployDoubleSlopeIRMs'
@@ -18,8 +23,8 @@ import { SetModeStatusesDefaultSubAction } from '@actions/subactions/setModeStat
 import { DeployDoubleSlopeIRMTxBuilderParams } from '@actions/subactions/tx-builders/DoubleSlopeIRM/deploy'
 
 import {
+  // LsdApi3Params,
   Api3Params,
-  LsdApi3Params,
   PythParams,
   SetNewPoolOracleReaderSubAction,
   SetNewPoolOracleReaderSubActionParams,
@@ -42,9 +47,30 @@ export type ModeConfig = {
 }
 
 export const oracleReader = z.discriminatedUnion('type', [
-  z.object({ type: z.literal('api3'), params: z.custom<Api3Params>() }),
-  z.object({ type: z.literal('lsdApi3'), params: z.custom<LsdApi3Params>() }),
-  z.object({ type: z.literal('pyth'), params: z.custom<PythParams>() }),
+  z.object({
+    type: z.literal('api3'),
+    params: z.object({
+      dataFeedProxy: zodAddressNonZero.describe(
+        `Address of data feed proxy e.g. '0x123...abc', access https://market.api3.org to find the DataFeedProxy`,
+      ),
+      maxStaleTime: z.bigint().nonnegative(`Max stale time in seconds e.g. 86400n for 1 day`),
+    }) satisfies z.ZodType<Api3Params>,
+  }),
+  z.object({
+    type: z.literal('pyth'),
+    params: z.object({
+      priceFeed: zodHex.describe(`Pyth's priceId to use for fetching price check https://www.pyth.network/developers/price-feed-ids`),
+      maxStaleTime: z.bigint().nonnegative(`Max stale time in seconds e.g. 86400n for 1 day`),
+    }) satisfies z.ZodType<PythParams>,
+  }),
+  // z.object({
+  //   type: z.literal('lsdApi3'),
+  //   params: z.object({
+  //     dataFeedProxy: zodAddressNonZero,
+  //     maxStaleTime: z.bigint().nonnegative(),
+  //     setQuoteToken: zodAddress,
+  //   }) satisfies z.ZodType<LsdApi3Params>,
+  // }),
 ])
 
 export const oracleReaderRegistryName: Record<'api3' | 'lsdApi3' | 'pyth', keyof InitCapitalRegistry> = {
@@ -79,14 +105,17 @@ export const SupportNewPoolActionParamsSchema = z.object({
               ),
           })
           .describe(`Pool config`),
-        config: z.object({
-          liqIncentiveMultiplierE18: z.bigint().nonnegative().describe(`Liquidation incentive multiplier in E18 for the mode`),
-          minLiqIncentiveMultiplierE18: z.bigint().nonnegative().describe(`Min liq incentive multiplier e18`),
-          maxHealthAfterLiqE18: z
-            .bigint()
-            .nonnegative()
-            .describe(`Max Health after liq in E18, skip the max health validation if set to maxUint64 (${maxUint64})`),
-        }),
+        config: z
+          .object({
+            liqIncentiveMultiplierE18: z.bigint().nonnegative().describe(`Liquidation incentive multiplier in E18 for the mode`),
+            minLiqIncentiveMultiplierE18: z.bigint().nonnegative().describe(`Min liq incentive multiplier e18`),
+            maxHealthAfterLiqE18: z
+              .bigint()
+              .nonnegative()
+              .describe(`Max Health after liq in E18, skip the max health validation if set to maxUint64 (${maxUint64})`),
+          })
+          .optional()
+          .describe(`Mode liquidation config, not required if it already set`),
       }) satisfies z.ZodType<ModeConfig>,
     )
     .describe(`mode configs for adding new mode`),
@@ -104,7 +133,7 @@ export const SupportNewPoolActionParamsSchema = z.object({
         .describe(`Max price deviation between primary and secondary sources in E18, need to set secondarySource if set`),
     })
     .optional()
-    .describe(''),
+    .describe('Set oracle sources for the token, not required if the token source is already set'),
   doubleSlopeIRMConfig: z.object({
     name: z.string().describe(`Name of the reserve interest rate model that will be displayed in the registry`),
     params: z
@@ -302,15 +331,20 @@ export class SupportNewPoolsAction extends Action<SupportNewPoolsActionData, Ini
             token: newPoolParams.token,
             multiplier_e18: newPoolParams.liqIncentiveMultiplierE18,
           },
-          modeLiqIncentiveMultiplierConfigs: newPoolParams.modeConfigs.map((modeConfig) => {
-            return {
-              mode: modeConfig.mode,
-              config: {
-                liqIncentiveMultiplier_e18: modeConfig.config.liqIncentiveMultiplierE18,
-                minLiqIncentiveMultiplier_e18: modeConfig.config.minLiqIncentiveMultiplierE18,
-              },
-            }
-          }),
+          modeLiqIncentiveMultiplierConfigs: newPoolParams.modeConfigs
+            .map((modeConfig) => {
+              return modeConfig.config
+                ? {
+                    mode: modeConfig.mode,
+                    config: {
+                      liqIncentiveMultiplier_e18: modeConfig.config.liqIncentiveMultiplierE18,
+                      minLiqIncentiveMultiplier_e18: modeConfig.config.minLiqIncentiveMultiplierE18,
+                    },
+                  }
+                : undefined
+            })
+            // filter undefined
+            .filter((config) => !!config),
         })
       },
       // 7. set max health after liq (guardian)
@@ -319,12 +353,17 @@ export class SupportNewPoolsAction extends Action<SupportNewPoolsActionData, Ini
         if (!registry.configProxy) throw new ValidateInputValueError('registry: configProxy not found')
         return new SetMaxHealthAfterLiqSubAction(guardian, {
           config: registry.configProxy,
-          maxHealthAfterLiqConfigs: newPoolParams.modeConfigs.map((modeConfig) => {
-            return {
-              mode: modeConfig.mode,
-              maxHealthAfterLiqE18: modeConfig.config.maxHealthAfterLiqE18,
-            }
-          }),
+          maxHealthAfterLiqConfigs: newPoolParams.modeConfigs
+            .map((modeConfig) => {
+              return modeConfig.config
+                ? {
+                    mode: modeConfig.mode,
+                    maxHealthAfterLiqE18: modeConfig.config.maxHealthAfterLiqE18,
+                  }
+                : undefined
+            })
+            // filter undefined
+            .filter((config) => !!config),
         })
       },
       //set pool mode factor (if needed) (governor)
