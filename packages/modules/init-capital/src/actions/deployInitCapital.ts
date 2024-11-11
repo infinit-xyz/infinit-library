@@ -6,7 +6,6 @@ import { validateActionData, zodAddress } from '@infinit-xyz/core/internal'
 import { AcceptDefaultAdminTransferSubAction } from '@actions/subactions/acceptDefaultAdminTransfer'
 import { AddGovernorSubAction } from '@actions/subactions/addGovernor'
 import { AddGuardianSubAction } from '@actions/subactions/addGuardian'
-import { DeployDoubleSlopeIRMsSubAction, DoubleSlopeIRMConfig } from '@actions/subactions/deployDoubleSlopeIRMs'
 import { DeployInitCapitalContracts1SubAction, DeployInitCapitalMsg } from '@actions/subactions/deployInitCapitalContracts1'
 import { DeployInitCapitalContracts2SubAction, DeployInitCapitalMsg_2 } from '@actions/subactions/deployInitCapitalContracts2'
 import { DeployInitCapitalContracts3SubAction, DeployInitCapitalMsg_3 } from '@actions/subactions/deployInitCapitalContracts3'
@@ -15,7 +14,6 @@ import { DeployInitCapitalContracts5SubAction, DeployInitCapitalMsg_5 } from '@a
 import { DeployInitCapitalContracts6SubAction, DeployInitCapitalMsg_6 } from '@actions/subactions/deployInitCapitalContracts6'
 import { DeployInitCoreImplMsg, DeployInitCoreImplSubAction } from '@actions/subactions/deployInitCoreImpl'
 import { DeployInitCoreProxyMsg, DeployInitCoreProxySubAction } from '@actions/subactions/deployInitCoreProxy'
-import { DeployDoubleSlopeIRMTxBuilderParams } from '@actions/subactions/tx-builders/DoubleSlopeIRM/deploy'
 
 import { BeginDefaultAdminTransferSubAction } from '@/src/actions/subactions/beginDefaultAdminTransfer'
 import { TransferProxyAdminOwnerSubAction } from '@/src/actions/subactions/transferProxyAdminOwner'
@@ -32,23 +30,6 @@ export const DeployInitCapitalActionParamsSchema = z.object({
   guardian: zodAddress.describe(`Address of account who will be granted the guardian role`),
   feeAdmin: zodAddress.describe(`Address of account who can control the fee vault`),
   treasury: zodAddress.describe(`Address of account who receive the fee from the fee vault`),
-  doubleSlopeIRMConfigs: z.array(
-    z.object({
-      name: z.string().describe(`Name of the reserve interest rate model that will be displayed in the registry`),
-      params: z
-        .object({
-          baseBorrowRateE18: z.bigint().describe(`Base borrow rate in E18 (e.g., 10% = 0.1 * 1e18)`),
-          jumpUtilizationRateE18: z
-            .bigint()
-            .describe(`Utilization rate in E18 where the jump multiplier is applied (e.g., 80% = 0.8 * 1e18)`),
-          borrowRateMultiplierE18: z.bigint().describe(`Borrow rate multiplier in E18 (e.g., 1% = 0.01 * 1e18)`),
-          jumpRateMultiplierE18: z.bigint().describe(`Jump multiplier rate in E18 (e.g., 1% = 0.01 * 1e18)`),
-        })
-        .describe(
-          `Parameters for the reserve interest rate model => real borrow rate = baseRate + borrowRate * min(currentUtil, jumpUtil) + jumpRate * max(0, uti - jumpUtil)`,
-        ) satisfies z.ZodType<DeployDoubleSlopeIRMTxBuilderParams>,
-    }) satisfies z.ZodType<DoubleSlopeIRMConfig>,
-  ),
 })
 
 export type DeployInitCapitalActionParams = z.infer<typeof DeployInitCapitalActionParamsSchema>
@@ -159,7 +140,6 @@ export class DeployInitCapitalAction extends Action<DeployInitCapitalActionData,
           liqIncentiveCalculatorProxy: message.liqIncentiveCalculatorProxy,
           maxLiqIncentiveMultiplier: params.maxLiqIncentiveMultiplier,
         }),
-      () => new DeployDoubleSlopeIRMsSubAction(deployer, { doubleSlopeIRMConfigs: params.doubleSlopeIRMConfigs }),
       (
         message: DeployInitCapitalMsg &
           DeployInitCapitalMsg_2 &
