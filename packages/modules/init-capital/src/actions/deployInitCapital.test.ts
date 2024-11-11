@@ -78,8 +78,8 @@ describe('deployInitCapitalAction', () => {
       functionName: 'getFeeInfos',
       args: [],
     })
-    expect(feeInfos[0].admin).equal('0x60045e6DE3080D3a6271E635616dBbC20886dfCb')
-    expect(feeInfos[0].treasury).equal('0x60045e6DE3080D3a6271E635616dBbC20886dfCb')
+    expect(feeInfos[0].admin).equal('0x0B5e09bffF17B7Ab0765dD077e69982Cd554C567')
+    expect(feeInfos[0].treasury).equal('0x0B5e09bffF17B7Ab0765dD077e69982Cd554C567')
     expect(feeInfos[0].feeBps).equal(1000n)
     expect(feeInfos[1].admin).equal(oneAddress)
     expect(feeInfos[1].treasury).equal(oneAddress)

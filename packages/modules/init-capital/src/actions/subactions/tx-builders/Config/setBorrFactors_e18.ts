@@ -63,7 +63,7 @@ export class SetBorrFactorE18TxBuilder extends TxBuilder {
       const oneE18 = parseUnits('1', 18)
       if (factor < oneE18 || factor > maxUint128) {
         throw new ValidateInputValueError(
-          `Borrow factor (index: ${index}) is out of range (min: ${oneE18}, max: ${maxUint128}), got ${factor}`,
+          `Borrow factor (index: ${index}) is out of range (min: ${oneE18}n, max: ${maxUint128}n), got ${factor}n`,
         )
       }
     }

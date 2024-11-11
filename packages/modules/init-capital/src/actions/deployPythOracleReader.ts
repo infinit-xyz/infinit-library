@@ -23,13 +23,13 @@ export const DeployPythOracleReaderActionParamsSchema = z.object({
 
 export type DeployPythOracleReaderActionParams = z.infer<typeof DeployPythOracleReaderActionParamsSchema>
 
-export type deployPythOracleReaderActionData = {
+export type DeployPythOracleReaderActionData = {
   params: DeployPythOracleReaderActionParams
   signer: Record<'deployer', InfinitWallet>
 }
 
-export class DeployPythOracleReaderAction extends Action<deployPythOracleReaderActionData, InitCapitalRegistry> {
-  constructor(data: deployPythOracleReaderActionData) {
+export class DeployPythOracleReaderAction extends Action<DeployPythOracleReaderActionData, InitCapitalRegistry> {
+  constructor(data: DeployPythOracleReaderActionData) {
     validateActionData(data, DeployPythOracleReaderActionParamsSchema, ['deployer'])
     super(DeployPythOracleReaderAction.name, data)
   }

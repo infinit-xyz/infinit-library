@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 
-import { encodeFunctionData, maxUint256 } from 'viem'
+import { encodeFunctionData, maxUint256, parseUnits } from 'viem'
 
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
 
@@ -13,6 +13,7 @@ const tester = ARBITRUM_TEST_ADDRESSES.tester
 describe('SetCollFactorsE18', async () => {
   let txBuilder: SetCollFactorE18TxBuilder
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
+  const oneE18 = parseUnits('1', 18)
 
   test("test tx builder's calldata should be matched with mock data", async () => {
     txBuilder = new SetCollFactorE18TxBuilder(client, {
@@ -51,9 +52,7 @@ describe('SetCollFactorsE18', async () => {
       pools: ['0x0000000000000000000000000000000000000001', '0x0000000000000000000000000000000000000002'],
       factors_e18: [-1n, 1n],
     })
-    expect(txBuilder.validate()).rejects.toThrowError(
-      'Borrow factor (index: 0) is out of range (min: 0n, max: 340282366920938463463374607431768211455), got -1',
-    )
+    expect(txBuilder.validate()).rejects.toThrowError(`Collateral factor (index: 0) is out of range (min: 0n, max: ${oneE18}n), got -1n`)
   })
 
   test('test too large factor should throw error on validation', async () => {
@@ -64,7 +63,7 @@ describe('SetCollFactorsE18', async () => {
       factors_e18: [1n, maxUint256],
     })
     expect(txBuilder.validate()).rejects.toThrowError(
-      `Borrow factor (index: 1) is out of range (min: 0n, max: 340282366920938463463374607431768211455), got ${maxUint256}`,
+      `Collateral factor (index: 1) is out of range (min: 0n, max: ${oneE18}n), got ${maxUint256}n`,
     )
   })
   // TODO: test validate after has base init test setup

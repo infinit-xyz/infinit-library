@@ -62,7 +62,7 @@ export class SetCollFactorE18TxBuilder extends TxBuilder {
     for (const [index, factor] of this.factors_e18.entries()) {
       const oneE18 = parseUnits('1', 18)
       if (factor < 0n || factor > oneE18) {
-        throw new ValidateInputValueError(`Borrow factor (index: ${index}) is out of range (min: 0n, max: ${oneE18}), got ${factor}`)
+        throw new ValidateInputValueError(`Collateral factor (index: ${index}) is out of range (min: 0n, max: ${oneE18}n), got ${factor}n`)
       }
     }
 
