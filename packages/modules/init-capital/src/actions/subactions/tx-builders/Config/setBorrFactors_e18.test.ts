@@ -52,7 +52,7 @@ describe('SetBorrFactorsE18', async () => {
       factors_e18: [-1n, 1n],
     })
     expect(txBuilder.validate()).rejects.toThrowError(
-      'Borrow factor (index: 0) is out of range (min: 0n, max: 340282366920938463463374607431768211455), got -1',
+      'Borrow factor (index: 0) is out of range (min: 1000000000000000000n, max: 340282366920938463463374607431768211455n), got -1n',
     )
   })
 
@@ -61,10 +61,10 @@ describe('SetBorrFactorsE18', async () => {
       config: '0xCD399994982B3a3836B8FE81f7127cC5148e9BaE',
       mode: 2,
       pools: ['0x0000000000000000000000000000000000000001', '0x0000000000000000000000000000000000000002'],
-      factors_e18: [1n, maxUint256],
+      factors_e18: [1000000n, maxUint256],
     })
     expect(txBuilder.validate()).rejects.toThrowError(
-      `Borrow factor (index: 1) is out of range (min: 0n, max: 340282366920938463463374607431768211455), got ${maxUint256}`,
+      `Borrow factor (index: 0) is out of range (min: 1000000000000000000n, max: 340282366920938463463374607431768211455n), got 1000000n`,
     )
   })
   // TODO: test validate after has base init test setup

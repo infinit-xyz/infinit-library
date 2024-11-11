@@ -18,6 +18,7 @@ import {
   SetPythOracleReaderTokensInfoAction,
   SetPythOracleReaderTokensInfoActionParamsSchema,
 } from '@actions/setPythOracleReaderTokensInfo'
+import { SupportNewPoolsAction, SupportNewPoolsActionParamsSchema } from '@actions/supportNewPools'
 
 export const actions = {
   init: {
@@ -104,6 +105,13 @@ export const actions = {
     paramsSchema: SetPythOracleReaderTokensInfoActionParamsSchema,
     signers: ['governor'],
   },
+  supportNewPools: {
+    type: 'on-chain',
+    name: 'Support New Pools',
+    actionClassName: SupportNewPoolsAction.name,
+    paramsSchema: SupportNewPoolsActionParamsSchema,
+    signers: ['deployer', 'guardian', 'governor'],
+  },
 } satisfies ActionDetailRecord
 
 export {
@@ -119,4 +127,5 @@ export {
   SetOracleAction,
   SetPoolConfigAction,
   SetPythOracleReaderTokensInfoAction,
+  SupportNewPoolsAction,
 }

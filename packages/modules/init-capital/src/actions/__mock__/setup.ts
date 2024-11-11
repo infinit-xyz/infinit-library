@@ -20,6 +20,7 @@ export const setupInitCapital = async (): Promise<InitCapitalRegistry> => {
 
   let registry: InitCapitalRegistry
 
+  // 1. deploy init capital
   const deployInitCapitalAction = new DeployInitCapitalAction({
     params: {
       proxyAdminOwner: accessControlManagerOwner,
@@ -32,52 +33,15 @@ export const setupInitCapital = async (): Promise<InitCapitalRegistry> => {
       guardian: deployer,
       feeAdmin: accessControlManagerOwner,
       treasury: accessControlManagerOwner,
-      doubleSlopeIRMConfigs: [
-        {
-          name: 'StablecoinIRM',
-          params: {
-            baseBorrowRateE18: 100000000000000000n,
-            jumpUtilizationRateE18: 800000000000000000n,
-            borrowRateMultiplierE18: 10000000000000000n,
-            jumpRateMultiplierE18: 10000000000000000n,
-          },
-        },
-        {
-          name: 'MajorcoinIRM',
-          params: {
-            baseBorrowRateE18: 100000000000000000n,
-            jumpUtilizationRateE18: 600000000000000000n,
-            borrowRateMultiplierE18: 10000000000000000n,
-            jumpRateMultiplierE18: 10000000000000000n,
-          },
-        },
-        {
-          name: 'MemecoinIRM',
-          params: {
-            baseBorrowRateE18: 300000000000000000n,
-            jumpUtilizationRateE18: 500000000000000000n,
-            borrowRateMultiplierE18: 20000000000000000n,
-            jumpRateMultiplierE18: 50000000000000000n,
-          },
-        },
-        {
-          name: 'LrtcoinIRM',
-          params: {
-            baseBorrowRateE18: 100000000000000000n,
-            jumpUtilizationRateE18: 500000000000000000n,
-            borrowRateMultiplierE18: 10000000000000000n,
-            jumpRateMultiplierE18: 10000000000000000n,
-          },
-        },
-      ],
     },
     signer: {
       deployer: client,
       accessControlManagerOwner: client2,
     },
   })
-  // 1. deploy init capital
   registry = await deployInitCapitalAction.run({})
+
+  // 2. deploy api3 proxy oracle reader
   const deployApi3ProxyOracleReaderAction = new DeployApi3ProxyOracleReaderAction({
     params: {
       accessControlManager: registry.accessControlManager!,
@@ -87,14 +51,14 @@ export const setupInitCapital = async (): Promise<InitCapitalRegistry> => {
       deployer: client,
     },
   })
-  // 2. deploy api3 proxy oracle reader
   registry = await deployApi3ProxyOracleReaderAction.run(registry)
-  // 3. deploy pyth oracle reader
+
+  // 3. deploy pyth proxy oracle reader
   const deployPythOracleReaderAction = new DeployPythOracleReaderAction({
     params: {
       accessControlManager: registry.accessControlManager!,
       proxyAdmin: registry.proxyAdmin!,
-      pyth: '0xff1a0f4744e8582DF1aE09D5611b887B6a12925C',
+      pyth: ARBITRUM_TEST_ADDRESSES.pyth,
     },
     signer: {
       deployer: client,

@@ -43,26 +43,6 @@ describe('deployInitCapitalAction', () => {
         guardian: oneAddress,
         feeAdmin: oneAddress,
         treasury: oneAddress,
-        doubleSlopeIRMConfigs: [
-          {
-            name: 'StablecoinIRM',
-            params: {
-              baseBorrowRateE18: 100000000000000000n,
-              jumpUtilizationRateE18: 800000000000000000n,
-              borrowRateMultiplierE18: 10000000000000000n,
-              jumpRateMultiplierE18: 10000000000000000n,
-            },
-          },
-          {
-            name: 'MajorcoinIRM',
-            params: {
-              baseBorrowRateE18: 100000000000000000n,
-              jumpUtilizationRateE18: 800000000000000000n,
-              borrowRateMultiplierE18: 10000000000000000n,
-              jumpRateMultiplierE18: 10000000000000000n,
-            },
-          },
-        ],
       },
       signer: {
         deployer: client,
@@ -90,11 +70,6 @@ describe('deployInitCapitalAction', () => {
     expect(curRegistry.riskManagerImpl).not.toBe(zeroAddress)
     expect(curRegistry.moneyMarketHookImpl).not.toBe(zeroAddress)
     expect(curRegistry.lendingPoolImpl).not.toBe(zeroAddress)
-    // check that name in irms is correct
-    expect(Object.keys(curRegistry.irms!)).toEqual(['StablecoinIRM', 'MajorcoinIRM'])
-    for (const irm of Object.values(curRegistry.irms!)) {
-      expect(irm).not.toBe(zeroAddress)
-    }
     // check feeInfos of feeVault
     const feeVaultArtifact = await readArtifact('FeeVault')
     const feeInfos = await client.publicClient.readContract({
@@ -103,8 +78,8 @@ describe('deployInitCapitalAction', () => {
       functionName: 'getFeeInfos',
       args: [],
     })
-    expect(feeInfos[0].admin).equal('0x60045e6DE3080D3a6271E635616dBbC20886dfCb')
-    expect(feeInfos[0].treasury).equal('0x60045e6DE3080D3a6271E635616dBbC20886dfCb')
+    expect(feeInfos[0].admin).equal('0x0B5e09bffF17B7Ab0765dD077e69982Cd554C567')
+    expect(feeInfos[0].treasury).equal('0x0B5e09bffF17B7Ab0765dD077e69982Cd554C567')
     expect(feeInfos[0].feeBps).equal(1000n)
     expect(feeInfos[1].admin).equal(oneAddress)
     expect(feeInfos[1].treasury).equal(oneAddress)

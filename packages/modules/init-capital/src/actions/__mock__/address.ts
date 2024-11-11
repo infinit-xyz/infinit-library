@@ -21,6 +21,8 @@ export const ARBITRUM_TEST_ADDRESSES = {
   aaveExecutor: '0xFF1137243698CaA18EE364Cc966CF0e02A4e6327',
   aaveEmergencyAdmin: '0xbbd9f90699c1FA0D7A65870D241DD1f1217c96Eb',
   tester: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
+  // Pyth
+  pyth: '0xff1a0f4744e8582DF1aE09D5611b887B6a12925C',
 } satisfies Record<string, Address>
 
 export const TEST_ADDRESSES = {
