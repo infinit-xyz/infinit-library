@@ -92,90 +92,84 @@ export class SetNewPoolOracleReaderSubAction extends SubAction<SetNewPoolOracleR
   }
   private async handleInternalValidates(oracle: SourceConfig) {
     switch (oracle.type) {
-      case 'api3':
-        {
-          const api3ProxyOracleReaderArtifact = await readArtifact('Api3ProxyOracleReader')
-          const [dataFeedProxy, maxStaleTime] = await this.client.publicClient.readContract({
-            address: oracle.oracleReader,
-            abi: api3ProxyOracleReaderArtifact.abi,
-            functionName: 'dataFeedInfos',
-            args: [oracle.token],
-          })
-          if (maxStaleTime !== 0n && dataFeedProxy !== zeroAddress) {
-            throw new ContractValidateError('Api3ProxyOracleReader Token parameters has been already set')
-          }
+      case 'api3': {
+        const api3ProxyOracleReaderArtifact = await readArtifact('Api3ProxyOracleReader')
+        const [dataFeedProxy, maxStaleTime] = await this.client.publicClient.readContract({
+          address: oracle.oracleReader,
+          abi: api3ProxyOracleReaderArtifact.abi,
+          functionName: 'dataFeedInfos',
+          args: [oracle.token],
+        })
+        if (maxStaleTime !== 0n && dataFeedProxy !== zeroAddress) {
+          throw new ContractValidateError('Api3ProxyOracleReader Token parameters has been already set')
         }
         break
-      case 'pyth':
-        {
-          const pythOracleReaderArtifact = await readArtifact('PythOracleReader')
-          const priceId = await this.client.publicClient.readContract({
-            address: oracle.oracleReader,
-            abi: pythOracleReaderArtifact.abi,
-            functionName: 'priceIds',
-            args: [oracle.token],
-          })
-          const maxStaleTime = await this.client.publicClient.readContract({
-            address: oracle.oracleReader,
-            abi: pythOracleReaderArtifact.abi,
-            functionName: 'maxStaleTimes',
-            args: [oracle.token],
-          })
-          if (maxStaleTime !== 0n && priceId !== zeroAddress) {
-            throw new ContractValidateError('PythOracleReader Token parameters has been already set')
-          }
+      }
+      case 'pyth': {
+        const pythOracleReaderArtifact = await readArtifact('PythOracleReader')
+        const priceId = await this.client.publicClient.readContract({
+          address: oracle.oracleReader,
+          abi: pythOracleReaderArtifact.abi,
+          functionName: 'priceIds',
+          args: [oracle.token],
+        })
+        const maxStaleTime = await this.client.publicClient.readContract({
+          address: oracle.oracleReader,
+          abi: pythOracleReaderArtifact.abi,
+          functionName: 'maxStaleTimes',
+          args: [oracle.token],
+        })
+        if (maxStaleTime !== 0n && priceId !== zeroAddress) {
+          throw new ContractValidateError('PythOracleReader Token parameters has been already set')
         }
         break
-      case 'lsdApi3':
-        {
-          //TODO: handle oracle has already been set
-        }
+      }
+      case 'lsdApi3': {
+        //TODO: handle oracle has already been set
         break
+      }
     }
   }
 
   private handleTxBuilders(oracle: SourceConfig): TxBuilder[] {
     const txBuilders: TxBuilder[] = []
     switch (oracle.type) {
-      case 'api3':
-        {
-          const params = oracle.params as Api3Params
-          const dataFeedProxiesTxBuilderParams: Api3SetDataFeedProxiesTxBuilderParams = {
-            api3ProxyOracleReader: oracle.oracleReader,
-            tokens: [oracle.token],
-            dataFeedProxies: [params.dataFeedProxy],
-          }
-          txBuilders.push(new Api3SetDataFeedProxiesTxBuilder(this.client, dataFeedProxiesTxBuilderParams))
-          const maxStaleTimesTxBuilderParams: Api3SetMaxStaleTimesTxBuilderParams = {
-            api3ProxyOracleReader: oracle.oracleReader,
-            tokens: [oracle.token],
-            maxStaleTimes: [oracle.params.maxStaleTime],
-          }
-          txBuilders.push(new Api3SetMaxStaleTimesTxBuilder(this.client, maxStaleTimesTxBuilderParams))
+      case 'api3': {
+        const params = oracle.params as Api3Params
+        const dataFeedProxiesTxBuilderParams: Api3SetDataFeedProxiesTxBuilderParams = {
+          api3ProxyOracleReader: oracle.oracleReader,
+          tokens: [oracle.token],
+          dataFeedProxies: [params.dataFeedProxy],
         }
-        break
-      case 'pyth':
-        {
-          const params = oracle.params as PythParams
-          const priceIdsTxBuilderParams: PythSetPriceIdsTxBuilderParams = {
-            pythOracleReader: oracle.oracleReader,
-            tokens: [oracle.token],
-            priceIds: [params.priceFeed],
-          }
-          this.txBuilders.push(new PythSetPriceIdsTxBuilder(this.client, priceIdsTxBuilderParams))
-          const maxStaleTimesTxBuilderParams: PythSetMaxStaleTimesTxBuilderParams = {
-            pythOracleReader: oracle.oracleReader,
-            tokens: [oracle.token],
-            maxStaleTimes: [oracle.params.maxStaleTime],
-          }
-          this.txBuilders.push(new PythSetMaxStaleTimesTxBuilder(this.client, maxStaleTimesTxBuilderParams))
+        txBuilders.push(new Api3SetDataFeedProxiesTxBuilder(this.client, dataFeedProxiesTxBuilderParams))
+        const maxStaleTimesTxBuilderParams: Api3SetMaxStaleTimesTxBuilderParams = {
+          api3ProxyOracleReader: oracle.oracleReader,
+          tokens: [oracle.token],
+          maxStaleTimes: [oracle.params.maxStaleTime],
         }
+        txBuilders.push(new Api3SetMaxStaleTimesTxBuilder(this.client, maxStaleTimesTxBuilderParams))
         break
-      case 'lsdApi3':
-        {
-          //TODO: handle oracle
+      }
+      case 'pyth': {
+        const params = oracle.params as PythParams
+        const priceIdsTxBuilderParams: PythSetPriceIdsTxBuilderParams = {
+          pythOracleReader: oracle.oracleReader,
+          tokens: [oracle.token],
+          priceIds: [params.priceFeed],
         }
+        this.txBuilders.push(new PythSetPriceIdsTxBuilder(this.client, priceIdsTxBuilderParams))
+        const maxStaleTimesTxBuilderParams: PythSetMaxStaleTimesTxBuilderParams = {
+          pythOracleReader: oracle.oracleReader,
+          tokens: [oracle.token],
+          maxStaleTimes: [oracle.params.maxStaleTime],
+        }
+        this.txBuilders.push(new PythSetMaxStaleTimesTxBuilder(this.client, maxStaleTimesTxBuilderParams))
         break
+      }
+      case 'lsdApi3': {
+        //TODO: handle oracle
+        break
+      }
     }
 
     return txBuilders
