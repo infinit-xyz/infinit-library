@@ -1,5 +1,13 @@
 # @infinit-xyz/init-capital
 
+## 0.0.0-alpha.8
+
+### Patch Changes
+
+- [#139](https://github.com/infinit-xyz/infinit-library/pull/139)
+  [`7482a3a`](https://github.com/infinit-xyz/infinit-library/commit/7482a3aacbdc613359cd7fec0c21aff98491f766) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - add index export for utils
+
 ## 0.0.0-alpha.7
 
 ### Minor Changes
