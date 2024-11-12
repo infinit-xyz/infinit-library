@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
-import { setupInitCapital } from '@actions/__mock__/setup'
+import { setupInitCapitalAndPools } from '@actions/__mock__/setup'
 import { ChangeIrmAction, ChangeIrmActionData } from '@actions/changeIrm'
 
 import { InitCapitalRegistry } from '@/src/type'
@@ -14,7 +14,7 @@ describe('ChangeIrm', async () => {
   let registry: InitCapitalRegistry
 
   beforeAll(async () => {
-    registry = await setupInitCapital()
+    registry = await setupInitCapitalAndPools()
   })
 
   test('test set new irm', async () => {

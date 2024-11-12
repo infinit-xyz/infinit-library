@@ -3,7 +3,7 @@ import { beforeAll, describe, expect, test } from 'vitest'
 import { SubAction } from '@infinit-xyz/core'
 
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
-import { setupInitCapital } from '@actions/__mock__/setup'
+import { setupInitCapitalAndPools } from '@actions/__mock__/setup'
 
 import { SetIrmAction, SetIrmActionData } from './setIrm'
 import { SetIrmSubAction } from './subactions/setIrm'
@@ -23,7 +23,7 @@ describe('SetIrm', async () => {
   let registry: InitCapitalRegistry
 
   beforeAll(async () => {
-    registry = await setupInitCapital()
+    registry = await setupInitCapitalAndPools()
   })
 
   test('test set new irm', async () => {

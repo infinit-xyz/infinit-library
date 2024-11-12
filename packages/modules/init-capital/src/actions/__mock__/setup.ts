@@ -67,6 +67,17 @@ export const setupInitCapital = async (): Promise<InitCapitalRegistry> => {
     },
   })
   registry = await deployPythOracleReaderAction.run(registry)
+  return registry
+}
+
+export const setupInitCapitalAndPools = async (): Promise<InitCapitalRegistry> => {
+  const account = privateKeyToAccount(ANVIL_PRIVATE_KEY)
+  const account2 = privateKeyToAccount(ANVIL_PRIVATE_KEY_2)
+  const client = new TestInfinitWallet(TestChain.arbitrum, account.address)
+  const client2 = new TestInfinitWallet(TestChain.arbitrum, account2.address)
+
+  let registry: InitCapitalRegistry = await setupInitCapital()
+
   // 4. deploy pools
   const pool1ActionParams: SupportNewPoolActionParams = {
     name: 'INIT Ether',
@@ -186,6 +197,5 @@ export const setupInitCapital = async (): Promise<InitCapitalRegistry> => {
     signer: { deployer: client, guardian: client, governor: client2 },
   })
   registry = await action.run(registry)
-  console.log(registry)
   return registry
 }
