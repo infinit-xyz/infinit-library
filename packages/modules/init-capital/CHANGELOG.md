@@ -1,5 +1,13 @@
 # @infinit-xyz/init-capital
 
+## 0.0.0-alpha.7
+
+### Minor Changes
+
+- [#137](https://github.com/infinit-xyz/infinit-library/pull/137)
+  [`15f6efc`](https://github.com/infinit-xyz/infinit-library/commit/15f6efcd38e0ff591d248a836f24bf046c7466a2) Thanks
+  [@Kittikornl](https://github.com/Kittikornl)! - add new action, tests and fixing bug
+
 ## 0.0.0-alpha.6
 
 ### Minor Changes
