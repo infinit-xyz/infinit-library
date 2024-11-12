@@ -18,7 +18,7 @@ export type InitializeLendingPoolTxBuilderParams = {
 export class InitializeLendingPoolTxBuilder extends TxBuilder {
   public lendingPool: Address
   public underlingToken: Address
-  public _name: string
+  public lendingPoolName: string
   public symbol: string
   public irm: Address
   public reserveFactor: bigint
@@ -28,7 +28,7 @@ export class InitializeLendingPoolTxBuilder extends TxBuilder {
     super(InitializeLendingPoolTxBuilder.name, client)
     this.lendingPool = getAddress(params.lendingPool)
     this.underlingToken = getAddress(params.underlingToken)
-    this._name = params.name
+    this.lendingPoolName = params.name
     this.symbol = params.symbol
     this.irm = getAddress(params.irm)
     this.reserveFactor = params.reserveFactor
@@ -40,7 +40,7 @@ export class InitializeLendingPoolTxBuilder extends TxBuilder {
     const functionData = encodeFunctionData({
       abi: riskManagerArtifact.abi,
       functionName: 'initialize',
-      args: [this.underlingToken, this.name, this.symbol, this.irm, this.reserveFactor, this.treasury],
+      args: [this.underlingToken, this.lendingPoolName, this.symbol, this.irm, this.reserveFactor, this.treasury],
     })
 
     const tx: TransactionData = {
