@@ -1,5 +1,17 @@
 # @infinit-xyz/init-capital
 
+## 0.0.0-alpha.6
+
+### Minor Changes
+
+- [#135](https://github.com/infinit-xyz/infinit-library/pull/135)
+  [`3a9e69b`](https://github.com/infinit-xyz/infinit-library/commit/3a9e69b6f64c2ebd76658b2479e3da38d73ef737) Thanks
+  [@Kittikornl](https://github.com/Kittikornl)! - support contract verification
+
+- [#134](https://github.com/infinit-xyz/infinit-library/pull/134)
+  [`95c03e5`](https://github.com/infinit-xyz/infinit-library/commit/95c03e52914a34419da7b6daa5e99196c5d7daa6) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - add support new pool action
+
 ## 0.0.0-alpha.5
 
 ### Minor Changes
