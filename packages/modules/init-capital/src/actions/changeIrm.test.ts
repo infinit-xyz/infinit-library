@@ -2,8 +2,8 @@ import { beforeAll, describe, expect, test } from 'vitest'
 
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
 import { setupInitCapital } from '@actions/__mock__/setup'
+import { ChangeIrmAction, ChangeIrmActionData } from '@actions/changeIrm'
 
-import { ChangeIrmAction, ChangeIrmActionData } from './changeIRM'
 import { InitCapitalRegistry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'

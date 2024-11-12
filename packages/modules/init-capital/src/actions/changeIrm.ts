@@ -9,8 +9,8 @@ import {
   DoubleSlopeIRMConfig,
 } from '@actions/subactions/deployDoubleSlopeIRMs'
 import { SetIrmSubAction } from '@actions/subactions/setIrm'
+import { DeployDoubleSlopeIRMTxBuilderParams } from '@actions/subactions/tx-builders/DoubleSlopeIRM/deploy'
 
-import { DeployDoubleSlopeIRMTxBuilderParams } from './subactions/tx-builders/DoubleSlopeIRM/deploy'
 import { InitCapitalRegistry } from '@/src/type'
 
 export const ChangeIrmActionParamsSchema = z.object({

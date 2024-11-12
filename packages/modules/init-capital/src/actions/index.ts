@@ -1,6 +1,6 @@
 import { ActionDetailRecord } from '@infinit-xyz/core'
 
-import { ChangeIrmAction, ChangeIrmActionParamsSchema } from '@actions//changeIRM'
+import { ChangeIrmAction, ChangeIrmActionParamsSchema } from '@actions/changeIrm'
 import { DeployApi3ProxyOracleReaderAction, DeployApi3ProxyOracleReaderActionParamsSchema } from '@actions/deployApi3ProxyOracleReader'
 import { DeployDoubleSlopeIRMsAction, DeployDoubleSlopeIRMsActionParamsSchema } from '@actions/deployDoubleSlopeIRMs'
 import { DeployInitCapitalAction, DeployInitCapitalActionParamsSchema } from '@actions/deployInitCapital'
