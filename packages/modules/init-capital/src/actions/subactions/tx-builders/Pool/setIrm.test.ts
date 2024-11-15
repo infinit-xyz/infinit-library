@@ -32,4 +32,11 @@ describe('SetIrmTxBuilder', async () => {
     expect(mockTxData === txData.data).toBeTruthy()
     expect('0x2a9bDCFF37aB68B95A53435ADFd8892e86084F93' === txData.to).toBeTruthy()
   })
+  test('test validate mismatched length should be failed', async () => {
+    txBuilder = new SetIrmTxBuilder(client, {
+      pool: '0x2a9bDCFF37aB68B95A53435ADFd8892e86084F93',
+      irm: '0x0000000000000000000000000000000000000000',
+    })
+    expect(txBuilder.validate()).rejects.toThrowError('IRM SHOULD_NOT_BE_ZERO_ADDRESS')
+  })
 })

@@ -1,7 +1,12 @@
 import { Address, encodeFunctionData, getAddress, keccak256, toHex, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ContractValidateError, ValidateInputValueError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
+import {
+  ContractValidateError,
+  ValidateInputValueError,
+  ValidateInputZeroAddressError,
+  ValidateLengthError,
+} from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -40,7 +45,13 @@ export class SetTokenLiqIncentiveMultiplierE18TxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
+    // check zero address
     if (this.liqIncentiveCalculator === zeroAddress) throw new ValidateInputZeroAddressError('LIQ_INCENTIVE_CALCULATOR')
+
+    // check length
+    if (this.tokens.length !== this.multipliers_e18.length) {
+      throw new ValidateLengthError()
+    }
 
     this.multipliers_e18.forEach((multiplier_e18) => {
       if (multiplier_e18 < 0n) throw new ValidateInputValueError('Token Liquidation Incentive Multiplier cannot be negative')
