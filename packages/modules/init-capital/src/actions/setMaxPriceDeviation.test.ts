@@ -1,13 +1,19 @@
-import { describe, expect, test } from 'vitest'
+import { beforeAll, describe, expect, test } from 'vitest'
+
+import { privateKeyToAccount } from 'viem/accounts'
 
 import { SubAction } from '@infinit-xyz/core'
 
+import { ANVIL_PRIVATE_KEY_2 } from '@actions/__mock__/account'
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
+import { setupInitCapital } from '@actions/__mock__/setup'
 import { SetMaxPriceDeviationAction, SetMaxPriceDeviationActionData } from '@actions/setMaxPriceDeviation'
 import { SetMaxPriceDeviations_e18SubAction } from '@actions/subactions/setMaxPriceDeviations_e18'
 import { SetMaxPriceDeviations_e18TxBuilder } from '@actions/subactions/tx-builders/InitOracle/setMaxPriceDeviations_e18'
 
+import { InitCapitalRegistry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
+import { readArtifact } from '@utils/artifact'
 
 class SetMaxPriceDeviationActionTest extends SetMaxPriceDeviationAction {
   public override getSubActions(): SubAction[] {
@@ -15,9 +21,26 @@ class SetMaxPriceDeviationActionTest extends SetMaxPriceDeviationAction {
   }
 }
 
-const tester = ARBITRUM_TEST_ADDRESSES.tester
 describe('SetMaxPriceDeviation', async () => {
-  const client = new TestInfinitWallet(TestChain.arbitrum, tester)
+  let registry: InitCapitalRegistry
+  const account = privateKeyToAccount(ANVIL_PRIVATE_KEY_2)
+  const client = new TestInfinitWallet(TestChain.arbitrum, account.address)
+
+  const tokenMaxPriceDeviations = [
+    {
+      token: ARBITRUM_TEST_ADDRESSES.weth,
+      maxPriceDeviation_e18: BigInt(102 * 10 ** 16),
+    },
+    {
+      token: ARBITRUM_TEST_ADDRESSES.usdt,
+      maxPriceDeviation_e18: BigInt(101 * 10 ** 16),
+    },
+  ]
+
+  beforeAll(async () => {
+    registry = await setupInitCapital()
+  })
+
   test('test correct name', async () => {
     expect(SetMaxPriceDeviationAction.name).toStrictEqual('SetMaxPriceDeviationAction')
   })
@@ -25,17 +48,8 @@ describe('SetMaxPriceDeviation', async () => {
     const data: SetMaxPriceDeviationActionData = {
       signer: { governor: client },
       params: {
-        initOracle: '0xCD399994982B3a3836B8FE81f7127cC5148e9BaE',
-        tokenMaxPriceDeviations: [
-          {
-            token: '0x2a9bDCFF37aB68B95A53435ADFd8892e86084F93',
-            maxPriceDeviation_e18: BigInt(12345),
-          },
-          {
-            token: '0x95222290DD7278Aa3Ddd389Cc1E1d165CC4BAfe5',
-            maxPriceDeviation_e18: BigInt(8888),
-          },
-        ],
+        initOracle: registry.initOracleProxy!,
+        tokenMaxPriceDeviations: tokenMaxPriceDeviations,
       },
     }
     // data.
@@ -53,6 +67,28 @@ describe('SetMaxPriceDeviation', async () => {
           expect(txBuilder.maxPriceDeviations_e18s[k]).toStrictEqual(tokenMaxPriceDeviationsParams[k].maxPriceDeviation_e18)
         }
       }
+    }
+  })
+
+  test('set price deviation', async () => {
+    const action = new SetMaxPriceDeviationAction({
+      signer: { governor: client },
+      params: {
+        initOracle: registry.initOracleProxy!,
+        tokenMaxPriceDeviations: tokenMaxPriceDeviations,
+      },
+    })
+    registry = await action.run(registry)
+    // check onchain
+    const initOracleArtifact = await readArtifact('InitOracle')
+    for (let i = 0; i < tokenMaxPriceDeviations.length; i++) {
+      const priceDeviation = await client.publicClient.readContract({
+        address: registry.initOracleProxy!,
+        abi: initOracleArtifact.abi,
+        functionName: 'maxPriceDeviations_e18',
+        args: [tokenMaxPriceDeviations[i].token],
+      })
+      expect(priceDeviation).toStrictEqual(tokenMaxPriceDeviations[i].maxPriceDeviation_e18)
     }
   })
 })
