@@ -26,9 +26,6 @@ export class SetPrimarySourcesTxBuilder extends TxBuilder {
   async buildTx(): Promise<TransactionData> {
     const initOracleArtifact = await readArtifact('InitOracle')
 
-    // console.log('tokens', this.tokens)
-    // console.log('sources', this.sources)
-    // console.log('oracle', this.initOracle)
     const callData = encodeFunctionData({
       abi: initOracleArtifact.abi,
       functionName: 'setPrimarySources',
