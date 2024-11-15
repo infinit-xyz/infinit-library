@@ -1,13 +1,18 @@
-import { describe, expect, test } from 'vitest'
+import { beforeAll, describe, expect, test } from 'vitest'
+
+import { Address, privateKeyToAccount } from 'viem/accounts'
 
 import { SubAction } from '@infinit-xyz/core'
 
-import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
+import { ANVIL_PRIVATE_KEY } from '@actions/__mock__/account'
+import { setupInitCapital } from '@actions/__mock__/setup'
+import { SetPoolConfigAction, SetPoolConfigActionData } from '@actions/setPoolConfig'
+import { SetPoolConfigSubAction } from '@actions/subactions/setPoolConfig'
+import { PoolConfig, SetPoolConfigTxBuilder } from '@actions/subactions/tx-builders/Config/setPoolConfig'
 
-import { SetPoolConfigAction, SetPoolConfigActionData } from './setPoolConfig'
-import { SetPoolConfigSubAction } from './subactions/setPoolConfig'
-import { PoolConfig, SetPoolConfigTxBuilder } from './subactions/tx-builders/Config/setPoolConfig'
+import { InitCapitalRegistry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
+import { readArtifact } from '@utils/artifact'
 
 class SetPoolConfigActionTest extends SetPoolConfigAction {
   public override getSubActions(): SubAction[] {
@@ -15,43 +20,54 @@ class SetPoolConfigActionTest extends SetPoolConfigAction {
   }
 }
 
-const tester = ARBITRUM_TEST_ADDRESSES.tester
 describe('SetPoolConfig', async () => {
-  const client = new TestInfinitWallet(TestChain.arbitrum, tester)
+  let registry: InitCapitalRegistry
+  const account = privateKeyToAccount(ANVIL_PRIVATE_KEY)
+  const client = new TestInfinitWallet(TestChain.arbitrum, account.address)
+
+  // note: the pool address is not real
+  // which we can use to test since we only need to check that poolConfig is set correctly
+  const poolConfigParams = [
+    {
+      pool: '0x2a9bDCFF37aB68B95A53435ADFd8892e86084F93' as Address,
+      poolConfig: {
+        supplyCap: 12345n,
+        borrowCap: 9999n,
+        canMint: false,
+        canBurn: false,
+        canBorrow: false,
+        canRepay: false,
+        canFlash: false,
+      },
+    },
+    {
+      pool: '0x95222290DD7278Aa3Ddd389Cc1E1d165CC4BAfe5' as Address,
+      poolConfig: {
+        supplyCap: 8888n,
+        borrowCap: 2222n,
+        canMint: true,
+        canBurn: true,
+        canBorrow: true,
+        canRepay: false,
+        canFlash: false,
+      },
+    },
+  ]
+
+  beforeAll(async () => {
+    registry = await setupInitCapital()
+  })
+
   test('test correct name', async () => {
     expect(SetPoolConfigAction.name).toStrictEqual('SetPoolConfigAction')
   })
+
   test('test correct calldata', async () => {
     const data: SetPoolConfigActionData = {
       signer: { guardian: client },
       params: {
-        config: '0xCD399994982B3a3836B8FE81f7127cC5148e9BaE',
-        batchPoolConfigParams: [
-          {
-            pool: '0x2a9bDCFF37aB68B95A53435ADFd8892e86084F93',
-            poolConfig: {
-              supplyCap: BigInt(12345),
-              borrowCap: BigInt(9999),
-              canMint: false,
-              canBurn: false,
-              canBorrow: false,
-              canRepay: false,
-              canFlash: false,
-            },
-          },
-          {
-            pool: '0x95222290DD7278Aa3Ddd389Cc1E1d165CC4BAfe5',
-            poolConfig: {
-              supplyCap: BigInt(8888),
-              borrowCap: BigInt(2222),
-              canMint: true,
-              canBurn: true,
-              canBorrow: true,
-              canRepay: false,
-              canFlash: false,
-            },
-          },
-        ],
+        config: registry.configProxy!,
+        batchPoolConfigParams: poolConfigParams,
       },
     }
     // data.
@@ -70,6 +86,34 @@ describe('SetPoolConfig', async () => {
           expect(txBuilder.poolConfig[poolConfigKey] === mockTxBuilder.poolConfig[poolConfigKey]).toBeTruthy()
         })
       }
+    }
+  })
+
+  test('set pool config', async () => {
+    const action = new SetPoolConfigAction({
+      params: {
+        config: registry.configProxy!,
+        batchPoolConfigParams: poolConfigParams,
+      },
+      signer: { guardian: client },
+    })
+    await action.run(registry)
+    const configArtifact = await readArtifact('Config')
+    // check that the pool config is set correctly
+    for (let i = 0; i < poolConfigParams.length; i++) {
+      const onChainPoolConfig = await client.publicClient.readContract({
+        address: registry.configProxy!,
+        abi: configArtifact.abi,
+        functionName: 'getPoolConfig',
+        args: [poolConfigParams[i].pool],
+      })
+      expect(onChainPoolConfig.supplyCap).toStrictEqual(poolConfigParams[i].poolConfig.supplyCap)
+      expect(onChainPoolConfig.borrowCap).toStrictEqual(poolConfigParams[i].poolConfig.borrowCap)
+      expect(onChainPoolConfig.canMint).toStrictEqual(poolConfigParams[i].poolConfig.canMint)
+      expect(onChainPoolConfig.canBurn).toStrictEqual(poolConfigParams[i].poolConfig.canBurn)
+      expect(onChainPoolConfig.canBorrow).toStrictEqual(poolConfigParams[i].poolConfig.canBorrow)
+      expect(onChainPoolConfig.canRepay).toStrictEqual(poolConfigParams[i].poolConfig.canRepay)
+      expect(onChainPoolConfig.canFlash).toStrictEqual(poolConfigParams[i].poolConfig.canFlash)
     }
   })
 })
