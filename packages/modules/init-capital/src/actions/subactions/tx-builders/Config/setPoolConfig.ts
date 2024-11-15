@@ -1,7 +1,7 @@
-import { Address, encodeFunctionData, getAddress, keccak256, toHex, zeroAddress } from 'viem'
+import { Address, encodeFunctionData, getAddress, keccak256, maxUint128, toHex, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ContractValidateError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
+import { ContractValidateError, ValidateInputValueError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -48,9 +48,19 @@ export class SetPoolConfigTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
+    // check zero address
     if (this.config === zeroAddress) throw new ValidateInputZeroAddressError('CONFIG')
     if (this.pool === zeroAddress) throw new ValidateInputZeroAddressError('POOL')
 
+    // check that pool config's supply cap is between 0 and maxUint128
+    if (this.poolConfig.supplyCap < 0n || this.poolConfig.supplyCap > maxUint128) {
+      throw new ValidateInputValueError(`SupplyCap must be between ${0} and ${maxUint128})(maxUint128), found ${this.poolConfig.supplyCap}`)
+    }
+    // check that pool config's borrow cap is between 0 and maxUint128
+    if (this.poolConfig.borrowCap < 0n || this.poolConfig.borrowCap > maxUint128) {
+      throw new ValidateInputValueError(`BorrowCap must be between ${0} and ${maxUint128})(maxUint128), found ${this.poolConfig.borrowCap}`)
+    }
+    // check client has role guardian
     const [configArtifact, acmArtifact] = await Promise.all([readArtifact('Config'), readArtifact('AccessControlManager')])
     const acm: Address = await this.client.publicClient.readContract({
       address: this.config,

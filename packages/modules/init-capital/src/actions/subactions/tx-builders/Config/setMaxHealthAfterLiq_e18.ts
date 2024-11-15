@@ -1,4 +1,4 @@
-import { Address, encodeFunctionData, getAddress, keccak256, maxUint64, toHex, zeroAddress } from 'viem'
+import { Address, encodeFunctionData, getAddress, keccak256, maxUint64, parseUnits, toHex, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ContractValidateError, ValidateInputValueError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
@@ -40,12 +40,15 @@ export class SetMaxHealthAfterLiqE18TxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
+    const oneE18 = parseUnits('1', 18)
     // config should not be zero address
     if (this.config === zeroAddress) throw new ValidateInputZeroAddressError('CONFIG')
+    // check that mode is not zero
+    if (this.mode === 0) throw new ValidateInputValueError('Mode should not be zero')
     // check that maxHealthAfterLiq_e18 is between 0 and maxUint64
-    if (this.maxHealthAfterLiq_e18 < 0n || this.maxHealthAfterLiq_e18 > maxUint64) {
+    if (this.maxHealthAfterLiq_e18 < oneE18 || this.maxHealthAfterLiq_e18 > maxUint64) {
       throw new ValidateInputValueError(
-        `MaxHealthAfterLiq must be between 0n and ${maxUint64})(maxUint64), found ${this.maxHealthAfterLiq_e18}`,
+        `MaxHealthAfterLiq must be between ${oneE18}(oneE18) and ${maxUint64})(maxUint64), found ${this.maxHealthAfterLiq_e18}`,
       )
     }
     // get artifacts
