@@ -13,10 +13,10 @@ export type SetModeDebtCeilingInfoTxBuilderParams = {
 }
 
 export class SetModeDebtCeilingInfoTxBuilder extends TxBuilder {
-  private riskManager: Address
-  private mode: number
-  private pools: Address[]
-  private ceilAmts: bigint[]
+  public riskManager: Address
+  public mode: number
+  public pools: Address[]
+  public ceilAmts: bigint[]
 
   constructor(client: InfinitWallet, params: SetModeDebtCeilingInfoTxBuilderParams) {
     super(SetModeDebtCeilingInfoTxBuilder.name, client)
