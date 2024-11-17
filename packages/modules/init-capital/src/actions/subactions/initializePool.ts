@@ -41,7 +41,7 @@ export class InitializeLendingPoolSubAction extends SubAction<InitilizeLendingPo
     }
 
     // add new lending pool's irm and underlying token to the registry
-    _.set(registry, ['lendingPools', this.params.name, 'underlyingtoken'], this.params.underlingToken)
+    _.set(registry, ['lendingPools', this.params.name, 'underlyingToken'], this.params.underlingToken)
     _.set(registry, ['lendingPools', this.params.name, 'irm'], this.params.irm)
 
     return { newRegistry: registry, newMessage: {} }
