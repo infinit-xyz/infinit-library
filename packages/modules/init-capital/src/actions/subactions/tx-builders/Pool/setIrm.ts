@@ -39,6 +39,9 @@ export class SetIrmTxBuilder extends TxBuilder {
     if (this.pool === zeroAddress) {
       throw new ValidateInputZeroAddressError('POOL')
     }
+    if (this.irm === zeroAddress) {
+      throw new ValidateInputZeroAddressError('IRM')
+    }
 
     const [lendingPoolArtifact, acmArtifact] = await Promise.all([readArtifact('LendingPool'), readArtifact('AccessControlManager')])
     const acm = await this.client.publicClient.readContract({

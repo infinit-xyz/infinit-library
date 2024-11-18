@@ -8,7 +8,6 @@ import { setupInitCapital } from '@actions/__mock__/setup'
 
 import { ARBITRUM_TEST_ADDRESSES } from './__mock__/address'
 import { SupportNewPoolActionParams, SupportNewPoolsAction, oracleReaderRegistryName } from './supportNewPools'
-// import { ModeStatus, SetModeStatusTxBuilder } from './subactions/tx-builders/Config/setModeStatus'
 import { InitCapitalRegistry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'
@@ -309,6 +308,7 @@ const validateLendingPool = async (client: TestInfinitWallet, pool: SupportNewPo
     args: [],
   })
   expect(underlyingToken).toStrictEqual(getAddress(pool.token))
+  expect(underlyingToken).toStrictEqual(getAddress(registry.lendingPools![pool.name].underlyingToken))
   // validate irm
   const irm = await client.publicClient.readContract({
     address: registry.lendingPools![pool.name].lendingPool,

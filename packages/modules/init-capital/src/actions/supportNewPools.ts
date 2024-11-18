@@ -11,7 +11,6 @@ import {
   zodHex,
 } from '@infinit-xyz/core/internal'
 
-import { SetModePoolFactorsSubAction } from '@actions//subactions/setModePoolFactors'
 import { DeployDoubleSlopeIRMSubActionMsg, DeployDoubleSlopeIRMsSubAction } from '@actions/subactions/deployDoubleSlopeIRMs'
 import { DeployLendingPoolProxySubAction, DeployLendingPoolSubActionMsg } from '@actions/subactions/deployLendingPoolProxy'
 import { InitializeLendingPoolSubAction } from '@actions/subactions/initializePool'
@@ -19,6 +18,7 @@ import { SetInitOracleConfigSubAction } from '@actions/subactions/setInitOracle'
 import { SetMaxHealthAfterLiqSubAction } from '@actions/subactions/setMaxHealthAfterLiq'
 import { SetModeAndTokenLiqMultiplierSubAction } from '@actions/subactions/setModeAndTokenLiqMultiplier'
 import { SetModeDebtCeilingInfosSubAction } from '@actions/subactions/setModeDebtCeilingInfos'
+import { SetModePoolFactorsSubAction } from '@actions/subactions/setModePoolFactors'
 import { SetModeStatusesDefaultSubAction } from '@actions/subactions/setModeStatusesDefault'
 import { DeployDoubleSlopeIRMTxBuilderParams } from '@actions/subactions/tx-builders/DoubleSlopeIRM/deploy'
 

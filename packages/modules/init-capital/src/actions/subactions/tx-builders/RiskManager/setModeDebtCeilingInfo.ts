@@ -1,7 +1,7 @@
 import { Address, encodeFunctionData, getAddress, keccak256, toHex, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
-import { ContractValidateError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
+import { ContractValidateError, ValidateInputZeroAddressError, ValidateLengthError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -13,10 +13,10 @@ export type SetModeDebtCeilingInfoTxBuilderParams = {
 }
 
 export class SetModeDebtCeilingInfoTxBuilder extends TxBuilder {
-  private riskManager: Address
-  private mode: number
-  private pools: Address[]
-  private ceilAmts: bigint[]
+  public riskManager: Address
+  public mode: number
+  public pools: Address[]
+  public ceilAmts: bigint[]
 
   constructor(client: InfinitWallet, params: SetModeDebtCeilingInfoTxBuilderParams) {
     super(SetModeDebtCeilingInfoTxBuilder.name, client)
@@ -45,6 +45,12 @@ export class SetModeDebtCeilingInfoTxBuilder extends TxBuilder {
   public async validate(): Promise<void> {
     // validate zero address
     if (this.riskManager === zeroAddress) throw new ValidateInputZeroAddressError('RISK_MANAGER')
+
+    // check length
+    if (this.pools.length !== this.ceilAmts.length) {
+      throw new ValidateLengthError()
+    }
+
     // get artifacts
     const [riskManagerArtifact, acmArtifact] = await Promise.all([readArtifact('RiskManager'), readArtifact('AccessControlManager')])
 
