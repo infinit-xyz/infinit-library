@@ -17,9 +17,9 @@ export type SetTokenLiqIncentiveMultiplierE18TxBuilderParams = {
 }
 
 export class SetTokenLiqIncentiveMultiplierE18TxBuilder extends TxBuilder {
-  private liqIncentiveCalculator: Address
-  private tokens: Address[]
-  private multipliers_e18: bigint[]
+  public liqIncentiveCalculator: Address
+  public tokens: Address[]
+  public multipliers_e18: bigint[]
 
   constructor(client: InfinitWallet, params: SetTokenLiqIncentiveMultiplierE18TxBuilderParams) {
     super(SetTokenLiqIncentiveMultiplierE18TxBuilder.name, client)
