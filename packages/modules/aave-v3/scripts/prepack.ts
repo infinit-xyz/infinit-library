@@ -2,7 +2,7 @@
 import { $ } from 'bun'
 import fs from 'fs'
 
-const targetRepositories: string[] = ['aave-v3-core', 'aave-v3-periphery']
+const targetRepositories: string[] = ['aave-v3-core', 'aave-v3-periphery', 'fee-vault']
 const symLinks: string[] = []
 
 targetRepositories.forEach(async (repo: string) => {

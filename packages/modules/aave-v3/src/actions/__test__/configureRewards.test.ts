@@ -81,7 +81,7 @@ describe('ConfigureRewardsAction', () => {
       readArtifact('Pool'),
       readArtifact('IArbitrumERC20'),
       readArtifact('RewardsController'),
-      readArtifact('IERC20'),
+      readArtifact('aave-v3-core/contracts/dependencies/openzeppelin/contracts/IERC20.sol:IERC20'),
     ])
 
     await aliceClient.sendTransactions([
@@ -270,7 +270,7 @@ describe('ConfigureRewardsAction', () => {
     })
     await configRewardsAction.run(registry)
 
-    const erc20Artifact = await readArtifact('IERC20')
+    const erc20Artifact = await readArtifact('aave-v3-core/contracts/dependencies/openzeppelin/contracts/IERC20.sol:IERC20')
 
     const wethAllowance = await client.publicClient.readContract({
       address: weth,
