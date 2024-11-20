@@ -54,6 +54,7 @@ export class DeployUniswapV3Action extends Action<DeployUniswapV3ActionData, Uni
           weth9: params.wrappedNativeToken,
           nftDescriptor: message.nftDescriptor,
           nativeCurrencyLabel: params.nativeCurrencyLabel,
+          admin: params.factoryOwner,
         }),
       // step 3
       (message: DeployUniswapV3Msg & DeployUniswapV3Msg2) =>

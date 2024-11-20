@@ -65,12 +65,11 @@ describe('setFeeProtocolAction', () => {
     expect(protocolFees[0]).not.toBe(0n)
     expect(protocolFees[1]).not.toBe(0n)
     // get balance before collect
-    const balanceToken0Bf = await balanceOf(client, weth, client.walletClient.account.address)
-    const balanceToken1Bf = await balanceOf(client, usdt, client.walletClient.account.address)
+    const balanceToken0Bf = await balanceOf(client, weth, registry.feeVault!)
+    const balanceToken1Bf = await balanceOf(client, usdt, registry.feeVault!)
     // collect
     const action = new CollectProtocolAction({
       params: {
-        recipient: client.walletClient.account.address,
         pools: [poolETHUSDT500],
       },
       signer: {
@@ -79,8 +78,8 @@ describe('setFeeProtocolAction', () => {
     })
     await action.run(registry)
     // get balance after collect
-    const balanceToken0Af = await balanceOf(client, weth, client.walletClient.account.address)
-    const balanceToken1Af = await balanceOf(client, usdt, client.walletClient.account.address)
+    const balanceToken0Af = await balanceOf(client, weth, registry.feeVault!)
+    const balanceToken1Af = await balanceOf(client, usdt, registry.feeVault!)
     // check balance
     // note: uniswap pool will leave 1 wei for gas optimization purpose
     expect(balanceToken0Af - balanceToken0Bf + 1n).toBe(protocolFees[0])
