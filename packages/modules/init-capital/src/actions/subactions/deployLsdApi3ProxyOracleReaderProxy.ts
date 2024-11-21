@@ -7,6 +7,10 @@ import { DeployTransparentUpgradeableProxyTxBuilder } from '@actions/subactions/
 
 import { InitCapitalRegistry } from '@/src/type'
 
+export type DeployLsdApi3ProxyOracleReaderProxyMsg = {
+  lsdApi3ProxyOracleReaderProxy: Address
+}
+
 export type DeployLsdApi3ProxyOracleProxySubActionParams = {
   proxyAdmin: Address
   lsdApi3ProxyOracleReaderImpl: Address
@@ -35,7 +39,7 @@ export class DeployLsdApi3ProxyOracleProxySubAction extends SubAction<
   public async updateRegistryAndMessage(
     registry: InitCapitalRegistry,
     txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<InitCapitalRegistry>> {
+  ): Promise<SubActionExecuteResponse<InitCapitalRegistry, DeployLsdApi3ProxyOracleReaderProxyMsg>> {
     if (txHashes.some((v) => !v)) {
       throw new TxNotFoundError()
     }
@@ -55,8 +59,11 @@ export class DeployLsdApi3ProxyOracleProxySubAction extends SubAction<
 
     // assign the contract address to the registry
     registry['lsdApi3ProxyOracleReaderProxy'] = lsdApi3ProxyOracleReaderProxy
+    const newMessage: DeployLsdApi3ProxyOracleReaderProxyMsg = {
+      lsdApi3ProxyOracleReaderProxy: lsdApi3ProxyOracleReaderProxy,
+    }
 
     // return the new registry and new message
-    return { newRegistry: registry, newMessage: {} }
+    return { newRegistry: registry, newMessage: newMessage }
   }
 }

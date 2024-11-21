@@ -72,6 +72,7 @@ export const setupInitCapital = async (): Promise<InitCapitalRegistry> => {
   // 3. deploy lsd api3 proxy oracle reader
   const deployLsdApi3ProxyOracleReaderAction = new DeployLsdApi3ProxyOracleReaderAction({
     params: {
+      api3ProxyOracleReader: registry.api3ProxyOracleReaderProxy!,
       accessControlManager: registry.accessControlManager!,
       proxyAdmin: registry.proxyAdmin!,
     },

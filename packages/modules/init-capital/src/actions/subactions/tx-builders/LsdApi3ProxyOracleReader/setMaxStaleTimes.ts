@@ -29,7 +29,7 @@ export class SetMaxStaleTimesTxBuilder extends TxBuilder {
   }
 
   async buildTx(): Promise<TransactionData> {
-    const api3ProxyOracleReaderArtifact = await readArtifact('Api3ProxyOracleReader')
+    const api3ProxyOracleReaderArtifact = await readArtifact('LsdApi3ProxyOracleReader')
 
     const callData = encodeFunctionData({
       abi: api3ProxyOracleReaderArtifact.abi,

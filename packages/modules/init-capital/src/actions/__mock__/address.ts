@@ -2,6 +2,7 @@ import { Address } from 'viem'
 
 export const ARBITRUM_TEST_ADDRESSES = {
   // ERC20 Tokens
+  weeth: '0x35751007a407ca6FEFfE80b3cB397736D2cf4dbe',
   weth: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
   usdt: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',
   pepe: '0x25d887Ce7a35172C62FeBFD67a1856F20FaEbB00',
