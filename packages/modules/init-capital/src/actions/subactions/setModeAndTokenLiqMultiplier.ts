@@ -62,14 +62,22 @@ export class SetModeAndTokenLiqMultiplierSubAction extends SubAction<SetModeAndT
     }
 
     // set mode's liquidation incentive multiplier
-    const modeLiqMultipliers = this.params.modeLiqIncentiveMultiplierConfigs.map(
-      (modeLiqConfig) => modeLiqConfig.config?.liqIncentiveMultiplier_e18,
-    )
-    if (modeLiqMultipliers.every((multiplier) => multiplier !== undefined)) {
+    const modeLiqMultipliers = this.params.modeLiqIncentiveMultiplierConfigs
+      .map((modeLiqConfig, index) => {
+        return modeLiqConfig.config?.liqIncentiveMultiplier_e18
+          ? {
+              mode: this.params.modeLiqIncentiveMultiplierConfigs[index].mode,
+              multiplier_e18: modeLiqConfig.config?.liqIncentiveMultiplier_e18,
+            }
+          : undefined
+      })
+      .filter((liqConfig) => liqConfig !== undefined)
+
+    if (modeLiqMultipliers) {
       const setModeLiqIncentiveMultiplierParams: SetModeLiqIncentiveMultiplierE18TxBuilderParams = {
         liqIncentiveCalculator: this.params.liqIncentiveCalculator,
-        modes: this.params.modeLiqIncentiveMultiplierConfigs.map((modeLiqConfig) => modeLiqConfig.mode),
-        multipliers_e18: modeLiqMultipliers,
+        modes: modeLiqMultipliers.map((config) => config.mode),
+        multipliers_e18: modeLiqMultipliers.map((config) => config.multiplier_e18),
       }
       const setModeLiqIncentiveMultiplierTxBuilder = new SetModeLiqIncentiveMultiplierE18TxBuilder(
         this.client,
@@ -77,15 +85,24 @@ export class SetModeAndTokenLiqMultiplierSubAction extends SubAction<SetModeAndT
       )
       this.txBuilders.push(setModeLiqIncentiveMultiplierTxBuilder)
     }
+
     // set mode's min liquidation incentive multiplier
-    const minLiqMultipliers = this.params.modeLiqIncentiveMultiplierConfigs.map(
-      (modeLiqConfig) => modeLiqConfig.config?.minLiqIncentiveMultiplier_e18,
-    )
-    if (minLiqMultipliers.every((multiplier) => multiplier !== undefined)) {
+    const minLiqMultipliers = this.params.modeLiqIncentiveMultiplierConfigs
+      .map((modeLiqConfig, index) => {
+        return modeLiqConfig.config?.liqIncentiveMultiplier_e18
+          ? {
+              mode: this.params.modeLiqIncentiveMultiplierConfigs[index].mode,
+              minMultiplier_e18: modeLiqConfig.config?.minLiqIncentiveMultiplier_e18,
+            }
+          : undefined
+      })
+      .filter((minLiqConfig) => minLiqConfig !== undefined)
+
+    if (minLiqMultipliers) {
       const setMinLiqIncentiveMultiplierParams: SetMinLiqIncentiveMultiplierE18TxBuilderParams = {
         liqIncentiveCalculator: this.params.liqIncentiveCalculator,
-        modes: this.params.modeLiqIncentiveMultiplierConfigs.map((modeLiqConfig) => modeLiqConfig.mode),
-        minMultipliers_e18: minLiqMultipliers,
+        modes: minLiqMultipliers.map((config) => config.mode),
+        minMultipliers_e18: minLiqMultipliers.map((config) => config.minMultiplier_e18),
       }
       const setMinLiqIncentiveMultiplierTxBuilder = new SetMinLiqIncentiveMultiplierE18TxBuilder(
         this.client,
