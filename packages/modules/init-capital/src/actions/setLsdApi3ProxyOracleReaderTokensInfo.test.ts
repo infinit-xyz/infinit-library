@@ -5,7 +5,6 @@ import { privateKeyToAccount } from 'viem/accounts'
 import { ANVIL_PRIVATE_KEY, ANVIL_PRIVATE_KEY_2 } from '@actions/__mock__/account'
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
 import { setupInitCapital } from '@actions/__mock__/setup'
-import { DeployApi3ProxyOracleReaderAction } from '@actions/deployApi3ProxyOracleReader'
 import { SetApi3ProxyOracleReaderTokensInfoAction } from '@actions/setApi3ProxyOracleReaderTokensInfo'
 import { SetLsdApi3ProxyOracleReaderTokensInfoAction } from '@actions/setLsdApi3ProxyOracleReaderTokensInfo'
 
