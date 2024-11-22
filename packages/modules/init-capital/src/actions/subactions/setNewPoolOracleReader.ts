@@ -2,7 +2,7 @@ import { Address, Hash, Hex, zeroAddress } from 'viem'
 
 import { TxBuilder } from '@infinit-xyz/core'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
-import { ContractValidateError } from '@infinit-xyz/core/errors'
+import { ContractValidateError, ValidateInputValueError } from '@infinit-xyz/core/errors'
 
 import {
   SetDataFeedProxiesTxBuilder as Api3SetDataFeedProxiesTxBuilder,
@@ -12,6 +12,18 @@ import {
   SetMaxStaleTimesTxBuilder as Api3SetMaxStaleTimesTxBuilder,
   SetMaxStaleTimesTxBuilderParams as Api3SetMaxStaleTimesTxBuilderParams,
 } from '@actions/subactions/tx-builders/Api3ProxyOracleReader/setMaxStaleTimes'
+import {
+  SetDataFeedProxiesTxBuilder as LsdApi3SetDataFeedProxiesTxBuilder,
+  SetDataFeedProxiesTxBuilderParams as LsdApi3SetDataFeedProxiesTxBuilderParams,
+} from '@actions/subactions/tx-builders/LsdApi3ProxyOracleReader/setDataFeedProxies'
+import {
+  SetMaxStaleTimesTxBuilder as LsdApi3SetMaxStaleTimesTxBuilder,
+  SetMaxStaleTimesTxBuilderParams as LsdApi3SetMaxStaleTimesTxBuilderParams,
+} from '@actions/subactions/tx-builders/LsdApi3ProxyOracleReader/setMaxStaleTimes'
+import {
+  SetQuoteTokensTxBuilder as LsdApi3SetQuoteTokensTxBuilder,
+  SetQuoteTokensTxBuilderParams as LsdApi3SetQuoteTokensTxBuilderParams,
+} from '@actions/subactions/tx-builders/LsdApi3ProxyOracleReader/setQuoteTokens'
 import {
   SetMaxStaleTimesTxBuilder as PythSetMaxStaleTimesTxBuilder,
   SetMaxStaleTimesTxBuilderParams as PythSetMaxStaleTimesTxBuilderParams,
@@ -37,7 +49,14 @@ export type Api3Params = {
 export type LsdApi3Params = {
   dataFeedProxy: Address
   maxStaleTime: bigint
-  setQuoteToken: Address
+  quoteToken: {
+    token: Address
+    params?: {
+      oracleReader: Address
+      dataFeedProxy: Address
+      maxStaleTime: bigint
+    }
+  }
 }
 
 export type SourceConfig = {
@@ -70,14 +89,14 @@ export class SetNewPoolOracleReaderSubAction extends SubAction<SetNewPoolOracleR
     }
   }
 
-  protected override async internalValidate(_registry?: InitCapitalRegistry): Promise<void> {
+  protected override async internalValidate(registry: InitCapitalRegistry): Promise<void> {
     const primarySource = this.params.primarySource
     const secondarySource = this.params.secondarySource
     if (primarySource) {
-      await this.handleInternalValidates(primarySource)
+      await this.handleInternalValidates(primarySource, registry)
     }
     if (secondarySource) {
-      await this.handleInternalValidates(secondarySource)
+      await this.handleInternalValidates(secondarySource, registry)
     }
   }
 
@@ -90,7 +109,7 @@ export class SetNewPoolOracleReaderSubAction extends SubAction<SetNewPoolOracleR
       newMessage: {},
     }
   }
-  private async handleInternalValidates(oracle: SourceConfig) {
+  private async handleInternalValidates(oracle: SourceConfig, registry: InitCapitalRegistry) {
     switch (oracle.type) {
       case 'api3': {
         const api3ProxyOracleReaderArtifact = await readArtifact('Api3ProxyOracleReader')
@@ -100,7 +119,7 @@ export class SetNewPoolOracleReaderSubAction extends SubAction<SetNewPoolOracleR
           functionName: 'dataFeedInfos',
           args: [oracle.token],
         })
-        if (maxStaleTime !== 0n && dataFeedProxy !== zeroAddress) {
+        if (maxStaleTime !== 0n || dataFeedProxy !== zeroAddress) {
           throw new ContractValidateError('Api3ProxyOracleReader Token parameters has been already set')
         }
         break
@@ -119,13 +138,38 @@ export class SetNewPoolOracleReaderSubAction extends SubAction<SetNewPoolOracleR
           functionName: 'maxStaleTimes',
           args: [oracle.token],
         })
-        if (maxStaleTime !== 0n && priceId !== zeroAddress) {
+        if (maxStaleTime !== 0n || priceId !== zeroAddress) {
           throw new ContractValidateError('PythOracleReader Token parameters has been already set')
         }
         break
       }
       case 'lsdApi3': {
-        //TODO: handle oracle has already been set
+        const params = oracle.params as LsdApi3Params
+        // check lsd api3
+        const lsdApi3ProxyOracleReaderArtifact = await readArtifact('LsdApi3ProxyOracleReader')
+        const [dataFeedProxy, quoteToken, maxStaleTime] = await this.client.publicClient.readContract({
+          address: oracle.oracleReader,
+          abi: lsdApi3ProxyOracleReaderArtifact.abi,
+          functionName: 'dataFeedInfos',
+          args: [oracle.token],
+        })
+        if (maxStaleTime !== 0n || dataFeedProxy !== zeroAddress || quoteToken !== zeroAddress) {
+          throw new ContractValidateError('LsdApi3ProxyOracleReader Token parameters has been already set')
+        }
+        // check if not params for the quote token, quote token oracle shoud be already set
+        if (!params.quoteToken.params) {
+          if (!registry.api3ProxyOracleReaderProxy) throw new ValidateInputValueError('registry: api3ProxyOracleReader not found')
+          const api3ProxyOracleReaderArtifact = await readArtifact('Api3ProxyOracleReader')
+          const [dataFeedProxy, maxStaleTime] = await this.client.publicClient.readContract({
+            address: registry.api3ProxyOracleReaderProxy,
+            abi: api3ProxyOracleReaderArtifact.abi,
+            functionName: 'dataFeedInfos',
+            args: [params.quoteToken.token],
+          })
+          // check if token parameters has been set
+          if (maxStaleTime === 0n && dataFeedProxy === zeroAddress)
+            throw new ContractValidateError('Api3ProxyOracleReader Token parameters has not been set')
+        }
         break
       }
     }
@@ -136,12 +180,14 @@ export class SetNewPoolOracleReaderSubAction extends SubAction<SetNewPoolOracleR
     switch (oracle.type) {
       case 'api3': {
         const params = oracle.params as Api3Params
+        // 1. set datafeed proxies
         const dataFeedProxiesTxBuilderParams: Api3SetDataFeedProxiesTxBuilderParams = {
           api3ProxyOracleReader: oracle.oracleReader,
           tokens: [oracle.token],
           dataFeedProxies: [params.dataFeedProxy],
         }
         txBuilders.push(new Api3SetDataFeedProxiesTxBuilder(this.client, dataFeedProxiesTxBuilderParams))
+        // 2. set max staletimes
         const maxStaleTimesTxBuilderParams: Api3SetMaxStaleTimesTxBuilderParams = {
           api3ProxyOracleReader: oracle.oracleReader,
           tokens: [oracle.token],
@@ -152,12 +198,14 @@ export class SetNewPoolOracleReaderSubAction extends SubAction<SetNewPoolOracleR
       }
       case 'pyth': {
         const params = oracle.params as PythParams
+        // 1. set max staletimes
         const priceIdsTxBuilderParams: PythSetPriceIdsTxBuilderParams = {
           pythOracleReader: oracle.oracleReader,
           tokens: [oracle.token],
           priceIds: [params.priceFeed],
         }
         this.txBuilders.push(new PythSetPriceIdsTxBuilder(this.client, priceIdsTxBuilderParams))
+        // 2. set max staletimes
         const maxStaleTimesTxBuilderParams: PythSetMaxStaleTimesTxBuilderParams = {
           pythOracleReader: oracle.oracleReader,
           tokens: [oracle.token],
@@ -167,7 +215,46 @@ export class SetNewPoolOracleReaderSubAction extends SubAction<SetNewPoolOracleR
         break
       }
       case 'lsdApi3': {
-        //TODO: handle oracle
+        const params = oracle.params as LsdApi3Params
+        // 1. set api3OracleReader first, if quote token params is set
+        if (params.quoteToken.params) {
+          // 1.1 set datafeed proxies
+          const dataFeedProxiesTxBuilderParams: Api3SetDataFeedProxiesTxBuilderParams = {
+            api3ProxyOracleReader: params.quoteToken.params.oracleReader,
+            tokens: [params.quoteToken.token],
+            dataFeedProxies: [params.quoteToken.params.dataFeedProxy],
+          }
+          txBuilders.push(new Api3SetDataFeedProxiesTxBuilder(this.client, dataFeedProxiesTxBuilderParams))
+          // 1.2 set max staletimes
+          const maxStaleTimesTxBuilderParams: Api3SetMaxStaleTimesTxBuilderParams = {
+            api3ProxyOracleReader: params.quoteToken.params.oracleReader,
+            tokens: [params.quoteToken.token],
+            maxStaleTimes: [params.quoteToken.params.maxStaleTime],
+          }
+          txBuilders.push(new Api3SetMaxStaleTimesTxBuilder(this.client, maxStaleTimesTxBuilderParams))
+        }
+        // 2. set lsdApi3ProxyOracleReader
+        // 2.1 set datafeed proxies
+        const dataFeedProxiesTxBuilderParams: LsdApi3SetDataFeedProxiesTxBuilderParams = {
+          lsdApi3ProxyOracleReader: oracle.oracleReader,
+          tokens: [oracle.token],
+          dataFeedProxies: [params.dataFeedProxy],
+        }
+        txBuilders.push(new LsdApi3SetDataFeedProxiesTxBuilder(this.client, dataFeedProxiesTxBuilderParams))
+        // 2.2 set max staletimes
+        const maxStaleTimesTxBuilderParams: LsdApi3SetMaxStaleTimesTxBuilderParams = {
+          lsdApi3ProxyOracleReader: oracle.oracleReader,
+          tokens: [oracle.token],
+          maxStaleTimes: [oracle.params.maxStaleTime],
+        }
+        txBuilders.push(new LsdApi3SetMaxStaleTimesTxBuilder(this.client, maxStaleTimesTxBuilderParams))
+        // 2.3 set quote token
+        const setQuoteTokensTxBuilderParams: LsdApi3SetQuoteTokensTxBuilderParams = {
+          lsdApi3ProxyOracleReader: oracle.oracleReader,
+          tokens: [oracle.token],
+          quoteTokens: [params.quoteToken.token],
+        }
+        txBuilders.push(new LsdApi3SetQuoteTokensTxBuilder(this.client, setQuoteTokensTxBuilderParams))
         break
       }
     }
