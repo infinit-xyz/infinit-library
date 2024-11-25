@@ -1,5 +1,5 @@
 ---
-'@infinit-xyz/init-capital': minor
+'@infinit-xyz/core': minor
 ---
 
 pass registry to the subaction validate
