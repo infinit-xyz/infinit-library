@@ -29,28 +29,34 @@ export class DeployLsdApi3ProxyOracleReaderAction extends Action<deployApi3Proxy
   protected getSubActions(registry: InitCapitalRegistry): ((message: any) => SubAction)[] {
     const deployer = this.data.signer['deployer']
 
+    // validate registry
+    if (!registry.accessControlManager) throw new ValidateInputValueError('registry: accessControlManager not found')
+    if (!registry.proxyAdmin) throw new ValidateInputValueError('registry: proxyAdmin not found')
+    if (!registry.api3ProxyOracleReaderProxy) throw new ValidateInputValueError('registry: api3ProxyOracleReaderProxy not found')
+
+    const accessControlManager = registry.accessControlManager
+    const proxyAdmin = registry.proxyAdmin
+    const api3ProxyOracleReaderProxy = registry.api3ProxyOracleReaderProxy
+
     // return subactions
     return [
       // deploy implementation
       () => {
-        if (!registry.accessControlManager) throw new ValidateInputValueError('registry: accessControlManager not found')
         return new DeployLsdApi3ProxyOracleReaderSubAction(deployer, {
-          accessControlManager: registry.accessControlManager,
+          accessControlManager: accessControlManager,
         })
       },
       // deploy transparent proxy and set implementation
       (message: DeployLsdApi3ProxyOracleReaderMsg) => {
-        if (!registry.proxyAdmin) throw new ValidateInputValueError('registry: proxyAdmin not found')
         return new DeployLsdApi3ProxyOracleProxySubAction(deployer, {
           lsdApi3ProxyOracleReaderImpl: message.lsdApi3ProxyOracleReaderImpl,
-          proxyAdmin: registry.proxyAdmin,
+          proxyAdmin: proxyAdmin,
         })
       },
       // initialize lsd api3 proxy oracle reader
       (message: DeployLsdApi3ProxyOracleReaderProxyMsg) => {
-        if (!registry.api3ProxyOracleReaderProxy) throw new ValidateInputValueError('registry: api3ProxyOracleReaderProxy not found')
         return new InitializeLsdApi3ProxyOracleReaderSubAction(deployer, {
-          api3ProxyOracleReader: registry.api3ProxyOracleReaderProxy,
+          api3ProxyOracleReader: api3ProxyOracleReaderProxy,
           lsdApi3ProxyOracleReaderProxy: message.lsdApi3ProxyOracleReaderProxy,
         })
       },
