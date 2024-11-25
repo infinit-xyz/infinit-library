@@ -15,4 +15,5 @@ export type UniswapV3Registry = {
   universalRouter?: Address
   unsupportedProtocol?: Address
   pools?: Address[]
+  feeVault?: Address
 }

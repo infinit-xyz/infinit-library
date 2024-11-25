@@ -3,6 +3,7 @@ import { Address, Hex } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
 
+import { DeployFeeVaultTxBuilder } from '@/src/actions/subactions/tx-builders/FeeVault/deploy'
 import { DeployNonfungibleTokenPositionDescriptorTxBuilder } from '@/src/actions/subactions/tx-builders/NonfungibleTokenPositionDescriptor/deploy'
 import { DeployQuoterV2TxBuilder } from '@/src/actions/subactions/tx-builders/QuoterV2/deploy'
 import { UniswapV3Registry } from '@/src/type'
@@ -12,6 +13,7 @@ export type DeployUniswapV3Params2 = {
   weth9: Address
   nftDescriptor: Address
   nativeCurrencyLabel: string
+  admin: Address
 }
 
 export type DeployUniswapV3Msg2 = {
@@ -33,6 +35,14 @@ export class DeployUniswapV3Contracts2SubAction extends SubAction<DeployUniswapV
         nftDescriptor: this.params.nftDescriptor,
       }),
     )
+    // ----------- Fee Vault -----------
+    this.txBuilders.push(
+      new DeployFeeVaultTxBuilder(this.client, {
+        wrappedNativeToken: this.params.weth9,
+        admin: this.params.admin,
+        treasury: this.params.admin,
+      }),
+    )
   }
 
   public async updateRegistryAndMessage(
@@ -43,7 +53,7 @@ export class DeployUniswapV3Contracts2SubAction extends SubAction<DeployUniswapV
       throw new TxNotFoundError()
     }
 
-    const [deployQuoterV2Hash, deployNonfungiblePositionManagerImplHash] = txHashes
+    const [deployQuoterV2Hash, deployNonfungiblePositionManagerImplHash, deployFeeVaultHash] = txHashes
 
     const { contractAddress: quoterV2 } = await this.client.publicClient.waitForTransactionReceipt({ hash: deployQuoterV2Hash })
     if (!quoterV2) {
@@ -58,6 +68,12 @@ export class DeployUniswapV3Contracts2SubAction extends SubAction<DeployUniswapV
       throw new ContractNotFoundError(deployNonfungiblePositionManagerImplHash, 'NonfungibleTokenPositionDescriptorImpl')
     }
     registry['nonfungibleTokenPositionDescriptorImpl'] = nonfungibleTokenPositionDescriptorImpl
+
+    const { contractAddress: feeVault } = await this.client.publicClient.waitForTransactionReceipt({ hash: deployFeeVaultHash })
+    if (!feeVault) {
+      throw new ContractNotFoundError(deployFeeVaultHash, 'FeeVault')
+    }
+    registry['feeVault'] = feeVault
 
     const newMessage: DeployUniswapV3Msg2 = {
       quoterV2,

@@ -1,16 +1,15 @@
 import { z } from 'zod'
 
-import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
+import { Action, InfinitWallet } from '@infinit-xyz/core'
 import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/internal'
 
-import { CollectProtocolSubAction, CollectProtocolSubActionParams } from '@actions/subactions/collectProtocol'
+import { CollectProtocolSubAction } from '@actions/subactions/collectProtocol'
 
 import { UniswapV3Registry } from '@/src/type'
 
 export const CollectProtocolActionParamsSchema = z.object({
-  recipient: zodAddressNonZero.describe(`The recipient's address for the collected fees`),
   pools: z.array(zodAddressNonZero).describe(`Array of pool addresses to collect fees from`),
-}) satisfies z.ZodType<CollectProtocolSubActionParams>
+})
 
 export type CollectProtocolActionParams = z.infer<typeof CollectProtocolActionParamsSchema>
 
@@ -26,9 +25,14 @@ export class CollectProtocolAction extends Action<CollectProtocolActionData, Uni
     super(CollectProtocolAction.name, data)
   }
 
-  protected getSubActions(): SubAction[] {
+  protected getSubActions(registry: UniswapV3Registry) {
     const owner = this.data.signer['factoryOwner']
     const params = this.data.params
-    return [new CollectProtocolSubAction(owner, params)]
+    return [
+      new CollectProtocolSubAction(owner, {
+        recipient: registry['feeVault']!,
+        pools: params.pools,
+      }),
+    ]
   }
 }

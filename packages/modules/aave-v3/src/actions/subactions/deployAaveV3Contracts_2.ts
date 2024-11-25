@@ -6,6 +6,7 @@ import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz
 import { ContractNotFoundError, ValidateLengthError } from '@infinit-xyz/core/errors'
 
 import { DefaultReserveInterestRateStrategyConfig } from '@actions/subactions/deployDefaultReserveInterestRateStrategy'
+import { DeployFeeVaultTxBuilder } from '@actions/subactions/tx-builders/FeeVault/deploy'
 import { DeployAaveOracleTxBuilder } from '@actions/subactions/tx-builders/aaveOracle/deployAaveOracle'
 import { DeployAaveProtocolDataProvider } from '@actions/subactions/tx-builders/aaveProtocolDataProvider/deployAaveProtocolDataProvider'
 import { DeployACLManagerTxBuilder } from '@actions/subactions/tx-builders/aclManager/deployACLManager'
@@ -34,6 +35,11 @@ export type DeployAaveV3Contracts_2SubActionParams = {
   // incentives
   emissionManager: Address
 
+  // treasury
+  aaveEcosystemReserveController: Address
+  treasuryOwner: Address
+  wrappedNativeToken: Address
+
   // DefaultReserveInterestRateStrategy
   defaultReserveInterestRateStrategyConfigs: DefaultReserveInterestRateStrategyConfig[]
 }
@@ -45,6 +51,7 @@ export type DeployAaveV3Contracts_2SubActionMsg = {
   aclManager: Address
   aaveOracle: Address
   rewardsControllerImpl: Address
+  feeVault: Address
 }
 
 export class DeployAaveV3Contracts_2SubAction extends SubAction<
@@ -100,6 +107,13 @@ export class DeployAaveV3Contracts_2SubAction extends SubAction<
       emissionManager: this.params.emissionManager,
     })
     this.txBuilders.push(deployRewardsControllerImpl)
+    // deploy fee vault
+    const deployFeeVaultTxBuilder = new DeployFeeVaultTxBuilder(this.client, {
+      wrappedNativeToken: this.params.wrappedNativeToken,
+      admin: this.params.treasuryOwner,
+      treasury: this.params.aaveEcosystemReserveController,
+    })
+    this.txBuilders.push(deployFeeVaultTxBuilder)
     // deploy reserve interest rate strategy
     for (const defaultReserveInterestRateStrategyConfig of this.params.defaultReserveInterestRateStrategyConfigs) {
       const txBuilder = new DeployDefaultReserveInterestRateStrategyTxBuilder(this.client, defaultReserveInterestRateStrategyConfig.params)
@@ -119,6 +133,7 @@ export class DeployAaveV3Contracts_2SubAction extends SubAction<
       deployACLManagerHash,
       deployOracleHash,
       deployRewardsControllerImplHash,
+      deployFeeVaultHash,
       ...deployDefaultReserveIRSHashes
     ] = txHashes
     if (deployDefaultReserveIRSHashes.length != this.params.defaultReserveInterestRateStrategyConfigs.length) {
@@ -166,6 +181,12 @@ export class DeployAaveV3Contracts_2SubAction extends SubAction<
     }
     registry['rewardsControllerImpl'] = rewardsControllerImpl
 
+    const { contractAddress: feeVault } = await this.client.publicClient.waitForTransactionReceipt({ hash: deployFeeVaultHash })
+    if (!feeVault) {
+      throw new ContractNotFoundError(deployFeeVaultHash, 'feeVault')
+    }
+    registry['feeVault'] = feeVault
+
     for (let i = 0; i < deployDefaultReserveIRSHashes.length; i++) {
       const { contractAddress: defaultReserveInterestRateStrategy } = await this.client.publicClient.waitForTransactionReceipt({
         hash: deployDefaultReserveIRSHashes[i],
@@ -188,6 +209,7 @@ export class DeployAaveV3Contracts_2SubAction extends SubAction<
       aclManager: aclManager,
       aaveOracle: aaveOracle,
       rewardsControllerImpl: rewardsControllerImpl,
+      feeVault: feeVault,
     }
     return { newRegistry: registry, newMessage: newMessage }
   }

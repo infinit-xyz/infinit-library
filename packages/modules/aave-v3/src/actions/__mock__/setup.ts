@@ -79,7 +79,7 @@ export const setupAaveV3 = async (): Promise<AaveV3Registry> => {
   }
   await client.sendTransactions([{ name: 'deposit', txData: tx }])
   // note: there is no erc20mintable
-  const usdtArtifact = await readArtifact('IERC20')
+  const usdtArtifact = await readArtifact('aave-v3-core/contracts/dependencies/openzeppelin/contracts/IERC20.sol:IERC20')
   // transfer 100 wei to the client
   const transferData = encodeFunctionData({
     abi: usdtArtifact.abi,
