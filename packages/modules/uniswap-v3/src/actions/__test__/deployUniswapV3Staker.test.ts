@@ -23,8 +23,6 @@ describe('deployUniswapV3Staker', () => {
   test('deploy uniswap v3 staker', async () => {
     const action = new DeployUniswapV3StakerAction({
       params: {
-        factory: registry.uniswapV3Factory!,
-        nonfungiblePositionManager: registry.nonfungiblePositionManager!,
         maxIncentiveStartLeadTime: 2592000n,
         maxIncentiveDuration: 63072000n,
       },

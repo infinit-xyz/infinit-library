@@ -1,18 +1,16 @@
 import { z } from 'zod'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
-import { validateActionData, zodAddress } from '@infinit-xyz/core/internal'
+import { validateActionData } from '@infinit-xyz/core/internal'
 
-import { DeployUniswapV3StakerSubAction, DeployUniswapV3StakerSubActionParams } from '@actions/subactions/deployUniswapV3Staker'
+import { DeployUniswapV3StakerSubAction } from '@actions/subactions/deployUniswapV3Staker'
 
 import { UniswapV3Registry } from '@/src/type'
 
 export const DeployUniswapV3StakerParamsSchema = z.object({
-  factory: zodAddress.describe(`Address of the Uniswap V3 factory`),
-  nonfungiblePositionManager: zodAddress.describe(`Address of the nonfungible position manager`),
   maxIncentiveStartLeadTime: z.bigint().describe(`The max amount of seconds into the future the incentive startTime can be set`),
   maxIncentiveDuration: z.bigint().describe(`The max duration of an incentive in seconds`),
-}) satisfies z.ZodType<DeployUniswapV3StakerSubActionParams>
+})
 
 export type DeployUniswapV3StakerParams = z.infer<typeof DeployUniswapV3StakerParamsSchema>
 
@@ -27,14 +25,14 @@ export class DeployUniswapV3StakerAction extends Action<DeployUniswapV3StakerAct
     super(DeployUniswapV3StakerAction.name, data)
   }
 
-  protected getSubActions(): SubAction[] {
+  protected getSubActions(registry: UniswapV3Registry): SubAction[] {
     const deployer: InfinitWallet = this.data.signer['deployer']
     const params = this.data.params
 
     return [
       new DeployUniswapV3StakerSubAction(deployer, {
-        factory: params.factory,
-        nonfungiblePositionManager: params.nonfungiblePositionManager,
+        factory: registry['uniswapV3Factory']!,
+        nonfungiblePositionManager: registry['nonfungiblePositionManager']!,
         maxIncentiveStartLeadTime: params.maxIncentiveStartLeadTime,
         maxIncentiveDuration: params.maxIncentiveDuration,
       }),

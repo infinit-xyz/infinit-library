@@ -3,12 +3,11 @@ import { z } from 'zod'
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
 import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/internal'
 
-import { SetFeeProtocolSubAction, SetFeeProtocolSubActionParams } from '@actions/subactions/setFeeProtocol'
+import { SetFeeProtocolSubAction } from '@actions/subactions/setFeeProtocol'
 
 import { UniswapV3Registry } from '@/src/type'
 
 export const SetFeeProtocolActionParamsSchema = z.object({
-  uniswapV3Factory: zodAddressNonZero.describe('Address of the Uniswap V3 factory'),
   feeProtocolInfos: z
     .array(
       z
@@ -20,7 +19,7 @@ export const SetFeeProtocolActionParamsSchema = z.object({
         .describe(`Pool address and its fee protocols`),
     )
     .describe(`Array of pool addresses and their fee protocols`),
-}) satisfies z.ZodType<SetFeeProtocolSubActionParams>
+})
 
 export type SetFeeProtocolActionParams = z.infer<typeof SetFeeProtocolActionParamsSchema>
 
@@ -36,9 +35,14 @@ export class SetFeeProtocolAction extends Action<SetFeeProtocolActionData, Unisw
     super(SetFeeProtocolAction.name, data)
   }
 
-  protected getSubActions(): SubAction[] {
+  protected getSubActions(registry: UniswapV3Registry): SubAction[] {
     const owner = this.data.signer['factoryOwner']
     const params = this.data.params
-    return [new SetFeeProtocolSubAction(owner, params)]
+    return [
+      new SetFeeProtocolSubAction(owner, {
+        uniswapV3Factory: registry['uniswapV3Factory']!,
+        feeProtocolInfos: params.feeProtocolInfos,
+      }),
+    ]
   }
 }

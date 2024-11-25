@@ -36,7 +36,6 @@ describe('setFeeProtocolAction', () => {
   test('setFeeProtocol to 25%', async () => {
     const action = new SetFeeProtocolAction({
       params: {
-        uniswapV3Factory: registry.uniswapV3Factory!,
         feeProtocolInfos: [
           {
             pool: poolETHUSDT500,

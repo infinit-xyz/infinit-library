@@ -3,14 +3,13 @@ import { z } from 'zod'
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
 import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/internal'
 
-import { SetFactoryOwnerSubAction, SetFactoryOwnerSubActionParams } from '@actions/subactions/setFactoryOwner'
+import { SetFactoryOwnerSubAction } from '@actions/subactions/setFactoryOwner'
 
 import { UniswapV3Registry } from '@/src/type'
 
 export const SetFactoryOwnerActionParamsSchema = z.object({
-  uniswapV3Factory: zodAddressNonZero.describe(`Address of the Uniswap V3 factory`),
   newOwner: zodAddressNonZero.describe(`Address of the new owner of the factory`),
-}) satisfies z.ZodType<SetFactoryOwnerSubActionParams>
+})
 
 export type SetFactoryOwnerActionParams = z.infer<typeof SetFactoryOwnerActionParamsSchema>
 
@@ -26,9 +25,14 @@ export class SetFactoryOwnerAction extends Action<SetFactoryOwnerActionData, Uni
     super(SetFactoryOwnerAction.name, data)
   }
 
-  protected getSubActions(): SubAction[] {
+  protected getSubActions(registry: UniswapV3Registry): SubAction[] {
     const owner = this.data.signer['factoryOwner']
     const params = this.data.params
-    return [new SetFactoryOwnerSubAction(owner, params)]
+    return [
+      new SetFactoryOwnerSubAction(owner, {
+        uniswapV3Factory: registry['uniswapV3Factory']!,
+        newOwner: params.newOwner,
+      }),
+    ]
   }
 }
