@@ -53,6 +53,7 @@ describe('deployUniswapV3Action', () => {
     expect(curRegistry.nonfungibleTokenPositionDescriptor).not.toBe(zeroAddress)
     expect(curRegistry.nonfungiblePositionManager).not.toBe(zeroAddress)
     expect(curRegistry.uniswapV3Staker).not.toBe(zeroAddress)
+    expect(curRegistry.feeVault).not.toBe(zeroAddress)
     // check factory owner
     const uniswapV3FactoryArtifact = await readArtifact('UniswapV3Factory')
     const factoryOwner = await client.publicClient.readContract({

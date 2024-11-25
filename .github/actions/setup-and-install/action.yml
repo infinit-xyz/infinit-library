@@ -9,7 +9,7 @@ runs:
     - name: Set up bun
       uses: oven-sh/setup-bun@v2
       with:
-        bun-version: latest
+        bun-version: 1.1.27
 
     - name: Set up node
       uses: actions/setup-node@v4

@@ -11,6 +11,7 @@ const targetRepositories: string[] = [
   'v3-staker',
   'swap-router-contracts',
   'universal-router',
+  'fee-vault',
 ]
 
 const symLinks: string[] = []
