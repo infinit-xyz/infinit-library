@@ -166,7 +166,7 @@ export class SetNewPoolOracleReaderSubAction extends SubAction<SetNewPoolOracleR
             functionName: 'dataFeedInfos',
             args: [params.quoteToken.token],
           })
-          // check if token parameters has been set
+          // check if token parameters has not been set
           if (maxStaleTime === 0n && dataFeedProxy === zeroAddress)
             throw new ContractValidateError('Api3ProxyOracleReader Token parameters has not been set')
         }
@@ -198,7 +198,7 @@ export class SetNewPoolOracleReaderSubAction extends SubAction<SetNewPoolOracleR
       }
       case 'pyth': {
         const params = oracle.params as PythParams
-        // 1. set max staletimes
+        // 1. set price feed ids
         const priceIdsTxBuilderParams: PythSetPriceIdsTxBuilderParams = {
           pythOracleReader: oracle.oracleReader,
           tokens: [oracle.token],

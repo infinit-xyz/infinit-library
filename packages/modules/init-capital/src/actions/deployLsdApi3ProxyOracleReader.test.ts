@@ -33,6 +33,5 @@ describe('deployLsdApi3ProxyOracleReaderAction', () => {
     const curRegistry = await action.run(registry, undefined, undefined)
 
     expect(curRegistry.api3ProxyOracleReaderImpl).not.toBe(zeroAddress)
-    expect(curRegistry.api3ProxyOracleReaderImpl).not.toBe(zeroAddress)
   })
 })

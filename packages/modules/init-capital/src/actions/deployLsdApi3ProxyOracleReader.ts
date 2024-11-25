@@ -16,13 +16,13 @@ import { InitializeLsdApi3ProxyOracleReaderSubAction } from '@actions/subactions
 
 import { InitCapitalRegistry } from '@/src/type'
 
-export type deployApi3ProxyOracleReaderActionData = {
+export type deployLsdApi3ProxyOracleReaderActionData = {
   params: {}
   signer: Record<'deployer', InfinitWallet>
 }
 
-export class DeployLsdApi3ProxyOracleReaderAction extends Action<deployApi3ProxyOracleReaderActionData, InitCapitalRegistry> {
-  constructor(data: deployApi3ProxyOracleReaderActionData) {
+export class DeployLsdApi3ProxyOracleReaderAction extends Action<deployLsdApi3ProxyOracleReaderActionData, InitCapitalRegistry> {
+  constructor(data: deployLsdApi3ProxyOracleReaderActionData) {
     validateActionData(data, z.object({}), ['deployer'])
     super(DeployLsdApi3ProxyOracleReaderAction.name, data)
   }

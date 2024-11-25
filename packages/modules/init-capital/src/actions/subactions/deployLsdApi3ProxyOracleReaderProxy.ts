@@ -19,7 +19,7 @@ export type DeployLsdApi3ProxyOracleProxySubActionParams = {
 export class DeployLsdApi3ProxyOracleProxySubAction extends SubAction<
   DeployLsdApi3ProxyOracleProxySubActionParams,
   InitCapitalRegistry,
-  object
+  DeployLsdApi3ProxyOracleReaderProxyMsg
 > {
   constructor(client: InfinitWallet, params: DeployLsdApi3ProxyOracleProxySubActionParams) {
     super(DeployLsdApi3ProxyOracleProxySubAction.name, client, params)
