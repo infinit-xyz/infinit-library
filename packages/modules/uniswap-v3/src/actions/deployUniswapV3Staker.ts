@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import { validateActionData } from '@infinit-xyz/core/internal'
 
 import { DeployUniswapV3StakerSubAction } from '@actions/subactions/deployUniswapV3Staker'
@@ -26,13 +27,19 @@ export class DeployUniswapV3StakerAction extends Action<DeployUniswapV3StakerAct
   }
 
   protected getSubActions(registry: UniswapV3Registry): SubAction[] {
+    if (!registry['uniswapV3Factory']) {
+      throw new ValidateInputValueError('registry: uniswapV3Factory not found')
+    }
+    if (!registry['nonfungiblePositionManager']) {
+      throw new ValidateInputValueError('registry: nonfungiblePositionManager not found')
+    }
     const deployer: InfinitWallet = this.data.signer['deployer']
     const params = this.data.params
 
     return [
       new DeployUniswapV3StakerSubAction(deployer, {
-        factory: registry['uniswapV3Factory']!,
-        nonfungiblePositionManager: registry['nonfungiblePositionManager']!,
+        factory: registry['uniswapV3Factory'],
+        nonfungiblePositionManager: registry['nonfungiblePositionManager'],
         maxIncentiveStartLeadTime: params.maxIncentiveStartLeadTime,
         maxIncentiveDuration: params.maxIncentiveDuration,
       }),

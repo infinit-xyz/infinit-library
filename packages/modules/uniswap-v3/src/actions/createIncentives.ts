@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import { Action, InfinitWallet } from '@infinit-xyz/core'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/internal'
 
 import { CreateIncentivesSubAction } from '@actions/subactions/createIncentive'
@@ -41,11 +42,14 @@ export class CreateIncentivesAction extends Action<CreateIncentivesActionData, U
   }
 
   protected getSubActions(registry: UniswapV3Registry) {
+    if (!registry['uniswapV3Staker']) {
+      throw new ValidateInputValueError('registry: uniswapV3Staker not found')
+    }
     const owner = this.data.signer['incentiveCreator']
     const params = this.data.params
     return [
       new CreateIncentivesSubAction(owner, {
-        uniswapV3Staker: registry['uniswapV3Staker']!,
+        uniswapV3Staker: registry['uniswapV3Staker'],
         incentiveInfos: params.incentiveInfos,
       }),
     ]

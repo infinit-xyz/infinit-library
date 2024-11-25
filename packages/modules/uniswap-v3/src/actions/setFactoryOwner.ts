@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/internal'
 
 import { SetFactoryOwnerSubAction } from '@actions/subactions/setFactoryOwner'
@@ -26,11 +27,14 @@ export class SetFactoryOwnerAction extends Action<SetFactoryOwnerActionData, Uni
   }
 
   protected getSubActions(registry: UniswapV3Registry): SubAction[] {
+    if (!registry['uniswapV3Factory']) {
+      throw new ValidateInputValueError('registry: uniswapV3Factory not found')
+    }
     const owner = this.data.signer['factoryOwner']
     const params = this.data.params
     return [
       new SetFactoryOwnerSubAction(owner, {
-        uniswapV3Factory: registry['uniswapV3Factory']!,
+        uniswapV3Factory: registry['uniswapV3Factory'],
         newOwner: params.newOwner,
       }),
     ]

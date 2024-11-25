@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import { validateActionData } from '@infinit-xyz/core/internal'
 
 import { EnableFeeAmountsSubAction } from '@actions/subactions/enableFeeAmounts'
@@ -33,11 +34,14 @@ export class EnableFeeAmountsAction extends Action<EnableFeeAmountsActionData, U
   }
 
   protected getSubActions(registry: UniswapV3Registry): SubAction[] {
+    if (!registry['uniswapV3Factory']) {
+      throw new ValidateInputValueError('registry: uniswapV3Factory not found')
+    }
     const owner = this.data.signer['factoryOwner']
     const params = this.data.params
     return [
       new EnableFeeAmountsSubAction(owner, {
-        uniswapV3Factory: registry['uniswapV3Factory']!,
+        uniswapV3Factory: registry['uniswapV3Factory'],
         feeAmounts: params.feeAmounts,
       }),
     ]

@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/internal'
 
 import { TransferProxyAdminOwnerSubAction } from '@actions/subactions/transferProxyAdminOwner'
@@ -26,11 +27,14 @@ export class TransferProxyAdminOwnerAction extends Action<TransferProxyAdminOwne
   }
 
   protected getSubActions(registry: UniswapV3Registry): SubAction[] {
+    if (!registry['proxyAdmin']) {
+      throw new ValidateInputValueError('registry: proxyAdmin not found')
+    }
     const owner = this.data.signer['proxyAdminOwner']
     const params = this.data.params
     return [
       new TransferProxyAdminOwnerSubAction(owner, {
-        proxyAdmin: registry['proxyAdmin']!,
+        proxyAdmin: registry['proxyAdmin'],
         newOwner: params.newOwner,
       }),
     ]
