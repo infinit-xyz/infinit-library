@@ -1,4 +1,4 @@
-import { Address, Hash, Hex, zeroAddress } from 'viem'
+import { Address, Hash, Hex, zeroAddress, zeroHash } from 'viem'
 
 import { TxBuilder } from '@infinit-xyz/core'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
@@ -138,7 +138,7 @@ export class SetNewPoolOracleReaderSubAction extends SubAction<SetNewPoolOracleR
           functionName: 'maxStaleTimes',
           args: [oracle.token],
         })
-        if (maxStaleTime !== 0n || priceId !== zeroAddress) {
+        if (maxStaleTime !== 0n || priceId !== zeroHash) {
           throw new ContractValidateError('PythOracleReader Token parameters has been already set')
         }
         break
