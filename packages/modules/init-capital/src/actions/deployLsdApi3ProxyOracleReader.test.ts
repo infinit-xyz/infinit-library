@@ -25,11 +25,7 @@ describe('deployLsdApi3ProxyOracleReaderAction', () => {
 
   test('deploy LsdApi3ProxyOracle', async () => {
     action = new DeployLsdApi3ProxyOracleReaderAction({
-      params: {
-        api3ProxyOracleReader: registry.api3ProxyOracleReaderProxy!,
-        accessControlManager: registry.accessControlManager!,
-        proxyAdmin: registry.proxyAdmin!,
-      },
+      params: {},
       signer: {
         deployer: client,
       },
