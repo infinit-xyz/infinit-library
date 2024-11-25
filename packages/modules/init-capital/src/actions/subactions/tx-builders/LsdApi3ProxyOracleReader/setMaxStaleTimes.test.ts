@@ -26,13 +26,13 @@ describe('SetMaxStalesTimes', async () => {
 
   test('test mock calldata should be matched to txBuider calldata', async () => {
     txBuilder = new SetMaxStaleTimesTxBuilder(client1, {
-      api3ProxyOracleReader: '0xCD399994982B3a3836B8FE81f7127cC5148e9BaE',
+      lsdApi3ProxyOracleReader: '0xCD399994982B3a3836B8FE81f7127cC5148e9BaE',
       tokens: ['0xCD399994982B3a3836B8FE81f7127cC5148e9BaE'],
       maxStaleTimes: [2n],
     })
     const txData = await txBuilder.buildTx()
 
-    const api3ProxyOracleReaderArtifact = await readArtifact('Api3ProxyOracleReader')
+    const api3ProxyOracleReaderArtifact = await readArtifact('LsdApi3ProxyOracleReader')
 
     const mockTxData = encodeFunctionData({
       abi: api3ProxyOracleReaderArtifact.abi,
@@ -43,18 +43,19 @@ describe('SetMaxStalesTimes', async () => {
     expect(mockTxData === txData.data).toBeTruthy()
     expect('0xCD399994982B3a3836B8FE81f7127cC5148e9BaE' === txData.to).toBeTruthy()
   })
-  // TODO after deploy all base test
+
   test('test validate tx builder zero address should be failed.', async () => {
     txBuilder = new SetMaxStaleTimesTxBuilder(client2, {
-      api3ProxyOracleReader: '0x0000000000000000000000000000000000000000',
+      lsdApi3ProxyOracleReader: '0x0000000000000000000000000000000000000000',
       tokens: ['0xCD399994982B3a3836B8FE81f7127cC5148e9BaE'],
       maxStaleTimes: [2n],
     })
     expect(txBuilder.validate()).rejects.toThrowError('Please check your input params\nAPI3_PROXY_ORACLE_READER SHOULD_NOT_BE_ZERO_ADDRESS')
   })
+
   test('test validate tx builder mismatched length should be failed.', async () => {
     txBuilder = new SetMaxStaleTimesTxBuilder(client2, {
-      api3ProxyOracleReader: registry.api3ProxyOracleReaderProxy!,
+      lsdApi3ProxyOracleReader: registry.api3ProxyOracleReaderProxy!,
       tokens: ['0xCD399994982B3a3836B8FE81f7127cC5148e9BaE'],
       maxStaleTimes: [2n, 3n],
     })
