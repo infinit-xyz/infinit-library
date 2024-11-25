@@ -65,7 +65,7 @@ export class SetLsdApi3ProxyOracleReaderTokensInfoAction extends Action<
     const maxStaleTimes = tokenInfos.map((tokenInfo) => tokenInfo.maxStaleTime)
     const quoteTokens = tokenInfos.map((tokenInfo) => tokenInfo.quoteToken)
 
-    if (!registry.lsdApi3ProxyOracleReaderProxy) throw new ValidateInputValueError('registry: accessControlManager not found')
+    if (!registry.lsdApi3ProxyOracleReaderProxy) throw new ValidateInputValueError('registry: lsdApi3ProxyOracleReaderProxy not found')
 
     // set tokens data feed proxies params
     const setLsdApi3ProxyOracleReaderDataFeedProxiesSubActionParams: SetLsdApi3ProxyOracleReaderDataFeedProxiesSubActionParams = {
