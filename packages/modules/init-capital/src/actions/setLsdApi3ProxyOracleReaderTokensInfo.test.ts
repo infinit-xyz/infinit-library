@@ -31,7 +31,6 @@ describe('set tokenInfos on Api3ProxyOracleReader', () => {
     // 1. set weth api3 proxy oracle reader
     action = new SetApi3ProxyOracleReaderTokensInfoAction({
       params: {
-        api3ProxyOracleReader: registry.api3ProxyOracleReaderProxy!,
         tokensInfo: [
           {
             token: weth,
@@ -49,7 +48,6 @@ describe('set tokenInfos on Api3ProxyOracleReader', () => {
     // 2. set weeth lsd api3 proxy oracle reader
     action = new SetLsdApi3ProxyOracleReaderTokensInfoAction({
       params: {
-        lsdApi3ProxyOracleReader: registry.lsdApi3ProxyOracleReaderProxy!,
         tokensInfo: [
           {
             token: weeth,

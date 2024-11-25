@@ -2,12 +2,11 @@ import { z } from 'zod'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
-import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/internal'
+import { validateActionData } from '@infinit-xyz/core/internal'
 
 import {
   DeployLsdApi3ProxyOracleReaderMsg,
   DeployLsdApi3ProxyOracleReaderSubAction,
-  DeployLsdApi3ProxyOracleReaderSubActionParams,
 } from '@actions/subactions/deployLsdApi3ProxyOracleReader'
 import {
   DeployLsdApi3ProxyOracleProxySubAction,

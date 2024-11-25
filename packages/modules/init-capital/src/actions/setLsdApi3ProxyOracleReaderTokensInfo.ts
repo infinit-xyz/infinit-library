@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { Address } from 'viem'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import { validateActionData, zodAddress } from '@infinit-xyz/core/internal'
 
 import {
@@ -28,7 +29,6 @@ type TokenInfo = {
 }
 
 export const SetLsdApi3ProxyOracleReaderTokensInfoActionParamsSchema = z.object({
-  lsdApi3ProxyOracleReader: zodAddress.describe(`Address of API3 proxy oracle reader e.g. '0x123...abc'`),
   tokensInfo: z.array(
     z.object({
       token: zodAddress.describe(`Address of tokenInfo e.g. '0x123...abc'`),
@@ -57,7 +57,7 @@ export class SetLsdApi3ProxyOracleReaderTokensInfoAction extends Action<
     super(SetLsdApi3ProxyOracleReaderTokensInfoAction.name, data)
   }
 
-  protected getSubActions(): SubAction[] {
+  protected getSubActions(registry: InitCapitalRegistry): SubAction[] {
     const governor = this.data.signer['governor']
     const tokenInfos = this.data.params.tokensInfo
     const tokens = tokenInfos.map((tokenInfo) => tokenInfo.token)
@@ -65,21 +65,23 @@ export class SetLsdApi3ProxyOracleReaderTokensInfoAction extends Action<
     const maxStaleTimes = tokenInfos.map((tokenInfo) => tokenInfo.maxStaleTime)
     const quoteTokens = tokenInfos.map((tokenInfo) => tokenInfo.quoteToken)
 
+    if (!registry.lsdApi3ProxyOracleReaderProxy) throw new ValidateInputValueError('registry: accessControlManager not found')
+
     // set tokens data feed proxies params
     const setLsdApi3ProxyOracleReaderDataFeedProxiesSubActionParams: SetLsdApi3ProxyOracleReaderDataFeedProxiesSubActionParams = {
-      lsdApi3ProxyOracleReader: this.data.params.lsdApi3ProxyOracleReader,
+      lsdApi3ProxyOracleReader: registry.lsdApi3ProxyOracleReaderProxy,
       tokens: tokens,
       dataFeedProxies: dataFeedProxies,
     }
     // set tokens max stale times params
     const setLsdApi3ProxyOracleReaderMaxStaleTimesSubActionParams: SetLsdApi3ProxyOracleReaderMaxStaleTimesSubActionParams = {
-      lsdApi3ProxyOracleReader: this.data.params.lsdApi3ProxyOracleReader,
+      lsdApi3ProxyOracleReader: registry.lsdApi3ProxyOracleReaderProxy,
       tokens: tokens,
       maxStaleTimes: maxStaleTimes,
     }
     // set tokens quote tokens params
     const setLsdApi3ProxyOracleReaderQuoteTokensSubActionParams: SetLsdApi3ProxyOracleReaderQuoteTokensSubActionParams = {
-      lsdApi3ProxyOracleReader: this.data.params.lsdApi3ProxyOracleReader,
+      lsdApi3ProxyOracleReader: registry.lsdApi3ProxyOracleReaderProxy,
       tokens: tokens,
       quoteTokens: quoteTokens,
     }
