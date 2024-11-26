@@ -1,6 +1,5 @@
 import { z } from 'zod'
 
-import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import { validateActionData } from '@infinit-xyz/core/internal'
