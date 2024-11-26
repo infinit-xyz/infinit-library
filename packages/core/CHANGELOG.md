@@ -1,5 +1,13 @@
 # @infinit-xyz/core
 
+## 0.1.0-alpha.11
+
+### Minor Changes
+
+- [#146](https://github.com/infinit-xyz/infinit-library/pull/146)
+  [`9a5022f`](https://github.com/infinit-xyz/infinit-library/commit/9a5022f7d2f102dd14afb2e29b91a5dab250ab05) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - pass registry to the subaction validate
+
 ## 0.1.0-alpha.10
 
 ### Minor Changes

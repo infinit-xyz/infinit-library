@@ -1,6 +1,6 @@
 {
   "name": "@infinit-xyz/init-capital",
-  "version": "0.0.0-alpha.8",
+  "version": "0.0.0-alpha.9",
   "homepage": "https://infinit.tech",
   "repository": {
     "type": "git",
@@ -45,7 +45,7 @@
     "extends": "../../../.eslintrc.js"
   },
   "dependencies": {
-    "@infinit-xyz/core": "^0.1.0-alpha.10",
+    "@infinit-xyz/core": "^0.1.0-alpha.11",
     "tsup": "^8.2.4",
     "viem": "2.21.28",
     "zod": "^3.23.8",

@@ -1,5 +1,18 @@
 # @infinit-xyz/aave-v3
 
+## 0.0.0-alpha.26
+
+### Minor Changes
+
+- [#145](https://github.com/infinit-xyz/infinit-library/pull/145)
+  [`6376a15`](https://github.com/infinit-xyz/infinit-library/commit/6376a15c85cf43d3b509cbe4ff24705be8219af0) Thanks
+  [@Kittikornl](https://github.com/Kittikornl)! - add FeeVault
+
+### Patch Changes
+
+- Updated dependencies [[`9a5022f`](https://github.com/infinit-xyz/infinit-library/commit/9a5022f7d2f102dd14afb2e29b91a5dab250ab05)]:
+  - @infinit-xyz/core@0.1.0-alpha.11
+
 ## 0.0.0-alpha.25
 
 ### Minor Changes
