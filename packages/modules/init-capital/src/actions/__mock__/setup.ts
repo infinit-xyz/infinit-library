@@ -59,8 +59,6 @@ export const setupInitCapital = async (): Promise<InitCapitalRegistry> => {
   // 3. deploy pyth proxy oracle reader
   const deployPythOracleReaderAction = new DeployPythOracleReaderAction({
     params: {
-      accessControlManager: registry.accessControlManager!,
-      proxyAdmin: registry.proxyAdmin!,
       pyth: ARBITRUM_TEST_ADDRESSES.pyth,
     },
     signer: {
