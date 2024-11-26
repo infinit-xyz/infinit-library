@@ -26,7 +26,6 @@ describe('transferProxyAdminOwnerAction', () => {
   test('transferProxyAdminOwner to address(1)', async () => {
     const action = new TransferProxyAdminOwnerAction({
       params: {
-        proxyAdmin: registry.proxyAdmin!,
         newOwner: oneAddress,
       },
       signer: {

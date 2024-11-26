@@ -24,7 +24,6 @@ describe('enableFeeAmountsAction', () => {
   test('enableFeeAmounts 2% and 0.01%', async () => {
     const action = new EnableFeeAmountsAction({
       params: {
-        uniswapV3Factory: registry.uniswapV3Factory!,
         feeAmounts: [
           {
             fee: 100,

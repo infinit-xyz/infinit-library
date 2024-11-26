@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import { Action, InfinitWallet } from '@infinit-xyz/core'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/internal'
 
 import { CollectProtocolSubAction } from '@actions/subactions/collectProtocol'
@@ -26,11 +27,14 @@ export class CollectProtocolAction extends Action<CollectProtocolActionData, Uni
   }
 
   protected getSubActions(registry: UniswapV3Registry) {
+    if (!registry['feeVault']) {
+      throw new ValidateInputValueError('registry: feeVault not found')
+    }
     const owner = this.data.signer['factoryOwner']
     const params = this.data.params
     return [
       new CollectProtocolSubAction(owner, {
-        recipient: registry['feeVault']!,
+        recipient: registry['feeVault'],
         pools: params.pools,
       }),
     ]

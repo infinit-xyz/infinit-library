@@ -37,7 +37,6 @@ describe('createIncentivesAction', () => {
     const block = await client.publicClient.getBlock()
     const action = new CreateIncentivesAction({
       params: {
-        uniswapV3Staker: registry.uniswapV3Staker!,
         incentiveInfos: [
           {
             incentiveKey: {
