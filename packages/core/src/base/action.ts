@@ -122,7 +122,7 @@ abstract class Action<D extends ActionData = { params: {}; signer: {} }, R exten
       const _subAction = subActions[idx]
       const subAction: SubAction<any, R> = typeof _subAction === 'function' ? _subAction(currentMessages) : _subAction
 
-      await subAction.validate()
+      await subAction.validate(currentRegistry)
 
       const { newRegistry, newMessage } = await subAction.execute(currentRegistry, { cache: cache?.subActions?.[idx] }, callback)
 

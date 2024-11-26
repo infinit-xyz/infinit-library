@@ -5,8 +5,8 @@ import { privateKeyToAccount } from 'viem/accounts'
 import { ANVIL_PRIVATE_KEY, ANVIL_PRIVATE_KEY_2 } from '@actions/__mock__/account'
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
 import { setupInitCapital } from '@actions/__mock__/setup'
-import { DeployApi3ProxyOracleReaderAction } from '@actions/deployApi3ProxyOracleReader'
 import { SetApi3ProxyOracleReaderTokensInfoAction } from '@actions/setApi3ProxyOracleReaderTokensInfo'
+import { SetLsdApi3ProxyOracleReaderTokensInfoAction } from '@actions/setLsdApi3ProxyOracleReaderTokensInfo'
 
 import { InitCapitalRegistry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
@@ -15,7 +15,7 @@ import { readArtifact } from '@utils/artifact'
 describe('set tokenInfos on Api3ProxyOracleReader', () => {
   let action: any
   const weth = ARBITRUM_TEST_ADDRESSES.weth
-  const usdt = ARBITRUM_TEST_ADDRESSES.usdt
+  const weeth = ARBITRUM_TEST_ADDRESSES.weeth
 
   let registry: InitCapitalRegistry
   const account1 = privateKeyToAccount(ANVIL_PRIVATE_KEY)
@@ -27,17 +27,8 @@ describe('set tokenInfos on Api3ProxyOracleReader', () => {
     registry = await setupInitCapital()
   })
 
-  test('deploy Api3ProxyOracleReader', async () => {
-    action = new DeployApi3ProxyOracleReaderAction({
-      params: {
-        accessControlManager: registry.accessControlManager!,
-        proxyAdmin: registry.proxyAdmin!,
-      },
-      signer: {
-        deployer: client,
-      },
-    })
-    registry = await action.run(registry, undefined, undefined)
+  test('set lsdApi3ProxyOracleReader', async () => {
+    // 1. set weth api3 proxy oracle reader
     action = new SetApi3ProxyOracleReaderTokensInfoAction({
       params: {
         tokensInfo: [
@@ -46,9 +37,22 @@ describe('set tokenInfos on Api3ProxyOracleReader', () => {
             dataFeedProxy: '0xf624881ac131210716F7708C28403cCBe346cB73',
             maxStaleTime: 86400n,
           },
+        ],
+      },
+      signer: {
+        governor: client2,
+      },
+    })
+    registry = await action.run(registry, undefined, undefined)
+
+    // 2. set weeth lsd api3 proxy oracle reader
+    action = new SetLsdApi3ProxyOracleReaderTokensInfoAction({
+      params: {
+        tokensInfo: [
           {
-            token: usdt,
-            dataFeedProxy: '0x52e2b919AE123b49249283735e6Ef9F5a6e8FC7d',
+            token: weeth,
+            dataFeedProxy: '0x4Dab7dde07CCBfCfB19bc0537739490faa2ADB15',
+            quoteToken: weth,
             maxStaleTime: 86400n,
           },
         ],
@@ -57,22 +61,15 @@ describe('set tokenInfos on Api3ProxyOracleReader', () => {
         governor: client2,
       },
     })
-    await action.run(registry, undefined, undefined)
+    registry = await action.run(registry, undefined, undefined)
 
-    // check price from api3ProxyOracleReaderProxy not zero
-    const api3ProxyOracleReaderArtifact = await readArtifact('Api3ProxyOracleReader')
-    let price = await client.publicClient.readContract({
-      address: registry.api3ProxyOracleReaderProxy!,
-      abi: api3ProxyOracleReaderArtifact.abi,
+    // 3. check price from lsdApi3ProxyOracleReaderProxy not zero
+    const lsdApi3ProxyOracleReaderArtifact = await readArtifact('LsdApi3ProxyOracleReader')
+    const price = await client.publicClient.readContract({
+      address: registry.lsdApi3ProxyOracleReaderProxy!,
+      abi: lsdApi3ProxyOracleReaderArtifact.abi,
       functionName: 'getPrice_e36',
-      args: [weth],
-    })
-    expect(price).not.toBe(0n)
-    price = await client.publicClient.readContract({
-      address: registry.api3ProxyOracleReaderProxy!,
-      abi: api3ProxyOracleReaderArtifact.abi,
-      functionName: 'getPrice_e36',
-      args: [usdt],
+      args: [weeth],
     })
     expect(price).not.toBe(0n)
   })
