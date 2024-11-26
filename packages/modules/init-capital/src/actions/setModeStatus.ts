@@ -31,11 +31,10 @@ export class SetModeStatusAction extends Action<SetModeStatusActionData, InitCap
 
     // validate registry
     if (!registry.configProxy) throw new ValidateInputValueError('registry: configProxy not found')
-    const configProxy = registry.configProxy
 
     return [
       new SetModeStatusSubAction(guardian, {
-        config: configProxy,
+        config: registry.configProxy,
         modeStatus: this.data.params.modeStatus,
       }),
     ]

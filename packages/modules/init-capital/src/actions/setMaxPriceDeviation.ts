@@ -33,11 +33,9 @@ export class SetMaxPriceDeviationAction extends Action<SetMaxPriceDeviationActio
     // validate registry
     if (!registry.initOracleProxy) throw new ValidateInputValueError('registry: initOracleProxy not found')
 
-    const initOracleProxy = registry.initOracleProxy
-
     return [
       new SetMaxPriceDeviations_e18SubAction(governor, {
-        initOracle: initOracleProxy,
+        initOracle: registry.initOracleProxy,
         tokenMaxPriceDeviations: this.data.params.tokenMaxPriceDeviations,
       }),
     ]

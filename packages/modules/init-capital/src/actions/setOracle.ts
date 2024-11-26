@@ -29,11 +29,10 @@ export class SetOracleAction extends Action<SetOracleActionData, InitCapitalRegi
     const governor = this.data.signer['governor']
     // validate registry
     if (!registry.initCoreProxy) throw new ValidateInputValueError('registry: initCoreProxy not found')
-    const initCoreProxy = registry.initCoreProxy
 
     return [
       new SetOracleSubAction(governor, {
-        initCore: initCoreProxy,
+        initCore: registry.initCoreProxy,
         oracle: this.data.params.oracle,
       }),
     ]
