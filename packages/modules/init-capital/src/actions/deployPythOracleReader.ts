@@ -1,25 +1,20 @@
 import { z } from 'zod'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/internal'
 
-import {
-  DeployPythOracleReaderMsg,
-  DeployPythOracleReaderSubAction,
-  DeployPythOracleReaderSubActionParams,
-} from '@actions/subactions/deployPythOracleReader'
+import { DeployPythOracleReaderMsg, DeployPythOracleReaderSubAction } from '@actions/subactions/deployPythOracleReader'
 import { DeployPythOracleReaderProxyMsg, DeployPythOracleReaderProxySubAction } from '@actions/subactions/deployPythOracleReaderProxy'
 import { InitializePythOracleReaderSubAction } from '@actions/subactions/initializePythOracle'
 
 import { InitCapitalRegistry } from '@/src/type'
 
 export const DeployPythOracleReaderActionParamsSchema = z.object({
-  accessControlManager: zodAddressNonZero.describe('Access control manager address in the registry'),
-  proxyAdmin: zodAddressNonZero.describe('Proxy admin address in the registry'),
   pyth: zodAddressNonZero.describe(
     'Pyth address to be used for fetching oracle data checkout https://docs.pyth.network/price-feeds/contract-addresses/evm',
   ),
-}) satisfies z.ZodType<DeployPythOracleReaderSubActionParams>
+})
 
 export type DeployPythOracleReaderActionParams = z.infer<typeof DeployPythOracleReaderActionParamsSchema>
 
@@ -33,19 +28,28 @@ export class DeployPythOracleReaderAction extends Action<DeployPythOracleReaderA
     validateActionData(data, DeployPythOracleReaderActionParamsSchema, ['deployer'])
     super(DeployPythOracleReaderAction.name, data)
   }
-  protected getSubActions(): ((message: any) => SubAction)[] {
+  protected getSubActions(registry: InitCapitalRegistry): ((message: any) => SubAction)[] {
     const deployer = this.data.signer['deployer']
-    const deployPythOracleReaderActionParams: DeployPythOracleReaderActionParams = this.data.params
+
+    // validate registry
+    if (!registry.accessControlManager) throw new ValidateInputValueError('registry: accessControlManager not found')
+    if (!registry.proxyAdmin) throw new ValidateInputValueError('registry: proxyAdmin not found')
+
+    const accessControlmanager = registry.accessControlManager
+    const proxyAdmin = registry.proxyAdmin
 
     // return subactions
     return [
       // deploy implementation
-      () => new DeployPythOracleReaderSubAction(deployer, deployPythOracleReaderActionParams),
+      () =>
+        new DeployPythOracleReaderSubAction(deployer, {
+          accessControlManager: accessControlmanager,
+        }),
       // deploy transparent proxy and set implementation
       (message: DeployPythOracleReaderMsg) =>
         new DeployPythOracleReaderProxySubAction(deployer, {
           pythOracleReaderImpl: message.pythOracleReaderImpl,
-          proxyAdmin: this.data.params.accessControlManager,
+          proxyAdmin: proxyAdmin,
         }),
       // initialize the proxy
       (message: DeployPythOracleReaderMsg & DeployPythOracleReaderProxyMsg) =>

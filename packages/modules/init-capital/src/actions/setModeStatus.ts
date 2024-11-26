@@ -1,7 +1,8 @@
 import { z } from 'zod'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
-import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/internal'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { validateActionData } from '@infinit-xyz/core/internal'
 
 import { SetModeStatusSubAction } from '@actions/subactions/setModeStatus'
 import { SetModeStatusTxBuilderParams } from '@actions/subactions/tx-builders/Config/setModeStatus'
@@ -9,7 +10,6 @@ import { SetModeStatusTxBuilderParams } from '@actions/subactions/tx-builders/Co
 import { InitCapitalRegistry } from '@/src/type'
 
 export const SetModeStatusActionParamsSchema = z.object({
-  config: zodAddressNonZero.describe(`Address of protocol config e.g. '0x123...abc'`),
   modeStatus: z.custom<Omit<SetModeStatusTxBuilderParams, 'config'>[]>().describe(`mode status parameters`),
 })
 
@@ -26,13 +26,18 @@ export class SetModeStatusAction extends Action<SetModeStatusActionData, InitCap
     super(SetModeStatusAction.name, data)
   }
 
-  protected getSubActions(): SubAction[] {
+  protected getSubActions(registry: InitCapitalRegistry): SubAction[] {
     const guardian = this.data.signer['guardian']
-    const setModeStatusActionParams: SetModeStatusActionParams = {
-      config: this.data.params.config,
-      modeStatus: this.data.params.modeStatus,
-    }
 
-    return [new SetModeStatusSubAction(guardian, setModeStatusActionParams)]
+    // validate registry
+    if (!registry.configProxy) throw new ValidateInputValueError('registry: configProxy not found')
+    const configProxy = registry.configProxy
+
+    return [
+      new SetModeStatusSubAction(guardian, {
+        config: configProxy,
+        modeStatus: this.data.params.modeStatus,
+      }),
+    ]
   }
 }

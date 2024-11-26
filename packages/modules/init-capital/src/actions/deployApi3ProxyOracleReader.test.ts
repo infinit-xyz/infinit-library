@@ -25,17 +25,13 @@ describe('deployDoubleSlopeIRMsAction', () => {
 
   test('deploy Api3ProxyOracle', async () => {
     action = new DeployApi3ProxyOracleReaderAction({
-      params: {
-        accessControlManager: registry.accessControlManager!,
-        proxyAdmin: registry.proxyAdmin!,
-      },
+      params: {},
       signer: {
         deployer: client,
       },
     })
     const curRegistry = await action.run(registry, undefined, undefined)
 
-    expect(curRegistry.api3ProxyOracleReaderImpl).not.toBe(zeroAddress)
     expect(curRegistry.api3ProxyOracleReaderImpl).not.toBe(zeroAddress)
   })
 })

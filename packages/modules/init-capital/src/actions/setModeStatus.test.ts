@@ -16,8 +16,8 @@ import { TestChain, getForkRpcUrl } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'
 
 class SetModeStatusActionTest extends SetModeStatusAction {
-  public override getSubActions(): SubAction[] {
-    return super.getSubActions()
+  public override getSubActions(registry: InitCapitalRegistry): SubAction[] {
+    return super.getSubActions(registry)
   }
 }
 
@@ -41,7 +41,6 @@ describe('SetModeStatus', async () => {
 
     const action = new SetModeStatusAction({
       params: {
-        config: registry.configProxy!,
         modeStatus: modeStatus,
       },
       signer: { guardian: client },
@@ -74,7 +73,6 @@ describe('SetModeStatus', async () => {
 
     let action = new SetModeStatusAction({
       params: {
-        config: registry.configProxy!,
         modeStatus: modeStatus,
       },
       signer: { guardian: client },
@@ -86,7 +84,6 @@ describe('SetModeStatus', async () => {
     }
     action = new SetModeStatusAction({
       params: {
-        config: registry.configProxy!,
         modeStatus: modeStatus,
       },
       signer: { guardian: client },
@@ -117,7 +114,6 @@ describe('SetModeStatus', async () => {
     const data: SetModeStatusActionData = {
       signer: { guardian: client },
       params: {
-        config: '0xCD399994982B3a3836B8FE81f7127cC5148e9BaE',
         modeStatus: [
           { mode: 1, status: { canCollateralize: true, canDecollateralize: false, canBorrow: true, canRepay: false } },
           { mode: 2, status: { canCollateralize: false, canDecollateralize: false, canBorrow: false, canRepay: false } },
@@ -126,8 +122,8 @@ describe('SetModeStatus', async () => {
     }
     // data.
     const SetModeStatusAction = new SetModeStatusActionTest(data)
-    const subActions: SetModeStatusSubAction[] = SetModeStatusAction.getSubActions() as SetModeStatusSubAction[]
-    expect(subActions[0].params.config).toStrictEqual(data.params.config)
+    const subActions: SetModeStatusSubAction[] = SetModeStatusAction.getSubActions(registry) as SetModeStatusSubAction[]
+    expect(subActions[0].params.config).toStrictEqual(registry.configProxy)
 
     for (let j = 0; j < subActions.length; j++) {
       for (let i = 0; i < subActions[j].txBuilders.length; i++) {

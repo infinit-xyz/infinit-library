@@ -1,14 +1,14 @@
 import { z } from 'zod'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
-import { validateActionData, zodAddress, zodAddressNonZero } from '@infinit-xyz/core/internal'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
+import { validateActionData, zodAddress } from '@infinit-xyz/core/internal'
 
 import { SetOracleSubAction } from '@actions/subactions/setOracle'
 
 import { InitCapitalRegistry } from '@/src/type'
 
 export const SetOracleActionParamsSchema = z.object({
-  initCore: zodAddressNonZero.describe(`Address of init core e.g. '0x123...abc'`),
   oracle: zodAddress.describe(`Address of oracle e.g. '0x123...abc'`),
 })
 
@@ -25,13 +25,17 @@ export class SetOracleAction extends Action<SetOracleActionData, InitCapitalRegi
     super(SetOracleAction.name, data)
   }
 
-  protected getSubActions(): SubAction[] {
+  protected getSubActions(registry: InitCapitalRegistry): SubAction[] {
     const governor = this.data.signer['governor']
-    const SetOracleActionParams: SetOracleActionParams = {
-      initCore: this.data.params.initCore,
-      oracle: this.data.params.oracle,
-    }
+    // validate registry
+    if (!registry.initCoreProxy) throw new ValidateInputValueError('registry: initCoreProxy not found')
+    const initCoreProxy = registry.initCoreProxy
 
-    return [new SetOracleSubAction(governor, SetOracleActionParams)]
+    return [
+      new SetOracleSubAction(governor, {
+        initCore: initCoreProxy,
+        oracle: this.data.params.oracle,
+      }),
+    ]
   }
 }
