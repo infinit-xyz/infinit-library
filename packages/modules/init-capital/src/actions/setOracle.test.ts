@@ -4,8 +4,6 @@ import { privateKeyToAccount } from 'viem/accounts'
 
 import { SubAction } from '@infinit-xyz/core'
 
-import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
-
 import { InitCapitalRegistry } from '../type'
 import { ANVIL_PRIVATE_KEY_2 } from './__mock__/account'
 import { setupInitCapital } from './__mock__/setup'
