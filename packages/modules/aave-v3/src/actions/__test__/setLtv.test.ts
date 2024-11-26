@@ -12,9 +12,6 @@ vi.mock('@actions/subactions/setLtvSubAction')
 
 describe('SetLtvAction', () => {
   let action: SetLtvAction
-  const pool = ARBITRUM_TEST_ADDRESSES.pool
-  const poolConfigurator = ARBITRUM_TEST_ADDRESSES.poolConfigurator
-  const aclManager = ARBITRUM_TEST_ADDRESSES.aclManager
   const weth = ARBITRUM_TEST_ADDRESSES.weth
   const usdt = ARBITRUM_TEST_ADDRESSES.usdt
   const ethLtv = 8000n
@@ -22,7 +19,11 @@ describe('SetLtvAction', () => {
 
   const tester = ARBITRUM_TEST_ADDRESSES.aaveExecutor
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
-  const mockRegistry = {}
+  const mockRegistry = {
+    poolProxy: ARBITRUM_TEST_ADDRESSES.pool,
+    aclManager: ARBITRUM_TEST_ADDRESSES.aclManager,
+    poolConfiguratorProxy: ARBITRUM_TEST_ADDRESSES.poolConfigurator,
+  }
 
   test.concurrent('name should not be undefined', () => {
     expect(action.name).not.toBeUndefined()
@@ -41,9 +42,6 @@ describe('SetLtvAction', () => {
             ltv: usdtLtv,
           },
         ],
-        pool,
-        poolConfigurator,
-        aclManager,
       },
       signer: {
         poolAdmin: client,

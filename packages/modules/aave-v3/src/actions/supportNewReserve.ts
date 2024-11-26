@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { Address, Hex } from 'viem'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import { validateActionData, zodAddress } from '@infinit-xyz/core/internal'
 
 import { AddRiskAdminSubAction, AddRiskAdminSubActionParams } from '@actions/subactions/addRiskAdmin'
@@ -15,13 +16,19 @@ import { SupplyReserveSubAction, SupplyReserveSubActionParams } from '@actions/s
 import { AaveV3Registry } from '@/src/type'
 
 type SupportNewReserveActionParams = {
-  aclManager: Address
-  pool: Address
-  reservesSetupHelper: Address
-  poolConfigurator: Address
-  oracle: Address
-  setupReservesParams: (InitReserveSubActionParams['inputs'][0] &
-    ConfigureReserveSubActionParams['inputs'][0] & {
+  setupReservesParams: ({
+    underlyingAssetDecimals: number
+    interestRateStrategyAddress: Address
+    underlyingAsset: Address
+    incentivesController: Address
+    aTokenName: string
+    aTokenSymbol: string
+    variableDebtTokenName: string
+    variableDebtTokenSymbol: string
+    stableDebtTokenName: string
+    stableDebtTokenSymbol: string
+    params: Hex
+  } & ConfigureReserveSubActionParams['inputs'][0] & {
       amount: bigint
       onBehalfOf: Address
       referalCode: number
@@ -30,21 +37,12 @@ type SupportNewReserveActionParams = {
 }
 
 export const SupportNewReserveActionParamsSchema = z.object({
-  aclManager: zodAddress.describe(`The address of ACL manager contract e.g. '0x123...abc'`),
-  pool: zodAddress.describe(`The address of the lending pool contract e.g. '0x123...abc'`),
-  reservesSetupHelper: zodAddress.describe(`The address of the reserves setup helper contract e.g. '0x123...abc'`),
-  poolConfigurator: zodAddress.describe(`The address of the pool configurator contract e.g. '0x123...abc'`),
-  oracle: zodAddress.describe(`The address of the oracle contract e.g. '0x123...abc'`),
   setupReservesParams: z
     .array(
       z.object({
-        aTokenImpl: zodAddress,
-        stableDebtTokenImpl: zodAddress,
-        variableDebtTokenImpl: zodAddress,
         underlyingAssetDecimals: z.number(),
         interestRateStrategyAddress: zodAddress,
         underlyingAsset: zodAddress,
-        treasury: zodAddress,
         incentivesController: zodAddress,
         aTokenName: z.string(),
         aTokenSymbol: z.string(),
@@ -82,7 +80,35 @@ export class SupportNewReserveAction extends Action<SupportNewReserveData, AaveV
     validateActionData(data, SupportNewReserveActionParamsSchema, ['deployer', 'poolAdmin', 'aclAdmin'])
     super(SupportNewReserveAction.name, data)
   }
-  protected getSubActions(): SubAction[] {
+  protected getSubActions(registry: AaveV3Registry): SubAction[] {
+    if (!registry.aclManager) {
+      throw new ValidateInputValueError('registry: aclManager not found')
+    }
+    if (!registry.poolProxy) {
+      throw new ValidateInputValueError('registry: poolProxy not found')
+    }
+    if (!registry.reservesSetupHelper) {
+      throw new ValidateInputValueError('registry: reservesSetupHelper not found')
+    }
+    if (!registry.poolConfiguratorProxy) {
+      throw new ValidateInputValueError('registry: poolConfiguratorProxy not found')
+    }
+    if (!registry.aaveOracle) {
+      throw new ValidateInputValueError('registry: aaveOracle not found')
+    }
+    if (!registry.aTokenImpl) {
+      throw new ValidateInputValueError('registry: aTokenImpl not found')
+    }
+    if (!registry.stableDebtTokenImpl) {
+      throw new ValidateInputValueError('registry: stableDebtTokenImpl not found')
+    }
+    if (!registry.variableDebtTokenImpl) {
+      throw new ValidateInputValueError('registry: variableDebtTokenImpl not found')
+    }
+    if (!registry.feeVault) {
+      throw new ValidateInputValueError('registry: feeVault not found')
+    }
+
     const deployer = this.data.signer['deployer']
     const poolAdmin = this.data.signer['poolAdmin']
     const aclAdmin = this.data.signer['aclAdmin']
@@ -91,17 +117,17 @@ export class SupportNewReserveAction extends Action<SupportNewReserveData, AaveV
 
     // get only init reserve params
     const initReserveParams: InitReserveSubActionParams = {
-      poolConfigurator: parameters.poolConfigurator,
-      pool: parameters.pool,
+      poolConfigurator: registry.poolConfiguratorProxy,
+      pool: registry.poolProxy,
       inputs: parameters.setupReservesParams.map((params) => {
         return {
-          aTokenImpl: params.aTokenImpl,
-          stableDebtTokenImpl: params.stableDebtTokenImpl,
-          variableDebtTokenImpl: params.variableDebtTokenImpl,
+          aTokenImpl: registry.aTokenImpl!,
+          stableDebtTokenImpl: registry.stableDebtTokenImpl!,
+          variableDebtTokenImpl: registry.variableDebtTokenImpl!,
           underlyingAssetDecimals: params.underlyingAssetDecimals,
           interestRateStrategyAddress: params.interestRateStrategyAddress,
           underlyingAsset: params.underlyingAsset,
-          treasury: params.treasury,
+          treasury: registry.feeVault!,
           incentivesController: params.incentivesController,
           aTokenName: params.aTokenName,
           aTokenSymbol: params.aTokenSymbol,
@@ -117,14 +143,14 @@ export class SupportNewReserveAction extends Action<SupportNewReserveData, AaveV
     // get only addRiskAdmin params
     // add reserveSetupHelper to riskAdmin
     const addRiskAdminParams: AddRiskAdminSubActionParams = {
-      aclManager: parameters.aclManager,
-      riskAdmin: parameters.reservesSetupHelper,
+      aclManager: registry.aclManager,
+      riskAdmin: registry.reservesSetupHelper,
     }
 
     // get only configure reserve params
     const configureReserveParams: ConfigureReserveSubActionParams = {
-      poolConfigurator: parameters.poolConfigurator,
-      reservesSetupHelper: parameters.reservesSetupHelper,
+      poolConfigurator: registry.poolConfiguratorProxy,
+      reservesSetupHelper: registry.reservesSetupHelper,
       inputs: parameters.setupReservesParams.map((params) => {
         return {
           asset: params.asset,
@@ -144,13 +170,13 @@ export class SupportNewReserveAction extends Action<SupportNewReserveData, AaveV
     // get only removeAdmin params
     // remove reserveSetupHelper from riskAdmin
     const removeRiskAdminParams: RemoveRiskAdminSubActionParams = {
-      aclManager: parameters.aclManager,
-      riskAdmin: parameters.reservesSetupHelper,
+      aclManager: registry.aclManager,
+      riskAdmin: registry.reservesSetupHelper,
     }
 
     // get only supply reserve params
     const supplyReserveParams: SupplyReserveSubActionParams = {
-      pool: parameters.pool,
+      pool: registry.poolProxy,
       reserves: parameters.setupReservesParams.map((params) => {
         return {
           token: params.underlyingAsset,
@@ -162,7 +188,7 @@ export class SupportNewReserveAction extends Action<SupportNewReserveData, AaveV
     }
     // get only set asset sources params
     const setAssetOracleSourcesParams: SetAssetOracleSourcesSubActionParams = {
-      oracle: parameters.oracle,
+      oracle: registry.aaveOracle,
       assets: parameters.setupReservesParams.map((params) => params.underlyingAsset),
       sources: parameters.setupReservesParams.map((params) => params.source),
     }

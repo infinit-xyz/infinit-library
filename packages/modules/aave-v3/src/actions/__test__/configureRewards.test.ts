@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, test, vi } from 'vitest'
 
-import { Address, encodeFunctionData, maxUint256 } from 'viem'
+import { encodeFunctionData, maxUint256 } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 import { TransactionData } from '@infinit-xyz/core'
@@ -22,7 +22,6 @@ describe('ConfigureRewardsAction', () => {
   let action: SetEmissionAdminAction
   let client: TestInfinitWallet
   let registry: AaveV3Registry
-  let emissionManager: Address
   let aliceClient: TestInfinitWallet
 
   const weth = ARBITRUM_TEST_ADDRESSES.weth
@@ -35,14 +34,12 @@ describe('ConfigureRewardsAction', () => {
 
     const aliceAccount = privateKeyToAccount(claimerPk)
 
-    emissionManager = registry.emissionManager!
     aliceClient = new TestInfinitWallet(TestChain.arbitrum, aliceAccount.address)
   })
 
   test('should run successfully', async () => {
     action = new SetEmissionAdminAction({
       params: {
-        emissionManager: emissionManager,
         reward: ARBITRUM_TEST_ADDRESSES.usdt,
         admin: ARBITRUM_TEST_ADDRESSES.tester,
       },
@@ -54,7 +51,6 @@ describe('ConfigureRewardsAction', () => {
 
     const configRewardsAction = new ConfigRewardsAction({
       params: {
-        emissionManager: registry.emissionManager!,
         rewardsConfigInputs: [
           {
             emissionPerSecond: 10_000n,
@@ -226,7 +222,6 @@ describe('ConfigureRewardsAction', () => {
   test('test approve', async () => {
     action = new SetEmissionAdminAction({
       params: {
-        emissionManager: emissionManager,
         reward: ARBITRUM_TEST_ADDRESSES.usdt,
         admin: ARBITRUM_TEST_ADDRESSES.tester,
       },
@@ -238,7 +233,6 @@ describe('ConfigureRewardsAction', () => {
 
     const configRewardsAction = new ConfigRewardsAction({
       params: {
-        emissionManager: registry.emissionManager!,
         rewardsConfigInputs: [
           {
             emissionPerSecond: 10_000n,

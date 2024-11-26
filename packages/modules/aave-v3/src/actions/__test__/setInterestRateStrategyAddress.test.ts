@@ -4,6 +4,7 @@ import { zeroAddress } from 'viem'
 
 import { InfinitCache } from '@infinit-xyz/core'
 
+import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
 import { SetInterestRateStrategyAddressAction } from '@actions/setInterestRateStrategyAddress'
 import { SetInterestRateStrategyAddressSubAction } from '@actions/subactions/setReserveInterestRateStrategyAddressSubAction'
 
@@ -13,15 +14,16 @@ vi.mock('@actions/subactions/setReserveInterestRateStrategyAddressSubAction')
 
 describe('SetInterestRateStrategyAddressAction', () => {
   let action: SetInterestRateStrategyAddressAction
-  const pool = '0x794a61358D6845594F94dc1DB02A252b5b4814aD'
-  const poolConfigurator = '0x8145eddDf43f50276641b55bd3AD95944510021E'
-  const aclManager = '0xa72636CbcAa8F5FF95B2cc47F3CDEe83F3294a0B'
   const weth = '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1'
   const usdt = '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9'
 
   const tester = '0xFF1137243698CaA18EE364Cc966CF0e02A4e6327'
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
-  const mockRegistry = {}
+  const mockRegistry = {
+    poolProxy: ARBITRUM_TEST_ADDRESSES.pool,
+    aclManager: ARBITRUM_TEST_ADDRESSES.aclManager,
+    poolConfiguratorProxy: ARBITRUM_TEST_ADDRESSES.poolConfigurator,
+  }
 
   test.concurrent('name should not be undefined', () => {
     expect(action.name).not.toBeUndefined()
@@ -40,9 +42,6 @@ describe('SetInterestRateStrategyAddressAction', () => {
             interestRateStrategy: zeroAddress,
           },
         ],
-        pool,
-        poolConfigurator,
-        aclManager,
       },
       signer: {
         poolAdmin: client,
