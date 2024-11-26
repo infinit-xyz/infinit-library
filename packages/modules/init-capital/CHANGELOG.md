@@ -1,5 +1,28 @@
 # @infinit-xyz/init-capital
 
+## 0.0.0-alpha.9
+
+### Minor Changes
+
+- [#144](https://github.com/infinit-xyz/infinit-library/pull/144)
+  [`40dbcc6`](https://github.com/infinit-xyz/infinit-library/commit/40dbcc6c90b9e1b184556cccec475a5e58c41cff) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - fix logic for setModeAndTokenLiqMultiplierSubAction and add tests
+
+- [#146](https://github.com/infinit-xyz/infinit-library/pull/146)
+  [`9a5022f`](https://github.com/infinit-xyz/infinit-library/commit/9a5022f7d2f102dd14afb2e29b91a5dab250ab05) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - support lsdApi3
+
+- [#141](https://github.com/infinit-xyz/infinit-library/pull/141)
+  [`5a5dfad`](https://github.com/infinit-xyz/infinit-library/commit/5a5dfadaeeb9b2a1dd4fe15a12091d9046eb650f) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - - add more init capital add new pool tests
+  - fix txBuilder validations variable range e.g. handle input over uint128 for bigint
+  - fix registry typo error on initialize pool
+
+### Patch Changes
+
+- Updated dependencies [[`9a5022f`](https://github.com/infinit-xyz/infinit-library/commit/9a5022f7d2f102dd14afb2e29b91a5dab250ab05)]:
+  - @infinit-xyz/core@0.1.0-alpha.11
+
 ## 0.0.0-alpha.8
 
 ### Patch Changes
