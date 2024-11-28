@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import { validateActionData, zodAddress } from '@infinit-xyz/core/internal'
 
 import { SetInterestRateStrategyAddressSubAction } from '@actions/subactions/setReserveInterestRateStrategyAddressSubAction'
@@ -16,9 +17,6 @@ export const SetInterestRateStrategyAddressActionParamsSchema = z.object({
       }),
     )
     .describe(`The address of the interest rate strategy contract e.g. '0x123...abc'`),
-  poolConfigurator: zodAddress.describe(`The address of the pool configurator contract e.g. '0x123...abc'`),
-  pool: zodAddress.describe(`The address of the lending pool contract e.g. '0x123...abc'`),
-  aclManager: zodAddress.describe(`The address of the ACL manager contract e.g. '0x123...abc'`),
 })
 
 export type SetInterestRateStrategyAddressActionParams = z.infer<typeof SetInterestRateStrategyAddressActionParamsSchema>
@@ -34,9 +32,23 @@ export class SetInterestRateStrategyAddressAction extends Action<SetInterestRate
     super(SetInterestRateStrategyAddressAction.name, data)
   }
 
-  protected getSubActions(): SubAction[] {
+  protected getSubActions(registry: AaveV3Registry): SubAction[] {
+    if (!registry.aclManager) {
+      throw new ValidateInputValueError('registry: aclManager not found')
+    }
+    if (!registry.poolConfiguratorProxy) {
+      throw new ValidateInputValueError('registry: poolConfiguratorProxy not found')
+    }
+    if (!registry.poolProxy) {
+      throw new ValidateInputValueError('registry: poolProxy not found')
+    }
     const poolAdmin = this.data.signer['poolAdmin']
-    const params = this.data.params
+    const params = {
+      ...this.data.params,
+      pool: registry.poolProxy,
+      aclManager: registry.aclManager,
+      poolConfigurator: registry.poolConfiguratorProxy,
+    }
     return [new SetInterestRateStrategyAddressSubAction(poolAdmin, params)]
   }
 }

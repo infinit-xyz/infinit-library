@@ -12,14 +12,15 @@ vi.mock('@actions/subactions/setReserveBorrowingSubAction')
 
 describe('SetReserveBorrowingAction', () => {
   let action: SetReserveBorrowingAction
-  const poolConfigurator = ARBITRUM_TEST_ADDRESSES.poolConfigurator
-  const aclManager = ARBITRUM_TEST_ADDRESSES.aclManager
   const weth = ARBITRUM_TEST_ADDRESSES.weth
   const usdt = ARBITRUM_TEST_ADDRESSES.usdt
 
   const tester = ARBITRUM_TEST_ADDRESSES.aaveExecutor
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
-  const mockRegistry = {}
+  const mockRegistry = {
+    aclManager: ARBITRUM_TEST_ADDRESSES.aclManager,
+    poolConfiguratorProxy: ARBITRUM_TEST_ADDRESSES.poolConfigurator,
+  }
 
   test.concurrent('name should not be undefined', () => {
     expect(action.name).not.toBeUndefined()
@@ -38,8 +39,6 @@ describe('SetReserveBorrowingAction', () => {
             enabled: false,
           },
         ],
-        poolConfigurator,
-        aclManager,
       },
       signer: {
         poolAdmin: client,
