@@ -42,7 +42,7 @@ export type AddNewModesActionData = {
 
 export class AddNewModesAction extends Action<AddNewModesActionData, InitCapitalRegistry> {
   constructor(data: AddNewModesActionData) {
-    validateActionData(data, AddNewModesActionParamsSchema, ['governor'])
+    validateActionData(data, AddNewModesActionParamsSchema, ['governor', 'guardian'])
     super(AddNewModesAction.name, data)
   }
 
