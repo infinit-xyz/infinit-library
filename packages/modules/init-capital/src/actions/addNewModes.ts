@@ -35,15 +35,15 @@ export const AddNewModesActionParamsSchema = z.object({
 
 export type AddNewModesActionParams = z.infer<typeof AddNewModesActionParamsSchema>
 
-export type AddNewModeActionData = {
+export type AddNewModesActionData = {
   params: AddNewModesActionParams
   signer: Record<'governor' | 'guardian', InfinitWallet>
 }
 
-export class AddNewModeAction extends Action<AddNewModeActionData, InitCapitalRegistry> {
-  constructor(data: AddNewModeActionData) {
+export class AddNewModesAction extends Action<AddNewModesActionData, InitCapitalRegistry> {
+  constructor(data: AddNewModesActionData) {
     validateActionData(data, AddNewModesActionParamsSchema, ['governor'])
-    super(AddNewModeAction.name, data)
+    super(AddNewModesAction.name, data)
   }
 
   protected getSubActions(registry: InitCapitalRegistry): SubAction[] {
@@ -77,6 +77,7 @@ export class AddNewModeAction extends Action<AddNewModeActionData, InitCapitalRe
     // set mode liquidation params
     const setModeLiqMultiplierSubActionParams: SetModeAndTokenLiqMultiplierSubActionParams = {
       liqIncentiveCalculator: registry.liqIncentiveCalculatorProxy,
+      // no need to set token liq incentive multiplier so leave it as zero address and undefined
       tokenLiqIncentiveMultiplierConfig: {
         token: zeroAddress,
         multiplier_e18: undefined,

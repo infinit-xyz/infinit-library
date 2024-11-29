@@ -8,7 +8,7 @@ import { SubAction } from '@infinit-xyz/core'
 import { ANVIL_PRIVATE_KEY, ANVIL_PRIVATE_KEY_2 } from '@actions/__mock__/account'
 import { setupInitCapital } from '@actions/__mock__/setup'
 
-import { AddNewModeAction } from './addNewModes'
+import { AddNewModesAction } from './addNewModes'
 // import { SetModeStatusSubAction } from './subactions/setModeStatus'
 // import { ModeStatus, SetModeStatusTxBuilder } from './subactions/tx-builders/Config/setModeStatus'
 import { InitCapitalRegistry } from '@/src/type'
@@ -16,7 +16,7 @@ import { TestChain } from '@infinit-xyz/test'
 import { TestInfinitWallet } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'
 
-class AddNewModesActionTest extends AddNewModeAction {
+class AddNewModesActionTest extends AddNewModesAction {
   public override getSubActions(registry: InitCapitalRegistry): SubAction[] {
     return super.getSubActions(registry)
   }
@@ -64,7 +64,7 @@ describe('Add New Mode', async () => {
         },
       ],
     }
-    const action = new AddNewModeAction({
+    const action = new AddNewModesAction({
       signer: { governor: governor, guardian: guardian },
       params: addNewModeActionParams,
     })
@@ -117,7 +117,7 @@ describe('Add New Mode', async () => {
   })
 
   test('test correct name', async () => {
-    expect(AddNewModeAction.name).toStrictEqual('AddNewModeAction')
+    expect(AddNewModesAction.name).toStrictEqual('AddNewModesAction')
   })
 
   // test('test correct calldata', async () => {

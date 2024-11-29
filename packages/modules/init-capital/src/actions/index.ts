@@ -1,5 +1,6 @@
 import { ActionDetailRecord } from '@infinit-xyz/core'
 
+import { AddNewModesAction, AddNewModesActionParamsSchema } from '@actions/addNewModes'
 import { ChangeIrmAction, ChangeIrmActionParamsSchema } from '@actions/changeIrm'
 import { DeployApi3ProxyOracleReaderAction, DeployApi3ProxyOracleReaderActionParamsSchema } from '@actions/deployApi3ProxyOracleReader'
 import { DeployDoubleSlopeIRMsAction, DeployDoubleSlopeIRMsActionParamsSchema } from '@actions/deployDoubleSlopeIRMs'
@@ -120,6 +121,13 @@ export const actions = {
     paramsSchema: ChangeIrmActionParamsSchema,
     signers: ['deployer', 'guardian'],
   },
+  addNewModes: {
+    type: 'on-chain',
+    name: 'Add New Modes',
+    actionClassName: AddNewModesAction.name,
+    paramsSchema: AddNewModesActionParamsSchema,
+    signers: ['guardian', 'governor'],
+  },
 } satisfies ActionDetailRecord
 
 export {
@@ -137,4 +145,5 @@ export {
   SetPoolConfigAction,
   SetPythOracleReaderTokensInfoAction,
   SupportNewPoolsAction,
+  AddNewModesAction,
 }
