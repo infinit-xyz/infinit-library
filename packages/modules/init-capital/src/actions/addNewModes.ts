@@ -7,20 +7,20 @@ import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import { validateActionData } from '@infinit-xyz/core/internal'
 
 import { SetMaxHealthAfterLiqSubAction, SetMaxHealthAfterLiqSubActionParams } from '@actions/subactions/setMaxHealthAfterLiq'
-
 import {
   SetModeAndTokenLiqMultiplierSubAction,
   SetModeAndTokenLiqMultiplierSubActionParams,
-} from './subactions/setModeAndTokenLiqMultiplier'
-import { SetModeStatusSubAction, SetModeStatusSubActionParams } from './subactions/setModeStatus'
-import { ModeStatus } from './subactions/tx-builders/Config/setModeStatus'
+} from '@actions/subactions/setModeAndTokenLiqMultiplier'
+import { SetModeStatusSubAction, SetModeStatusSubActionParams } from '@actions/subactions/setModeStatus'
+import { ModeStatus } from '@actions/subactions/tx-builders/Config/setModeStatus'
+
 import { InitCapitalRegistry } from '@/src/type'
 
 export const AddNewModesActionParamsSchema = z.object({
   modes: z.array(
     z.object({
       mode: z.number(),
-      modeStatus: z.object({
+      status: z.object({
         canCollateralize: z.boolean(),
         canDecollateralize: z.boolean(),
         canBorrow: z.boolean(),
@@ -59,7 +59,7 @@ export class AddNewModesAction extends Action<AddNewModesActionData, InitCapital
       config: registry.configProxy,
       modeStatus: this.data.params.modes.map((mode) => ({
         mode: mode.mode,
-        status: mode.modeStatus,
+        status: mode.status,
       })),
     }
 
