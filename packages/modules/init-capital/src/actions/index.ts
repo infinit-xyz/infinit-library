@@ -1,8 +1,10 @@
+import { z } from 'zod'
+
 import { ActionDetailRecord } from '@infinit-xyz/core'
 
 import { AddNewModesAction, AddNewModesActionParamsSchema } from '@actions/addNewModes'
 import { ChangeIrmAction, ChangeIrmActionParamsSchema } from '@actions/changeIrm'
-import { DeployApi3ProxyOracleReaderAction, DeployApi3ProxyOracleReaderActionParamsSchema } from '@actions/deployApi3ProxyOracleReader'
+import { DeployApi3ProxyOracleReaderAction } from '@actions/deployApi3ProxyOracleReader'
 import { DeployDoubleSlopeIRMsAction, DeployDoubleSlopeIRMsActionParamsSchema } from '@actions/deployDoubleSlopeIRMs'
 import { DeployInitCapitalAction, DeployInitCapitalActionParamsSchema } from '@actions/deployInitCapital'
 import { DeployPythOracleReaderAction, DeployPythOracleReaderActionParamsSchema } from '@actions/deployPythOracleReader'
@@ -85,7 +87,7 @@ export const actions = {
     type: 'on-chain',
     name: 'Deploy Api3 Proxy Oracle Reader',
     actionClassName: DeployApi3ProxyOracleReaderAction.name,
-    paramsSchema: DeployApi3ProxyOracleReaderActionParamsSchema,
+    paramsSchema: z.object({}),
     signers: ['deployer'],
   },
   setApi3ProxyOracleReaderTokensInfo: {

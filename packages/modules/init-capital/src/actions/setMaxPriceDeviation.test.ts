@@ -16,8 +16,8 @@ import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'
 
 class SetMaxPriceDeviationActionTest extends SetMaxPriceDeviationAction {
-  public override getSubActions(): SubAction[] {
-    return super.getSubActions()
+  public override getSubActions(registry: InitCapitalRegistry): SubAction[] {
+    return super.getSubActions(registry)
   }
 }
 
@@ -48,15 +48,15 @@ describe('SetMaxPriceDeviation', async () => {
     const data: SetMaxPriceDeviationActionData = {
       signer: { governor: client },
       params: {
-        initOracle: registry.initOracleProxy!,
         tokenMaxPriceDeviations: tokenMaxPriceDeviations,
       },
     }
     // data.
     const SetMaxPriceDeviationAction = new SetMaxPriceDeviationActionTest(data)
-    const subActions: SetMaxPriceDeviations_e18SubAction[] =
-      SetMaxPriceDeviationAction.getSubActions() as SetMaxPriceDeviations_e18SubAction[]
-    expect(subActions[0].params.initOracle).toStrictEqual(data.params.initOracle)
+    const subActions: SetMaxPriceDeviations_e18SubAction[] = SetMaxPriceDeviationAction.getSubActions(
+      registry,
+    ) as SetMaxPriceDeviations_e18SubAction[]
+    expect(subActions[0].params.initOracle).toStrictEqual(registry.initOracleProxy)
 
     for (let j = 0; j < subActions.length; j++) {
       for (let i = 0; i < subActions[j].txBuilders.length; i++) {
@@ -74,7 +74,6 @@ describe('SetMaxPriceDeviation', async () => {
     const action = new SetMaxPriceDeviationAction({
       signer: { governor: client },
       params: {
-        initOracle: registry.initOracleProxy!,
         tokenMaxPriceDeviations: tokenMaxPriceDeviations,
       },
     })

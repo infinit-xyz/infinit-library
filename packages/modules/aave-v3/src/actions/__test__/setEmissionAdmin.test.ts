@@ -19,20 +19,16 @@ describe('EmissionManager:SetEmissionAdminAction', () => {
   let client: TestInfinitWallet
   let bob: TestInfinitWallet
   let registry: AaveV3Registry
-  let emissionManager: Address
 
   beforeAll(async () => {
     client = new TestInfinitWallet(TestChain.arbitrum, ARBITRUM_TEST_ADDRESSES.tester)
     bob = new TestInfinitWallet(TestChain.arbitrum, TEST_ADDRESSES.bob)
     registry = await setupAaveV3()
-
-    emissionManager = registry.emissionManager!
   })
 
   test('not admin shouldnt be able to call', async () => {
     action = new SetEmissionAdminAction({
       params: {
-        emissionManager: emissionManager,
         reward: ARBITRUM_TEST_ADDRESSES.usdt,
         admin: ARBITRUM_TEST_ADDRESSES.tester,
       },
@@ -46,7 +42,6 @@ describe('EmissionManager:SetEmissionAdminAction', () => {
   test('should run successfully', async () => {
     action = new SetEmissionAdminAction({
       params: {
-        emissionManager: emissionManager,
         reward: ARBITRUM_TEST_ADDRESSES.usdt,
         admin: ARBITRUM_TEST_ADDRESSES.tester,
       },
@@ -60,7 +55,7 @@ describe('EmissionManager:SetEmissionAdminAction', () => {
     const emissionManagerArtifact = await readArtifact('EmissionManager')
     // read owner
     const emissionAdmin: Address = await client.publicClient.readContract({
-      address: emissionManager,
+      address: registry.emissionManager!,
       abi: emissionManagerArtifact.abi,
       functionName: 'getEmissionAdmin',
       args: [ARBITRUM_TEST_ADDRESSES.usdt],

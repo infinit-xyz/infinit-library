@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import { validateActionData, zodAddress } from '@infinit-xyz/core/internal'
 
 import { RemoveAssetListingAdminSubAction, RemoveAssetListingAdminSubActionParams } from '@actions/subactions/removeAssetListingAdmin'
@@ -8,9 +9,8 @@ import { RemoveAssetListingAdminSubAction, RemoveAssetListingAdminSubActionParam
 import { AaveV3Registry } from '@/src/type'
 
 export const RemoveAssetListingAdminActionParamsSchema = z.object({
-  aclManager: zodAddress.describe(`The address of the ACL manager contract e.g. '0x123...abc'`),
   assetListingAdmin: zodAddress.describe(`The address of the asset listing admin e.g. '0x123...abc'`),
-}) satisfies z.ZodType<RemoveAssetListingAdminSubActionParams>
+})
 
 export type RemoveAssetListingAdminActionParams = z.infer<typeof RemoveAssetListingAdminActionParamsSchema>
 
@@ -25,12 +25,15 @@ export class RemoveAssetListingAdminAction extends Action<RemoveAssetListingAdmi
     super(RemoveAssetListingAdminAction.name, data)
   }
 
-  protected getSubActions(): SubAction[] {
+  protected getSubActions(registry: AaveV3Registry): SubAction[] {
+    if (!registry.aclManager) {
+      throw new ValidateInputValueError('registry: emissionManager not found')
+    }
     const aclAdmin = this.data.signer['aclAdmin']
     const params = this.data.params
 
     const removeAssetListingAdminParams: RemoveAssetListingAdminSubActionParams = {
-      aclManager: params.aclManager,
+      aclManager: registry.aclManager,
       assetListingAdmin: params.assetListingAdmin,
     }
     return [new RemoveAssetListingAdminSubAction(aclAdmin, removeAssetListingAdminParams)]
