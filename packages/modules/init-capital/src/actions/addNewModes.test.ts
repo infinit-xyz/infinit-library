@@ -7,10 +7,12 @@ import { privateKeyToAccount } from 'viem/accounts'
 import { SubAction } from '@infinit-xyz/core'
 
 import { ANVIL_PRIVATE_KEY, ANVIL_PRIVATE_KEY_2 } from '@actions/__mock__/account'
-import { setupInitCapital } from '@actions/__mock__/setup'
-import { AddNewModesAction, AddNewModesActionData } from '@actions/addNewModes'
+import { setupInitCapitalAndPools } from '@actions/__mock__/setup'
+import { AddNewModesAction, AddNewModesActionData, AddNewModesActionParams } from '@actions/addNewModes'
 import { SetMaxHealthAfterLiqSubAction } from '@actions/subactions/setMaxHealthAfterLiq'
 import { SetModeAndTokenLiqMultiplierSubAction } from '@actions/subactions/setModeAndTokenLiqMultiplier'
+import { SetModeDebtCeilingInfosSubAction } from '@actions/subactions/setModeDebtCeilingInfos'
+import { SetModePoolFactorsSubAction } from '@actions/subactions/setModePoolFactors'
 import { SetModeStatusSubAction } from '@actions/subactions/setModeStatus'
 
 import { InitCapitalRegistry } from '@/src/type'
@@ -34,14 +36,15 @@ describe('Add New Mode', async () => {
     const account2 = privateKeyToAccount(ANVIL_PRIVATE_KEY_2)
     guardian = new TestInfinitWallet(TestChain.arbitrum, account1.address)
     governor = new TestInfinitWallet(TestChain.arbitrum, account2.address)
-    registry = await setupInitCapital()
+    registry = await setupInitCapitalAndPools()
+    console.log('registry', registry)
   })
 
   test('add new mode action', async () => {
-    const addNewModeActionParams = {
+    const addNewModeActionParams: AddNewModesActionParams = {
       modes: [
         {
-          mode: 1,
+          mode: 6,
           status: {
             canCollateralize: true,
             canDecollateralize: false,
@@ -51,18 +54,20 @@ describe('Add New Mode', async () => {
           liqIncentiveMultiplierE18: parseUnits('1.1', 18),
           minLiqIncentiveMultiplierE18: parseUnits('1.1', 18),
           maxHealthAfterLiqE18: parseUnits('1.1', 18),
-        },
-        {
-          mode: 2,
-          status: {
-            canCollateralize: true,
-            canDecollateralize: false,
-            canBorrow: true,
-            canRepay: false,
-          },
-          liqIncentiveMultiplierE18: parseUnits('1.1', 18),
-          minLiqIncentiveMultiplierE18: parseUnits('1.1', 18),
-          maxHealthAfterLiqE18: parseUnits('1.2', 18),
+          pools: [
+            {
+              address: registry.lendingPools!['INIT Ether'].lendingPool,
+              collFactorE18: parseUnits('0.8', 18),
+              borrFactorE18: parseUnits('1.1', 18),
+              debtCeiling: parseUnits('1000000', 18),
+            },
+            {
+              address: registry.lendingPools!['INIT USDT'].lendingPool,
+              collFactorE18: parseUnits('0.9', 18),
+              borrFactorE18: parseUnits('1.2', 18),
+              debtCeiling: parseUnits('1000001', 18),
+            },
+          ],
         },
       ],
     }
@@ -73,9 +78,10 @@ describe('Add New Mode', async () => {
     await action.run(registry)
 
     // validate
-    const [configArtifact, liqIncentiveCalculatorArtifact] = await Promise.all([
+    const [configArtifact, liqIncentiveCalculatorArtifact, riskManagerArtifact] = await Promise.all([
       readArtifact('Config'),
       readArtifact('LiqIncentiveCalculator'),
+      readArtifact('RiskManager'),
     ])
     const modes = addNewModeActionParams.modes
     for (let i = 0; i < modes.length; i++) {
@@ -114,6 +120,29 @@ describe('Add New Mode', async () => {
       })
       expect(modeLiqIncentiveMultiplier).toStrictEqual(modes[i].liqIncentiveMultiplierE18)
       expect(minLiqIncentiveMultiplier).toStrictEqual(modes[i].minLiqIncentiveMultiplierE18)
+
+      // check pool factors
+      for (const pool of modes[i].pools) {
+        const { collFactor_e18, borrFactor_e18 } = await guardian.publicClient.readContract({
+          address: registry.configProxy!,
+          abi: configArtifact.abi,
+          functionName: 'getTokenFactors',
+          args: [modes[i].mode, pool.address],
+        })
+        expect(collFactor_e18).toStrictEqual(pool.collFactorE18)
+        expect(borrFactor_e18).toStrictEqual(pool.borrFactorE18)
+      }
+
+      // check debt ceiling
+      for (const pool of modes[i].pools) {
+        const modeDebtCeilingAmt = await guardian.publicClient.readContract({
+          address: registry.riskManagerProxy!,
+          abi: riskManagerArtifact.abi,
+          functionName: 'getModeDebtCeilingAmt',
+          args: [modes[i].mode, pool.address],
+        })
+        expect(modeDebtCeilingAmt).toStrictEqual(pool.debtCeiling)
+      }
     }
   })
 
@@ -126,28 +155,24 @@ describe('Add New Mode', async () => {
       params: {
         modes: [
           {
-            mode: 1,
+            mode: 6,
             status: {
               canCollateralize: true,
-              canDecollateralize: true,
+              canDecollateralize: false,
               canBorrow: true,
-              canRepay: true,
+              canRepay: false,
             },
-            liqIncentiveMultiplierE18: parseUnits('1.2', 18),
+            liqIncentiveMultiplierE18: parseUnits('1.1', 18),
             minLiqIncentiveMultiplierE18: parseUnits('1.1', 18),
-            maxHealthAfterLiqE18: parseUnits('1.3', 18),
-          },
-          {
-            mode: 2,
-            status: {
-              canCollateralize: true,
-              canDecollateralize: true,
-              canBorrow: true,
-              canRepay: true,
-            },
-            liqIncentiveMultiplierE18: parseUnits('1.4', 18),
-            minLiqIncentiveMultiplierE18: parseUnits('1.5', 18),
-            maxHealthAfterLiqE18: parseUnits('1.2', 18),
+            maxHealthAfterLiqE18: parseUnits('1.1', 18),
+            pools: [
+              {
+                address: registry.lendingPools!['INIT Ether'].lendingPool,
+                collFactorE18: parseUnits('0.8', 18),
+                borrFactorE18: parseUnits('1.1', 18),
+                debtCeiling: parseUnits('1000000', 18),
+              },
+            ],
           },
         ],
       },
@@ -158,7 +183,7 @@ describe('Add New Mode', async () => {
     const subActions = addNewModeAction.getSubActions(registry)
 
     // subactions should be length of 3
-    expect(subActions.length).toStrictEqual(3)
+    expect(subActions.length).toStrictEqual(5)
 
     // setModeStatus subaction params should be correct
     const setModeStatusSubAction = subActions[0] as SetModeStatusSubAction
@@ -200,6 +225,41 @@ describe('Add New Mode', async () => {
               liqIncentiveMultiplier_e18: mode.liqIncentiveMultiplierE18,
               minLiqIncentiveMultiplier_e18: mode.minLiqIncentiveMultiplierE18,
             },
+          }
+        }),
+      ),
+    ).toBeTruthy()
+
+    // SetModeDebtCeilingInfos subAction params should be correct
+    const setModeDebtCeilingInfosSubAction = subActions[3] as SetModeDebtCeilingInfosSubAction
+    expect(
+      _.isEqual(
+        setModeDebtCeilingInfosSubAction.params.modeDebtCeilingInfos,
+        data.params.modes.map((mode) => {
+          return {
+            mode: mode.mode,
+            pools: mode.pools.map((pool) => pool.address),
+            ceilAmts: mode.pools.map((pool) => pool.debtCeiling),
+          }
+        }),
+      ),
+    ).toBeTruthy()
+
+    // SetModePoolFactors subAction params should be correct
+    const setModePoolFactorsSubAction = subActions[4] as SetModePoolFactorsSubAction
+    expect(
+      _.isEqual(
+        setModePoolFactorsSubAction.params.modePoolFactors,
+        data.params.modes.map((mode) => {
+          return {
+            mode: mode.mode,
+            poolFactors: mode.pools.map((pool) => {
+              return {
+                pool: pool.address,
+                collFactor_e18: pool.collFactorE18,
+                borrFactor_e18: pool.borrFactorE18,
+              }
+            }),
           }
         }),
       ),
