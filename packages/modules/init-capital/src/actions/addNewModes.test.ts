@@ -37,7 +37,6 @@ describe('Add New Mode', async () => {
     guardian = new TestInfinitWallet(TestChain.arbitrum, account1.address)
     governor = new TestInfinitWallet(TestChain.arbitrum, account2.address)
     registry = await setupInitCapitalAndPools()
-    console.log('registry', registry)
   })
 
   test('add new mode action', async () => {
