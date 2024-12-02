@@ -122,8 +122,6 @@ const validateTxBuilders = (
     .filter((modeLiqMultiplier) => modeLiqMultiplier !== undefined)
 
   const txBuilder1 = setModeAndTokenLiqMultiplierSubAction.txBuilders[0] as SetModeLiqIncentiveMultiplierE18TxBuilder
-  console.log(txBuilder1.modes)
-  console.log(txBuilder1.multipliers_e18)
   expect(txBuilder1.liqIncentiveCalculator).toStrictEqual(params.liqIncentiveCalculator)
   expect(txBuilder1.modes).toStrictEqual(modeLiqMultipliers.map((modeLiqMultiplierConfig) => modeLiqMultiplierConfig.mode))
   expect(txBuilder1.multipliers_e18).toStrictEqual(
