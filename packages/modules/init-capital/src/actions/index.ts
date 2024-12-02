@@ -22,6 +22,8 @@ import {
 } from '@actions/setPythOracleReaderTokensInfo'
 import { SupportNewPoolsAction, SupportNewPoolsActionParamsSchema } from '@actions/supportNewPools'
 
+import { SetInitOracleSourcesAction, SetInitOracleSourcesActionParamsSchema } from './setInitOracleSources'
+
 export const actions = {
   init: {
     type: 'on-chain',
@@ -128,6 +130,13 @@ export const actions = {
     paramsSchema: AddNewModesActionParamsSchema,
     signers: ['guardian', 'governor'],
   },
+  setInitOracleSources: {
+    type: 'on-chain',
+    name: 'Set Init Oracle Sources',
+    actionClassName: SetInitOracleSourcesAction.name,
+    paramsSchema: SetInitOracleSourcesActionParamsSchema,
+    signers: ['governor'],
+  },
 } satisfies ActionDetailRecord
 
 export {
@@ -146,4 +155,5 @@ export {
   SetPythOracleReaderTokensInfoAction,
   SupportNewPoolsAction,
   AddNewModesAction,
+  SetInitOracleSourcesAction,
 }
