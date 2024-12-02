@@ -62,6 +62,37 @@ describe('SetInitOracleSources', async () => {
     await validateInitOracle(guardian, setInitOracleSourcesActionParams, registry)
   })
 
+  test('set init Oracle Sources lsdApi3 Action', async () => {
+    const setInitOracleSourcesActionParams: SetInitOracleSourcesActionParams = {
+      token: ARBITRUM_TEST_ADDRESSES.weeth,
+      oracleConfig: {
+        primarySource: {
+          type: 'lsdApi3',
+          params: {
+            dataFeedProxy: '0x0787b4fe7f532B4E0f495c24b26c4675053cEdEf',
+            maxStaleTime: 86400n,
+            quoteToken: {
+              token: ARBITRUM_TEST_ADDRESSES.weth,
+              params: {
+                dataFeedProxy: '0xf624881ac131210716F7708C28403cCBe346cB73',
+                maxStaleTime: 86400n,
+              },
+            },
+          },
+        },
+      },
+    }
+    const action = new SetInitOracleSourcesAction({
+      signer: { governor: governor },
+      params: setInitOracleSourcesActionParams,
+    })
+
+    registry = await action.run(registry)
+
+    // validate
+    await validateInitOracle(guardian, setInitOracleSourcesActionParams, registry)
+  })
+
   test('set init Oracle Sources Action only primary source', async () => {
     const setInitOracleSourcesActionParams: SetInitOracleSourcesActionParams = {
       token: ARBITRUM_TEST_ADDRESSES.usdc,
