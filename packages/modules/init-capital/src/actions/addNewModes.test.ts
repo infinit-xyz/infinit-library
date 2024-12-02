@@ -211,6 +211,12 @@ describe('Add New Mode', async () => {
                 borrFactorE18: parseUnits('1.1', 18),
                 debtCeiling: parseUnits('1000000', 18),
               },
+              {
+                address: registry.lendingPools!['INIT USDT'].lendingPool,
+                collFactorE18: parseUnits('0.9', 18),
+                borrFactorE18: parseUnits('1.2', 18),
+                debtCeiling: parseUnits('1000001', 18),
+              },
             ],
           },
         ],
