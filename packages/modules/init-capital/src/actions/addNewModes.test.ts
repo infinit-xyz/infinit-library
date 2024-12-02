@@ -68,6 +68,26 @@ describe('Add New Mode', async () => {
             },
           ],
         },
+        {
+          mode: 7,
+          status: {
+            canCollateralize: true,
+            canDecollateralize: false,
+            canBorrow: true,
+            canRepay: false,
+          },
+          liqIncentiveMultiplierE18: parseUnits('1.1', 18),
+          minLiqIncentiveMultiplierE18: parseUnits('1.1', 18),
+          maxHealthAfterLiqE18: parseUnits('1.1', 18),
+          pools: [
+            {
+              address: registry.lendingPools!['INIT Ether'].lendingPool,
+              collFactorE18: parseUnits('0.8', 18),
+              borrFactorE18: parseUnits('1.1', 18),
+              debtCeiling: parseUnits('1000000', 18),
+            },
+          ],
+        },
       ],
     }
     const action = new AddNewModesAction({
@@ -155,6 +175,26 @@ describe('Add New Mode', async () => {
         modes: [
           {
             mode: 6,
+            status: {
+              canCollateralize: true,
+              canDecollateralize: false,
+              canBorrow: true,
+              canRepay: false,
+            },
+            liqIncentiveMultiplierE18: parseUnits('1.1', 18),
+            minLiqIncentiveMultiplierE18: parseUnits('1.1', 18),
+            maxHealthAfterLiqE18: parseUnits('1.1', 18),
+            pools: [
+              {
+                address: registry.lendingPools!['INIT Ether'].lendingPool,
+                collFactorE18: parseUnits('0.8', 18),
+                borrFactorE18: parseUnits('1.1', 18),
+                debtCeiling: parseUnits('1000000', 18),
+              },
+            ],
+          },
+          {
+            mode: 7,
             status: {
               canCollateralize: true,
               canDecollateralize: false,
