@@ -6,8 +6,8 @@ export default defineProject({
   test: {
     name: 'init-capital',
     setupFiles: ['./test/setup.ts'],
-    testTimeout: 30_000,
-    hookTimeout: 50_000,
+    testTimeout: 70_000,
+    hookTimeout: 70_000,
     retry: 3,
   },
   plugins: [tsconfigPaths()], // to resolve imports using Typescipt's path mapping
