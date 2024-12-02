@@ -4,10 +4,10 @@ import { Address, getAddress, parseUnits } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 import { ANVIL_PRIVATE_KEY, ANVIL_PRIVATE_KEY_2 } from '@actions/__mock__/account'
+import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
 import { setupInitCapital } from '@actions/__mock__/setup'
 import { SetInitOracleSourcesAction, SetInitOracleSourcesActionParams, oracleReaderRegistryName } from '@actions/setInitOracleSources'
 
-import { ARBITRUM_TEST_ADDRESSES } from './__mock__/address'
 import { InitCapitalRegistry } from '@/src/type'
 import { TestChain } from '@infinit-xyz/test'
 import { TestInfinitWallet } from '@infinit-xyz/test'

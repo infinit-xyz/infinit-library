@@ -12,6 +12,7 @@ import {
   SetApi3ProxyOracleReaderTokensInfoAction,
   SetApi3ProxyOracleReaderTokensInfoActionParamsSchema,
 } from '@actions/setApi3ProxyOracleReaderTokensInfo'
+import { SetInitOracleSourcesAction, SetInitOracleSourcesActionParamsSchema } from '@actions/setInitOracleSources'
 import { SetIrmAction, SetIrmActionParamsSchema } from '@actions/setIrm'
 import { SetMaxPriceDeviationAction, SetMaxPriceDeviationActionParamsSchema } from '@actions/setMaxPriceDeviation'
 import { SetModeFactorsAction, SetModeFactorsActionParamsSchema } from '@actions/setModeFactors'
@@ -23,8 +24,6 @@ import {
   SetPythOracleReaderTokensInfoActionParamsSchema,
 } from '@actions/setPythOracleReaderTokensInfo'
 import { SupportNewPoolsAction, SupportNewPoolsActionParamsSchema } from '@actions/supportNewPools'
-
-import { SetInitOracleSourcesAction, SetInitOracleSourcesActionParamsSchema } from './setInitOracleSources'
 
 export const actions = {
   init: {

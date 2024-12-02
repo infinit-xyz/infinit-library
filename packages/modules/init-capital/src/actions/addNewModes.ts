@@ -19,16 +19,18 @@ import { InitCapitalRegistry } from '@/src/type'
 export const AddNewModesActionParamsSchema = z.object({
   modes: z.array(
     z.object({
-      mode: z.number(),
+      mode: z.number().describe(`Mode number starting from 0`),
       status: z.object({
-        canCollateralize: z.boolean(),
-        canDecollateralize: z.boolean(),
-        canBorrow: z.boolean(),
-        canRepay: z.boolean(),
+        canCollateralize: z.boolean().describe(`Can this mode collateralize`),
+        canDecollateralize: z.boolean().describe(`Can this mode decollateralize`),
+        canBorrow: z.boolean().describe(`Can this mode borrow`),
+        canRepay: z.boolean().describe(`Can this mode repay`),
       }) satisfies z.ZodType<ModeStatus>,
-      liqIncentiveMultiplierE18: z.bigint(),
-      minLiqIncentiveMultiplierE18: z.bigint(),
-      maxHealthAfterLiqE18: z.bigint(),
+      liqIncentiveMultiplierE18: z.bigint().describe(`Mode liqquidation incentive multiplier in e18, e.g. 8n * (10n ** 16n)[0.8e18]`),
+      minLiqIncentiveMultiplierE18: z
+        .bigint()
+        .describe(`Mode min liquidation incentive multiplier in e18, e.g. 101n * (10n ** 16n)[1.01e18]`),
+      maxHealthAfterLiqE18: z.bigint().describe(`Mode max health affter liquidation in e18, e.g. 102n * (10n ** 16n)[1.02e18]`),
     }),
   ),
 })

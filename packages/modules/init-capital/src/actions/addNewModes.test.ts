@@ -8,11 +8,11 @@ import { SubAction } from '@infinit-xyz/core'
 
 import { ANVIL_PRIVATE_KEY, ANVIL_PRIVATE_KEY_2 } from '@actions/__mock__/account'
 import { setupInitCapital } from '@actions/__mock__/setup'
+import { AddNewModesAction, AddNewModesActionData } from '@actions/addNewModes'
+import { SetMaxHealthAfterLiqSubAction } from '@actions/subactions/setMaxHealthAfterLiq'
 import { SetModeAndTokenLiqMultiplierSubAction } from '@actions/subactions/setModeAndTokenLiqMultiplier'
+import { SetModeStatusSubAction } from '@actions/subactions/setModeStatus'
 
-import { AddNewModesAction, AddNewModesActionData } from './addNewModes'
-import { SetMaxHealthAfterLiqSubAction } from './subactions/setMaxHealthAfterLiq'
-import { SetModeStatusSubAction } from './subactions/setModeStatus'
 import { InitCapitalRegistry } from '@/src/type'
 import { TestChain } from '@infinit-xyz/test'
 import { TestInfinitWallet } from '@infinit-xyz/test'
@@ -115,7 +115,6 @@ describe('Add New Mode', async () => {
       expect(modeLiqIncentiveMultiplier).toStrictEqual(modes[i].liqIncentiveMultiplierE18)
       expect(minLiqIncentiveMultiplier).toStrictEqual(modes[i].minLiqIncentiveMultiplierE18)
     }
-    //
   })
 
   test('test correct name', async () => {
