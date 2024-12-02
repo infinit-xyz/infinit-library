@@ -38,8 +38,6 @@ describe('set tokenInfos on PythOracleReader', () => {
   test('deploy PythOracleReader', async () => {
     action = new DeployPythOracleReaderAction({
       params: {
-        accessControlManager: registry.accessControlManager!,
-        proxyAdmin: registry.proxyAdmin!,
         pyth: '0xff1a0f4744e8582DF1aE09D5611b887B6a12925C',
       },
       signer: {
@@ -49,7 +47,6 @@ describe('set tokenInfos on PythOracleReader', () => {
     registry = await action.run(registry, undefined, undefined)
     action = new SetPythOracleReaderTokensInfoAction({
       params: {
-        pythOracleReaderProxy: registry.pythOracleReaderProxy!,
         tokensInfo: [
           {
             token: weth,
