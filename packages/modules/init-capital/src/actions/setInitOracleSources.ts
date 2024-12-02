@@ -16,6 +16,7 @@ import {
   SourceConfig,
 } from '@actions/subactions/setNewPoolOracleReader'
 
+import { SetInitOracleConfigSubAction } from './subactions/setInitOracle'
 import { InitCapitalRegistry } from '@/src/type'
 
 export const oracleReader = z.discriminatedUnion('type', [
@@ -95,15 +96,43 @@ export class SetInitOracleSourcesAction extends Action<SetInitOracleSourcesActio
   protected getSubActions(registry: InitCapitalRegistry): SubAction[] {
     const governor = this.data.signer['governor']
 
+    // 0. validate registry
+    if (!registry.initOracleProxy) throw new ValidateInputValueError('registry: initOracleProxy not found')
+
+    const oracleConfig = this.data.params.oracleConfig
+
+    // 1. prepare setInitOracleConfigSubActionParams
+    let primarySourceAddress: Address | undefined
+    let secondarySourceAddress: Address | undefined
+    // get primary address
+    if (oracleConfig && oracleConfig.primarySource) {
+      const primarySourceRegistryName = oracleReaderRegistryName[oracleConfig.primarySource.type]
+      if (!registry[primarySourceRegistryName]) throw new ValidateInputValueError(`registry: ${primarySourceRegistryName} not found`)
+      primarySourceAddress = registry[primarySourceRegistryName] as Address
+    }
+    // get secondary address
+    if (oracleConfig && oracleConfig.secondarySource) {
+      const secondarySourceRegistryName = oracleReaderRegistryName[oracleConfig.secondarySource.type]
+      if (!registry[secondarySourceRegistryName]) throw new ValidateInputValueError(`registry: ${secondarySourceRegistryName} not found`)
+      secondarySourceAddress = registry[secondarySourceRegistryName] as Address
+    }
+    const setInitOracleConfigSubActionParams = {
+      initOracle: registry.initOracleProxy,
+      tokenConfigs: [
+        {
+          token: this.data.params.token,
+          primarySource: primarySourceAddress,
+          secondarySource: secondarySourceAddress,
+          maxPriceDeviation_e18: oracleConfig?.maxPriceDeviationE18,
+        },
+      ],
+    }
+
+    // 2. prepare setNewPoolOracleReaderSubActionParams
     const setNewPoolOracleReaderSubActionParams: SetNewPoolOracleReaderSubActionParams = {
       primarySource: undefined,
       secondarySource: undefined,
     }
-    const oracleConfig = this.data.params.oracleConfig
-
-    // validate registry
-    if (!registry.initOracleProxy) throw new ValidateInputValueError('registry: initOracleProxy not found')
-
     // set primary source
     if (oracleConfig && oracleConfig.primarySource) {
       setNewPoolOracleReaderSubActionParams.primarySource = configureOracleSourceConfig(
@@ -120,7 +149,11 @@ export class SetInitOracleSourcesAction extends Action<SetInitOracleSourcesActio
         registry,
       )
     }
-    return [new SetNewPoolOracleReaderSubAction(governor, setNewPoolOracleReaderSubActionParams)]
+
+    return [
+      new SetInitOracleConfigSubAction(governor, setInitOracleConfigSubActionParams),
+      new SetNewPoolOracleReaderSubAction(governor, setNewPoolOracleReaderSubActionParams),
+    ]
   }
 }
 
