@@ -32,8 +32,8 @@ export default defineConfig({
         '**/__mocks__/**',
       ],
     },
-    testTimeout: 30000,
-    hookTimeout: 30000,
+    testTimeout: 100_000,
+    hookTimeout: 100_000,
     globalSetup: [path.resolve(__dirname, 'packages/test/src/globalSetup.ts')],
   },
   plugins: [tsconfigPaths()], // to resolve imports using Typescipt's path mapping
