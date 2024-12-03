@@ -2,9 +2,9 @@ import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 
 import { readArtifact } from '@/src/utils/artifact'
 
-export class deployMulticall2TxBuilder extends TxBuilder {
+export class DeployMulticall2TxBuilder extends TxBuilder {
   constructor(client: InfinitWallet, _params: {}) {
-    super(deployMulticall2TxBuilder.name, client)
+    super(DeployMulticall2TxBuilder.name, client)
   }
 
   async buildTx(): Promise<TransactionData> {

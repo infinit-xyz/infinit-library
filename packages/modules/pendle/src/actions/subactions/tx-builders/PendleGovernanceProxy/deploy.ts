@@ -2,16 +2,16 @@ import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 
 import { readArtifact } from '@/src/utils/artifact'
 
-export class DeploySupplyCapReaderTxBuilder extends TxBuilder {
+export class DeployPendleGovernanceProxyTxBuilder extends TxBuilder {
   constructor(client: InfinitWallet, _params: {}) {
-    super(DeploySupplyCapReaderTxBuilder.name, client)
+    super(DeployPendleGovernanceProxyTxBuilder.name, client)
   }
 
   async buildTx(): Promise<TransactionData> {
-    const supplyCapReaderArtifact = await readArtifact('SupplyCapReader')
+    const pendleGovernanceProxyArtifact = await readArtifact('PendleGovernanceProxy')
 
     const tx: TransactionData = {
-      data: supplyCapReaderArtifact.bytecode,
+      data: pendleGovernanceProxyArtifact.bytecode,
       to: null,
     }
     return tx
