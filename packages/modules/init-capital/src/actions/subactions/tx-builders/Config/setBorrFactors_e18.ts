@@ -56,6 +56,10 @@ export class SetBorrFactorE18TxBuilder extends TxBuilder {
     // pool should not be zero address
     for (const [index, pool] of this.pools.entries()) {
       if (pool === zeroAddress) throw new ValidateInputZeroAddressError(`POOL (INDEX:${index})`)
+      // check if pools is sorted
+      if (index >= 1) {
+        if (this.pools[index - 1] >= pool) throw new ValidateInputValueError(`Pools should be sorted`)
+      }
     }
 
     // factor should be with in [1e18, maxUint128)

@@ -140,13 +140,7 @@ export class AddNewModesAction extends Action<AddNewModesActionData, InitCapital
               }
             })
             // sort by pool address from low to high
-            .sort((firstItem, secondItem) => {
-              const firstPool = getAddress(firstItem.pool)
-              const secondPool = getAddress(secondItem.pool)
-              if (firstPool > secondPool) return 1
-              if (firstPool < secondPool) return -1
-              else return 0
-            }),
+            .sort((firstItem, secondItem) => (getAddress(firstItem.pool) > getAddress(secondItem.pool) ? 1 : -1)),
         }
       }),
     }
