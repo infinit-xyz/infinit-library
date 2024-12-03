@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { beforeAll, describe, expect, test } from 'vitest'
 
-import { parseUnits } from 'viem'
+import { getAddress, parseUnits } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 import { SubAction } from '@infinit-xyz/core'
@@ -298,13 +298,22 @@ describe('Add New Mode', async () => {
         data.params.modes.map((mode) => {
           return {
             mode: mode.mode,
-            poolFactors: mode.pools.map((pool) => {
-              return {
-                pool: pool.address,
-                collFactor_e18: pool.collFactorE18,
-                borrFactor_e18: pool.borrFactorE18,
-              }
-            }),
+            poolFactors: mode.pools
+              .map((pool) => {
+                return {
+                  pool: pool.address,
+                  collFactor_e18: pool.collFactorE18,
+                  borrFactor_e18: pool.borrFactorE18,
+                }
+              })
+              // sort by pool address from low to high
+              .sort((firstItem, secondItem) => {
+                const firstPool = getAddress(firstItem.pool)
+                const secondPool = getAddress(secondItem.pool)
+                if (firstPool > secondPool) return 1
+                if (firstPool < secondPool) return -1
+                else return 0
+              }),
           }
         }),
       ),

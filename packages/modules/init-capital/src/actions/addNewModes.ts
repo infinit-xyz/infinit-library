@@ -139,7 +139,7 @@ export class AddNewModesAction extends Action<AddNewModesActionData, InitCapital
                 borrFactor_e18: pool.borrFactorE18,
               }
             })
-            // sort by pool address
+            // sort by pool address from low to high
             .sort((firstItem, secondItem) => {
               const firstPool = getAddress(firstItem.pool)
               const secondPool = getAddress(secondItem.pool)
