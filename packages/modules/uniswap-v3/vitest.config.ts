@@ -6,8 +6,8 @@ import { defineProject } from 'vitest/config'
 export default defineProject({
   test: {
     name: 'uniswap-v3',
-    hookTimeout: 80_000,
-    testTimeout: 80_000,
+    hookTimeout: 50_000,
+    testTimeout: 50_000,
     retry: 3,
     setupFiles: [path.resolve(__dirname, '../../test/src/setupFiles/resetTestClient.ts')],
   },
