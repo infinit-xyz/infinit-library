@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { zeroAddress } from 'viem'
+import { getAddress, zeroAddress } from 'viem'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
@@ -131,13 +131,22 @@ export class AddNewModesAction extends Action<AddNewModesActionData, InitCapital
       modePoolFactors: this.data.params.modes.map((mode) => {
         return {
           mode: mode.mode,
-          poolFactors: mode.pools.map((pool) => {
-            return {
-              pool: pool.address,
-              collFactor_e18: pool.collFactorE18,
-              borrFactor_e18: pool.borrFactorE18,
-            }
-          }),
+          poolFactors: mode.pools
+            .map((pool) => {
+              return {
+                pool: pool.address,
+                collFactor_e18: pool.collFactorE18,
+                borrFactor_e18: pool.borrFactorE18,
+              }
+            })
+            // sort by pool address
+            .sort((firstItem, secondItem) => {
+              const firstPool = getAddress(firstItem.pool)
+              const secondPool = getAddress(secondItem.pool)
+              if (firstPool > secondPool) return 1
+              if (firstPool < secondPool) return -1
+              else return 0
+            }),
         }
       }),
     }
