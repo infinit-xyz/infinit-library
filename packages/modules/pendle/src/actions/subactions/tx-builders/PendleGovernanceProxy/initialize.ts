@@ -5,7 +5,7 @@ import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
-export interface DeployPendlePoolDeployHelperTxBuilderParams {
+export interface InitializePendleGovernanceProxyTxBuilderParams {
   pendleGovernanceProxy: Address
   governance: Address
 }
@@ -14,7 +14,7 @@ export class InitializePendleGovernanceProxyTxBuilder extends TxBuilder {
   public pendleGovernanceProxy: Address
   public governance: Address
 
-  constructor(client: InfinitWallet, params: DeployPendlePoolDeployHelperTxBuilderParams) {
+  constructor(client: InfinitWallet, params: InitializePendleGovernanceProxyTxBuilderParams) {
     super(InitializePendleGovernanceProxyTxBuilder.name, client)
     this.pendleGovernanceProxy = getAddress(params.pendleGovernanceProxy)
     this.governance = getAddress(params.governance)
