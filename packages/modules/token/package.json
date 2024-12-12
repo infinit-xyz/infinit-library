@@ -48,6 +48,7 @@
   "dependencies": {
     "@infinit-xyz/core": "^0.1.0-alpha.10",
     "@openzeppelin/merkle-tree": "^1.0.7",
+    "@openzeppelin/contracts-5.0.0": "npm:@openzeppelin/contracts@5.0.0",
     "infinit-erc20-contracts": "https://github.com/infinit-xyz/infinit-erc20-contracts.git",
     "lodash": "^4.17.21"
   },

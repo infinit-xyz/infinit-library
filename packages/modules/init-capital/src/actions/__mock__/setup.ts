@@ -5,6 +5,7 @@ import { ANVIL_PRIVATE_KEY, ANVIL_PRIVATE_KEY_2 } from '@actions/__mock__/accoun
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
 import { DeployApi3ProxyOracleReaderAction } from '@actions/deployApi3ProxyOracleReader'
 import { DeployInitCapitalAction } from '@actions/deployInitCapital'
+import { DeployLsdApi3ProxyOracleReaderAction } from '@actions/deployLsdApi3ProxyOracleReader'
 import { DeployPythOracleReaderAction } from '@actions/deployPythOracleReader'
 import { SupportNewPoolActionParams, SupportNewPoolsAction } from '@actions/supportNewPools'
 
@@ -45,10 +46,7 @@ export const setupInitCapital = async (): Promise<InitCapitalRegistry> => {
 
   // 2. deploy api3 proxy oracle reader
   const deployApi3ProxyOracleReaderAction = new DeployApi3ProxyOracleReaderAction({
-    params: {
-      accessControlManager: registry.accessControlManager!,
-      proxyAdmin: registry.proxyAdmin!,
-    },
+    params: {},
     signer: {
       deployer: client,
     },
@@ -58,8 +56,6 @@ export const setupInitCapital = async (): Promise<InitCapitalRegistry> => {
   // 3. deploy pyth proxy oracle reader
   const deployPythOracleReaderAction = new DeployPythOracleReaderAction({
     params: {
-      accessControlManager: registry.accessControlManager!,
-      proxyAdmin: registry.proxyAdmin!,
       pyth: ARBITRUM_TEST_ADDRESSES.pyth,
     },
     signer: {
@@ -67,6 +63,15 @@ export const setupInitCapital = async (): Promise<InitCapitalRegistry> => {
     },
   })
   registry = await deployPythOracleReaderAction.run(registry)
+
+  // 3. deploy lsd api3 proxy oracle reader
+  const deployLsdApi3ProxyOracleReaderAction = new DeployLsdApi3ProxyOracleReaderAction({
+    params: {},
+    signer: {
+      deployer: client,
+    },
+  })
+  registry = await deployLsdApi3ProxyOracleReaderAction.run(registry)
   return registry
 }
 

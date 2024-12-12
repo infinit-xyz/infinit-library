@@ -26,16 +26,16 @@ describe('SupportNewPoolsTest', async () => {
 
   test('support new pools', async () => {
     const pool1ActionParams: SupportNewPoolActionParams = {
-      name: 'INIT Ether',
-      symbol: 'inWETH',
-      token: ARBITRUM_TEST_ADDRESSES.weth,
+      name: 'INIT USDC',
+      symbol: 'inUSDC',
+      token: ARBITRUM_TEST_ADDRESSES.usdc,
       modeConfigs: [
         {
           mode: 1,
           poolConfig: {
             collFactorE18: parseUnits('0.8', 18),
             borrFactorE18: parseUnits('1.1', 18),
-            debtCeiling: parseUnits('1000000', 18),
+            debtCeiling: parseUnits('10000000', 6),
           },
           config: {
             liqIncentiveMultiplierE18: parseUnits('1.1', 18),
@@ -48,7 +48,7 @@ describe('SupportNewPoolsTest', async () => {
           poolConfig: {
             collFactorE18: parseUnits('0.8', 18),
             borrFactorE18: parseUnits('1.1', 18),
-            debtCeiling: parseUnits('1000000', 18),
+            debtCeiling: parseUnits('10000000', 6),
           },
           config: {
             liqIncentiveMultiplierE18: parseUnits('1.1', 18),
@@ -61,14 +61,14 @@ describe('SupportNewPoolsTest', async () => {
         primarySource: {
           type: 'api3',
           params: {
-            dataFeedProxy: '0xf624881ac131210716F7708C28403cCBe346cB73',
+            dataFeedProxy: '0xD3C586Eec1C6C3eC41D276a23944dea080eDCf7f',
             maxStaleTime: 86400n,
           },
         },
         secondarySource: {
           type: 'pyth',
           params: {
-            priceFeed: '0x9d4294bbcd1174d6f2003ec365831e64cc31d9f6f15a2b85399db8d5000960f6',
+            priceFeed: '0xeaa020c61cc479712813461ce153894a96a6c00b21ed0cfc2798d1f9a9e9c94a',
             maxStaleTime: 86400n,
           },
         },
@@ -79,7 +79,7 @@ describe('SupportNewPoolsTest', async () => {
       borrowCap: parseUnits('1000000', 18),
       reserveFactor: parseUnits('0.1', 18),
       doubleSlopeIRMConfig: {
-        name: 'testIRM',
+        name: 'testIRM1',
         params: {
           baseBorrowRateE18: 100000000000000000n,
           jumpUtilizationRateE18: 800000000000000000n,
@@ -135,7 +135,111 @@ describe('SupportNewPoolsTest', async () => {
       },
     }
 
-    const pools = [pool1ActionParams, pool2ActionParams]
+    const pool3ActionParams: SupportNewPoolActionParams = {
+      name: 'INIT rsETH',
+      symbol: 'inrsETH',
+      token: ARBITRUM_TEST_ADDRESSES.rseth,
+      modeConfigs: [
+        {
+          mode: 1,
+          poolConfig: {
+            collFactorE18: parseUnits('0.8', 18),
+            borrFactorE18: parseUnits('1.1', 18),
+            debtCeiling: parseUnits('1000000', 18),
+          },
+        },
+        {
+          mode: 2,
+          poolConfig: {
+            collFactorE18: parseUnits('0.8', 18),
+            borrFactorE18: parseUnits('1.1', 18),
+            debtCeiling: parseUnits('1000000', 18),
+          },
+        },
+      ],
+      oracleConfig: {
+        // lsd api3, haven't set api3
+        primarySource: {
+          type: 'lsdApi3',
+          params: {
+            dataFeedProxy: '0x0787b4fe7f532B4E0f495c24b26c4675053cEdEf',
+            maxStaleTime: 86400n,
+            quoteToken: {
+              token: ARBITRUM_TEST_ADDRESSES.weth,
+              params: {
+                dataFeedProxy: '0xf624881ac131210716F7708C28403cCBe346cB73',
+                maxStaleTime: 86400n,
+              },
+            },
+          },
+        },
+      },
+      liqIncentiveMultiplierE18: parseUnits('1.1', 18),
+      supplyCap: parseUnits('1000000', 18),
+      borrowCap: parseUnits('1000000', 18),
+      reserveFactor: parseUnits('0.1', 18),
+      doubleSlopeIRMConfig: {
+        name: 'testIRM3',
+        params: {
+          baseBorrowRateE18: 100000000000000000n,
+          jumpUtilizationRateE18: 800000000000000000n,
+          borrowRateMultiplierE18: 10000000000000000n,
+          jumpRateMultiplierE18: 10000000000000000n,
+        },
+      },
+    }
+
+    const pool4ActionParams: SupportNewPoolActionParams = {
+      name: 'INIT WEETH',
+      symbol: 'inWEETH',
+      token: ARBITRUM_TEST_ADDRESSES.weeth,
+      modeConfigs: [
+        {
+          mode: 1,
+          poolConfig: {
+            collFactorE18: parseUnits('0.8', 18),
+            borrFactorE18: parseUnits('1.1', 18),
+            debtCeiling: parseUnits('1000000', 18),
+          },
+        },
+        {
+          mode: 2,
+          poolConfig: {
+            collFactorE18: parseUnits('0.8', 18),
+            borrFactorE18: parseUnits('1.1', 18),
+            debtCeiling: parseUnits('1000000', 18),
+          },
+        },
+      ],
+      // lsd api3, already set api3
+      oracleConfig: {
+        primarySource: {
+          type: 'lsdApi3',
+          params: {
+            dataFeedProxy: '0x4Dab7dde07CCBfCfB19bc0537739490faa2ADB15',
+            maxStaleTime: 86400n,
+            quoteToken: {
+              token: ARBITRUM_TEST_ADDRESSES.weth,
+            },
+          },
+        },
+      },
+      liqIncentiveMultiplierE18: parseUnits('1.1', 18),
+      supplyCap: parseUnits('1000000', 18),
+      borrowCap: parseUnits('1000000', 18),
+      reserveFactor: parseUnits('0.1', 18),
+      doubleSlopeIRMConfig: {
+        name: 'testIRM4',
+        params: {
+          baseBorrowRateE18: 100000000000000000n,
+          jumpUtilizationRateE18: 800000000000000000n,
+          borrowRateMultiplierE18: 10000000000000000n,
+          jumpRateMultiplierE18: 10000000000000000n,
+        },
+      },
+    }
+
+    const pools = [pool1ActionParams, pool2ActionParams, pool3ActionParams, pool4ActionParams]
     const action = new SupportNewPoolsAction({
       params: {
         pools: pools,

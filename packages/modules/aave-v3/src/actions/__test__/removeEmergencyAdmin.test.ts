@@ -1,5 +1,7 @@
 import { describe, expect, test, vi } from 'vitest'
 
+import { Address } from 'viem'
+
 import { InfinitCache } from '@infinit-xyz/core'
 
 import { TEST_ADDRESSES } from '@actions/__mock__/address'
@@ -17,7 +19,9 @@ describe('RemoveEmergencyAdminAction', () => {
 
   const tester = '0xFF1137243698CaA18EE364Cc966CF0e02A4e6327'
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
-  const mockRegistry = {}
+  const mockRegistry = {
+    aclManager: aclManager as Address,
+  }
 
   test.concurrent('name should not be undefined', () => {
     expect(action.name).not.toBeUndefined()
@@ -26,7 +30,6 @@ describe('RemoveEmergencyAdminAction', () => {
   describe('run', () => {
     action = new RemoveEmergencyAdminAction({
       params: {
-        aclManager: aclManager,
         emergencyAdmin: bob,
       },
       signer: {

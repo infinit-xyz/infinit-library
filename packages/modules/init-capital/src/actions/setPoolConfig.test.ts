@@ -15,8 +15,8 @@ import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'
 
 class SetPoolConfigActionTest extends SetPoolConfigAction {
-  public override getSubActions(): SubAction[] {
-    return super.getSubActions()
+  public override getSubActions(registry: InitCapitalRegistry): SubAction[] {
+    return super.getSubActions(registry)
   }
 }
 
@@ -66,14 +66,13 @@ describe('SetPoolConfig', async () => {
     const data: SetPoolConfigActionData = {
       signer: { guardian: client },
       params: {
-        config: registry.configProxy!,
         batchPoolConfigParams: poolConfigParams,
       },
     }
     // data.
     const setPoolConfigAction = new SetPoolConfigActionTest(data)
-    const subActions: SetPoolConfigSubAction[] = setPoolConfigAction.getSubActions() as SetPoolConfigSubAction[]
-    expect(subActions[0].params.config).toStrictEqual(data.params.config)
+    const subActions: SetPoolConfigSubAction[] = setPoolConfigAction.getSubActions(registry) as SetPoolConfigSubAction[]
+    expect(subActions[0].params.config).toStrictEqual(registry.configProxy)
 
     for (let j = 0; j < subActions.length; j++) {
       for (let i = 0; i < subActions[j].txBuilders.length; i++) {
@@ -92,7 +91,6 @@ describe('SetPoolConfig', async () => {
   test('set pool config', async () => {
     const action = new SetPoolConfigAction({
       params: {
-        config: registry.configProxy!,
         batchPoolConfigParams: poolConfigParams,
       },
       signer: { guardian: client },

@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { Address } from 'viem'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import { validateActionData, zodAddress } from '@infinit-xyz/core/internal'
 
 import {
@@ -23,10 +24,9 @@ type TokenInfo = {
 }
 
 export const SetApi3ProxyOracleReaderTokensInfoActionParamsSchema = z.object({
-  api3ProxyOracleReader: zodAddress.describe(`Address of API3 proxy oracle reader e.g. '0x123...abc'`),
   tokensInfo: z.array(
     z.object({
-      token: zodAddress.describe(`Address of tokenInfo e.g. '0x123...abc'`),
+      token: zodAddress.describe(`Address of token e.g. '0x123...abc'`),
       dataFeedProxy: zodAddress.describe(
         `Address of data feed proxy e.g. '0x123...abc', access https://market.api3.org to find the DataFeedProxy`,
       ),
@@ -48,7 +48,7 @@ export class SetApi3ProxyOracleReaderTokensInfoAction extends Action<SetApi3Prox
     super(SetApi3ProxyOracleReaderTokensInfoAction.name, data)
   }
 
-  protected getSubActions(): SubAction[] {
+  protected getSubActions(registry: InitCapitalRegistry): SubAction[] {
     const governor = this.data.signer['governor']
     const tokens: Address[] = []
     const dataFeedProxies: Address[] = []
@@ -61,15 +61,17 @@ export class SetApi3ProxyOracleReaderTokensInfoAction extends Action<SetApi3Prox
       maxStaleTimes.push(tokenInfo.maxStaleTime)
     }
 
+    if (!registry.api3ProxyOracleReaderProxy) throw new ValidateInputValueError('registry: api3ProxyOracleReaderProxy not found')
+
     // set tokens data feed proxies params
     const setApi3ProxyOracleReaderDataFeedProxiesSubActionParams: SetApi3ProxyOracleReaderDataFeedProxiesSubActionParams = {
-      api3ProxyOracleReader: this.data.params.api3ProxyOracleReader,
+      api3ProxyOracleReader: registry.api3ProxyOracleReaderProxy,
       tokens: tokens,
       dataFeedProxies: dataFeedProxies,
     }
     // set tokens max stale times params
     const setApi3ProxyOracleReaderMaxStaleTimesSubActionParams: SetApi3ProxyOracleReaderMaxStaleTimesSubActionParams = {
-      api3ProxyOracleReader: this.data.params.api3ProxyOracleReader,
+      api3ProxyOracleReader: registry.api3ProxyOracleReaderProxy,
       tokens: tokens,
       maxStaleTimes: maxStaleTimes,
     }

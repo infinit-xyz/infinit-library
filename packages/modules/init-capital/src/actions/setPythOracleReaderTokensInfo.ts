@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { Address, Hex } from 'viem'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import { validateActionData, zodAddress, zodHex } from '@infinit-xyz/core/internal'
 
 import {
@@ -23,10 +24,9 @@ type TokenInfo = {
 }
 
 export const SetPythOracleReaderTokensInfoActionParamsSchema = z.object({
-  pythOracleReaderProxy: zodAddress.describe(`Address of PythOracleReaderProxy in the registry`),
   tokensInfo: z.array(
     z.object({
-      token: zodAddress.describe(`Address of tokenInfo e.g. '0x123...abc'`),
+      token: zodAddress.describe(`Address of token e.g. '0x123...abc'`),
       priceId: zodHex.describe(`Pyth's priceId to use for fetching price check https://www.pyth.network/developers/price-feed-ids`),
       maxStaleTime: z.bigint().describe(`Max stale time in seconds e.g. 86400n for 1 day`),
     }),
@@ -46,7 +46,7 @@ export class SetPythOracleReaderTokensInfoAction extends Action<SetPythOracleRea
     super(SetPythOracleReaderTokensInfoAction.name, data)
   }
 
-  protected getSubActions(): SubAction[] {
+  protected getSubActions(registry: InitCapitalRegistry): SubAction[] {
     const governor = this.data.signer['governor']
     const tokens: Address[] = []
     const dataFeedProxies: Hex[] = []
@@ -59,15 +59,18 @@ export class SetPythOracleReaderTokensInfoAction extends Action<SetPythOracleRea
       maxStaleTimes.push(tokenInfo.maxStaleTime)
     }
 
+    // validate registry
+    if (!registry.pythOracleReaderProxy) throw new ValidateInputValueError('registry: pythOracleReaderProxy not found')
+
     // set tokens data feed proxies params
     const setPythOracleReaderPriceIdsSubActionParams: SetPythOracleReaderPriceIdsSubActionParams = {
-      pythOracleReader: this.data.params.pythOracleReaderProxy,
+      pythOracleReader: registry.pythOracleReaderProxy,
       tokens: tokens,
       priceIds: dataFeedProxies,
     }
     // set tokens max stale times params
     const setPythOracleReaderMaxStaleTimesSubActionParams: SetPythOracleReaderMaxStaleTimesSubActionParams = {
-      pythOracleReader: this.data.params.pythOracleReaderProxy,
+      pythOracleReader: registry.pythOracleReaderProxy,
       tokens: tokens,
       maxStaleTimes: maxStaleTimes,
     }

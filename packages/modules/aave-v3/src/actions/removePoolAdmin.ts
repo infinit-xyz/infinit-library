@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import { validateActionData, zodAddress } from '@infinit-xyz/core/internal'
 
 import { RemovePoolAdminSubAction, RemovePoolAdminSubActionParams } from '@actions/subactions/removePoolAdmin'
@@ -8,9 +9,8 @@ import { RemovePoolAdminSubAction, RemovePoolAdminSubActionParams } from '@actio
 import { AaveV3Registry } from '@/src/type'
 
 export const RemovePoolAdminActionParamsSchema = z.object({
-  aclManager: zodAddress.describe(`The address of the ACL manager contract e.g. '0x123...abc'`),
   poolAdmin: zodAddress.describe(`Address of the pool admin, managing lending pool settings e.g. '0x123...abc'`),
-}) satisfies z.ZodType<RemovePoolAdminSubActionParams>
+})
 
 export type RemovePoolAdminActionParams = z.infer<typeof RemovePoolAdminActionParamsSchema>
 
@@ -25,12 +25,15 @@ export class RemovePoolAdminAction extends Action<RemovePoolAdminData, AaveV3Reg
     super(RemovePoolAdminAction.name, data)
   }
 
-  protected getSubActions(): SubAction[] {
+  protected getSubActions(registry: AaveV3Registry): SubAction[] {
+    if (!registry.aclManager) {
+      throw new ValidateInputValueError('registry: aclManager not found')
+    }
     const aclAdmin = this.data.signer['aclAdmin']
     const params = this.data.params
 
     const removePoolAdminParams: RemovePoolAdminSubActionParams = {
-      aclManager: params.aclManager,
+      aclManager: registry.aclManager,
       poolAdmin: params.poolAdmin,
     }
     return [new RemovePoolAdminSubAction(aclAdmin, removePoolAdminParams)]

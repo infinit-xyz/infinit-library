@@ -40,8 +40,6 @@ export const setupUniswapV3 = async (): Promise<UniswapV3Registry> => {
       // deploy staker
       const deployUniswapV3StakerAction = new DeployUniswapV3StakerAction({
         params: {
-          factory: curRegistry.uniswapV3Factory!,
-          nonfungiblePositionManager: curRegistry.nonfungiblePositionManager!,
           maxIncentiveStartLeadTime: 2592000n,
           maxIncentiveDuration: 63072000n,
         },

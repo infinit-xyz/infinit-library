@@ -26,7 +26,6 @@ describe('setFactoryOwnerAction', () => {
   test('setFactoryOwner to address(1)', async () => {
     const action = new SetFactoryOwnerAction({
       params: {
-        uniswapV3Factory: registry.uniswapV3Factory!,
         newOwner: oneAddress,
       },
       signer: {

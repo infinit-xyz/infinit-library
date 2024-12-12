@@ -1,12 +1,13 @@
 import { z } from 'zod'
 
-import { Address, maxUint64, zeroAddress } from 'viem'
+import { Address, maxUint64 } from 'viem'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import {
   // zodAddress
   validateActionData,
+  zodAddress,
   zodAddressNonZero,
   zodHex,
 } from '@infinit-xyz/core/internal'
@@ -25,9 +26,11 @@ import { DeployDoubleSlopeIRMTxBuilderParams } from '@actions/subactions/tx-buil
 import {
   // LsdApi3Params,
   Api3Params,
+  LsdApi3Params,
   PythParams,
   SetNewPoolOracleReaderSubAction,
   SetNewPoolOracleReaderSubActionParams,
+  SourceConfig,
 } from './subactions/setNewPoolOracleReader'
 import { SetPoolConfigSubAction } from './subactions/setPoolConfig'
 import { InitCapitalRegistry } from '@/src/type'
@@ -63,15 +66,28 @@ export const oracleReader = z.discriminatedUnion('type', [
       maxStaleTime: z.bigint().nonnegative(`Max stale time in seconds e.g. 86400n for 1 day`),
     }) satisfies z.ZodType<PythParams>,
   }),
-  // z.object({
-  //   type: z.literal('lsdApi3'),
-  //   params: z.object({
-  //     dataFeedProxy: zodAddressNonZero,
-  //     maxStaleTime: z.bigint().nonnegative(),
-  //     setQuoteToken: zodAddress,
-  //   }) satisfies z.ZodType<LsdApi3Params>,
-  // }),
+  // TODO find the way to enforce LsdApi3Params type here with the omit of oracleReader field
+  z.object({
+    type: z.literal('lsdApi3'),
+    params: z.object({
+      dataFeedProxy: zodAddressNonZero,
+      maxStaleTime: z.bigint().nonnegative(),
+      quoteToken: z.object({
+        token: zodAddress,
+        params: z
+          .object({
+            dataFeedProxy: zodAddressNonZero.describe(
+              `Address of data feed proxy e.g. '0x123...abc', access https://market.api3.org to find the DataFeedProxy`,
+            ),
+            maxStaleTime: z.bigint().nonnegative(`Max stale time in seconds e.g. 86400n for 1 day`),
+          })
+          .optional(),
+      }),
+    }),
+  }),
 ])
+
+export type OracleReader = z.infer<typeof oracleReader>
 
 export const oracleReaderRegistryName: Record<'api3' | 'lsdApi3' | 'pyth', keyof InitCapitalRegistry> = {
   api3: 'api3ProxyOracleReaderProxy',
@@ -287,36 +303,24 @@ export class SupportNewPoolsAction extends Action<SupportNewPoolsActionData, Ini
           primarySource: undefined,
           secondarySource: undefined,
         }
-        let primarySourceAddress: Address = zeroAddress
-        let secondarySourceAddress: Address = zeroAddress
         const oracleConfig = newPoolParams.oracleConfig
         // validate registry
         if (!registry.initOracleProxy) throw new ValidateInputValueError('registry: initOracleProxy not found')
         // set primary source
         if (oracleConfig && oracleConfig.primarySource) {
-          const primarySourceRegistryName = oracleReaderRegistryName[oracleConfig.primarySource.type]
-          if (!registry[primarySourceRegistryName]) throw new ValidateInputValueError(`registry: ${primarySourceRegistryName} not found`)
-          primarySourceAddress = registry[primarySourceRegistryName] as Address
-
-          setNewPoolOracleReaderSubActionParams.primarySource = {
-            type: oracleConfig?.primarySource?.type,
-            token: newPoolParams.token,
-            oracleReader: primarySourceAddress,
-            params: oracleConfig?.primarySource?.params,
-          }
+          setNewPoolOracleReaderSubActionParams.primarySource = configureOracleSourceConfig(
+            newPoolParams.token,
+            oracleConfig.primarySource,
+            registry,
+          )
         }
         // set secondary source
         if (oracleConfig && oracleConfig.secondarySource) {
-          const secondarySourceRegistryName = oracleReaderRegistryName[oracleConfig.secondarySource.type]
-          if (!registry[secondarySourceRegistryName])
-            throw new ValidateInputValueError(`registry: ${secondarySourceRegistryName} not found`)
-          secondarySourceAddress = registry[secondarySourceRegistryName] as Address
-          setNewPoolOracleReaderSubActionParams.secondarySource = {
-            type: oracleConfig?.secondarySource?.type,
-            token: newPoolParams.token,
-            oracleReader: secondarySourceAddress,
-            params: oracleConfig?.secondarySource?.params,
-          }
+          setNewPoolOracleReaderSubActionParams.secondarySource = configureOracleSourceConfig(
+            newPoolParams.token,
+            oracleConfig.secondarySource,
+            registry,
+          )
         }
         return new SetNewPoolOracleReaderSubAction(governor, setNewPoolOracleReaderSubActionParams)
       },
@@ -433,4 +437,40 @@ export class SupportNewPoolsAction extends Action<SupportNewPoolsActionData, Ini
     }
     return subActions
   }
+}
+
+const configureOracleSourceConfig = (token: Address, oracleReader: OracleReader, registry: InitCapitalRegistry): SourceConfig => {
+  const sourceRegistryName = oracleReaderRegistryName[oracleReader.type]
+  if (!registry[sourceRegistryName]) throw new ValidateInputValueError(`registry: ${sourceRegistryName} not found`)
+  const sourceAddress = registry[sourceRegistryName] as Address
+
+  const sourceConfig: SourceConfig = {
+    type: oracleReader.type,
+    token: token,
+    oracleReader: sourceAddress,
+    params: oracleReader.params,
+  }
+
+  // read api3 oracle reader address from the registry for lsdApi3
+  if (oracleReader.type === 'lsdApi3' && oracleReader.params.quoteToken.params) {
+    const api3ProxyOracleReaderRegistryName = oracleReaderRegistryName['api3']
+    if (!registry[api3ProxyOracleReaderRegistryName])
+      throw new ValidateInputValueError(`registry: ${api3ProxyOracleReaderRegistryName} not found`)
+    const api3ProxyOracleReader = registry[api3ProxyOracleReaderRegistryName] as Address
+    const params = oracleReader.params
+    const lsdApi3Params: LsdApi3Params = {
+      dataFeedProxy: params.dataFeedProxy,
+      maxStaleTime: params.maxStaleTime,
+      quoteToken: {
+        token: params.quoteToken.token,
+        params: {
+          dataFeedProxy: params.quoteToken.params!.dataFeedProxy,
+          maxStaleTime: params.quoteToken.params!.maxStaleTime,
+          oracleReader: api3ProxyOracleReader,
+        },
+      },
+    }
+    sourceConfig.params = lsdApi3Params
+  }
+  return sourceConfig
 }

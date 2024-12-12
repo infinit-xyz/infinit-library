@@ -40,7 +40,6 @@ describe('set tokenInfos on Api3ProxyOracleReader', () => {
     registry = await action.run(registry, undefined, undefined)
     action = new SetApi3ProxyOracleReaderTokensInfoAction({
       params: {
-        api3ProxyOracleReader: registry.api3ProxyOracleReaderProxy!,
         tokensInfo: [
           {
             token: weth,

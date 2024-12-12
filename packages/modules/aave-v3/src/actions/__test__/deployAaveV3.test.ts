@@ -294,20 +294,11 @@ describe('deployAaveV3Action', () => {
         aclAdmin: client,
       },
       params: {
-        aclManager: curRegistry.aclManager!,
-        pool: curRegistry.poolProxy!,
-        reservesSetupHelper: curRegistry.reservesSetupHelper!,
-        poolConfigurator: curRegistry.poolConfiguratorProxy!,
-        oracle: curRegistry.aaveOracle!,
         setupReservesParams: [
           {
-            aTokenImpl: curRegistry.aTokenImpl!,
-            stableDebtTokenImpl: curRegistry.stableDebtTokenImpl!,
-            variableDebtTokenImpl: curRegistry.variableDebtTokenImpl!,
             underlyingAssetDecimals: 18,
             interestRateStrategyAddress: curRegistry.reserveInterestRateStrategies!['rateStrategyVolatileOne']!,
             underlyingAsset: weth,
-            treasury: curRegistry.aaveEcosystemReserveV2Proxy!,
             incentivesController: zeroAddress,
             aTokenName: 'eieize aToken',
             aTokenSymbol: 'EIEI',

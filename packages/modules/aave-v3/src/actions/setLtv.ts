@@ -1,9 +1,10 @@
 import { z } from 'zod'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import { validateActionData, zodAddress } from '@infinit-xyz/core/internal'
 
-import { SetLtvSubAction, SetLtvSubActionParams } from '@actions/subactions/setLtvSubAction'
+import { SetLtvSubAction } from '@actions/subactions/setLtvSubAction'
 
 import { AaveV3Registry } from '@/src/type'
 
@@ -16,10 +17,7 @@ export const SetLtvActionParamsSchema = z.object({
       }),
     )
     .describe(`The list of object containing the target asset and LTV in bps e.g. [{ asset: '0x123...abc', ltv: 100n }]`),
-  pool: zodAddress.describe(`The address of the lending pool contract e.g. '0x123...abc'`),
-  poolConfigurator: zodAddress.describe(`The address of the pool configurator contract e.g. '0x123...abc'`),
-  aclManager: zodAddress.describe(`The address of the ACL manager contract e.g. '0x123...abc'`),
-}) satisfies z.ZodType<SetLtvSubActionParams>
+})
 
 export type SetLtvActionParams = z.infer<typeof SetLtvActionParamsSchema>
 
@@ -35,9 +33,23 @@ export class SetLtvAction extends Action<LtvActionData, AaveV3Registry> {
     super(SetLtvAction.name, data)
   }
 
-  protected getSubActions(): SubAction[] {
+  protected getSubActions(registry: AaveV3Registry): SubAction[] {
+    if (!registry.aclManager) {
+      throw new ValidateInputValueError('registry: aclManager not found')
+    }
+    if (!registry.poolConfiguratorProxy) {
+      throw new ValidateInputValueError('registry: poolConfiguratorProxy not found')
+    }
+    if (!registry.poolProxy) {
+      throw new ValidateInputValueError('registry: poolProxy not found')
+    }
     const poolAdmin = this.data.signer['poolAdmin']
-    const params = this.data.params
+    const params = {
+      ...this.data.params,
+      pool: registry.poolProxy,
+      aclManager: registry.aclManager,
+      poolConfigurator: registry.poolConfiguratorProxy,
+    }
     return [new SetLtvSubAction(poolAdmin, params)]
   }
 }

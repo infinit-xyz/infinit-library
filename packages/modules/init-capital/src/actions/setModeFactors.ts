@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { Address } from 'viem'
 
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
+import { ValidateInputValueError } from '@infinit-xyz/core/errors'
 import { validateActionData, zodAddressNonZero } from '@infinit-xyz/core/internal'
 
 import { SetBorrFactorsSubAction, SetBorrFactorsSubActionParams } from '@actions/subactions/setBorrFactors'
@@ -11,7 +12,6 @@ import { SetCollFactorsSubAction, SetCollFactorsSubActionParams } from '@actions
 import { InitCapitalRegistry } from '@/src/type'
 
 export const SetModeFactorsActionParamsSchema = z.object({
-  config: zodAddressNonZero.describe(`Address of protocol config e.g. '0x123...abc'`),
   mode: z.number().nonnegative().describe(`Mode number start from 0 e.g. 1`),
   poolFactors: z.array(
     z.object({
@@ -35,8 +35,13 @@ export class SetModeFactorsAction extends Action<SetModeFactorsActionData, InitC
     super(SetModeFactorsAction.name, data)
   }
 
-  protected getSubActions(): SubAction[] {
+  protected getSubActions(registry: InitCapitalRegistry): SubAction[] {
     const governor = this.data.signer['governor']
+
+    // validate registry
+    if (!registry.configProxy) throw new ValidateInputValueError('registry: configProxy not found')
+    const configProxy = registry.configProxy
+
     const collPools: Address[] = []
     const borrPools: Address[] = []
     const collFactors: bigint[] = []
@@ -56,7 +61,7 @@ export class SetModeFactorsAction extends Action<SetModeFactorsActionData, InitC
     // set coll factors if exist
     if (collPools.length > 0) {
       const setCollFactorsParams: SetCollFactorsSubActionParams = {
-        config: this.data.params.config,
+        config: configProxy,
         mode: this.data.params.mode,
         pools: collPools,
         factors_e18: collFactors,
@@ -66,7 +71,7 @@ export class SetModeFactorsAction extends Action<SetModeFactorsActionData, InitC
     // set borr factors if exist
     if (borrPools.length > 0) {
       const setBorrFactorsParams: SetBorrFactorsSubActionParams = {
-        config: this.data.params.config,
+        config: configProxy,
         mode: this.data.params.mode,
         pools: borrPools,
         factors_e18: borrFactors,

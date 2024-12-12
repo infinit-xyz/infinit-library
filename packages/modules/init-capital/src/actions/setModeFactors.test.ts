@@ -35,7 +35,6 @@ describe('SetModeFactors', async () => {
 
     const action = new SetModeFactorsAction({
       params: {
-        config: registry.configProxy!,
         mode: mode,
         poolFactors: poolFactors,
       },
@@ -68,7 +67,6 @@ describe('SetModeFactors', async () => {
 
     const action = new SetModeFactorsAction({
       params: {
-        config: registry.configProxy!,
         mode: mode,
         poolFactors: poolFactors,
       },
@@ -101,7 +99,6 @@ describe('SetModeFactors', async () => {
 
     const action = new SetModeFactorsAction({
       params: {
-        config: registry.configProxy!,
         mode: mode,
         poolFactors: poolFactors,
       },
