@@ -6,15 +6,19 @@ import { GrantRolePendleGovernanceProxyTxBuilder } from '@actions/subactions/tx-
 
 import { PendleRegistry } from '@/src/type'
 
-export type GrantRoleGuardianSubActionParams = {
+export type GrantRoleGuardianPendleGovernanceProxySubActionParams = {
   pendleGovernanceProxy: Address
   account: Address
 }
 
 export type AddGuardianMsg = {}
 
-export class GrantRoleGuardianSubAction extends SubAction<GrantRoleGuardianSubActionParams, PendleRegistry, AddGuardianMsg> {
-  constructor(client: InfinitWallet, params: GrantRoleGuardianSubActionParams) {
+export class GrantRoleGuardianSubAction extends SubAction<
+  GrantRoleGuardianPendleGovernanceProxySubActionParams,
+  PendleRegistry,
+  AddGuardianMsg
+> {
+  constructor(client: InfinitWallet, params: GrantRoleGuardianPendleGovernanceProxySubActionParams) {
     super(GrantRoleGuardianSubAction.name, client, params)
   }
 

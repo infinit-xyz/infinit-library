@@ -5,4 +5,5 @@ export type PendleRegistry = {
   pendleMulticallV2?: Address
   simulateHelper?: Address
   supplyCapReader?: Address
+  pendleGovernanceProxy?: Address
 }
