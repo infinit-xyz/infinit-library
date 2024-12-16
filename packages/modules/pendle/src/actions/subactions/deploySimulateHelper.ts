@@ -32,7 +32,7 @@ export class DeploySimulateHelperSubAction extends SubAction<{}, PendleRegistry,
     // destruct the tx hashes
     const [deploySimulateHelperHash] = txHashes
 
-    // registers multicall2
+    // get the deployed address from the txHash
     const { contractAddress: simulateHelper } = await this.client.publicClient.waitForTransactionReceipt({
       hash: deploySimulateHelperHash,
     })
