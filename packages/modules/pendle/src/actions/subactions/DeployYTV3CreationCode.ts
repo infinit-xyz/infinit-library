@@ -1,7 +1,7 @@
 import { Address, Hash, decodeEventLog } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
-import { EventNotFoundError } from '@infinit-xyz/core/errors'
+import { InvalidEventError } from '@infinit-xyz/core/errors'
 
 import {
   DeployYTV3CreationCodeTxBuilder,
@@ -51,7 +51,7 @@ export class DeployYTV3CreationCodeSubaction extends SubAction<
       topics: txReceipt.logs[0].topics,
     })
     if (eventLog.eventName !== 'Deployed') {
-      throw new EventNotFoundError(eventLog.eventName, 'Deployed')
+      throw new InvalidEventError(eventLog.eventName, 'Deployed')
     }
 
     return {
