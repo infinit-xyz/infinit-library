@@ -53,7 +53,7 @@ export class DeployYTV3CreationCodeSubaction extends SubAction<
     if (eventLog.eventName !== 'Deployed') {
       throw new EventNotFoundError(eventLog.eventName, 'Deployed')
     }
-    console.log(eventLog.args.creationCodeContractA)
+
     return {
       newRegistry: registry,
       newMessage: {
