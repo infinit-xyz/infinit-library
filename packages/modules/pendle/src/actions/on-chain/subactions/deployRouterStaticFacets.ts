@@ -3,12 +3,12 @@ import { Address, Hex } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
 
-import { DeployActionStorageStaticTxBuilder } from '@/src/temp/actions/on-chain/subactions/txBuilders/ActionStorageStatic/deploy'
-import { DeployActionInfoStaticTxBuilder } from '@/src/temp/actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionInfoStatic/deploy'
-import { DeployActionMarketAuxStaticTxBuilder } from '@/src/temp/actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionMarketAuxStatic/deploy'
-import { DeployActionMarketCoreStaticTxBuilder } from '@/src/temp/actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionMarketCoreStatic/deploy'
-import { DeployActionMintRedeemStaticTxBuilder } from '@/src/temp/actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionMintRedeemStatic/deploy'
-import { DeployActionVePendleStaticTxBuilder } from '@/src/temp/actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionVePendleStatic/deploy'
+import { DeployActionStorageStaticTxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/ActionStorageStatic/deploy'
+import { DeployActionInfoStaticTxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionInfoStatic/deploy'
+import { DeployActionMarketAuxStaticTxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionMarketAuxStatic/deploy'
+import { DeployActionMarketCoreStaticTxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionMarketCoreStatic/deploy'
+import { DeployActionMintRedeemStaticTxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionMintRedeemStatic/deploy'
+import { DeployActionVePendleStaticTxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionVePendleStatic/deploy'
 import { PendleRegistry } from '@/src/type'
 
 export type DeployPendleStaticFacetsSubactionParams = {
@@ -25,13 +25,13 @@ export type DeployPendleStaticFacetsMsg = {
   actionVePendleStatic: Address
 }
 
-export class DeployPendleStaticFacets1SubAction extends SubAction<
+export class DeployPendleStaticFacetsSubAction extends SubAction<
   DeployPendleStaticFacetsSubactionParams,
   PendleRegistry,
   DeployPendleStaticFacetsMsg
 > {
   constructor(client: InfinitWallet, params: DeployPendleStaticFacetsSubactionParams) {
-    super(DeployPendleStaticFacets1SubAction.name, client, params)
+    super(DeployPendleStaticFacetsSubAction.name, client, params)
   }
 
   protected setTxBuilders(): void {

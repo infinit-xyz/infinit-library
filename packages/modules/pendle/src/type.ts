@@ -18,4 +18,5 @@ export type PendleRegistry = {
   actionVePendleStatic?: Address
   pendleLimitRouter?: Address
   pendleLimitRouterProxy?: Address
+  proxyAdmin?: Address
 }
