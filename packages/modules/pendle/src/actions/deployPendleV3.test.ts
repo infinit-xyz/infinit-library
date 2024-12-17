@@ -8,10 +8,11 @@ import { ANVIL_PRIVATE_KEY } from './__mock__/account'
 import { DeployPendleV3Action } from './deployPendleV3'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
-describe('deployAaveV3Action', () => {
+describe('deployPendleV3Action', () => {
   let client: TestInfinitWallet
   let account: Account
   const bnAddress = '0xBE0eB53F46cd790Cd13851d5EFf43D12404d33E8'
+
   beforeAll(() => {
     account = privateKeyToAccount(ANVIL_PRIVATE_KEY)
     client = new TestInfinitWallet(TestChain.arbitrum, account.address)
@@ -23,7 +24,14 @@ describe('deployAaveV3Action', () => {
         refundAddress: bnAddress,
         lzEndpoint: bnAddress,
         governanceToken: bnAddress,
-        initialApproxDestinationGas: BigInt(100000),
+        initialApproxDestinationGas: 100000n,
+        // using the parameters for the contractFactory referenced from https://basescan.org/tx/0x06d6e63b9e08be0e504375787193e674678d553c7a83546f8ee63d824c31f88a
+        contractFactory: {
+          expiryDivisor: 86400n,
+          interestFeeRate: 30000000000000000n,
+          rewardFeeRate: 30000000000000000n,
+          treasury: bnAddress,
+        },
       },
       signer: {
         deployer: client,

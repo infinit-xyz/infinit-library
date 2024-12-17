@@ -16,10 +16,14 @@ import {
   DeployPendleMsgSendEndpointUpgProxySubactionMsg,
 } from '@actions/subactions/deployPendleMsgSendEndpointUpgProxy'
 import { DeployPendleSwapSubaction } from '@actions/subactions/deployPendleSwap'
-import { DeployPendleYieldContractFactorySubaction } from '@actions/subactions/deployPendleYieldContractFactory'
+import {
+  DeployPendleYieldContractFactorySubaction,
+  DeployPendleYieldContractFactorySubactionMsg,
+} from '@actions/subactions/deployPendleYieldContractFactory'
 import { DeployVotingEscrowPendleMainchainSubaction } from '@actions/subactions/deployVotingEscrowPendleMainchain'
 import { DeployYTV3CreationCodeSubaction, DeployYTV3CreationCodeSubactionMsg } from '@actions/subactions/deployYTV3CreationCode'
 import { InitializePendleMsgSendEndpointUpgSubaction } from '@actions/subactions/initializePendleMsgSendEndpointUpg'
+import { InitializePendleYieldContractFactorySubaction } from '@actions/subactions/initializePendleYieldContractFactory'
 
 import type { PendleV3Registry } from '@/src/type'
 
@@ -28,6 +32,12 @@ export const DeployPendleV3ParamsSchema = z.object({
   lzEndpoint: zodAddress.describe(`The address of the LZ endpoint e.g. '0x123...abc'`),
   governanceToken: zodAddress.describe(`The address of the governance token e.g. '0x123...abc'`),
   initialApproxDestinationGas: z.bigint().describe(`The initial gas for the destination`),
+  contractFactory: z.object({
+    expiryDivisor: z.bigint().describe(`The initial gas for the destination`),
+    interestFeeRate: z.bigint().describe(`The initial gas for the destination`),
+    rewardFeeRate: z.bigint().describe(`The initial gas for the destination`),
+    treasury: zodAddressNonZero.describe(`The address of the treasury e.g. '0x123...abc'`),
+  }),
 })
 
 export type DeployPendleV3Params = z.infer<typeof DeployPendleV3ParamsSchema>
@@ -98,6 +108,14 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           ytCreationCodeSizeB: message.ytCreationCodeSizeB,
         }),
       // step 7.2: initialize PendleYieldContractFactory
+      (message: DeployPendleYieldContractFactorySubactionMsg) =>
+        new InitializePendleYieldContractFactorySubaction(deployer, {
+          pendleYieldContractFactory: message.pendleYieldContractFactory,
+          expiryDivisor: params.contractFactory.expiryDivisor,
+          interestFeeRate: params.contractFactory.interestFeeRate,
+          rewardFeeRate: params.contractFactory.rewardFeeRate,
+          treasury: params.contractFactory.treasury,
+        }),
     ]
   }
 }
