@@ -11,12 +11,12 @@ export type GrantRoleGuardianPendleGovernanceProxySubActionParams = {
   account: Address
 }
 
-export type AddGuardianMsg = {}
+export type GrantRoleGuardianMsg = {}
 
 export class GrantRoleGuardianSubAction extends SubAction<
   GrantRoleGuardianPendleGovernanceProxySubActionParams,
   PendleRegistry,
-  AddGuardianMsg
+  GrantRoleGuardianMsg
 > {
   constructor(client: InfinitWallet, params: GrantRoleGuardianPendleGovernanceProxySubActionParams) {
     super(GrantRoleGuardianSubAction.name, client, params)
