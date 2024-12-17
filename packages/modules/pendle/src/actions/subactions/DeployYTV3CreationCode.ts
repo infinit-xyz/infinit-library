@@ -19,6 +19,7 @@ export type DeployYTV3CreationCodeSubactionMsg = {
   ytCreationCodeContractB: Address
   ytCreationCodeSizeB: bigint
 }
+
 export class DeployYTV3CreationCodeSubaction extends SubAction<
   DeployYTV3CreationCodeSubactionParams,
   PendleV3Registry,

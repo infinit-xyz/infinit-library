@@ -1,7 +1,9 @@
-import { beforeAll, describe, test } from 'vitest'
+import { beforeAll, describe, expect, test } from 'vitest'
 
+import { zeroAddress } from 'viem'
 import { Account, privateKeyToAccount } from 'viem/accounts'
 
+import { PendleV3Registry } from '../type'
 import { ANVIL_PRIVATE_KEY } from './__mock__/account'
 import { DeployPendleV3Action } from './deployPendleV3'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
@@ -27,7 +29,17 @@ describe('deployAaveV3Action', () => {
         deployer: client,
       },
     })
-    const registry = {}
-    const txData = await action.run(registry)
+    let registry = {}
+    registry = await action.run(registry)
+    checkRegistry(registry)
   })
 })
+
+const checkRegistry = (registry: PendleV3Registry) => {
+  expect(registry.baseSplitCodeFactoryContract).not.toBe(zeroAddress)
+  expect(registry.pendleSwap).not.toBe(zeroAddress)
+  expect(registry.pendleMsgSendEndpointUpgImpl).not.toBe(zeroAddress)
+  expect(registry.pendleMsgSendEndpointUpgProxy).not.toBe(zeroAddress)
+  expect(registry.votingEscrowPendleMainchain).not.toBe(zeroAddress)
+  expect(registry.pendleYieldContractFactory).not.toBe(zeroAddress)
+}

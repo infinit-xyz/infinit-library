@@ -10,14 +10,14 @@ export type InitializePendleYieldContractFactoryTxBuilderParams = {
   expiryDivisor: bigint
   interestFeeRate: bigint
   rewardFeeRate: bigint
-  treausry: Address
+  treasury: Address
 }
 export class InitializePendleYieldContractFactoryTxBuilder extends TxBuilder {
   public pendleYieldContractFactory: Address
   public expiryDivisor: bigint
   public interestFeeRate: bigint
   public rewardFeeRate: bigint
-  public treausry: Address
+  public treasury: Address
 
   constructor(client: InfinitWallet, params: InitializePendleYieldContractFactoryTxBuilderParams) {
     super(InitializePendleYieldContractFactoryTxBuilder.name, client)
@@ -25,7 +25,7 @@ export class InitializePendleYieldContractFactoryTxBuilder extends TxBuilder {
     this.expiryDivisor = params.expiryDivisor
     this.interestFeeRate = params.interestFeeRate
     this.rewardFeeRate = params.rewardFeeRate
-    this.treausry = params.treausry
+    this.treasury = params.treasury
   }
 
   async buildTx(): Promise<TransactionData> {
@@ -34,7 +34,7 @@ export class InitializePendleYieldContractFactoryTxBuilder extends TxBuilder {
     const deployData: Hex = encodeFunctionData({
       abi: pendleYieldContractFactoryArtifact.abi,
       functionName: 'initialize',
-      args: [this.expiryDivisor, this.interestFeeRate, this.rewardFeeRate, this.treausry],
+      args: [this.expiryDivisor, this.interestFeeRate, this.rewardFeeRate, this.treasury],
     })
 
     const tx: TransactionData = {
@@ -59,7 +59,7 @@ export class InitializePendleYieldContractFactoryTxBuilder extends TxBuilder {
       throw new ValidateInputValueError('RewardFeeRate must be less than 2e17(20%)')
     }
 
-    if (this.treausry === zeroAddress) {
+    if (this.treasury === zeroAddress) {
       throw new ValidateInputZeroAddressError('TREASURY')
     }
   }
