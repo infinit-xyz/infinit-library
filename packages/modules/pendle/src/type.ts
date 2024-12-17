@@ -19,4 +19,14 @@ export type PendleRegistry = {
   pendleLimitRouter?: Address
   pendleLimitRouterProxy?: Address
   proxyAdmin?: Address
+  baseSplitCodeFactoryContract?: Address
+  oracleLib?: Address
+  pendleGaugeControllerMainchainUpg?: Address
+  pendleMarketFactoryV3?: Address
+  pendlePYLpOracle?: Address
+  pendleSwap?: Address
+  pendleYieldContractFactory?: Address
+  votingEscrowPendleMainchain?: Address
+  pendleMsgSendEndpointUpgImpl?: Address
+  pendleMsgSendEndpointUpgProxy?: Address
 }

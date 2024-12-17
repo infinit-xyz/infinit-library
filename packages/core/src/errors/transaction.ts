@@ -34,3 +34,11 @@ export class TxNotFoundError extends BaseError {
     })
   }
 }
+
+export class InvalidEventError extends BaseError {
+  constructor(eventName: string, expectEvent: string) {
+    super(`Expect event '${expectEvent}', but got '${eventName}'`, {
+      name: 'InvalidEventError',
+    })
+  }
+}
