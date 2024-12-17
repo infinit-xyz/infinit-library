@@ -15,13 +15,13 @@ export type DeployProxyPendleGovernanceProxyMsg = {
   pendleGovernanceProxy: Address
 }
 
-export class DeployPendleGovernanceProxySubAction extends SubAction<
+export class DeployProxyPendleGovernanceProxySubAction extends SubAction<
   DeployProxyPendleGovernanceProxySubActionParams,
   PendleRegistry,
   DeployProxyPendleGovernanceProxyMsg
 > {
   constructor(client: InfinitWallet, params: DeployProxyPendleGovernanceProxySubActionParams) {
-    super(DeployPendleGovernanceProxySubAction.name, client, params)
+    super(DeployProxyPendleGovernanceProxySubAction.name, client, params)
   }
 
   protected setTxBuilders(): void {
