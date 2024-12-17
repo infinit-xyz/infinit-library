@@ -26,11 +26,16 @@ describe('deployPendleV3Action', () => {
         governanceToken: bnAddress,
         initialApproxDestinationGas: 100000n,
         // using the parameters for the contractFactory referenced from https://basescan.org/tx/0x06d6e63b9e08be0e504375787193e674678d553c7a83546f8ee63d824c31f88a
-        contractFactory: {
+        treasury: bnAddress,
+        yieldContractFactory: {
           expiryDivisor: 86400n,
           interestFeeRate: 30000000000000000n,
           rewardFeeRate: 30000000000000000n,
-          treasury: bnAddress,
+        },
+        marketContractFactory: {
+          reserveFeePercent: 10,
+          vePendle: bnAddress,
+          guaugeController: bnAddress,
         },
       },
       signer: {
@@ -50,4 +55,5 @@ const checkRegistry = (registry: PendleV3Registry) => {
   expect(registry.pendleMsgSendEndpointUpgProxy).not.toBe(zeroAddress)
   expect(registry.votingEscrowPendleMainchain).not.toBe(zeroAddress)
   expect(registry.pendleYieldContractFactory).not.toBe(zeroAddress)
+  expect(registry.oracleLib).not.toBe(zeroAddress)
 }

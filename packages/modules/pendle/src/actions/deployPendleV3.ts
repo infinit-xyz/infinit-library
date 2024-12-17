@@ -25,6 +25,12 @@ import { DeployYTV3CreationCodeSubaction, DeployYTV3CreationCodeSubactionMsg } f
 import { InitializePendleMsgSendEndpointUpgSubaction } from '@actions/subactions/initializePendleMsgSendEndpointUpg'
 import { InitializePendleYieldContractFactorySubaction } from '@actions/subactions/initializePendleYieldContractFactory'
 
+import { DeployOracleLibSubaction, DeployOracleLibSubactionMsg } from './subactions/deployOracleLib'
+import { DeployPendleMarketFactoryV3Subaction } from './subactions/deployPendleMarketFactoryV3'
+import {
+  DeployPendleMarketV3CreationCodeSubaction,
+  DeployPendleMarketV3CreationCodeSubactionMsg,
+} from './subactions/deployPendleMarketV3CreationCode'
 import type { PendleV3Registry } from '@/src/type'
 
 export const DeployPendleV3ParamsSchema = z.object({
@@ -32,11 +38,26 @@ export const DeployPendleV3ParamsSchema = z.object({
   lzEndpoint: zodAddress.describe(`The address of the LZ endpoint e.g. '0x123...abc'`),
   governanceToken: zodAddress.describe(`The address of the governance token e.g. '0x123...abc'`),
   initialApproxDestinationGas: z.bigint().describe(`The initial gas for the destination`),
-  contractFactory: z.object({
-    expiryDivisor: z.bigint().describe(`The initial gas for the destination`),
-    interestFeeRate: z.bigint().describe(`The initial gas for the destination`),
-    rewardFeeRate: z.bigint().describe(`The initial gas for the destination`),
-    treasury: zodAddressNonZero.describe(`The address of the treasury e.g. '0x123...abc'`),
+  treasury: zodAddressNonZero.describe(`The address of the treasury e.g. '0x123...abc'`),
+  yieldContractFactory: z.object({
+    expiryDivisor: z
+      .bigint()
+      .describe(
+        `The divisor for expiry timestamp, e.g. 86400n. it will be use furture for create a pair of (PT, YT) as timestamp = expiry / expiryDivisor`,
+      ),
+    interestFeeRate: z
+      .bigint()
+      .describe(`The fee rate for the interest in 1e18 unit, e.g. BigInt(0.1e18) is 10%. NOTE: Maximum is BigInt(0.2e18) (20%)`),
+    rewardFeeRate: z
+      .bigint()
+      .describe(`The fee rate for the reward in 1e18 uint, e.g. BigInt(0.1e18) is 10%. NOTE: Maximum is BigInt(0.2e18) (20%)`),
+  }),
+  marketContractFactory: z.object({
+    reserveFeePercent: z
+      .number()
+      .describe(`The reserve fee percent in 1e18 unit, e.g. BigInt(0.1e18) is 10%. NOTE: should be between 0-100 `),
+    vePendle: zodAddressNonZero.describe(`The address of the vePendle e.g. '0x123...abc'`),
+    guaugeController: zodAddressNonZero.describe(`The address of the guage controller e.g. '0x123...abc'`),
   }),
 })
 
@@ -111,10 +132,33 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
       (message: DeployPendleYieldContractFactorySubactionMsg) =>
         new InitializePendleYieldContractFactorySubaction(deployer, {
           pendleYieldContractFactory: message.pendleYieldContractFactory,
-          expiryDivisor: params.contractFactory.expiryDivisor,
-          interestFeeRate: params.contractFactory.interestFeeRate,
-          rewardFeeRate: params.contractFactory.rewardFeeRate,
-          treasury: params.contractFactory.treasury,
+          expiryDivisor: params.yieldContractFactory.expiryDivisor,
+          interestFeeRate: params.yieldContractFactory.interestFeeRate,
+          rewardFeeRate: params.yieldContractFactory.rewardFeeRate,
+          treasury: params.treasury,
+        }),
+      // step 8: deploy oracleLib
+      () => new DeployOracleLibSubaction(deployer),
+
+      // step 9: deploy v3-Lp in BaseSplitContractFactory
+      (message: DeployBaseSplitCodeFactoryContractSubactionMsg & DeployOracleLibSubactionMsg) => {
+        return new DeployPendleMarketV3CreationCodeSubaction(deployer, {
+          oracleLib: message.oracleLib,
+          baseSplitCodeFactoryContact: message.baseSplitCodeFactoryContract,
+        })
+      },
+      // step 10: deploy PendleMarketFactoryV3
+      (message: DeployPendleMarketV3CreationCodeSubactionMsg & DeployPendleYieldContractFactorySubactionMsg) =>
+        new DeployPendleMarketFactoryV3Subaction(deployer, {
+          yieldContractFactory: message.pendleYieldContractFactory,
+          marketCreationCodeContractA: message.pendleMarketV3CreationCodeContractA,
+          marketCreationCodeSizeA: message.pendleMarketV3CreationCodeSizeA,
+          marketCreationCodeContractB: message.pendleMarketV3CreationCodeContractB,
+          marketCreationCodeSizeB: message.pendleMarketV3CreationCodeSizeB,
+          treasury: params.treasury,
+          reserveFeePercent: params.marketContractFactory.reserveFeePercent,
+          vePendle: params.marketContractFactory.vePendle,
+          guaugeController: params.marketContractFactory.guaugeController,
         }),
     ]
   }
