@@ -32,9 +32,9 @@ describe('deployPendleV3Action', () => {
           interestFeeRate: 30000000000000000n,
           rewardFeeRate: 30000000000000000n,
         },
+        rewardToken: bnAddress,
         marketContractFactory: {
           reserveFeePercent: 10,
-          vePendle: bnAddress,
           guaugeController: bnAddress,
         },
       },
@@ -50,10 +50,15 @@ describe('deployPendleV3Action', () => {
 
 const checkRegistry = (registry: PendleV3Registry) => {
   expect(registry.baseSplitCodeFactoryContract).not.toBe(zeroAddress)
+  expect(registry.oracleLib).not.toBe(zeroAddress)
+  expect(registry.pendleGaugeControllerMainchainUpg).not.toBe(zeroAddress)
+  expect(registry.pendleMarketFactoryV3).not.toBe(zeroAddress)
+  expect(registry.pendlePYLpOracle).not.toBe(zeroAddress)
   expect(registry.pendleSwap).not.toBe(zeroAddress)
+  expect(registry.pendleYieldContractFactory).not.toBe(zeroAddress)
+  expect(registry.votingEscrowPendleMainchain).not.toBe(zeroAddress)
   expect(registry.pendleMsgSendEndpointUpgImpl).not.toBe(zeroAddress)
   expect(registry.pendleMsgSendEndpointUpgProxy).not.toBe(zeroAddress)
-  expect(registry.votingEscrowPendleMainchain).not.toBe(zeroAddress)
-  expect(registry.pendleYieldContractFactory).not.toBe(zeroAddress)
-  expect(registry.oracleLib).not.toBe(zeroAddress)
+  expect(registry.pendleVotingContollerUpgImpl).not.toBe(zeroAddress)
+  expect(registry.pendleVotingControllerUpgProxy).not.toBe(zeroAddress)
 }

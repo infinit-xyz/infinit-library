@@ -11,4 +11,6 @@ export type PendleV3Registry = {
   votingEscrowPendleMainchain?: Address
   pendleMsgSendEndpointUpgImpl?: Address
   pendleMsgSendEndpointUpgProxy?: Address
+  pendleVotingContollerUpgImpl?: Address
+  pendleVotingControllerUpgProxy?: Address
 }

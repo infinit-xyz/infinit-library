@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import { zeroAddress } from 'viem'
+
 import { Action, InfinitWallet, SubAction } from '@infinit-xyz/core'
 import { validateActionData, zodAddress, zodAddressNonZero } from '@infinit-xyz/core/internal'
 
@@ -7,6 +9,12 @@ import {
   DeployBaseSplitCodeFactoryContractSubaction,
   DeployBaseSplitCodeFactoryContractSubactionMsg,
 } from '@actions/subactions/deployBaseSplitCodeFactoryContract'
+import { DeployOracleLibSubaction, DeployOracleLibSubactionMsg } from '@actions/subactions/deployOracleLib'
+import { DeployPendleGaugeControllerMainchainUpgSubaction } from '@actions/subactions/deployPendleGaugeControllerMainchainUpg'
+import {
+  DeployPendleMarketFactoryV3Subaction,
+  DeployPendleMarketFactoryV3SubactionMsg,
+} from '@actions/subactions/deployPendleMarketFactoryV3'
 import {
   DeployPendleMsgSendEndpointUpgSubaction,
   DeployPendleMsgSendEndpointUpgSubactionMsg,
@@ -20,17 +28,27 @@ import {
   DeployPendleYieldContractFactorySubaction,
   DeployPendleYieldContractFactorySubactionMsg,
 } from '@actions/subactions/deployPendleYieldContractFactory'
-import { DeployVotingEscrowPendleMainchainSubaction } from '@actions/subactions/deployVotingEscrowPendleMainchain'
+import {
+  DeployVotingEscrowPendleMainchainSubaction,
+  DeployVotingEscrowPendleMainchainSubactionMsg,
+} from '@actions/subactions/deployVotingEscrowPendleMainchain'
 import { DeployYTV3CreationCodeSubaction, DeployYTV3CreationCodeSubactionMsg } from '@actions/subactions/deployYTV3CreationCode'
 import { InitializePendleMsgSendEndpointUpgSubaction } from '@actions/subactions/initializePendleMsgSendEndpointUpg'
 import { InitializePendleYieldContractFactorySubaction } from '@actions/subactions/initializePendleYieldContractFactory'
 
-import { DeployOracleLibSubaction, DeployOracleLibSubactionMsg } from './subactions/deployOracleLib'
-import { DeployPendleMarketFactoryV3Subaction } from './subactions/deployPendleMarketFactoryV3'
 import {
   DeployPendleMarketV3CreationCodeSubaction,
   DeployPendleMarketV3CreationCodeSubactionMsg,
 } from './subactions/deployPendleMarketV3CreationCode'
+import {
+  DeployPendleVotingContollerUpgSubaction,
+  DeployPendleVotingContollerUpgSubactionMsg,
+} from './subactions/deployPendleVotingControllerUpg'
+import {
+  DeployPendleVotingControllerUpgProxySubaction,
+  DeployPendleVotingControllerUpgProxySubactionMsg, // DeployPendleVotingControllerUpgProxySubactionMsg,
+} from './subactions/deployPendleVotingControllerUpgProxy'
+import { InitializePendleVotingControllerUpgSubaction } from './subactions/initializePendleVotingControllerUpg'
 import type { PendleV3Registry } from '@/src/type'
 
 export const DeployPendleV3ParamsSchema = z.object({
@@ -39,6 +57,7 @@ export const DeployPendleV3ParamsSchema = z.object({
   governanceToken: zodAddress.describe(`The address of the governance token e.g. '0x123...abc'`),
   initialApproxDestinationGas: z.bigint().describe(`The initial gas for the destination`),
   treasury: zodAddressNonZero.describe(`The address of the treasury e.g. '0x123...abc'`),
+  rewardToken: zodAddressNonZero.describe(`The address of the reward token e.g. '0x123...abc'`),
   yieldContractFactory: z.object({
     expiryDivisor: z
       .bigint()
@@ -56,7 +75,6 @@ export const DeployPendleV3ParamsSchema = z.object({
     reserveFeePercent: z
       .number()
       .describe(`The reserve fee percent in 1e18 unit, e.g. BigInt(0.1e18) is 10%. NOTE: should be between 0-100 `),
-    vePendle: zodAddressNonZero.describe(`The address of the vePendle e.g. '0x123...abc'`),
     guaugeController: zodAddressNonZero.describe(`The address of the guage controller e.g. '0x123...abc'`),
   }),
 })
@@ -148,7 +166,11 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
         })
       },
       // step 10: deploy PendleMarketFactoryV3
-      (message: DeployPendleMarketV3CreationCodeSubactionMsg & DeployPendleYieldContractFactorySubactionMsg) =>
+      (
+        message: DeployPendleMarketV3CreationCodeSubactionMsg &
+          DeployPendleYieldContractFactorySubactionMsg &
+          DeployVotingEscrowPendleMainchainSubactionMsg,
+      ) =>
         new DeployPendleMarketFactoryV3Subaction(deployer, {
           yieldContractFactory: message.pendleYieldContractFactory,
           marketCreationCodeContractA: message.pendleMarketV3CreationCodeContractA,
@@ -157,8 +179,38 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           marketCreationCodeSizeB: message.pendleMarketV3CreationCodeSizeB,
           treasury: params.treasury,
           reserveFeePercent: params.marketContractFactory.reserveFeePercent,
-          vePendle: params.marketContractFactory.vePendle,
+          vePendle: message.votingEscrowPendleMainchain,
           guaugeController: params.marketContractFactory.guaugeController,
+        }),
+      // step 11: deploy PendleVotingControllerUpg
+      // step 11.1: deploy implementation
+      (message: DeployPendleMsgSendEndpointUpgProxySubactionMsg & DeployVotingEscrowPendleMainchainSubactionMsg) =>
+        new DeployPendleVotingContollerUpgSubaction(deployer, {
+          vePendle: message.votingEscrowPendleMainchain,
+          pendleMsgSendEndpoint: message.pendleMsgSendEndpointUpgProxy,
+          initialApproxDestinationGas: params.initialApproxDestinationGas,
+        }),
+      // step 11.2: deploy proxy
+      (message: DeployPendleVotingContollerUpgSubactionMsg) =>
+        new DeployPendleVotingControllerUpgProxySubaction(deployer, {
+          implementation: message.pendleVotingContollerUpgImpl,
+          data: '0x',
+        }),
+      // step 11.3: initialize proxy
+      (message: DeployPendleVotingControllerUpgProxySubactionMsg) =>
+        new InitializePendleVotingControllerUpgSubaction(deployer, {
+          pendleVotingControllerUpg: message.pendleVotingControllerUpgProxy,
+        }),
+
+      // step 12: deploy PendleGaugeControllerMainchainUpg
+      (message: DeployPendleMarketFactoryV3SubactionMsg & DeployPendleVotingControllerUpgProxySubactionMsg) =>
+        new DeployPendleGaugeControllerMainchainUpgSubaction(deployer, {
+          votingController: message.pendleVotingControllerUpgProxy,
+          pendle: params.rewardToken,
+          marketFactory: zeroAddress,
+          marketFactory2: zeroAddress,
+          marketFactory3: zeroAddress,
+          marketFactory4: message.pendleMarketFactoryV3,
         }),
     ]
   }
