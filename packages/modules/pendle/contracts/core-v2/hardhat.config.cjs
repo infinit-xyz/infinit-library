@@ -44,6 +44,7 @@ const config = {
       'core-v2/contracts/router/ActionCallbackV3.sol': viaIR('0.8.23', 1000000),
       'core-v2/contracts/router/PendleRouterV3.sol': viaIR('0.8.23', 1000000),
       'core-v2/contracts/limit/PendleLimitRouter.sol': viaIR('0.8.23', 1000000),
+      'core-v2/contracts/core/Market/v3/PendleMarketV3.sol': viaIR('0.8.24', 1000000),
     },
   },
   contractSizer: {
