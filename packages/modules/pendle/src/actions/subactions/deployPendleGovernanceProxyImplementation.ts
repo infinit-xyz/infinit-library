@@ -11,7 +11,11 @@ export type DeployPendleGovernanceProxyImplMsg = {
   pendleGovernanceProxyImpl: Address
 }
 
-export class DeployPendleGovernanceProxyImplementationSubAction extends SubAction<{}, PendleV3Registry, DeployPendleGovernanceProxyImplMsg> {
+export class DeployPendleGovernanceProxyImplementationSubAction extends SubAction<
+  {},
+  PendleV3Registry,
+  DeployPendleGovernanceProxyImplMsg
+> {
   constructor(client: InfinitWallet, params: {}) {
     super(DeployPendleGovernanceProxyImplementationSubAction.name, client, params)
   }
