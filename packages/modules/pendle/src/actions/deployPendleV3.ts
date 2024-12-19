@@ -27,6 +27,7 @@ import {
   DeployPendleMsgSendEndpointUpgProxySubaction,
   DeployPendleMsgSendEndpointUpgProxySubactionMsg,
 } from '@actions/on-chain/subactions/deployPendleMsgSendEndpointUpgProxy'
+import { DeployPendleRouterV4Msg, DeployPendleRouterV4SubAction } from '@actions/on-chain/subactions/deployPendleRouterV4'
 import { DeployPendleSwapSubaction } from '@actions/on-chain/subactions/deployPendleSwap'
 import {
   DeployPendleVotingContollerUpgSubaction,
@@ -49,6 +50,8 @@ import { InitializePendleMsgSendEndpointUpgSubaction } from '@actions/on-chain/s
 import { InitializePendleVotingControllerUpgSubaction } from '@actions/on-chain/subactions/initializePendleVotingControllerUpg'
 import { InitializePendleYieldContractFactorySubaction } from '@actions/on-chain/subactions/initializePendleYieldContractFactory'
 
+import { DeployPendleRouterFacetsMsg, DeployPendleRouterFacetsSubAction } from './on-chain/subactions/deployRouterFacets'
+import { SetPendleRouterV4FacetsSubAction } from './on-chain/subactions/setPendleRouterStaticFacets'
 import type { PendleV3Registry } from '@/src/type'
 
 export const DeployPendleV3ActionParamsSchema = z.object({
@@ -165,6 +168,7 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           baseSplitCodeFactoryContact: message.baseSplitCodeFactoryContract,
         })
       },
+
       // step 10: deploy PendleMarketFactoryV3
       (
         message: DeployPendleMarketV3CreationCodeSubactionMsg &
@@ -182,6 +186,7 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           vePendle: message.votingEscrowPendleMainchain,
           guaugeController: params.marketContractFactory.guaugeController,
         }),
+
       // step 11: deploy PendleVotingControllerUpg
       // step 11.1: deploy implementation
       (message: DeployPendleMsgSendEndpointUpgProxySubactionMsg & DeployVotingEscrowPendleMainchainSubactionMsg) =>
@@ -211,6 +216,29 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           marketFactory2: zeroAddress,
           marketFactory3: zeroAddress,
           marketFactory4: message.pendleMarketFactoryV3,
+        }),
+
+      // step 13 deploy RouterFacets
+      () => new DeployPendleRouterFacetsSubAction(deployer, {}),
+
+      // step 14 deploy RouterV4
+      (message: DeployPendleRouterFacetsMsg) =>
+        new DeployPendleRouterV4SubAction(deployer, {
+          owner: deployer.walletClient.account.address,
+          routerStorageV4: message.routerStorageV4,
+        }),
+
+      // step 15: set pendleRouterV4 selectorToFacets
+      (message: DeployPendleRouterV4Msg & DeployPendleRouterFacetsMsg) =>
+        new SetPendleRouterV4FacetsSubAction(deployer, {
+          pendleRouterV4: message.pendleRouterV4,
+          actionStorageV4: message.routerStorageV4,
+          actionAddRemoveLiqV3: message.actionAddRemoveLiqV3,
+          actionCallbackV3: message.actionCallbackV3,
+          actionMiscV3: message.actionMiscV3,
+          actionSimple: message.actionSimple,
+          actionSwapPTV3: message.actionSwapPTV3,
+          actionSwapYTV3: message.actionSwapYTV3,
         }),
     ]
   }

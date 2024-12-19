@@ -66,7 +66,7 @@ export class DeployPendleRouterFacetsSubAction extends SubAction<
       hash: deployRouterStorageV4Hash,
     })
     if (!routerStorageV4) {
-      throw new ContractNotFoundError(deployRouterStorageV4Hash, 'PendleRouterV4')
+      throw new ContractNotFoundError(deployRouterStorageV4Hash, 'ActionStorageV4')
     }
     registry['routerStorageV4'] = routerStorageV4
 

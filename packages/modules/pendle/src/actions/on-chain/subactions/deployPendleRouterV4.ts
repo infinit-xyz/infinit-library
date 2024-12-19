@@ -7,22 +7,22 @@ import { DeployPendleRouterV4TxBuilder } from '@actions/on-chain/subactions/txBu
 
 import { PendleV3Registry } from '@/src/type'
 
-export type DeployPendleRouterV4ContractSubactionParams = {
+export type DeployPendleRouterV4SubactionParams = {
   owner: Address
   routerStorageV4: Address
 }
 
-export type DeployPendleRouterV4ContractMsg = {
+export type DeployPendleRouterV4Msg = {
   pendleRouterV4: Address
 }
 
-export class DeployPendleRouterV4Contract1SubAction extends SubAction<
-  DeployPendleRouterV4ContractSubactionParams,
+export class DeployPendleRouterV4SubAction extends SubAction<
+  DeployPendleRouterV4SubactionParams,
   PendleV3Registry,
-  DeployPendleRouterV4ContractMsg
+  DeployPendleRouterV4Msg
 > {
-  constructor(client: InfinitWallet, params: DeployPendleRouterV4ContractSubactionParams) {
-    super(DeployPendleRouterV4Contract1SubAction.name, client, params)
+  constructor(client: InfinitWallet, params: DeployPendleRouterV4SubactionParams) {
+    super(DeployPendleRouterV4SubAction.name, client, params)
   }
 
   protected setTxBuilders(): void {
@@ -37,7 +37,7 @@ export class DeployPendleRouterV4Contract1SubAction extends SubAction<
   public async updateRegistryAndMessage(
     registry: PendleV3Registry,
     txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeployPendleRouterV4ContractMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeployPendleRouterV4Msg>> {
     if (txHashes.some((v) => !v)) {
       throw new TxNotFoundError()
     }
@@ -52,7 +52,7 @@ export class DeployPendleRouterV4Contract1SubAction extends SubAction<
     }
     registry['pendleRouterV4'] = pendleRouterV4
 
-    const newMessage: DeployPendleRouterV4ContractMsg = {
+    const newMessage: DeployPendleRouterV4Msg = {
       pendleRouterV4,
     }
     return { newRegistry: registry, newMessage: newMessage }
