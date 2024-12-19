@@ -51,6 +51,7 @@ import { InitializePendleVotingControllerUpgSubaction } from '@actions/on-chain/
 import { InitializePendleYieldContractFactorySubaction } from '@actions/on-chain/subactions/initializePendleYieldContractFactory'
 
 import { DeployPendleRouterFacetsMsg, DeployPendleRouterFacetsSubAction } from './on-chain/subactions/deployRouterFacets'
+import { DeployPendleStaticFacetsSubAction } from './on-chain/subactions/deployRouterStaticFacets'
 import { SetPendleRouterV4FacetsSubAction } from './on-chain/subactions/setPendleRouterStaticFacets'
 import type { PendleV3Registry } from '@/src/type'
 
@@ -158,6 +159,7 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           rewardFeeRate: params.yieldContractFactory.rewardFeeRate,
           treasury: params.treasury,
         }),
+
       // step 8: deploy oracleLib
       () => new DeployOracleLibSubaction(deployer),
 
@@ -218,7 +220,7 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           marketFactory4: message.pendleMarketFactoryV3,
         }),
 
-      // step 13 deploy RouterFacets
+      // step 13 deploy RouterV4 Facets
       () => new DeployPendleRouterFacetsSubAction(deployer, {}),
 
       // step 14 deploy RouterV4
@@ -239,6 +241,13 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           actionSimple: message.actionSimple,
           actionSwapPTV3: message.actionSwapPTV3,
           actionSwapYTV3: message.actionSwapYTV3,
+        }),
+
+      // step 16: deploy PendleStatic Facets
+      (message: DeployPendleVotingControllerUpgProxySubactionMsg) =>
+        new DeployPendleStaticFacetsSubAction(deployer, {
+          owner: deployer.walletClient.account.address,
+          vePendle: message.pendleVotingControllerUpgProxy,
         }),
     ]
   }

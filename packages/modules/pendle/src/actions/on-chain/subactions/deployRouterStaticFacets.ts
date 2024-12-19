@@ -14,7 +14,7 @@ import { PendleV3Registry } from '@/src/type'
 
 export type DeployPendleStaticFacetsSubactionParams = {
   owner: Address
-  wrappedNativeToken: Address
+  vePendle: Address
 }
 
 export type DeployPendleStaticFacetsMsg = {
@@ -41,7 +41,7 @@ export class DeployPendleStaticFacetsSubAction extends SubAction<
     this.txBuilders.push(new DeployActionMarketAuxStaticTxBuilder(this.client))
     this.txBuilders.push(new DeployActionMarketCoreStaticTxBuilder(this.client))
     this.txBuilders.push(new DeployActionMintRedeemStaticTxBuilder(this.client))
-    this.txBuilders.push(new DeployActionVePendleStaticTxBuilder(this.client))
+    this.txBuilders.push(new DeployActionVePendleStaticTxBuilder(this.client, { vePendle: this.params.vePendle }))
   }
 
   public async updateRegistryAndMessage(
