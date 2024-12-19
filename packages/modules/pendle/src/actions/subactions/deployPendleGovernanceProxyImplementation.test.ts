@@ -10,14 +10,14 @@ import {
   DeployPendleGovernanceProxyImplementationSubAction,
 } from '@actions/subactions/deployPendleGovernanceProxyImplementation'
 
-import { PendleRegistry } from '@/src/type'
+import { PendleV3Registry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
 describe('DeployPendleGovernanceProxyImplementationSubAction', () => {
-  const registry: PendleRegistry = {}
+  const registry: PendleV3Registry = {}
   let subAction: DeployPendleGovernanceProxyImplementationSubAction
   let client: TestInfinitWallet
-  let result: SubActionExecuteResponse<PendleRegistry, DeployPendleGovernanceProxyImplMsg>
+  let result: SubActionExecuteResponse<PendleV3Registry, DeployPendleGovernanceProxyImplMsg>
   const callback = vi.fn()
 
   const tester = ARBITRUM_TEST_ADDRESSES.tester
