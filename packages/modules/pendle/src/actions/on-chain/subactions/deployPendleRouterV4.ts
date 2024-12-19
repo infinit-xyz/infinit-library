@@ -3,7 +3,8 @@ import { Address, Hex } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
 
-import { DeployPendleRouterV4TxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/PendleRouter/deploy'
+import { DeployPendleRouterV4TxBuilder } from '@actions/on-chain/subactions/txBuilders/PendleRouter/deploy'
+
 import { PendleV3Registry } from '@/src/type'
 
 export type DeployPendleRouterV4ContractSubactionParams = {

@@ -8,47 +8,47 @@ import { validateActionData, zodAddress, zodAddressNonZero } from '@infinit-xyz/
 import {
   DeployBaseSplitCodeFactoryContractSubaction,
   DeployBaseSplitCodeFactoryContractSubactionMsg,
-} from '@actions/subactions/deployBaseSplitCodeFactoryContract'
-import { DeployOracleLibSubaction, DeployOracleLibSubactionMsg } from '@actions/subactions/deployOracleLib'
-import { DeployPendleGaugeControllerMainchainUpgSubaction } from '@actions/subactions/deployPendleGaugeControllerMainchainUpg'
+} from '@actions/on-chain/subactions/deployBaseSplitCodeFactoryContract'
+import { DeployOracleLibSubaction, DeployOracleLibSubactionMsg } from '@actions/on-chain/subactions/deployOracleLib'
+import { DeployPendleGaugeControllerMainchainUpgSubaction } from '@actions/on-chain/subactions/deployPendleGaugeControllerMainchainUpg'
 import {
   DeployPendleMarketFactoryV3Subaction,
   DeployPendleMarketFactoryV3SubactionMsg,
-} from '@actions/subactions/deployPendleMarketFactoryV3'
-import {
-  DeployPendleMsgSendEndpointUpgSubaction,
-  DeployPendleMsgSendEndpointUpgSubactionMsg,
-} from '@actions/subactions/deployPendleMsgSendEndpointUpg'
-import {
-  DeployPendleMsgSendEndpointUpgProxySubaction,
-  DeployPendleMsgSendEndpointUpgProxySubactionMsg,
-} from '@actions/subactions/deployPendleMsgSendEndpointUpgProxy'
-import { DeployPendleSwapSubaction } from '@actions/subactions/deployPendleSwap'
-import {
-  DeployPendleYieldContractFactorySubaction,
-  DeployPendleYieldContractFactorySubactionMsg,
-} from '@actions/subactions/deployPendleYieldContractFactory'
-import {
-  DeployVotingEscrowPendleMainchainSubaction,
-  DeployVotingEscrowPendleMainchainSubactionMsg,
-} from '@actions/subactions/deployVotingEscrowPendleMainchain'
-import { DeployYTV3CreationCodeSubaction, DeployYTV3CreationCodeSubactionMsg } from '@actions/subactions/deployYTV3CreationCode'
-import { InitializePendleMsgSendEndpointUpgSubaction } from '@actions/subactions/initializePendleMsgSendEndpointUpg'
-import { InitializePendleYieldContractFactorySubaction } from '@actions/subactions/initializePendleYieldContractFactory'
-
+} from '@actions/on-chain/subactions/deployPendleMarketFactoryV3'
 import {
   DeployPendleMarketV3CreationCodeSubaction,
   DeployPendleMarketV3CreationCodeSubactionMsg,
-} from './subactions/deployPendleMarketV3CreationCode'
+} from '@actions/on-chain/subactions/deployPendleMarketV3CreationCode'
+import {
+  DeployPendleMsgSendEndpointUpgSubaction,
+  DeployPendleMsgSendEndpointUpgSubactionMsg,
+} from '@actions/on-chain/subactions/deployPendleMsgSendEndpointUpg'
+import {
+  DeployPendleMsgSendEndpointUpgProxySubaction,
+  DeployPendleMsgSendEndpointUpgProxySubactionMsg,
+} from '@actions/on-chain/subactions/deployPendleMsgSendEndpointUpgProxy'
+import { DeployPendleSwapSubaction } from '@actions/on-chain/subactions/deployPendleSwap'
 import {
   DeployPendleVotingContollerUpgSubaction,
   DeployPendleVotingContollerUpgSubactionMsg,
-} from './subactions/deployPendleVotingControllerUpg'
+} from '@actions/on-chain/subactions/deployPendleVotingControllerUpg'
 import {
   DeployPendleVotingControllerUpgProxySubaction,
-  DeployPendleVotingControllerUpgProxySubactionMsg, // DeployPendleVotingControllerUpgProxySubactionMsg,
-} from './subactions/deployPendleVotingControllerUpgProxy'
-import { InitializePendleVotingControllerUpgSubaction } from './subactions/initializePendleVotingControllerUpg'
+  DeployPendleVotingControllerUpgProxySubactionMsg,
+} from '@actions/on-chain/subactions/deployPendleVotingControllerUpgProxy'
+import {
+  DeployPendleYieldContractFactorySubaction,
+  DeployPendleYieldContractFactorySubactionMsg,
+} from '@actions/on-chain/subactions/deployPendleYieldContractFactory'
+import {
+  DeployVotingEscrowPendleMainchainSubaction,
+  DeployVotingEscrowPendleMainchainSubactionMsg,
+} from '@actions/on-chain/subactions/deployVotingEscrowPendleMainchain'
+import { DeployYTV3CreationCodeSubaction, DeployYTV3CreationCodeSubactionMsg } from '@actions/on-chain/subactions/deployYTV3CreationCode'
+import { InitializePendleMsgSendEndpointUpgSubaction } from '@actions/on-chain/subactions/initializePendleMsgSendEndpointUpg'
+import { InitializePendleVotingControllerUpgSubaction } from '@actions/on-chain/subactions/initializePendleVotingControllerUpg'
+import { InitializePendleYieldContractFactorySubaction } from '@actions/on-chain/subactions/initializePendleYieldContractFactory'
+
 import type { PendleV3Registry } from '@/src/type'
 
 export const DeployPendleV3ActionParamsSchema = z.object({

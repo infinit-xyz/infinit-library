@@ -5,7 +5,7 @@ import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz
 import {
   CreateNewMarketTxBuilder,
   CreateNewMarketTxBuilderParams,
-} from '@actions/subactions/tx-builders/PendleMarketFactoryV3/createNewMarket'
+} from '@actions/on-chain/subactions/txBuilders/PendleMarketFactoryV3/createNewMarket'
 
 import { PendleV3Registry } from '@/src/type'
 

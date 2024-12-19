@@ -5,7 +5,7 @@ import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz
 import {
   InitializePendleMsgSendEndpointUpgTxBuilder,
   InitializePendleMsgSendEndpointUpgTxBuilderParams,
-} from '@actions/subactions/tx-builders/PendleMsgSendEndpointUpg/initialize'
+} from '@actions/on-chain/subactions/txBuilders/PendleMsgSendEndpointUpg/initialize'
 
 import { PendleV3Registry } from '@/src/type'
 

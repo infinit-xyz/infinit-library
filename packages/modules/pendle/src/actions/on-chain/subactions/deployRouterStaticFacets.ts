@@ -3,12 +3,13 @@ import { Address, Hex } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
 
-import { DeployActionInfoStaticTxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionInfoStatic/deploy'
-import { DeployActionMarketAuxStaticTxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionMarketAuxStatic/deploy'
-import { DeployActionMarketCoreStaticTxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionMarketCoreStatic/deploy'
-import { DeployActionMintRedeemStaticTxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionMintRedeemStatic/deploy'
-import { DeployActionStorageStaticTxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionStorageStatic/deploy'
-import { DeployActionVePendleStaticTxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionVePendleStatic/deploy'
+import { DeployActionInfoStaticTxBuilder } from '@actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionInfoStatic/deploy'
+import { DeployActionMarketAuxStaticTxBuilder } from '@actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionMarketAuxStatic/deploy'
+import { DeployActionMarketCoreStaticTxBuilder } from '@actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionMarketCoreStatic/deploy'
+import { DeployActionMintRedeemStaticTxBuilder } from '@actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionMintRedeemStatic/deploy'
+import { DeployActionStorageStaticTxBuilder } from '@actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionStorageStatic/deploy'
+import { DeployActionVePendleStaticTxBuilder } from '@actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionVePendleStatic/deploy'
+
 import { PendleV3Registry } from '@/src/type'
 
 export type DeployPendleStaticFacetsSubactionParams = {

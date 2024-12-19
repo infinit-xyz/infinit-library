@@ -6,7 +6,7 @@ import { ContractNotFoundError } from '@infinit-xyz/core/errors'
 import {
   DeployPendleMsgSendEndpointUpgTxBuilder,
   DeployPendleMsgSendEndpointUpgTxBuilderParams,
-} from '@actions/subactions/tx-builders/PendleMsgSendEndpointUpg/deploy'
+} from '@actions/on-chain/subactions/txBuilders/PendleMsgSendEndpointUpg/deploy'
 
 import { PendleV3Registry } from '@/src/type'
 

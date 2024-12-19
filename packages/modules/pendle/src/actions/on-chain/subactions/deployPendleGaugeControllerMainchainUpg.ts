@@ -6,7 +6,7 @@ import { ContractNotFoundError } from '@infinit-xyz/core/errors'
 import {
   DeployPendleGaugeControllerMainchainUpgTxBuilder,
   DeployPendleGaugeControllerMainchainUpgTxBuilderParams,
-} from '@actions/subactions/tx-builders/PendleGaugeControllerMainchainUpg/deploy'
+} from '@actions/on-chain/subactions/txBuilders/PendleGaugeControllerMainchainUpg/deploy'
 
 import { PendleV3Registry } from '@/src/type'
 

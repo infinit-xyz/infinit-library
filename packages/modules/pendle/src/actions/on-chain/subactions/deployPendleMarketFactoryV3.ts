@@ -6,7 +6,7 @@ import { ContractNotFoundError } from '@infinit-xyz/core/errors'
 import {
   DeployPendleMarketFactoryV3TxBuilder,
   DeployPendleMarketFactoryV3TxBuilderParams,
-} from '@actions/subactions/tx-builders/PendleMarketFactoryV3/deploy'
+} from '@actions/on-chain/subactions/txBuilders/PendleMarketFactoryV3/deploy'
 
 import { PendleV3Registry } from '@/src/type'
 

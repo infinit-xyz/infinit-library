@@ -3,7 +3,8 @@ import { Address, Hex } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
 
-import { DeployProxyAdminTxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/ProxyAdmin/deploy'
+import { DeployProxyAdminTxBuilder } from '@actions/on-chain/subactions/txBuilders/ProxyAdmin/deploy'
+
 import { PendleV3Registry } from '@/src/type'
 
 export type DeployProxyAdminSubactionParams = {}

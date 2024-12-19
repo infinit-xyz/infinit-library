@@ -5,7 +5,7 @@ import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz
 import {
   InitializePendleVotingControllerUpgTxBuilder,
   InitializePendleVotingControllerUpgTxBuilderParams,
-} from '@actions/subactions/tx-builders/PendleVotingControllerUpg/initialize'
+} from '@actions/on-chain/subactions/txBuilders/PendleVotingControllerUpg/initialize'
 
 import { PendleV3Registry } from '@/src/type'
 

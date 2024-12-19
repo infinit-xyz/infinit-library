@@ -2,7 +2,8 @@ import { Address, Hex } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 
-import { SetSelectorToFacetsTxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/PendleRouter/setSelectorToFacets'
+import { SetSelectorToFacetsTxBuilder } from '@actions/on-chain/subactions/txBuilders/PendleRouter/setSelectorToFacets'
+
 import { PendleV3Registry } from '@/src/type'
 
 export type SetPendleRouterV4FacetsParams = {
