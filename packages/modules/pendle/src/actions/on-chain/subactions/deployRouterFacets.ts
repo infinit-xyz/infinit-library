@@ -10,7 +10,7 @@ import { DeployActionMiscV3TxBuilder } from '@/src/actions/on-chain/subactions/t
 import { DeployActionSimpleTxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/PendleRouter/facets/ActionSimple/deploy'
 import { DeployActionSwapPTV3TxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/PendleRouter/facets/ActionSwapPTV3/deploy'
 import { DeployActionSwapYTV3TxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/PendleRouter/facets/ActionSwapYTV3/deploy'
-import { PendleRegistry } from '@/src/type'
+import { PendleV3Registry } from '@/src/type'
 
 export type DeployPendleRouterFacetsParams = {}
 
@@ -26,7 +26,7 @@ export type DeployPendleRouterFacetsMsg = {
 
 export class DeployPendleRouterFacetsSubAction extends SubAction<
   DeployPendleRouterFacetsParams,
-  PendleRegistry,
+  PendleV3Registry,
   DeployPendleRouterFacetsMsg
 > {
   constructor(client: InfinitWallet, params: DeployPendleRouterFacetsParams) {
@@ -44,9 +44,9 @@ export class DeployPendleRouterFacetsSubAction extends SubAction<
   }
 
   public async updateRegistryAndMessage(
-    registry: PendleRegistry,
+    registry: PendleV3Registry,
     txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployPendleRouterFacetsMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeployPendleRouterFacetsMsg>> {
     if (txHashes.some((v) => !v)) {
       throw new TxNotFoundError()
     }

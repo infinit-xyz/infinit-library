@@ -3,7 +3,7 @@ import { Address, Hex } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 
 import { SetSelectorToFacetsTxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/PendleRouter/setSelectorToFacets'
-import { PendleRegistry } from '@/src/type'
+import { PendleV3Registry } from '@/src/type'
 
 export type SetPendleRouterV4FacetsParams = {
   pendleRouterV4: Address
@@ -20,7 +20,7 @@ export type SetPendleRouterV4FacetsMsg = {}
 
 export class SetPendleRouterV4Facets1SubAction extends SubAction<
   SetPendleRouterV4FacetsParams,
-  PendleRegistry,
+  PendleV3Registry,
   SetPendleRouterV4FacetsMsg
 > {
   constructor(client: InfinitWallet, params: SetPendleRouterV4FacetsParams) {
@@ -43,9 +43,9 @@ export class SetPendleRouterV4Facets1SubAction extends SubAction<
   }
 
   public async updateRegistryAndMessage(
-    registry: PendleRegistry,
+    registry: PendleV3Registry,
     _txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<PendleRegistry, SetPendleRouterV4FacetsMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleV3Registry, SetPendleRouterV4FacetsMsg>> {
     return { newRegistry: registry, newMessage: {} }
   }
 }

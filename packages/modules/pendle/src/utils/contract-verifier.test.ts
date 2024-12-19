@@ -3,18 +3,18 @@ import { describe, expect, test } from 'vitest'
 import { createPublicClient, http } from 'viem'
 import { holesky } from 'viem/chains'
 
-import { PendleRegistry } from '../type'
+import { PendleV3Registry } from '../type'
 import { TokenContractVerifier } from './contract-verifier'
 
 // Create a subclass to expose the protected method for testing
 class TestTokenContractVerifier extends TokenContractVerifier {
-  public async testGetContracts(registry: PendleRegistry) {
+  public async testGetContracts(registry: PendleV3Registry) {
     return this.getContracts(registry)
   }
 }
 
 describe('TokenContractVerifier.ts', () => {
-  const registry: PendleRegistry = {}
+  const registry: PendleV3Registry = {}
 
   test('getContracts: should match snapshot', async () => {
     const verifier = new TestTokenContractVerifier(

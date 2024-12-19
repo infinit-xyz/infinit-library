@@ -4,7 +4,7 @@ import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz
 import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
 
 import { DeployPendleRouterStaticTxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/PendleRouterStatic/deploy'
-import { PendleRegistry } from '@/src/type'
+import { PendleV3Registry } from '@/src/type'
 
 export type DeployPendleRouterStaticSubactionParams = {
   actionStorageStatic: Address
@@ -16,7 +16,7 @@ export type DeployPendleRouterStaticMsg = {
 
 export class DeployPendleRouterStatic1SubAction extends SubAction<
   DeployPendleRouterStaticSubactionParams,
-  PendleRegistry,
+  PendleV3Registry,
   DeployPendleRouterStaticMsg
 > {
   constructor(client: InfinitWallet, params: DeployPendleRouterStaticSubactionParams) {
@@ -32,9 +32,9 @@ export class DeployPendleRouterStatic1SubAction extends SubAction<
   }
 
   public async updateRegistryAndMessage(
-    registry: PendleRegistry,
+    registry: PendleV3Registry,
     txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployPendleRouterStaticMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeployPendleRouterStaticMsg>> {
     if (txHashes.some((v) => !v)) {
       throw new TxNotFoundError()
     }

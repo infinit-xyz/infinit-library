@@ -4,7 +4,7 @@ import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz
 import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
 
 import { DeployProxyAdminTxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/ProxyAdmin/deploy'
-import { PendleRegistry } from '@/src/type'
+import { PendleV3Registry } from '@/src/type'
 
 export type DeployProxyAdminSubactionParams = {}
 
@@ -12,7 +12,7 @@ export type DeployProxyAdminMsg = {
   proxyAdmin: Address
 }
 
-export class DeployProxyAdmin1SubAction extends SubAction<DeployProxyAdminSubactionParams, PendleRegistry, DeployProxyAdminMsg> {
+export class DeployProxyAdmin1SubAction extends SubAction<DeployProxyAdminSubactionParams, PendleV3Registry, DeployProxyAdminMsg> {
   constructor(client: InfinitWallet, params: DeployProxyAdminSubactionParams) {
     super(DeployProxyAdmin1SubAction.name, client, params)
   }
@@ -22,9 +22,9 @@ export class DeployProxyAdmin1SubAction extends SubAction<DeployProxyAdminSubact
   }
 
   public async updateRegistryAndMessage(
-    registry: PendleRegistry,
+    registry: PendleV3Registry,
     txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployProxyAdminMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeployProxyAdminMsg>> {
     if (txHashes.some((v) => !v)) {
       throw new TxNotFoundError()
     }
