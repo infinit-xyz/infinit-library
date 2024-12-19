@@ -45,7 +45,7 @@ export class InitializePendleYieldContractFactoryTxBuilder extends TxBuilder {
   }
 
   public async validate(): Promise<void> {
-    if (this.expiryDivisor <= 0) {
+    if (this.expiryDivisor <= 0n) {
       throw new ValidateInputValueError('ExpiryDivisor must be greater than 0')
     }
 

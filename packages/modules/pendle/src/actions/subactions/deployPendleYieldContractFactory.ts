@@ -15,6 +15,7 @@ export type DeployPendleYieldContractFactorySubactionParams = DeployPendleYieldC
 export type DeployPendleYieldContractFactorySubactionMsg = {
   pendleYieldContractFactory: Address
 }
+
 export class DeployPendleYieldContractFactorySubaction extends SubAction<
   DeployPendleYieldContractFactorySubactionParams,
   PendleV3Registry,
