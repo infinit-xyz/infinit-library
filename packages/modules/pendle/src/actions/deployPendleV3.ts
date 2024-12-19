@@ -51,7 +51,7 @@ import {
 import { InitializePendleVotingControllerUpgSubaction } from './subactions/initializePendleVotingControllerUpg'
 import type { PendleV3Registry } from '@/src/type'
 
-export const DeployPendleV3ParamsSchema = z.object({
+export const DeployPendleV3ActionParamsSchema = z.object({
   refundAddress: zodAddressNonZero.describe(`The address to refund e.g. '0x123...abc'`),
   lzEndpoint: zodAddress.describe(`The address of the LZ endpoint e.g. '0x123...abc'`),
   governanceToken: zodAddress.describe(`The address of the governance token e.g. '0x123...abc'`),
@@ -79,7 +79,7 @@ export const DeployPendleV3ParamsSchema = z.object({
   }),
 })
 
-export type DeployPendleV3Params = z.infer<typeof DeployPendleV3ParamsSchema>
+export type DeployPendleV3Params = z.infer<typeof DeployPendleV3ActionParamsSchema>
 export type DeployPendleV3ActionData = {
   params: DeployPendleV3Params
   signer: Record<'deployer', InfinitWallet>
@@ -87,7 +87,7 @@ export type DeployPendleV3ActionData = {
 
 export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, PendleV3Registry> {
   constructor(data: DeployPendleV3ActionData) {
-    validateActionData(data, DeployPendleV3ParamsSchema, ['deployer'])
+    validateActionData(data, DeployPendleV3ActionParamsSchema, ['deployer'])
     super(DeployPendleV3Action.name, data)
   }
 
