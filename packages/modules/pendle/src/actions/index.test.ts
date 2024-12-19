@@ -17,10 +17,8 @@ describe('actions/index.ts', () => {
     }
   })
 
-  // TODO: fix this test after adding pendle action
-  // test('should have init action', () => {
-  //   const actionKeys = Object.keys(index['actions'])
-
-  //   expect(actionKeys).toContain('pendle')
-  // })
+  test('should have pendle action', () => {
+    const actionKeys = Object.keys(index['actions'])
+    actionKeys.forEach((actionKey) => expect(actionKey).toContain('Pendle'))
+  })
 })
