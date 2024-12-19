@@ -63,7 +63,7 @@ const checkRegistry = (registry: PendleV3Registry) => {
   expect(registry.pendleVotingControllerUpgProxy).not.toBe(zeroAddress)
   expect(registry.pendleGaugeControllerMainchainUpg).not.toBe(zeroAddress)
 
-  // check facets
+  // check pendleRouterV4 facets
   expect(registry.routerStorageV4).not.toBe(zeroAddress)
   expect(registry.actionAddRemoveLiqV3).not.toBe(zeroAddress)
   expect(registry.actionCallbackV3).not.toBe(zeroAddress)
@@ -73,4 +73,13 @@ const checkRegistry = (registry: PendleV3Registry) => {
   expect(registry.actionSwapYTV3).not.toBe(zeroAddress)
 
   expect(registry.pendleRouterV4).not.toBe(zeroAddress)
+
+  // check pendleRouterStatic facets
+  expect(registry.pendleRouterStatic).not.toBe(zeroAddress)
+  expect(registry.actionStorageStatic).not.toBe(zeroAddress)
+  expect(registry.actionInfoStatic).not.toBe(zeroAddress)
+  expect(registry.actionMarketAuxStatic).not.toBe(zeroAddress)
+  expect(registry.actionMarketCoreStatic).not.toBe(zeroAddress)
+  expect(registry.actionMintRedeemStatic).not.toBe(zeroAddress)
+  expect(registry.actionVePendleStatic).not.toBe(zeroAddress)
 }

@@ -15,13 +15,13 @@ export type DeployPendleRouterStaticMsg = {
   pendleRouterStatic: Address
 }
 
-export class DeployPendleRouterStatic1SubAction extends SubAction<
+export class DeployPendleRouterStaticSubAction extends SubAction<
   DeployPendleRouterStaticSubactionParams,
   PendleV3Registry,
   DeployPendleRouterStaticMsg
 > {
   constructor(client: InfinitWallet, params: DeployPendleRouterStaticSubactionParams) {
-    super(DeployPendleRouterStatic1SubAction.name, client, params)
+    super(DeployPendleRouterStaticSubAction.name, client, params)
   }
 
   protected setTxBuilders(): void {

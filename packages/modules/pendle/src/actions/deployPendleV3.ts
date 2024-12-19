@@ -27,6 +27,7 @@ import {
   DeployPendleMsgSendEndpointUpgProxySubaction,
   DeployPendleMsgSendEndpointUpgProxySubactionMsg,
 } from '@actions/on-chain/subactions/deployPendleMsgSendEndpointUpgProxy'
+import { DeployPendleRouterStaticMsg, DeployPendleRouterStaticSubAction } from '@actions/on-chain/subactions/deployPendleRouterStatic'
 import { DeployPendleRouterV4Msg, DeployPendleRouterV4SubAction } from '@actions/on-chain/subactions/deployPendleRouterV4'
 import { DeployPendleSwapSubaction } from '@actions/on-chain/subactions/deployPendleSwap'
 import {
@@ -41,6 +42,8 @@ import {
   DeployPendleYieldContractFactorySubaction,
   DeployPendleYieldContractFactorySubactionMsg,
 } from '@actions/on-chain/subactions/deployPendleYieldContractFactory'
+import { DeployPendleRouterFacetsMsg, DeployPendleRouterFacetsSubAction } from '@actions/on-chain/subactions/deployRouterFacets'
+import { DeployPendleStaticFacetsMsg, DeployPendleStaticFacetsSubAction } from '@actions/on-chain/subactions/deployRouterStaticFacets'
 import {
   DeployVotingEscrowPendleMainchainSubaction,
   DeployVotingEscrowPendleMainchainSubactionMsg,
@@ -49,10 +52,9 @@ import { DeployYTV3CreationCodeSubaction, DeployYTV3CreationCodeSubactionMsg } f
 import { InitializePendleMsgSendEndpointUpgSubaction } from '@actions/on-chain/subactions/initializePendleMsgSendEndpointUpg'
 import { InitializePendleVotingControllerUpgSubaction } from '@actions/on-chain/subactions/initializePendleVotingControllerUpg'
 import { InitializePendleYieldContractFactorySubaction } from '@actions/on-chain/subactions/initializePendleYieldContractFactory'
+import { SetPendleRouterStaticFacetsSubAction } from '@actions/on-chain/subactions/setPendleRouterStaticFacets'
+import { SetPendleRouterV4FacetsSubAction } from '@actions/on-chain/subactions/setPendleRouterV4Facets'
 
-import { DeployPendleRouterFacetsMsg, DeployPendleRouterFacetsSubAction } from './on-chain/subactions/deployRouterFacets'
-import { DeployPendleStaticFacetsSubAction } from './on-chain/subactions/deployRouterStaticFacets'
-import { SetPendleRouterV4FacetsSubAction } from './on-chain/subactions/setPendleRouterStaticFacets'
 import type { PendleV3Registry } from '@/src/type'
 
 export const DeployPendleV3ActionParamsSchema = z.object({
@@ -243,11 +245,29 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           actionSwapYTV3: message.actionSwapYTV3,
         }),
 
-      // step 16: deploy PendleStatic Facets
+      // step 16: deploy PendleRouterStatic Facets
       (message: DeployPendleVotingControllerUpgProxySubactionMsg) =>
         new DeployPendleStaticFacetsSubAction(deployer, {
           owner: deployer.walletClient.account.address,
           vePendle: message.pendleVotingControllerUpgProxy,
+        }),
+
+      // step 17: deploy PendleRouterStatic
+      (message: DeployPendleStaticFacetsMsg) =>
+        new DeployPendleRouterStaticSubAction(deployer, {
+          actionStorageStatic: message.actionStorageStatic,
+        }),
+
+      // step 18: set PendleRouterStatic selectorToFacets
+      (message: DeployPendleRouterStaticMsg) =>
+        new SetPendleRouterStaticFacetsSubAction(deployer, {
+          pendleRouterStatic: message.pendleRouterStatic,
+          actionStorageStatic: message.pendleRouterStatic,
+          actionInfoStatic: message.pendleRouterStatic,
+          actionMarketAuxStatic: message.pendleRouterStatic,
+          actionMarketCoreStatic: message.pendleRouterStatic,
+          actionMintRedeemStatic: message.pendleRouterStatic,
+          actionVePendleStatic: message.pendleRouterStatic,
         }),
     ]
   }
