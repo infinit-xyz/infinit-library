@@ -5,30 +5,27 @@ import { zeroAddress } from 'viem'
 import { SubActionExecuteResponse } from '@infinit-xyz/core'
 
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
-import {
-  DeployPendleGovernanceProxyImplMsg,
-  DeployPendleGovernanceProxyImplementationSubAction,
-} from '@actions/subactions/deployPendleGovernanceProxyImplementation'
+import { DeployPendleGovernanceProxyMsg, DeployPendleGovernanceProxySubAction } from '@actions/subactions/deployPendleGovernanceProxy'
 
 import { PendleV3Registry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
-describe('DeployPendleGovernanceProxyImplementationSubAction', () => {
+describe('DeployPendleGovernanceProxySubAction', () => {
   const registry: PendleV3Registry = {}
-  let subAction: DeployPendleGovernanceProxyImplementationSubAction
+  let subAction: DeployPendleGovernanceProxySubAction
   let client: TestInfinitWallet
-  let result: SubActionExecuteResponse<PendleV3Registry, DeployPendleGovernanceProxyImplMsg>
+  let result: SubActionExecuteResponse<PendleV3Registry, DeployPendleGovernanceProxyMsg>
   const callback = vi.fn()
 
   const tester = ARBITRUM_TEST_ADDRESSES.tester
 
   beforeAll(async () => {
     client = new TestInfinitWallet(TestChain.arbitrum, tester)
-    subAction = new DeployPendleGovernanceProxyImplementationSubAction(client, {})
+    subAction = new DeployPendleGovernanceProxySubAction(client, {})
   })
 
   test('test correct name', async () => {
-    expect(subAction.name).toStrictEqual('DeployPendleGovernanceProxyImplementationSubAction')
+    expect(subAction.name).toStrictEqual('DeployPendleGovernanceProxySubAction')
   })
 
   test('test correct calldata', async () => {

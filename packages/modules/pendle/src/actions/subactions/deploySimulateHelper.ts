@@ -7,18 +7,24 @@ import { DeploySimulateHelperTxBuilder } from '@actions/subactions/tx-builders/S
 
 import { PendleV3Registry } from '@/src/type'
 
+export type DeploySimulateHelperSubActionParams = {}
+
 export type DeploySimulateHelperMsg = {
   simulateHelper: Address
 }
 
-export class DeploySimulateHelperSubAction extends SubAction<{}, PendleV3Registry, DeploySimulateHelperMsg> {
-  constructor(client: InfinitWallet, params: {}) {
+export class DeploySimulateHelperSubAction extends SubAction<
+  DeploySimulateHelperSubActionParams,
+  PendleV3Registry,
+  DeploySimulateHelperMsg
+> {
+  constructor(client: InfinitWallet, params: DeploySimulateHelperSubActionParams) {
     super(DeploySimulateHelperSubAction.name, client, params)
   }
 
   protected setTxBuilders(): void {
     // ----------- deploy simulate helper -----------
-    this.txBuilders.push(new DeploySimulateHelperTxBuilder(this.client, {}))
+    this.txBuilders.push(new DeploySimulateHelperTxBuilder(this.client))
   }
 
   public async updateRegistryAndMessage(

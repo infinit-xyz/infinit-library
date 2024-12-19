@@ -7,18 +7,20 @@ import { DeployMulticall2TxBuilder } from '@actions/subactions/tx-builders/Multi
 
 import { PendleV3Registry } from '@/src/type'
 
+export type DeployMulticall2SubActionParams = {}
+
 export type DeployMulticall2Msg = {
   multicall: Address
 }
 
-export class DeployMulticall2SubAction extends SubAction<{}, PendleV3Registry, DeployMulticall2Msg> {
-  constructor(client: InfinitWallet, params: {}) {
+export class DeployMulticall2SubAction extends SubAction<DeployMulticall2SubActionParams, PendleV3Registry, DeployMulticall2Msg> {
+  constructor(client: InfinitWallet, params: DeployMulticall2SubActionParams) {
     super(DeployMulticall2SubAction.name, client, params)
   }
 
   protected setTxBuilders(): void {
     // ----------- deploy multicall2 -----------
-    this.txBuilders.push(new DeployMulticall2TxBuilder(this.client, {}))
+    this.txBuilders.push(new DeployMulticall2TxBuilder(this.client))
   }
 
   public async updateRegistryAndMessage(

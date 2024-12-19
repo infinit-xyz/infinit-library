@@ -17,6 +17,7 @@ export type PendleV3Registry = {
   pendleMulticallV2?: Address
   simulateHelper?: Address
   supplyCapReader?: Address
+  pendlePoolDeployHelper?: Address
   pendleGovernanceProxy?: Address
   pendleGovernanceProxyImpl?: Address
 }

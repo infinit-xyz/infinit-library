@@ -7,18 +7,24 @@ import { DeploySupplyCapReaderTxBuilder } from '@actions/subactions/tx-builders/
 
 import { PendleV3Registry } from '@/src/type'
 
+export type DeploySupplyCapReaderSubActionParams = {}
+
 export type DeploySupplyCapReaderMsg = {
   supplyCapReader: Address
 }
 
-export class DeploySupplyCapReaderSubAction extends SubAction<{}, PendleV3Registry, DeploySupplyCapReaderMsg> {
-  constructor(client: InfinitWallet, params: {}) {
+export class DeploySupplyCapReaderSubAction extends SubAction<
+  DeploySupplyCapReaderSubActionParams,
+  PendleV3Registry,
+  DeploySupplyCapReaderMsg
+> {
+  constructor(client: InfinitWallet, params: DeploySupplyCapReaderSubActionParams) {
     super(DeploySupplyCapReaderSubAction.name, client, params)
   }
 
   protected setTxBuilders(): void {
     // ----------- deploy simulate helper -----------
-    this.txBuilders.push(new DeploySupplyCapReaderTxBuilder(this.client, {}))
+    this.txBuilders.push(new DeploySupplyCapReaderTxBuilder(this.client))
   }
 
   public async updateRegistryAndMessage(

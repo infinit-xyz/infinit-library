@@ -3,7 +3,7 @@ import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { readArtifact } from '@/src/utils/artifact'
 
 export class DeployPendleMulticallV2TxBuilder extends TxBuilder {
-  constructor(client: InfinitWallet, _params: {}) {
+  constructor(client: InfinitWallet) {
     super(DeployPendleMulticallV2TxBuilder.name, client)
   }
 

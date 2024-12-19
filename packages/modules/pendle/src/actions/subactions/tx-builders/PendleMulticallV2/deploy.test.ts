@@ -11,7 +11,7 @@ describe('DeployPendleMulticallV2TxBuilder', () => {
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
 
   test('test tx correct to address and has data', async () => {
-    txBuilder = new DeployPendleMulticallV2TxBuilder(client, {})
+    txBuilder = new DeployPendleMulticallV2TxBuilder(client)
     const bt = await txBuilder.buildTx()
     expect(bt.to).toBeNull()
     expect(bt.data).not.toBe('0x')

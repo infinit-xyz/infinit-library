@@ -11,7 +11,7 @@ describe('DeploySimulateHelperTxBuilder', () => {
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
 
   test('test tx correct to address and has data', async () => {
-    txBuilder = new DeploySimulateHelperTxBuilder(client, {})
+    txBuilder = new DeploySimulateHelperTxBuilder(client)
     const bt = await txBuilder.buildTx()
     expect(bt.to).toBeNull()
     expect(bt.data).not.toBe('0x')

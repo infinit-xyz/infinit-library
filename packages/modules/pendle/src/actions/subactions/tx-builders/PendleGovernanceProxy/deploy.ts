@@ -3,7 +3,7 @@ import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { readArtifact } from '@/src/utils/artifact'
 
 export class DeployPendleGovernanceProxyTxBuilder extends TxBuilder {
-  constructor(client: InfinitWallet, _params: {}) {
+  constructor(client: InfinitWallet) {
     super(DeployPendleGovernanceProxyTxBuilder.name, client)
   }
 

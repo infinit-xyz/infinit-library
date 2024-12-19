@@ -8,19 +8,19 @@ import { readArtifact } from '@/src/utils/artifact'
 export interface DeployPendlePoolDeployHelperTxBuilderParams {
   router: Address
   yieldContractFactory: Address
-  marketFactor: Address
+  marketFactory: Address
 }
 
 export class DeployPendlePoolDeployHelperTxBuilder extends TxBuilder {
   public router: Address
   public yieldContractFactory: Address
-  public marketFactor: Address
+  public marketFactory: Address
 
   constructor(client: InfinitWallet, params: DeployPendlePoolDeployHelperTxBuilderParams) {
     super(DeployPendlePoolDeployHelperTxBuilder.name, client)
     this.router = getAddress(params.router)
     this.yieldContractFactory = getAddress(params.yieldContractFactory)
-    this.marketFactor = getAddress(params.marketFactor)
+    this.marketFactory = getAddress(params.marketFactory)
   }
 
   async buildTx(): Promise<TransactionData> {
@@ -29,7 +29,7 @@ export class DeployPendlePoolDeployHelperTxBuilder extends TxBuilder {
     const deployData = encodeDeployData({
       abi: pendlePoolDeployHelperArtifact.abi,
       bytecode: pendlePoolDeployHelperArtifact.bytecode,
-      args: [this.router, this.yieldContractFactory, this.marketFactor],
+      args: [this.router, this.yieldContractFactory, this.marketFactory],
     })
 
     const tx: TransactionData = {
@@ -42,6 +42,6 @@ export class DeployPendlePoolDeployHelperTxBuilder extends TxBuilder {
   public async validate(): Promise<void> {
     if (this.router === zeroAddress) throw new ValidateInputZeroAddressError('ROUTER')
     if (this.yieldContractFactory === zeroAddress) throw new ValidateInputZeroAddressError('YIELD_CONTRACT_FACTORY')
-    if (this.marketFactor === zeroAddress) throw new ValidateInputZeroAddressError('MARKET_FACTOR')
+    if (this.marketFactory === zeroAddress) throw new ValidateInputZeroAddressError('MARKET_FACTOR')
   }
 }
