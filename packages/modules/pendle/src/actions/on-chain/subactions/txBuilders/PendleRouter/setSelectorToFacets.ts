@@ -1,4 +1,4 @@
-import { Address, Hex, encodeFunctionData, getAddress, toFunctionSignature, zeroAddress } from 'viem'
+import { Address, Hex, encodeFunctionData, getAddress, toFunctionSelector, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
@@ -69,7 +69,7 @@ export class SetSelectorToFacetsTxBuilder extends TxBuilder {
         .filter((element) => element.type === 'function' && element.name !== 'setSelectorToFacets')
         .map(
           (element) =>
-            toFunctionSignature({
+            toFunctionSelector({
               name: element.name,
               type: element.type,
               inputs: element.inputs,

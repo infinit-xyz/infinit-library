@@ -5,7 +5,7 @@ import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz
 import { SetFacetForSelectorsTxBuilder } from '@/src/actions/on-chain/subactions/txBuilders/PendleRouterStatic/setFacetForSelectors'
 import { PendleV3Registry } from '@/src/type'
 
-export type SetSetPendleRouterStaticFacetsParams = {
+export type SetPendleRouterStaticFacetsParams = {
   pendleRouterStatic: Address
   actionStorageStatic: Address
   actionInfoStatic: Address
@@ -15,15 +15,15 @@ export type SetSetPendleRouterStaticFacetsParams = {
   actionVePendleStatic: Address
 }
 
-export type SetSetPendleRouterStaticFacetsMsg = {}
+export type SetPendleRouterStaticFacetsMsg = {}
 
-export class SetSetPendleRouterStaticFacets1SubAction extends SubAction<
-  SetSetPendleRouterStaticFacetsParams,
+export class SetPendleRouterStaticFacets1SubAction extends SubAction<
+  SetPendleRouterStaticFacetsParams,
   PendleV3Registry,
-  SetSetPendleRouterStaticFacetsMsg
+  SetPendleRouterStaticFacetsMsg
 > {
-  constructor(client: InfinitWallet, params: SetSetPendleRouterStaticFacetsParams) {
-    super(SetSetPendleRouterStaticFacets1SubAction.name, client, params)
+  constructor(client: InfinitWallet, params: SetPendleRouterStaticFacetsParams) {
+    super(SetPendleRouterStaticFacets1SubAction.name, client, params)
   }
 
   protected setTxBuilders(): void {
@@ -43,7 +43,7 @@ export class SetSetPendleRouterStaticFacets1SubAction extends SubAction<
   public async updateRegistryAndMessage(
     registry: PendleV3Registry,
     _txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry, SetSetPendleRouterStaticFacetsMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleV3Registry, SetPendleRouterStaticFacetsMsg>> {
     return { newRegistry: registry, newMessage: {} }
   }
 }
