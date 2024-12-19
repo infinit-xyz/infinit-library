@@ -2,7 +2,7 @@ import { afterAll, afterEach, beforeEach } from 'vitest'
 
 import { Quantity } from 'viem'
 
-import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
+import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mocks__/address'
 
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 

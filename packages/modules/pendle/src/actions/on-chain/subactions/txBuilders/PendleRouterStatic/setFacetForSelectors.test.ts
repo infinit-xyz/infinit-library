@@ -3,7 +3,7 @@ import { describe, expect, test } from 'vitest'
 
 import { Hex, decodeFunctionData } from 'viem'
 
-import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
+import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mocks__/address'
 import {
   FacetForSelectors,
   SetFacetForSelectorsTxBuilder,

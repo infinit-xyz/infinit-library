@@ -4,7 +4,7 @@ import { zeroAddress } from 'viem'
 import { Account, privateKeyToAccount } from 'viem/accounts'
 
 import { PendleV3Registry } from '../type'
-import { ANVIL_PRIVATE_KEY } from './__mock__/account'
+import { ANVIL_PRIVATE_KEY } from './__mocks__/account'
 import { DeployPendleV3Action } from './deployPendleV3'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
