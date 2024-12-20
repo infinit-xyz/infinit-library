@@ -15,13 +15,13 @@ export type DeployPendleLimitRouterMsg = {
   pendleLimitRouter: Address
 }
 
-export class DeployPendleLimitRouter1SubAction extends SubAction<
+export class DeployPendleLimitRouterSubAction extends SubAction<
   DeployPendleLimitRouterSubactionParams,
   PendleV3Registry,
   DeployPendleLimitRouterMsg
 > {
   constructor(client: InfinitWallet, params: DeployPendleLimitRouterSubactionParams) {
-    super(DeployPendleLimitRouter1SubAction.name, client, params)
+    super(DeployPendleLimitRouterSubAction.name, client, params)
   }
 
   protected setTxBuilders(): void {
@@ -44,7 +44,7 @@ export class DeployPendleLimitRouter1SubAction extends SubAction<
     if (!pendleLimitRouter) {
       throw new ContractNotFoundError(deployPendleLimitRouterHash, 'PendleLimitRouter')
     }
-    registry['pendleLimitRouter'] = pendleLimitRouter
+    registry['pendleLimitRouterImpl'] = pendleLimitRouter
 
     const newMessage: DeployPendleLimitRouterMsg = {
       pendleLimitRouter,

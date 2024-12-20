@@ -13,9 +13,9 @@ export type DeployProxyAdminMsg = {
   proxyAdmin: Address
 }
 
-export class DeployProxyAdmin1SubAction extends SubAction<DeployProxyAdminSubactionParams, PendleV3Registry, DeployProxyAdminMsg> {
+export class DeployProxyAdminSubAction extends SubAction<DeployProxyAdminSubactionParams, PendleV3Registry, DeployProxyAdminMsg> {
   constructor(client: InfinitWallet, params: DeployProxyAdminSubactionParams) {
-    super(DeployProxyAdmin1SubAction.name, client, params)
+    super(DeployProxyAdminSubAction.name, client, params)
   }
 
   protected setTxBuilders(): void {

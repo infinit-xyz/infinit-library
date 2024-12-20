@@ -12,6 +12,16 @@ import {
 import { DeployOracleLibSubaction, DeployOracleLibSubactionMsg } from '@actions/on-chain/subactions/deployOracleLib'
 import { DeployPendleGaugeControllerMainchainUpgSubaction } from '@actions/on-chain/subactions/deployPendleGaugeControllerMainchainUpg'
 import {
+  DeployPendleLimitRouterMsg,
+  DeployPendleLimitRouterSubAction,
+  DeployPendleLimitRouterSubactionParams,
+} from '@actions/on-chain/subactions/deployPendleLimitRouter'
+import {
+  DeployPendleLimitRouterProxyMsg,
+  DeployPendleLimitRouterProxySubAction,
+  DeployPendleLimitRouterProxySubActionParams,
+} from '@actions/on-chain/subactions/deployPendleLimitRouterProxy'
+import {
   DeployPendleMarketFactoryV3Subaction,
   DeployPendleMarketFactoryV3SubactionMsg,
 } from '@actions/on-chain/subactions/deployPendleMarketFactoryV3'
@@ -55,6 +65,8 @@ import { InitializePendleYieldContractFactorySubaction } from '@actions/on-chain
 import { SetPendleRouterStaticFacetsSubAction } from '@actions/on-chain/subactions/setPendleRouterStaticFacets'
 import { SetPendleRouterV4FacetsSubAction } from '@actions/on-chain/subactions/setPendleRouterV4Facets'
 
+import { DeployProxyAdminMsg, DeployProxyAdminSubAction } from './on-chain/subactions/deployProxyAdmin'
+import { InitializePendleLimitRouterSubaction } from './on-chain/subactions/initializePendleLimitRouter'
 import type { PendleV3Registry } from '@/src/type'
 
 export const DeployPendleV3ActionParamsSchema = z.object({
@@ -64,6 +76,8 @@ export const DeployPendleV3ActionParamsSchema = z.object({
   initialApproxDestinationGas: z.bigint().describe(`The initial gas for the destination`),
   treasury: zodAddressNonZero.describe(`The address of the treasury e.g. '0x123...abc'`),
   rewardToken: zodAddressNonZero.describe(`The address of the reward token e.g. '0x123...abc'`),
+  feeRecipient: zodAddressNonZero.describe(`The address of the fee recipient e.g. '0x123...abc'`),
+  wrappedNativetoken: zodAddressNonZero.describe(`The address of the wrapped native token e.g. '0x123...abc'`),
   yieldContractFactory: z.object({
     expiryDivisor: z
       .bigint()
@@ -270,8 +284,30 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           actionVePendleStatic: message.pendleRouterStatic,
         }),
       // step 19: deploy reflector (TODO: find out what is this?)
-      // step 20: deploy PendleLimitRouter
-      // step 21: deploy PendleLpOracle
+      // step 20: deploy ProxyAdmin
+      () => new DeployProxyAdminSubAction(deployer, {}),
+
+      // step 21: deploy PendleLimitRouter
+      // step 21.1: deploy implementation
+      () =>
+        new DeployPendleLimitRouterSubAction(deployer, {
+          wrappedNativeToken: params.wrappedNativetoken,
+        }),
+      // step 21.2: deploy proxy
+      (message: DeployProxyAdminMsg & DeployPendleLimitRouterMsg) =>
+        new DeployPendleLimitRouterProxySubAction(deployer, {
+          proxyAdmin: message.proxyAdmin,
+          pendleLimitRouterImpl: message.pendleLimitRouter,
+        }),
+      // step 21.3: initialize proxy
+      (message: DeployPendleLimitRouterProxyMsg) => {
+        return new InitializePendleLimitRouterSubaction(deployer, {
+          pendleLimitRouter: message.pendleLimitRouterProxy,
+          feeRecipient: params.feeRecipient,
+        })
+      },
+
+      // step 22: deploy PendleLpOracle
     ]
   }
 }

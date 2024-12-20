@@ -1,12 +1,13 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
-import { zeroAddress } from 'viem'
+import { Address, zeroAddress } from 'viem'
 import { Account, privateKeyToAccount } from 'viem/accounts'
 
 import { PendleV3Registry } from '../type'
 import { ANVIL_PRIVATE_KEY } from './__mocks__/account'
 import { DeployPendleV3Action } from './deployPendleV3'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
+import { readArtifact } from '@utils/artifact'
 
 describe('deployPendleV3Action', () => {
   let client: TestInfinitWallet
@@ -26,6 +27,8 @@ describe('deployPendleV3Action', () => {
         governanceToken: bnAddress,
         initialApproxDestinationGas: 100000n,
         // using the parameters for the contractFactory referenced from https://basescan.org/tx/0x06d6e63b9e08be0e504375787193e674678d553c7a83546f8ee63d824c31f88a
+        wrappedNativetoken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+        feeRecipient: '0x0000000000000000000000000000000000000001',
         treasury: bnAddress,
         yieldContractFactory: {
           expiryDivisor: 86400n,
@@ -44,11 +47,11 @@ describe('deployPendleV3Action', () => {
     })
     let registry = {}
     registry = await action.run(registry)
-    checkRegistry(registry)
+    checkRegistry(registry, client)
   })
 })
 
-const checkRegistry = (registry: PendleV3Registry) => {
+const checkRegistry = async (registry: PendleV3Registry, client: TestInfinitWallet) => {
   expect(registry.baseSplitCodeFactoryContract).not.toBe(zeroAddress)
   expect(registry.oracleLib).not.toBe(zeroAddress)
   expect(registry.pendleGaugeControllerMainchainUpg).not.toBe(zeroAddress)
@@ -82,4 +85,21 @@ const checkRegistry = (registry: PendleV3Registry) => {
   expect(registry.actionMarketCoreStatic).not.toBe(zeroAddress)
   expect(registry.actionMintRedeemStatic).not.toBe(zeroAddress)
   expect(registry.actionVePendleStatic).not.toBe(zeroAddress)
+
+  expect(registry.proxyAdmin).not.toBe(zeroAddress)
+  expect(registry.pendleLimitRouterImpl).not.toBe(zeroAddress)
+  expect(registry.pendleLimitRouterProxy).not.toBe(zeroAddress)
+  // const pendleLimitRouterArtifact = await readArtifact('PendleLimitRouter')
+  const logs = await client.publicClient.getCode({
+    address: registry.pendleLimitRouterImpl!,
+  })
+
+  console.log('code', logs)
+
+  // const { result } = await client.publicClient.simulateContract({
+  //   address: registry.pendleLimitRouterProxy,
+  //   abi: pendleLimitRouterArtifact.abi,
+  //   functionName: 'feeRe',
+  //   account,
+  // })
 }
