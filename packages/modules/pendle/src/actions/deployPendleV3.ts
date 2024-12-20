@@ -269,6 +269,9 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           actionMintRedeemStatic: message.pendleRouterStatic,
           actionVePendleStatic: message.pendleRouterStatic,
         }),
+      // step 19: deploy reflector (TODO: find out what is this?)
+      // step 20: deploy PendleLimitRouter
+      // step 21: deploy PendleLpOracle
     ]
   }
 }
