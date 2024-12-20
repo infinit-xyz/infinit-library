@@ -323,6 +323,16 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           pendlePYLpOracle: message.pendlePYLpOracleProxy,
           blockCycleNumerator: params.blockCycleNumerator,
         }),
+      // step 23: deploy PendleMulticallV2
+      // step 24: deploy Multicall
+      // step 25: deploy SimulateHelper
+      // step 26: deploy SupplycapReader
+      // step 27: deploy PendlePoolDeployHelper
+      // step 28: deploy PendleERC20SY
+      // step 29: deploy deploy5115MarketAndSeedLiquidity???
+      // step 30: deploy PendleGovernanceProxy
+      // step 31: deploy PendleGovernance
+      // step 32: deploy BoringOneracle
     ]
   }
 }
