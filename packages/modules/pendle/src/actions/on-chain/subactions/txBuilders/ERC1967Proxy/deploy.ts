@@ -1,23 +1,27 @@
-import { Address, encodeDeployData, getAddress } from 'viem'
+import { Address, encodeDeployData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
+import { ValidateInputValueError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
 export type DeployERC1967ProxyTxBuilderParams = {
   implementation: Address
   data?: Address
+  value?: bigint
 }
 
 export class DeployERC1967ProxyTxBuilder extends TxBuilder {
   implementation: Address
   data: Address
+  value: bigint
 
   constructor(client: InfinitWallet, params: DeployERC1967ProxyTxBuilderParams) {
     super(DeployERC1967ProxyTxBuilder.name, client)
 
     this.implementation = getAddress(params.implementation)
     this.data = params.data ?? '0x'
+    this.value = params.value ?? 0n
   }
 
   async buildTx(): Promise<TransactionData> {
@@ -32,8 +36,21 @@ export class DeployERC1967ProxyTxBuilder extends TxBuilder {
     return {
       to: null,
       data: encodedData,
+      value: this.value,
     }
   }
 
-  public async validate(): Promise<void> {}
+  public async validate(): Promise<void> {
+    // check zero address
+    if (this.implementation === zeroAddress) throw new ValidateInputZeroAddressError('PENDLE_GOVERNANCE_PROXY_IMPLEMENTATION')
+
+    // check no value when no data
+    if (this.data === '0x' && this.value !== 0n) throw new ValidateInputValueError('If data is not provided, value should not be provided')
+
+    // check implementation should has bytecode
+    const bytecode = await this.client.publicClient.getCode({
+      address: this.implementation,
+    })
+    if (bytecode === undefined) throw new ValidateInputValueError('Implementation should have bytecode')
+  }
 }
