@@ -16,7 +16,7 @@ export type PendleV3Registry = {
   actionMarketCoreStatic?: Address
   actionMintRedeemStatic?: Address
   actionVePendleStatic?: Address
-  pendleLimitRouter?: Address
+  pendleLimitRouterImpl?: Address
   pendleLimitRouterProxy?: Address
   proxyAdmin?: Address
   baseSplitCodeFactoryContract?: Address
@@ -38,4 +38,5 @@ export type PendleV3Registry = {
   pendlePoolDeployHelper?: Address
   pendleGovernanceProxy?: Address
   pendleGovernanceProxyImpl?: Address
+  pendlePYLpOracleProxy?: Address
 }

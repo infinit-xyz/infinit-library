@@ -11,6 +11,11 @@ import {
 } from '@actions/on-chain/subactions/deployBaseSplitCodeFactoryContract'
 import { DeployOracleLibSubaction, DeployOracleLibSubactionMsg } from '@actions/on-chain/subactions/deployOracleLib'
 import { DeployPendleGaugeControllerMainchainUpgSubaction } from '@actions/on-chain/subactions/deployPendleGaugeControllerMainchainUpg'
+import { DeployPendleLimitRouterMsg, DeployPendleLimitRouterSubAction } from '@actions/on-chain/subactions/deployPendleLimitRouter'
+import {
+  DeployPendleLimitRouterProxyMsg,
+  DeployPendleLimitRouterProxySubAction,
+} from '@actions/on-chain/subactions/deployPendleLimitRouterProxy'
 import {
   DeployPendleMarketFactoryV3Subaction,
   DeployPendleMarketFactoryV3SubactionMsg,
@@ -27,6 +32,11 @@ import {
   DeployPendleMsgSendEndpointUpgProxySubaction,
   DeployPendleMsgSendEndpointUpgProxySubactionMsg,
 } from '@actions/on-chain/subactions/deployPendleMsgSendEndpointUpgProxy'
+import { DeployPendlePYLpOracleMsg, DeployPendlePYLpOracleSubaction } from '@actions/on-chain/subactions/deployPendlePYLpOracle'
+import {
+  DeployPendlePYLpOracleProxyMsg,
+  DeployPendlePYLpOracleProxySubAction,
+} from '@actions/on-chain/subactions/deployPendlePYLpOracleProxy'
 import { DeployPendleRouterStaticMsg, DeployPendleRouterStaticSubAction } from '@actions/on-chain/subactions/deployPendleRouterStatic'
 import { DeployPendleRouterV4Msg, DeployPendleRouterV4SubAction } from '@actions/on-chain/subactions/deployPendleRouterV4'
 import { DeployPendleSwapSubaction } from '@actions/on-chain/subactions/deployPendleSwap'
@@ -42,6 +52,7 @@ import {
   DeployPendleYieldContractFactorySubaction,
   DeployPendleYieldContractFactorySubactionMsg,
 } from '@actions/on-chain/subactions/deployPendleYieldContractFactory'
+import { DeployProxyAdminMsg, DeployProxyAdminSubAction } from '@actions/on-chain/subactions/deployProxyAdmin'
 import { DeployPendleRouterFacetsMsg, DeployPendleRouterFacetsSubAction } from '@actions/on-chain/subactions/deployRouterFacets'
 import { DeployPendleStaticFacetsMsg, DeployPendleStaticFacetsSubAction } from '@actions/on-chain/subactions/deployRouterStaticFacets'
 import {
@@ -49,7 +60,9 @@ import {
   DeployVotingEscrowPendleMainchainSubactionMsg,
 } from '@actions/on-chain/subactions/deployVotingEscrowPendleMainchain'
 import { DeployYTV3CreationCodeSubaction, DeployYTV3CreationCodeSubactionMsg } from '@actions/on-chain/subactions/deployYTV3CreationCode'
+import { InitializePendleLimitRouterSubaction } from '@actions/on-chain/subactions/initializePendleLimitRouter'
 import { InitializePendleMsgSendEndpointUpgSubaction } from '@actions/on-chain/subactions/initializePendleMsgSendEndpointUpg'
+import { InitializePendlePYLpOracleSubaction } from '@actions/on-chain/subactions/initializePendlePYLpOracle'
 import { InitializePendleVotingControllerUpgSubaction } from '@actions/on-chain/subactions/initializePendleVotingControllerUpg'
 import { InitializePendleYieldContractFactorySubaction } from '@actions/on-chain/subactions/initializePendleYieldContractFactory'
 import { SetPendleRouterStaticFacetsSubAction } from '@actions/on-chain/subactions/setPendleRouterStaticFacets'
@@ -64,6 +77,8 @@ export const DeployPendleV3ActionParamsSchema = z.object({
   initialApproxDestinationGas: z.bigint().describe(`The initial gas for the destination`),
   treasury: zodAddressNonZero.describe(`The address of the treasury e.g. '0x123...abc'`),
   rewardToken: zodAddressNonZero.describe(`The address of the reward token e.g. '0x123...abc'`),
+  feeRecipient: zodAddressNonZero.describe(`The address of the fee recipient e.g. '0x123...abc'`),
+  wrappedNativetoken: zodAddressNonZero.describe(`The address of the wrapped native token e.g. '0x123...abc'`),
   yieldContractFactory: z.object({
     expiryDivisor: z
       .bigint()
@@ -83,6 +98,7 @@ export const DeployPendleV3ActionParamsSchema = z.object({
       .describe(`The reserve fee percent in 1e18 unit, e.g. BigInt(0.1e18) is 10%. NOTE: should be between 0-100 `),
     guaugeController: zodAddressNonZero.describe(`The address of the guage controller e.g. '0x123...abc'`),
   }),
+  blockCycleNumerator: z.number().describe(`The block cycle numerator`),
 })
 
 export type DeployPendleV3Params = z.infer<typeof DeployPendleV3ActionParamsSchema>
@@ -270,8 +286,53 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           actionVePendleStatic: message.pendleRouterStatic,
         }),
       // step 19: deploy reflector (TODO: find out what is this?)
-      // step 20: deploy PendleLimitRouter
-      // step 21: deploy PendleLpOracle
+      // step 20: deploy ProxyAdmin
+      () => new DeployProxyAdminSubAction(deployer, {}),
+
+      // step 21: deploy PendleLimitRouter
+      // step 21.1: deploy implementation
+      () =>
+        new DeployPendleLimitRouterSubAction(deployer, {
+          wrappedNativeToken: params.wrappedNativetoken,
+        }),
+      // step 21.2: deploy proxy
+      (message: DeployProxyAdminMsg & DeployPendleLimitRouterMsg) =>
+        new DeployPendleLimitRouterProxySubAction(deployer, {
+          proxyAdmin: message.proxyAdmin,
+          pendleLimitRouterImpl: message.pendleLimitRouter,
+        }),
+      // step 21.3: initialize proxy
+      (message: DeployPendleLimitRouterProxyMsg) =>
+        new InitializePendleLimitRouterSubaction(deployer, {
+          pendleLimitRouter: message.pendleLimitRouterProxy,
+          feeRecipient: params.feeRecipient,
+        }),
+
+      // step 22: deploy PendlePYLpOracle
+      // step 22.1: deploy implementation
+      () => new DeployPendlePYLpOracleSubaction(deployer),
+      // step 22.2: deploy proxy
+      (message: DeployProxyAdminMsg & DeployPendlePYLpOracleMsg) =>
+        new DeployPendlePYLpOracleProxySubAction(deployer, {
+          proxyAdmin: message.proxyAdmin,
+          pendlePYLpOracleImpl: message.pendlePYLpOracle,
+        }),
+      // step 22.3: initialize proxy
+      (message: DeployPendlePYLpOracleProxyMsg) =>
+        new InitializePendlePYLpOracleSubaction(deployer, {
+          pendlePYLpOracle: message.pendlePYLpOracleProxy,
+          blockCycleNumerator: params.blockCycleNumerator,
+        }),
+      // step 23: deploy PendleMulticallV2
+      // step 24: deploy Multicall
+      // step 25: deploy SimulateHelper
+      // step 26: deploy SupplycapReader
+      // step 27: deploy PendlePoolDeployHelper
+      // step 28: deploy PendleERC20SY
+      // step 29: deploy deploy5115MarketAndSeedLiquidity???
+      // step 30: deploy PendleGovernanceProxy
+      // step 31: deploy PendleGovernance
+      // step 32: deploy BoringOneracle
     ]
   }
 }

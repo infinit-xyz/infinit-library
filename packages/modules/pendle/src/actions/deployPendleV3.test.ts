@@ -26,6 +26,8 @@ describe('deployPendleV3Action', () => {
         governanceToken: bnAddress,
         initialApproxDestinationGas: 100000n,
         // using the parameters for the contractFactory referenced from https://basescan.org/tx/0x06d6e63b9e08be0e504375787193e674678d553c7a83546f8ee63d824c31f88a
+        wrappedNativetoken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+        feeRecipient: '0x0000000000000000000000000000000000000001',
         treasury: bnAddress,
         yieldContractFactory: {
           expiryDivisor: 86400n,
@@ -37,6 +39,7 @@ describe('deployPendleV3Action', () => {
           reserveFeePercent: 10,
           guaugeController: bnAddress,
         },
+        blockCycleNumerator: 1000,
       },
       signer: {
         deployer: client,
@@ -48,7 +51,7 @@ describe('deployPendleV3Action', () => {
   })
 })
 
-const checkRegistry = (registry: PendleV3Registry) => {
+const checkRegistry = async (registry: PendleV3Registry) => {
   expect(registry.baseSplitCodeFactoryContract).not.toBe(zeroAddress)
   expect(registry.oracleLib).not.toBe(zeroAddress)
   expect(registry.pendleGaugeControllerMainchainUpg).not.toBe(zeroAddress)
@@ -82,4 +85,10 @@ const checkRegistry = (registry: PendleV3Registry) => {
   expect(registry.actionMarketCoreStatic).not.toBe(zeroAddress)
   expect(registry.actionMintRedeemStatic).not.toBe(zeroAddress)
   expect(registry.actionVePendleStatic).not.toBe(zeroAddress)
+
+  expect(registry.proxyAdmin).not.toBe(zeroAddress)
+  expect(registry.pendleLimitRouterImpl).not.toBe(zeroAddress)
+  expect(registry.pendleLimitRouterProxy).not.toBe(zeroAddress)
+  expect(registry.pendlePYLpOracle).not.toBe(zeroAddress)
+  expect(registry.pendlePYLpOracleProxy).not.toBe(zeroAddress)
 }
