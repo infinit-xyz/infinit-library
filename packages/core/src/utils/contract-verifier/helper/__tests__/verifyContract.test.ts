@@ -12,8 +12,7 @@ describe('verifyContract', () => {
   const address = '0x9a3c2b73adac0f85e04ea049df31ffc2a8e35401'
   const invalidAddress = '0x87646Ac012AC9ffbBc3A37ec516Bd0d661b408ed'
   const eoaAddress = '0xEE14Fd83e9C500500cFedf7522Cd26Af2F0A34fd'
-
-  const rpc = 'https://arbitrum-sepolia.blockpi.network/v1/rpc/public'
+  const rpc = 'https://arbitrum-sepolia-rpc.publicnode.com'
   const artifacts = new ArtifactsFromPath(
     path.join(process.cwd(), 'packages/core/src/utils/contract-verifier/helper/__mocks__/mock-artifacts'),
   )

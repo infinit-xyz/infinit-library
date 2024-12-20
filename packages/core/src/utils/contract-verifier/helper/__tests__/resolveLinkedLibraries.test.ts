@@ -17,7 +17,7 @@ describe('resolveLinkedLibraries', () => {
   const url = 'https://sepolia.arbiscan.io'
   const withLib = '0x9a3c2b73adac0f85e04ea049df31ffc2a8e35401'
   const withOutLib = '0xefe36d040540d7e6cb0b11550212bb87d31e2c9b'
-  const rpc = 'https://arbitrum-sepolia.blockpi.network/v1/rpc/public'
+  const rpc = 'https://arbitrum-sepolia-rpc.publicnode.com'
   const artifacts = new ArtifactsFromPath(
     path.join(process.cwd(), 'packages/core/src/utils/contract-verifier/helper/__mocks__/mock-artifacts'),
   )
