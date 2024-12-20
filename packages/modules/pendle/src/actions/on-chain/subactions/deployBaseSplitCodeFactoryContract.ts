@@ -3,7 +3,7 @@ import { Address, Hash } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError } from '@infinit-xyz/core/errors'
 
-import { DeployBaseSplitCodeFactoryContractTxBuilder } from './tx-builders/BaseSplitCodeFactoryContract/deploy'
+import { DeployBaseSplitCodeFactoryContractTxBuilder } from './txBuilders/BaseSplitCodeFactoryContract/deploy'
 import { PendleV3Registry } from '@/src/type'
 
 export type DeployBaseSplitCodeFactoryContractSubactionMsg = {

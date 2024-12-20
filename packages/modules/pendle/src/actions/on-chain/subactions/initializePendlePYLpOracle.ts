@@ -2,7 +2,7 @@ import { Hash } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 
-import { InitializePendlePYLpOracleTxBuilder, InitializePendlePYLpOracleTxBuilderParams } from './tx-builders/PendlePYLpOracle/initialize'
+import { InitializePendlePYLpOracleTxBuilder, InitializePendlePYLpOracleTxBuilderParams } from './txBuilders/PendlePYLpOracle/initialize'
 import { PendleV3Registry } from '@/src/type'
 
 export type InitializePendlePYLpOracleSubactionParams = InitializePendlePYLpOracleTxBuilderParams
