@@ -4,12 +4,12 @@ import { zeroAddress } from 'viem'
 
 import { SubActionExecuteResponse } from '@infinit-xyz/core'
 
-import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
+import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mocks__/address'
 import {
   DeployProxyPendleGovernanceProxyMsg,
   DeployProxyPendleGovernanceProxySubAction,
   DeployProxyPendleGovernanceProxySubActionParams,
-} from '@actions/subactions/deployProxyPendleGovernanceProxy'
+} from '@actions/on-chain/subactions/deployProxyPendleGovernanceProxy'
 
 import { PendleV3Registry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'

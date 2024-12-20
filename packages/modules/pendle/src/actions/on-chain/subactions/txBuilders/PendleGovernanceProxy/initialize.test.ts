@@ -2,11 +2,11 @@ import { describe, expect, test } from 'vitest'
 
 import { concat, pad, toFunctionSelector } from 'viem'
 
-import { TEST_ADDRESSES } from '@actions/__mock__/address'
+import { TEST_ADDRESSES } from '@actions/__mocks__/address'
 import {
   InitializePendleGovernanceProxyTxBuilder,
   InitializePendleGovernanceProxyTxBuilderParams,
-} from '@actions/subactions/tx-builders/PendleGovernanceProxy/initialize'
+} from '@actions/on-chain/subactions/txBuilders/PendleGovernanceProxy/initialize'
 
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 

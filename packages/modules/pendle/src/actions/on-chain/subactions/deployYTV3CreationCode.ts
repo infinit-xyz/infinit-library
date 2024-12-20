@@ -6,7 +6,7 @@ import { InvalidEventError } from '@infinit-xyz/core/errors'
 import {
   DeployYTV3CreationCodeTxBuilder,
   DeployYTV3CreationCodeTxBuilderParams,
-} from '@actions/subactions/tx-builders/BaseSplitCodeFactoryContract/deployYTV3CreationCode'
+} from '@actions/on-chain/subactions/txBuilders/BaseSplitCodeFactoryContract/deployYTV3CreationCode'
 
 import { PendleV3Registry } from '@/src/type'
 import { readArtifact } from '@utils/artifact'

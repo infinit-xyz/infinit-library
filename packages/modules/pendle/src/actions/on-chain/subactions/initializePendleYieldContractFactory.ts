@@ -5,7 +5,7 @@ import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz
 import {
   InitializePendleYieldContractFactoryTxBuilder,
   InitializePendleYieldContractFactoryTxBuilderParams,
-} from '@actions/subactions/tx-builders/PendleYieldContractFactory/initialize'
+} from '@actions/on-chain/subactions/txBuilders/PendleYieldContractFactory/initialize'
 
 import { PendleV3Registry } from '@/src/type'
 

@@ -1,5 +1,12 @@
 import { Address } from 'viem'
 
+export const TEST_ADDRESSES = {
+  // test
+  bob: '0x0000000000000000000000000000000000000b0b',
+  tester: '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
+  tester2: '0x3cf4d050143c776afcdf1ee7a252ab16c3f231f7',
+} satisfies Record<string, Address>
+
 export const ARBITRUM_TEST_ADDRESSES = {
   // ERC20 Tokens
   weth: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
@@ -21,10 +28,4 @@ export const ARBITRUM_TEST_ADDRESSES = {
   aaveExecutor: '0xFF1137243698CaA18EE364Cc966CF0e02A4e6327',
   aaveEmergencyAdmin: '0xbbd9f90699c1FA0D7A65870D241DD1f1217c96Eb',
   tester: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
-} satisfies Record<string, Address>
-
-export const TEST_ADDRESSES = {
-  // test
-  bob: '0x0000000000000000000000000000000000000B0b',
-  oneAddress: '0x0000000000000000000000000000000000000001',
 } satisfies Record<string, Address>

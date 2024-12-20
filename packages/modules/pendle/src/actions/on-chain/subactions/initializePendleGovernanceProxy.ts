@@ -5,7 +5,7 @@ import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz
 import {
   InitializePendleGovernanceProxyTxBuilder,
   InitializePendleGovernanceProxyTxBuilderParams,
-} from '@actions/subactions/tx-builders/PendleGovernanceProxy/initialize'
+} from '@actions/on-chain/subactions/txBuilders/PendleGovernanceProxy/initialize'
 
 import { PendleV3Registry } from '@/src/type'
 

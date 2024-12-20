@@ -4,8 +4,8 @@ import { zeroAddress } from 'viem'
 
 import { SubActionExecuteResponse } from '@infinit-xyz/core'
 
-import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
-import { DeploySupplyCapReaderMsg, DeploySupplyCapReaderSubAction } from '@actions/subactions/deploySupplyCapReader'
+import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mocks__/address'
+import { DeploySupplyCapReaderMsg, DeploySupplyCapReaderSubAction } from '@actions/on-chain/subactions/deploySupplyCapReader'
 
 import { PendleV3Registry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'

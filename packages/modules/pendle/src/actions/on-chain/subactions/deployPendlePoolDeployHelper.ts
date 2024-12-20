@@ -6,7 +6,7 @@ import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors
 import {
   DeployPendlePoolDeployHelperTxBuilder,
   DeployPendlePoolDeployHelperTxBuilderParams,
-} from '@actions/subactions/tx-builders/PendlePoolDeployHelper/deploy'
+} from '@actions/on-chain/subactions/txBuilders/PendlePoolDeployHelper/deploy'
 
 import { PendleV3Registry } from '@/src/type'
 

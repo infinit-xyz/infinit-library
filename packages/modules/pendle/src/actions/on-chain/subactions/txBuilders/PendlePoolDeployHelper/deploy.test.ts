@@ -2,8 +2,8 @@ import { describe, expect, test } from 'vitest'
 
 import { zeroAddress } from 'viem'
 
-import { TEST_ADDRESSES } from '@actions/__mock__/address'
-import { DeployPendlePoolDeployHelperTxBuilder } from '@actions/subactions/tx-builders/PendlePoolDeployHelper/deploy'
+import { TEST_ADDRESSES } from '@actions/__mocks__/address'
+import { DeployPendlePoolDeployHelperTxBuilder } from '@actions/on-chain/subactions/txBuilders/PendlePoolDeployHelper/deploy'
 
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 

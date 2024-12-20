@@ -3,7 +3,7 @@ import { Address, Hex } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors'
 
-import { DeploySupplyCapReaderTxBuilder } from '@actions/subactions/tx-builders/SupplyCapReader/deploy'
+import { DeploySupplyCapReaderTxBuilder } from '@actions/on-chain/subactions/txBuilders/SupplyCapReader/deploy'
 
 import { PendleV3Registry } from '@/src/type'
 

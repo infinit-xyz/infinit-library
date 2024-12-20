@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 
-import { TEST_ADDRESSES } from '@actions/__mock__/address'
-import { DeploySupplyCapReaderTxBuilder } from '@actions/subactions/tx-builders/SupplyCapReader/deploy'
+import { TEST_ADDRESSES } from '@actions/__mocks__/address'
+import { DeploySupplyCapReaderTxBuilder } from '@actions/on-chain/subactions/txBuilders/SupplyCapReader/deploy'
 
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 

@@ -2,8 +2,8 @@ import { describe, expect, test } from 'vitest'
 
 import { zeroAddress } from 'viem'
 
-import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
-import { DeployERC1967ProxyTxBuilder, DeployERC1967ProxyTxBuilderParams } from '@actions/subactions/tx-builders/ERC1967Proxy/deploy'
+import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mocks__/address'
+import { DeployERC1967ProxyTxBuilder, DeployERC1967ProxyTxBuilderParams } from '@actions/on-chain/subactions/txBuilders/ERC1967Proxy/deploy'
 
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 

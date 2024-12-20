@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 
-import { TEST_ADDRESSES } from '@actions/__mock__/address'
-import { DeployMulticall2TxBuilder } from '@actions/subactions/tx-builders/Multicall2/deploy'
+import { TEST_ADDRESSES } from '@actions/__mocks__/address'
+import { DeployMulticall2TxBuilder } from '@actions/on-chain/subactions/txBuilders/Multicall2/deploy'
 
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 

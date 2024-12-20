@@ -6,7 +6,7 @@ import { ContractNotFoundError } from '@infinit-xyz/core/errors'
 import {
   DeployPendleYieldContractFactoryTxBuilder,
   DeployPendleYieldContractFactoryTxBuilderParams,
-} from '@actions/subactions/tx-builders/PendleYieldContractFactory/deploy'
+} from '@actions/on-chain/subactions/txBuilders/PendleYieldContractFactory/deploy'
 
 import { PendleV3Registry } from '@/src/type'
 

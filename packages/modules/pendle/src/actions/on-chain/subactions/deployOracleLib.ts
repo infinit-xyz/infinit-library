@@ -3,7 +3,7 @@ import { Address, Hash } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError } from '@infinit-xyz/core/errors'
 
-import { DeployOracleLibTxBuilder } from '@actions/subactions/tx-builders/OracleLib/deploy'
+import { DeployOracleLibTxBuilder } from '@actions/on-chain/subactions/txBuilders/OracleLib/deploy'
 
 import { PendleV3Registry } from '@/src/type'
 

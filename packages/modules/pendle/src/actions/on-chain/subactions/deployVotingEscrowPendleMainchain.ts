@@ -6,7 +6,7 @@ import { ContractNotFoundError } from '@infinit-xyz/core/errors'
 import {
   DeployVotingEscrowPendleMainchainTxBuilder,
   DeployVotingEscrowPendleMainchainTxBuilderParams,
-} from '@actions/subactions/tx-builders/VotingEscrowPendleMainchain/deploy'
+} from '@actions/on-chain/subactions/txBuilders/VotingEscrowPendleMainchain/deploy'
 
 import { PendleV3Registry } from '@/src/type'
 

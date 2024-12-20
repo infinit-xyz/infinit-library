@@ -5,7 +5,7 @@ import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz
 import {
   DeployCreationCodeTxBuilder,
   DeployCreationCodeTxBuilderParams,
-} from '@actions/subactions/tx-builders/BaseSplitCodeFactoryContract/deployCreationCode'
+} from '@actions/on-chain/subactions/txBuilders/BaseSplitCodeFactoryContract/deployCreationCode'
 
 import { PendleV3Registry } from '@/src/type'
 

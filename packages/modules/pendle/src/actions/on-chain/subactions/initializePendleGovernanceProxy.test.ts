@@ -1,11 +1,11 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 // import { SubActionExecuteResponse } from '@infinit-xyz/core'
-import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mock__/address'
+import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mocks__/address'
 import {
   InitializePendleGovernanceProxySubAction,
   InitializePendleGovernanceProxySubActionParams,
-} from '@actions/subactions/initializePendleGovernanceProxy'
+} from '@actions/on-chain/subactions/initializePendleGovernanceProxy'
 
 // import { PendleV3Registry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'

@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 
-import { TEST_ADDRESSES } from '@actions/__mock__/address'
-import { DeployPendleGovernanceProxyTxBuilder } from '@actions/subactions/tx-builders/PendleGovernanceProxy/deploy'
+import { TEST_ADDRESSES } from '@actions/__mocks__/address'
+import { DeployPendleGovernanceProxyTxBuilder } from '@actions/on-chain/subactions/txBuilders/PendleGovernanceProxy/deploy'
 
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 

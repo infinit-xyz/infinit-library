@@ -2,7 +2,7 @@ import { Address, Hex, keccak256, toHex } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 
-import { GrantRolePendleGovernanceProxyTxBuilder } from '@actions/subactions/tx-builders/PendleGovernanceProxy/grantRole'
+import { GrantRolePendleGovernanceProxyTxBuilder } from '@actions/on-chain/subactions/txBuilders/PendleGovernanceProxy/grantRole'
 
 import { PendleV3Registry } from '@/src/type'
 

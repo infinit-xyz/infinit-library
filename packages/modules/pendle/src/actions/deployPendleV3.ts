@@ -8,47 +8,53 @@ import { validateActionData, zodAddress, zodAddressNonZero } from '@infinit-xyz/
 import {
   DeployBaseSplitCodeFactoryContractSubaction,
   DeployBaseSplitCodeFactoryContractSubactionMsg,
-} from '@actions/subactions/deployBaseSplitCodeFactoryContract'
-import { DeployOracleLibSubaction, DeployOracleLibSubactionMsg } from '@actions/subactions/deployOracleLib'
-import { DeployPendleGaugeControllerMainchainUpgSubaction } from '@actions/subactions/deployPendleGaugeControllerMainchainUpg'
+} from '@actions/on-chain/subactions/deployBaseSplitCodeFactoryContract'
+import { DeployOracleLibSubaction, DeployOracleLibSubactionMsg } from '@actions/on-chain/subactions/deployOracleLib'
+import { DeployPendleGaugeControllerMainchainUpgSubaction } from '@actions/on-chain/subactions/deployPendleGaugeControllerMainchainUpg'
 import {
   DeployPendleMarketFactoryV3Subaction,
   DeployPendleMarketFactoryV3SubactionMsg,
-} from '@actions/subactions/deployPendleMarketFactoryV3'
-import {
-  DeployPendleMsgSendEndpointUpgSubaction,
-  DeployPendleMsgSendEndpointUpgSubactionMsg,
-} from '@actions/subactions/deployPendleMsgSendEndpointUpg'
-import {
-  DeployPendleMsgSendEndpointUpgProxySubaction,
-  DeployPendleMsgSendEndpointUpgProxySubactionMsg,
-} from '@actions/subactions/deployPendleMsgSendEndpointUpgProxy'
-import { DeployPendleSwapSubaction } from '@actions/subactions/deployPendleSwap'
-import {
-  DeployPendleYieldContractFactorySubaction,
-  DeployPendleYieldContractFactorySubactionMsg,
-} from '@actions/subactions/deployPendleYieldContractFactory'
-import {
-  DeployVotingEscrowPendleMainchainSubaction,
-  DeployVotingEscrowPendleMainchainSubactionMsg,
-} from '@actions/subactions/deployVotingEscrowPendleMainchain'
-import { DeployYTV3CreationCodeSubaction, DeployYTV3CreationCodeSubactionMsg } from '@actions/subactions/deployYTV3CreationCode'
-import { InitializePendleMsgSendEndpointUpgSubaction } from '@actions/subactions/initializePendleMsgSendEndpointUpg'
-import { InitializePendleYieldContractFactorySubaction } from '@actions/subactions/initializePendleYieldContractFactory'
-
+} from '@actions/on-chain/subactions/deployPendleMarketFactoryV3'
 import {
   DeployPendleMarketV3CreationCodeSubaction,
   DeployPendleMarketV3CreationCodeSubactionMsg,
-} from './subactions/deployPendleMarketV3CreationCode'
+} from '@actions/on-chain/subactions/deployPendleMarketV3CreationCode'
+import {
+  DeployPendleMsgSendEndpointUpgSubaction,
+  DeployPendleMsgSendEndpointUpgSubactionMsg,
+} from '@actions/on-chain/subactions/deployPendleMsgSendEndpointUpg'
+import {
+  DeployPendleMsgSendEndpointUpgProxySubaction,
+  DeployPendleMsgSendEndpointUpgProxySubactionMsg,
+} from '@actions/on-chain/subactions/deployPendleMsgSendEndpointUpgProxy'
+import { DeployPendleRouterStaticMsg, DeployPendleRouterStaticSubAction } from '@actions/on-chain/subactions/deployPendleRouterStatic'
+import { DeployPendleRouterV4Msg, DeployPendleRouterV4SubAction } from '@actions/on-chain/subactions/deployPendleRouterV4'
+import { DeployPendleSwapSubaction } from '@actions/on-chain/subactions/deployPendleSwap'
 import {
   DeployPendleVotingContollerUpgSubaction,
   DeployPendleVotingContollerUpgSubactionMsg,
-} from './subactions/deployPendleVotingControllerUpg'
+} from '@actions/on-chain/subactions/deployPendleVotingControllerUpg'
 import {
   DeployPendleVotingControllerUpgProxySubaction,
-  DeployPendleVotingControllerUpgProxySubactionMsg, // DeployPendleVotingControllerUpgProxySubactionMsg,
-} from './subactions/deployPendleVotingControllerUpgProxy'
-import { InitializePendleVotingControllerUpgSubaction } from './subactions/initializePendleVotingControllerUpg'
+  DeployPendleVotingControllerUpgProxySubactionMsg,
+} from '@actions/on-chain/subactions/deployPendleVotingControllerUpgProxy'
+import {
+  DeployPendleYieldContractFactorySubaction,
+  DeployPendleYieldContractFactorySubactionMsg,
+} from '@actions/on-chain/subactions/deployPendleYieldContractFactory'
+import { DeployPendleRouterFacetsMsg, DeployPendleRouterFacetsSubAction } from '@actions/on-chain/subactions/deployRouterFacets'
+import { DeployPendleStaticFacetsMsg, DeployPendleStaticFacetsSubAction } from '@actions/on-chain/subactions/deployRouterStaticFacets'
+import {
+  DeployVotingEscrowPendleMainchainSubaction,
+  DeployVotingEscrowPendleMainchainSubactionMsg,
+} from '@actions/on-chain/subactions/deployVotingEscrowPendleMainchain'
+import { DeployYTV3CreationCodeSubaction, DeployYTV3CreationCodeSubactionMsg } from '@actions/on-chain/subactions/deployYTV3CreationCode'
+import { InitializePendleMsgSendEndpointUpgSubaction } from '@actions/on-chain/subactions/initializePendleMsgSendEndpointUpg'
+import { InitializePendleVotingControllerUpgSubaction } from '@actions/on-chain/subactions/initializePendleVotingControllerUpg'
+import { InitializePendleYieldContractFactorySubaction } from '@actions/on-chain/subactions/initializePendleYieldContractFactory'
+import { SetPendleRouterStaticFacetsSubAction } from '@actions/on-chain/subactions/setPendleRouterStaticFacets'
+import { SetPendleRouterV4FacetsSubAction } from '@actions/on-chain/subactions/setPendleRouterV4Facets'
+
 import type { PendleV3Registry } from '@/src/type'
 
 export const DeployPendleV3ActionParamsSchema = z.object({
@@ -155,6 +161,7 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           rewardFeeRate: params.yieldContractFactory.rewardFeeRate,
           treasury: params.treasury,
         }),
+
       // step 8: deploy oracleLib
       () => new DeployOracleLibSubaction(deployer),
 
@@ -165,6 +172,7 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           baseSplitCodeFactoryContact: message.baseSplitCodeFactoryContract,
         })
       },
+
       // step 10: deploy PendleMarketFactoryV3
       (
         message: DeployPendleMarketV3CreationCodeSubactionMsg &
@@ -182,6 +190,7 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           vePendle: message.votingEscrowPendleMainchain,
           guaugeController: params.marketContractFactory.guaugeController,
         }),
+
       // step 11: deploy PendleVotingControllerUpg
       // step 11.1: deploy implementation
       (message: DeployPendleMsgSendEndpointUpgProxySubactionMsg & DeployVotingEscrowPendleMainchainSubactionMsg) =>
@@ -212,6 +221,57 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           marketFactory3: zeroAddress,
           marketFactory4: message.pendleMarketFactoryV3,
         }),
+
+      // step 13 deploy RouterV4 Facets
+      () => new DeployPendleRouterFacetsSubAction(deployer, {}),
+
+      // step 14 deploy RouterV4
+      (message: DeployPendleRouterFacetsMsg) =>
+        new DeployPendleRouterV4SubAction(deployer, {
+          owner: deployer.walletClient.account.address,
+          routerStorageV4: message.routerStorageV4,
+        }),
+
+      // step 15: set pendleRouterV4 selectorToFacets
+      (message: DeployPendleRouterV4Msg & DeployPendleRouterFacetsMsg) =>
+        new SetPendleRouterV4FacetsSubAction(deployer, {
+          pendleRouterV4: message.pendleRouterV4,
+          actionStorageV4: message.routerStorageV4,
+          actionAddRemoveLiqV3: message.actionAddRemoveLiqV3,
+          actionCallbackV3: message.actionCallbackV3,
+          actionMiscV3: message.actionMiscV3,
+          actionSimple: message.actionSimple,
+          actionSwapPTV3: message.actionSwapPTV3,
+          actionSwapYTV3: message.actionSwapYTV3,
+        }),
+
+      // step 16: deploy PendleRouterStatic Facets
+      (message: DeployPendleVotingControllerUpgProxySubactionMsg) =>
+        new DeployPendleStaticFacetsSubAction(deployer, {
+          owner: deployer.walletClient.account.address,
+          vePendle: message.pendleVotingControllerUpgProxy,
+        }),
+
+      // step 17: deploy PendleRouterStatic
+      (message: DeployPendleStaticFacetsMsg) =>
+        new DeployPendleRouterStaticSubAction(deployer, {
+          actionStorageStatic: message.actionStorageStatic,
+        }),
+
+      // step 18: set PendleRouterStatic selectorToFacets
+      (message: DeployPendleRouterStaticMsg) =>
+        new SetPendleRouterStaticFacetsSubAction(deployer, {
+          pendleRouterStatic: message.pendleRouterStatic,
+          actionStorageStatic: message.pendleRouterStatic,
+          actionInfoStatic: message.pendleRouterStatic,
+          actionMarketAuxStatic: message.pendleRouterStatic,
+          actionMarketCoreStatic: message.pendleRouterStatic,
+          actionMintRedeemStatic: message.pendleRouterStatic,
+          actionVePendleStatic: message.pendleRouterStatic,
+        }),
+      // step 19: deploy reflector (TODO: find out what is this?)
+      // step 20: deploy PendleLimitRouter
+      // step 21: deploy PendleLpOracle
     ]
   }
 }

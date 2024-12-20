@@ -3,7 +3,7 @@ import { Address, Hash, Hex } from 'viem'
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ContractNotFoundError } from '@infinit-xyz/core/errors'
 
-import { DeployERC1967ProxyTxBuilder } from '@actions/subactions/tx-builders/ERC1967Proxy/deploy'
+import { DeployERC1967ProxyTxBuilder } from '@actions/on-chain/subactions/txBuilders/ERC1967Proxy/deploy'
 
 import { PendleV3Registry } from '@/src/type'
 
