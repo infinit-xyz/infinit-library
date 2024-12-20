@@ -31,4 +31,5 @@ export type PendleV3Registry = {
   pendleMsgSendEndpointUpgProxy?: Address
   pendleVotingContollerUpgImpl?: Address
   pendleVotingControllerUpgProxy?: Address
+  pendlePYLpOracleProxy?: Address
 }

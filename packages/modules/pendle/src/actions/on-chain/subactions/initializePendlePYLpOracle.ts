@@ -2,13 +2,17 @@ import { Hash } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 
-import { InitializePendlePYLpOracleTxBuilder, InitializePendlePYLpOracleTxBuilderParams } from './tx-builders/PendlePYLpOracle/initialize'
+import {
+  InitializePendlePYLpOracleTxBuilder,
+  InitializePendlePYLpOracleTxBuilderParams,
+} from '@actions/on-chain/subactions/txBuilders/PendlePYLpOracle/initialize'
+
 import { PendleV3Registry } from '@/src/type'
 
 export type InitializePendlePYLpOracleSubactionParams = InitializePendlePYLpOracleTxBuilderParams
-export class DeployPendlePYLpOracleSubaction extends SubAction<InitializePendlePYLpOracleSubactionParams, PendleV3Registry> {
+export class InitializePendlePYLpOracleSubaction extends SubAction<InitializePendlePYLpOracleSubactionParams, PendleV3Registry> {
   constructor(client: InfinitWallet, params: InitializePendlePYLpOracleSubactionParams) {
-    super(DeployPendlePYLpOracleSubaction.name, client, params)
+    super(InitializePendlePYLpOracleSubaction.name, client, params)
   }
 
   protected setTxBuilders(): void {

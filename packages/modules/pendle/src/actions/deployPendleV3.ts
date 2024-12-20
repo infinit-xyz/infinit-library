@@ -11,15 +11,10 @@ import {
 } from '@actions/on-chain/subactions/deployBaseSplitCodeFactoryContract'
 import { DeployOracleLibSubaction, DeployOracleLibSubactionMsg } from '@actions/on-chain/subactions/deployOracleLib'
 import { DeployPendleGaugeControllerMainchainUpgSubaction } from '@actions/on-chain/subactions/deployPendleGaugeControllerMainchainUpg'
-import {
-  DeployPendleLimitRouterMsg,
-  DeployPendleLimitRouterSubAction,
-  DeployPendleLimitRouterSubactionParams,
-} from '@actions/on-chain/subactions/deployPendleLimitRouter'
+import { DeployPendleLimitRouterMsg, DeployPendleLimitRouterSubAction } from '@actions/on-chain/subactions/deployPendleLimitRouter'
 import {
   DeployPendleLimitRouterProxyMsg,
   DeployPendleLimitRouterProxySubAction,
-  DeployPendleLimitRouterProxySubActionParams,
 } from '@actions/on-chain/subactions/deployPendleLimitRouterProxy'
 import {
   DeployPendleMarketFactoryV3Subaction,
@@ -37,6 +32,11 @@ import {
   DeployPendleMsgSendEndpointUpgProxySubaction,
   DeployPendleMsgSendEndpointUpgProxySubactionMsg,
 } from '@actions/on-chain/subactions/deployPendleMsgSendEndpointUpgProxy'
+import { DeployPendlePYLpOracleMsg, DeployPendlePYLpOracleSubaction } from '@actions/on-chain/subactions/deployPendlePYLpOracle'
+import {
+  DeployPendlePYLpOracleProxyMsg,
+  DeployPendlePYLpOracleProxySubAction,
+} from '@actions/on-chain/subactions/deployPendlePYLpOracleProxy'
 import { DeployPendleRouterStaticMsg, DeployPendleRouterStaticSubAction } from '@actions/on-chain/subactions/deployPendleRouterStatic'
 import { DeployPendleRouterV4Msg, DeployPendleRouterV4SubAction } from '@actions/on-chain/subactions/deployPendleRouterV4'
 import { DeployPendleSwapSubaction } from '@actions/on-chain/subactions/deployPendleSwap'
@@ -52,6 +52,7 @@ import {
   DeployPendleYieldContractFactorySubaction,
   DeployPendleYieldContractFactorySubactionMsg,
 } from '@actions/on-chain/subactions/deployPendleYieldContractFactory'
+import { DeployProxyAdminMsg, DeployProxyAdminSubAction } from '@actions/on-chain/subactions/deployProxyAdmin'
 import { DeployPendleRouterFacetsMsg, DeployPendleRouterFacetsSubAction } from '@actions/on-chain/subactions/deployRouterFacets'
 import { DeployPendleStaticFacetsMsg, DeployPendleStaticFacetsSubAction } from '@actions/on-chain/subactions/deployRouterStaticFacets'
 import {
@@ -59,14 +60,14 @@ import {
   DeployVotingEscrowPendleMainchainSubactionMsg,
 } from '@actions/on-chain/subactions/deployVotingEscrowPendleMainchain'
 import { DeployYTV3CreationCodeSubaction, DeployYTV3CreationCodeSubactionMsg } from '@actions/on-chain/subactions/deployYTV3CreationCode'
+import { InitializePendleLimitRouterSubaction } from '@actions/on-chain/subactions/initializePendleLimitRouter'
 import { InitializePendleMsgSendEndpointUpgSubaction } from '@actions/on-chain/subactions/initializePendleMsgSendEndpointUpg'
+import { InitializePendlePYLpOracleSubaction } from '@actions/on-chain/subactions/initializePendlePYLpOracle'
 import { InitializePendleVotingControllerUpgSubaction } from '@actions/on-chain/subactions/initializePendleVotingControllerUpg'
 import { InitializePendleYieldContractFactorySubaction } from '@actions/on-chain/subactions/initializePendleYieldContractFactory'
 import { SetPendleRouterStaticFacetsSubAction } from '@actions/on-chain/subactions/setPendleRouterStaticFacets'
 import { SetPendleRouterV4FacetsSubAction } from '@actions/on-chain/subactions/setPendleRouterV4Facets'
 
-import { DeployProxyAdminMsg, DeployProxyAdminSubAction } from './on-chain/subactions/deployProxyAdmin'
-import { InitializePendleLimitRouterSubaction } from './on-chain/subactions/initializePendleLimitRouter'
 import type { PendleV3Registry } from '@/src/type'
 
 export const DeployPendleV3ActionParamsSchema = z.object({
@@ -97,6 +98,7 @@ export const DeployPendleV3ActionParamsSchema = z.object({
       .describe(`The reserve fee percent in 1e18 unit, e.g. BigInt(0.1e18) is 10%. NOTE: should be between 0-100 `),
     guaugeController: zodAddressNonZero.describe(`The address of the guage controller e.g. '0x123...abc'`),
   }),
+  blockCycleNumerator: z.number().describe(`The block cycle numerator`),
 })
 
 export type DeployPendleV3Params = z.infer<typeof DeployPendleV3ActionParamsSchema>
@@ -300,14 +302,27 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           pendleLimitRouterImpl: message.pendleLimitRouter,
         }),
       // step 21.3: initialize proxy
-      (message: DeployPendleLimitRouterProxyMsg) => {
-        return new InitializePendleLimitRouterSubaction(deployer, {
+      (message: DeployPendleLimitRouterProxyMsg) =>
+        new InitializePendleLimitRouterSubaction(deployer, {
           pendleLimitRouter: message.pendleLimitRouterProxy,
           feeRecipient: params.feeRecipient,
-        })
-      },
+        }),
 
-      // step 22: deploy PendleLpOracle
+      // step 22: deploy PendlePYLpOracle
+      // step 22.1: deploy implementation
+      () => new DeployPendlePYLpOracleSubaction(deployer),
+      // step 22.2: deploy proxy
+      (message: DeployProxyAdminMsg & DeployPendlePYLpOracleMsg) =>
+        new DeployPendlePYLpOracleProxySubAction(deployer, {
+          proxyAdmin: message.proxyAdmin,
+          pendlePYLpOracleImpl: message.pendlePYLpOracle,
+        }),
+      // step 22.3: initialize proxy
+      (message: DeployPendlePYLpOracleProxyMsg) =>
+        new InitializePendlePYLpOracleSubaction(deployer, {
+          pendlePYLpOracle: message.pendlePYLpOracleProxy,
+          blockCycleNumerator: params.blockCycleNumerator,
+        }),
     ]
   }
 }

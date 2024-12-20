@@ -119,13 +119,15 @@ describe('SetFacetForSelectorsTxBuilder', () => {
       [params.actionVePendleStatic]: ['0x180e3943'],
     }
 
-    // Verify that all selectors are present in the transaction data
-    for (let i = 0; i < decodedData.args[0]!.length; i++) {
-      const selectorToFacets = decodedData.args[0]![i] as FacetForSelectors
-      const expectedSelectors = selectorMap[selectorToFacets.facet]
-      expect(selectorToFacets.selectors.length).toBe(expectedSelectors.length)
-      for (let j = 0; j < expectedSelectors.length; j++) {
-        expect(selectorToFacets.selectors).toContain(expectedSelectors[j])
+    if (decodedData.functionName === 'setFacetForSelectors') {
+      // Verify that all selectors are present in the transaction data
+      for (let i = 0; i < decodedData.args[0]!.length; i++) {
+        const selectorToFacets = decodedData.args[0]![i] as FacetForSelectors
+        const expectedSelectors = selectorMap[selectorToFacets.facet]
+        expect(selectorToFacets.selectors.length).toBe(expectedSelectors.length)
+        for (let j = 0; j < expectedSelectors.length; j++) {
+          expect(selectorToFacets.selectors).toContain(expectedSelectors[j])
+        }
       }
     }
   })

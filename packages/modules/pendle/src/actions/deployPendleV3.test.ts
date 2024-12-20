@@ -1,13 +1,12 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
-import { Address, zeroAddress } from 'viem'
+import { zeroAddress } from 'viem'
 import { Account, privateKeyToAccount } from 'viem/accounts'
 
 import { PendleV3Registry } from '../type'
 import { ANVIL_PRIVATE_KEY } from './__mocks__/account'
 import { DeployPendleV3Action } from './deployPendleV3'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
-import { readArtifact } from '@utils/artifact'
 
 describe('deployPendleV3Action', () => {
   let client: TestInfinitWallet
@@ -40,6 +39,7 @@ describe('deployPendleV3Action', () => {
           reserveFeePercent: 10,
           guaugeController: bnAddress,
         },
+        blockCycleNumerator: 1000,
       },
       signer: {
         deployer: client,
@@ -47,11 +47,11 @@ describe('deployPendleV3Action', () => {
     })
     let registry = {}
     registry = await action.run(registry)
-    checkRegistry(registry, client)
+    checkRegistry(registry)
   })
 })
 
-const checkRegistry = async (registry: PendleV3Registry, client: TestInfinitWallet) => {
+const checkRegistry = async (registry: PendleV3Registry) => {
   expect(registry.baseSplitCodeFactoryContract).not.toBe(zeroAddress)
   expect(registry.oracleLib).not.toBe(zeroAddress)
   expect(registry.pendleGaugeControllerMainchainUpg).not.toBe(zeroAddress)
@@ -89,17 +89,6 @@ const checkRegistry = async (registry: PendleV3Registry, client: TestInfinitWall
   expect(registry.proxyAdmin).not.toBe(zeroAddress)
   expect(registry.pendleLimitRouterImpl).not.toBe(zeroAddress)
   expect(registry.pendleLimitRouterProxy).not.toBe(zeroAddress)
-  // const pendleLimitRouterArtifact = await readArtifact('PendleLimitRouter')
-  const logs = await client.publicClient.getCode({
-    address: registry.pendleLimitRouterImpl!,
-  })
-
-  console.log('code', logs)
-
-  // const { result } = await client.publicClient.simulateContract({
-  //   address: registry.pendleLimitRouterProxy,
-  //   abi: pendleLimitRouterArtifact.abi,
-  //   functionName: 'feeRe',
-  //   account,
-  // })
+  expect(registry.pendlePYLpOracle).not.toBe(zeroAddress)
+  expect(registry.pendlePYLpOracleProxy).not.toBe(zeroAddress)
 }
