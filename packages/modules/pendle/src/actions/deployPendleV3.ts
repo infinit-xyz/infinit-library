@@ -9,6 +9,7 @@ import {
   DeployBaseSplitCodeFactoryContractSubaction,
   DeployBaseSplitCodeFactoryContractSubactionMsg,
 } from '@actions/on-chain/subactions/deployBaseSplitCodeFactoryContract'
+import { DeployMulticall2SubAction } from '@actions/on-chain/subactions/deployMulticall2'
 import { DeployOracleLibSubaction, DeployOracleLibSubactionMsg } from '@actions/on-chain/subactions/deployOracleLib'
 import { DeployPendleGaugeControllerMainchainUpgSubaction } from '@actions/on-chain/subactions/deployPendleGaugeControllerMainchainUpg'
 import { DeployPendleLimitRouterMsg, DeployPendleLimitRouterSubAction } from '@actions/on-chain/subactions/deployPendleLimitRouter'
@@ -32,11 +33,13 @@ import {
   DeployPendleMsgSendEndpointUpgProxySubaction,
   DeployPendleMsgSendEndpointUpgProxySubactionMsg,
 } from '@actions/on-chain/subactions/deployPendleMsgSendEndpointUpgProxy'
+import { DeployPendleMulticallV2Msg, DeployPendleMulticallV2SubAction } from '@actions/on-chain/subactions/deployPendleMulticallV2'
 import { DeployPendlePYLpOracleMsg, DeployPendlePYLpOracleSubaction } from '@actions/on-chain/subactions/deployPendlePYLpOracle'
 import {
   DeployPendlePYLpOracleProxyMsg,
   DeployPendlePYLpOracleProxySubAction,
 } from '@actions/on-chain/subactions/deployPendlePYLpOracleProxy'
+import { DeployPendlePoolDeployHelperSubAction } from '@actions/on-chain/subactions/deployPendlePoolDeployHelper'
 import { DeployPendleRouterStaticMsg, DeployPendleRouterStaticSubAction } from '@actions/on-chain/subactions/deployPendleRouterStatic'
 import { DeployPendleRouterV4Msg, DeployPendleRouterV4SubAction } from '@actions/on-chain/subactions/deployPendleRouterV4'
 import { DeployPendleSwapSubaction } from '@actions/on-chain/subactions/deployPendleSwap'
@@ -55,6 +58,8 @@ import {
 import { DeployProxyAdminMsg, DeployProxyAdminSubAction } from '@actions/on-chain/subactions/deployProxyAdmin'
 import { DeployPendleRouterFacetsMsg, DeployPendleRouterFacetsSubAction } from '@actions/on-chain/subactions/deployRouterFacets'
 import { DeployPendleStaticFacetsMsg, DeployPendleStaticFacetsSubAction } from '@actions/on-chain/subactions/deployRouterStaticFacets'
+import { DeploySimulateHelperSubAction } from '@actions/on-chain/subactions/deploySimulateHelper'
+import { DeploySupplyCapReaderSubAction } from '@actions/on-chain/subactions/deploySupplyCapReader'
 import {
   DeployVotingEscrowPendleMainchainSubaction,
   DeployVotingEscrowPendleMainchainSubactionMsg,
@@ -323,11 +328,27 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           pendlePYLpOracle: message.pendlePYLpOracleProxy,
           blockCycleNumerator: params.blockCycleNumerator,
         }),
+
       // step 23: deploy PendleMulticallV2
+      () => new DeployPendleMulticallV2SubAction(deployer, {}),
+
       // step 24: deploy Multicall
+      () => new DeployMulticall2SubAction(deployer, {}),
+
       // step 25: deploy SimulateHelper
-      // step 26: deploy SupplycapReader
+      () => new DeploySimulateHelperSubAction(deployer, {}),
+
+      // step 26: deploy SupplyCapReader
+      () => new DeploySupplyCapReaderSubAction(deployer, {}),
+
       // step 27: deploy PendlePoolDeployHelper
+      (message: DeployPendleMarketFactoryV3SubactionMsg & DeployPendleRouterV4Msg & DeployPendleYieldContractFactorySubactionMsg) =>
+        new DeployPendlePoolDeployHelperSubAction(deployer, {
+          marketFactory: message.pendleMarketFactoryV3,
+          router: message.pendleRouterV4,
+          yieldContractFactory: message.pendleYieldContractFactory,
+        }),
+
       // step 28: deploy PendleERC20SY
       // step 29: deploy deploy5115MarketAndSeedLiquidity???
       // step 30: deploy PendleGovernanceProxy

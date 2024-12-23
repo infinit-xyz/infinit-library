@@ -91,4 +91,12 @@ const checkRegistry = async (registry: PendleV3Registry) => {
   expect(registry.pendleLimitRouterProxy).not.toBe(zeroAddress)
   expect(registry.pendlePYLpOracle).not.toBe(zeroAddress)
   expect(registry.pendlePYLpOracleProxy).not.toBe(zeroAddress)
+
+  // check off-chain
+  expect(registry.pendleMulticallV2).not.toBe(zeroAddress)
+  expect(registry.multicall).not.toBe(zeroAddress)
+  expect(registry.simulateHelper).not.toBe(zeroAddress)
+  expect(registry.supplyCapReader).not.toBe(zeroAddress)
+
+  expect(registry.pendlePoolDeployHelper).not.toBe(zeroAddress)
 }
