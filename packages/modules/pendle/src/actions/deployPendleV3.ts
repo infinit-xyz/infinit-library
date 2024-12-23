@@ -92,7 +92,7 @@ export const DeployPendleV3ActionParamsSchema = z.object({
   rewardToken: zodAddressNonZero.describe(`The address of the reward token e.g. '0x123...abc'`),
   feeRecipient: zodAddressNonZero.describe(`The address of the fee recipient e.g. '0x123...abc'`),
   wrappedNativetoken: zodAddressNonZero.describe(`The address of the wrapped native token e.g. '0x123...abc'`),
-  governance: zodAddressNonZero.describe(`The address of the governance e.g. '0x123...abc'`),
+  guardian: zodAddressNonZero.describe(`The address of the guardian e.g. '0x123...abc'`),
   yieldContractFactory: z.object({
     expiryDivisor: z
       .bigint()
@@ -360,19 +360,15 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           yieldContractFactory: message.pendleYieldContractFactory,
         }),
 
-      // step 28: TODO: should be in support new market??? -> deploy PendleERC20SY
-
-      // step 29: TODO: should be in support new market??? -> call deploy5115MarketAndSeedLiquidity in PendlePoolDeployerHelper
-
-      // step 30: deploy PendleGovernanceProxy
-      // step 30.1: deploy implementation
+      // step 28: deploy PendleGovernanceProxy
+      // step 28.1: deploy implementation
       () => new DeployPendleGovernanceProxySubAction(deployer, {}),
-      // step 30.2: deploy proxy
+      // step 28.2: deploy proxy
       (message: DeployPendleGovernanceProxyMsg) =>
         new DeployProxyPendleGovernanceProxySubAction(deployer, {
           implementation: message.pendleGovernanceProxyImpl,
         }),
-      // step 30.3: initialize proxy (grant default admin role to the deployer)
+      // step 28.3: initialize proxy (grant default admin role to the deployer)
       // NOTE: the contract uses roles DEFAULT_ADMIN and GUARDIAN for onlyGuardian modifier
       // and DEFAULT_ADMIN for admin
       (message: DeployProxyPendleGovernanceProxyMsg) =>
@@ -381,18 +377,14 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           governance: deployer.walletClient.account.address,
         }),
 
-      // step 31: grant role guardian
-      // step 31.1: grant role guardian to governance
+      // step 29: grant role guardian
       (message: DeployProxyPendleGovernanceProxyMsg) =>
         new GrantRoleGuardianSubAction(deployer, {
           pendleGovernanceProxy: message.pendleGovernanceProxy,
-          account: params.governance,
+          account: params.guardian,
         }),
-      // step 31.2: TODO: should we do this?? -> give role guardian to hardware deployer?
 
-      // step 32: TODO: what is this??? -> setLnFeeRateRoots
-
-      // step 33: deploy BoringOneracle
+      // step 30: deploy BoringOneracle
       () => new DeployPendleBoringOneracleSubAction(deployer, {}),
     ]
   }

@@ -35,7 +35,7 @@ describe('deployPendleV3Action', () => {
         rewardFeeRate: 30000000000000000n,
       },
       rewardToken: bnAddress,
-      governance: bnAddress,
+      guardian: bnAddress,
       marketContractFactory: {
         reserveFeePercent: 10,
         guaugeController: bnAddress,
