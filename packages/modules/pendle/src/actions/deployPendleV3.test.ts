@@ -1,12 +1,13 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
-import { zeroAddress } from 'viem'
+import { keccak256, toHex, zeroAddress } from 'viem'
 import { Account, privateKeyToAccount } from 'viem/accounts'
 
 import { PendleV3Registry } from '../type'
 import { ANVIL_PRIVATE_KEY } from './__mocks__/account'
-import { DeployPendleV3Action } from './deployPendleV3'
+import { DeployPendleV3Action, DeployPendleV3Params } from './deployPendleV3'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
+import { readArtifact } from '@utils/artifact'
 
 describe('deployPendleV3Action', () => {
   let client: TestInfinitWallet
@@ -19,38 +20,70 @@ describe('deployPendleV3Action', () => {
   })
 
   test('deployPendleV3Action', async () => {
-    const action = new DeployPendleV3Action({
-      params: {
-        refundAddress: bnAddress,
-        lzEndpoint: bnAddress,
-        governanceToken: bnAddress,
-        initialApproxDestinationGas: 100000n,
-        // using the parameters for the contractFactory referenced from https://basescan.org/tx/0x06d6e63b9e08be0e504375787193e674678d553c7a83546f8ee63d824c31f88a
-        wrappedNativetoken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
-        feeRecipient: '0x0000000000000000000000000000000000000001',
-        treasury: bnAddress,
-        yieldContractFactory: {
-          expiryDivisor: 86400n,
-          interestFeeRate: 30000000000000000n,
-          rewardFeeRate: 30000000000000000n,
-        },
-        rewardToken: bnAddress,
-        marketContractFactory: {
-          reserveFeePercent: 10,
-          guaugeController: bnAddress,
-        },
-        blockCycleNumerator: 1000,
+    const params: DeployPendleV3Params = {
+      refundAddress: bnAddress,
+      lzEndpoint: bnAddress,
+      governanceToken: bnAddress,
+      initialApproxDestinationGas: 100000n,
+      // using the parameters for the contractFactory referenced from https://basescan.org/tx/0x06d6e63b9e08be0e504375787193e674678d553c7a83546f8ee63d824c31f88a
+      wrappedNativetoken: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+      feeRecipient: '0x0000000000000000000000000000000000000001',
+      treasury: bnAddress,
+      yieldContractFactory: {
+        expiryDivisor: 86400n,
+        interestFeeRate: 30000000000000000n,
+        rewardFeeRate: 30000000000000000n,
       },
+      rewardToken: bnAddress,
+      governance: bnAddress,
+      marketContractFactory: {
+        reserveFeePercent: 10,
+        guaugeController: bnAddress,
+      },
+      blockCycleNumerator: 1000,
+    }
+
+    const action = new DeployPendleV3Action({
+      params: params,
       signer: {
         deployer: client,
       },
     })
+
+    // deploy
     let registry = {}
     registry = await action.run(registry)
+
+    // validate
     checkRegistry(registry)
+    checkRoles(client, registry, params)
   })
 })
 
+// --- Validate Functions ---
+const checkRoles = async (client: TestInfinitWallet, registry: PendleV3Registry, params: DeployPendleV3Params) => {
+  const [pendleGovernanceProxyArtifact] = await Promise.all([readArtifact('PendleGovernanceProxy')])
+  const DEFAULT_ADMIN = toHex(0x00, { size: 32 })
+  const GUARDIAN = keccak256(toHex('GUARDIAN'))
+
+  // check role default admin on PendleGovernanceProxy
+  const hasRoleDefaultAdmin = await client.publicClient.readContract({
+    address: registry.pendleGovernanceProxy!,
+    abi: pendleGovernanceProxyArtifact.abi,
+    functionName: 'hasRole',
+    args: [DEFAULT_ADMIN, client.walletClient.account.address],
+  })
+  expect(hasRoleDefaultAdmin).toBe(true)
+
+  // check role guardian on PendleGovernanceProxy
+  const hasRoleGuardian = await client.publicClient.readContract({
+    address: registry.pendleGovernanceProxy!,
+    abi: pendleGovernanceProxyArtifact.abi,
+    functionName: 'hasRole',
+    args: [GUARDIAN, params.governance],
+  })
+  expect(hasRoleGuardian).toBe(true)
+}
 const checkRegistry = async (registry: PendleV3Registry) => {
   expect(registry.baseSplitCodeFactoryContract).not.toBe(zeroAddress)
   expect(registry.oracleLib).not.toBe(zeroAddress)
@@ -99,4 +132,7 @@ const checkRegistry = async (registry: PendleV3Registry) => {
   expect(registry.supplyCapReader).not.toBe(zeroAddress)
 
   expect(registry.pendlePoolDeployHelper).not.toBe(zeroAddress)
+  expect(registry.pendleGovernanceProxyImpl).not.toBe(zeroAddress)
+  expect(registry.pendleGovernanceProxy).not.toBe(zeroAddress)
+  expect(registry.pendleBoringOneracle).not.toBe(zeroAddress)
 }
