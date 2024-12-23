@@ -80,7 +80,7 @@ const checkRoles = async (client: TestInfinitWallet, registry: PendleV3Registry,
     address: registry.pendleGovernanceProxy!,
     abi: pendleGovernanceProxyArtifact.abi,
     functionName: 'hasRole',
-    args: [GUARDIAN, params.governance],
+    args: [GUARDIAN, params.guardian],
   })
   expect(hasRoleGuardian).toBe(true)
 }
