@@ -11,7 +11,10 @@ import {
 } from '@actions/on-chain/subactions/deployBaseSplitCodeFactoryContract'
 import { DeployMulticall2SubAction } from '@actions/on-chain/subactions/deployMulticall2'
 import { DeployOracleLibSubaction, DeployOracleLibSubactionMsg } from '@actions/on-chain/subactions/deployOracleLib'
-import { DeployPendleGaugeControllerMainchainUpgSubaction, DeployPendleGaugeControllerMainchainUpgSubactionMsg } from '@actions/on-chain/subactions/deployPendleGaugeControllerMainchainUpg'
+import {
+  DeployPendleGaugeControllerMainchainUpgSubaction,
+  DeployPendleGaugeControllerMainchainUpgSubactionMsg,
+} from '@actions/on-chain/subactions/deployPendleGaugeControllerMainchainUpg'
 import { DeployPendleLimitRouterMsg, DeployPendleLimitRouterSubAction } from '@actions/on-chain/subactions/deployPendleLimitRouter'
 import {
   DeployPendleLimitRouterProxyMsg,
@@ -73,18 +76,21 @@ import { InitializePendleYieldContractFactorySubaction } from '@actions/on-chain
 import { SetPendleRouterStaticFacetsSubAction } from '@actions/on-chain/subactions/setPendleRouterStaticFacets'
 import { SetPendleRouterV4FacetsSubAction } from '@actions/on-chain/subactions/setPendleRouterV4Facets'
 
-import type { PendleV3Registry } from '@/src/type'
 import { DeployPendleBoringOneracleSubAction } from './on-chain/subactions/deployPendleBoringOneracle'
 import { DeployPendleGovernanceProxyMsg, DeployPendleGovernanceProxySubAction } from './on-chain/subactions/deployPendleGovernanceProxy'
 import {
   DeployProxyPendleGovernanceProxyMsg,
   DeployProxyPendleGovernanceProxySubAction,
 } from './on-chain/subactions/deployProxyPendleGovernanceProxy'
-import { DeployPendleGaugeControllerMainchainUpgProxySubaction, DeployPendleGaugeControllerMainchainUpgProxySubactionMsg } from './on-chain/subactions/deploypendleGaugeControllerMainchainUpgProxy'
+import {
+  DeployPendleGaugeControllerMainchainUpgProxySubaction,
+  DeployPendleGaugeControllerMainchainUpgProxySubactionMsg,
+} from './on-chain/subactions/deploypendleGaugeControllerMainchainUpgProxy'
 import { GrantRoleGuardianSubAction } from './on-chain/subactions/grantRoleGuardianPendleGovernanceProxy'
 import { InitializePendleGaugeControllerMainchainUpgSubaction } from './on-chain/subactions/initializePendleGaugeControllerMainchainUpgProxy'
 import { InitializePendleGovernanceProxySubAction } from './on-chain/subactions/initializePendleGovernanceProxy'
 import { UpgradePendleGaugeControllerMainchainUpgSubaction } from './on-chain/subactions/upgradePendleGaugeControllerMainchainUpgProxy'
+import type { PendleV3Registry } from '@/src/type'
 
 export const DeployPendleV3ActionParamsSchema = z.object({
   refundAddress: zodAddressNonZero.describe(`The address to refund e.g. '0x123...abc'`),
@@ -252,7 +258,8 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
       (
         message: DeployPendleMarketV3CreationCodeSubactionMsg &
           DeployPendleYieldContractFactorySubactionMsg &
-          DeployVotingEscrowPendleMainchainSubactionMsg & DeployPendleGaugeControllerMainchainUpgProxySubactionMsg,
+          DeployVotingEscrowPendleMainchainSubactionMsg &
+          DeployPendleGaugeControllerMainchainUpgProxySubactionMsg,
       ) =>
         new DeployPendleMarketFactoryV3Subaction(deployer, {
           yieldContractFactory: message.pendleYieldContractFactory,
@@ -280,7 +287,7 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
       (message: DeployPendleGaugeControllerMainchainUpgSubactionMsg & DeployPendleGaugeControllerMainchainUpgProxySubactionMsg) =>
         new UpgradePendleGaugeControllerMainchainUpgSubaction(deployer, {
           pendleGaugeControllerMainchainUpg: message.pendleGaugeControllerMainchainUpgProxy,
-          newImplementation: message.pendleGaugeControllerMainchainUpgImpl
+          newImplementation: message.pendleGaugeControllerMainchainUpgImpl,
         }),
       // todo: transfer ownership to the guardian
       // step 14 deploy RouterV4 Facets

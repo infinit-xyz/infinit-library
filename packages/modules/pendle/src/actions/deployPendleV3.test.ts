@@ -5,12 +5,12 @@ import { Account, privateKeyToAccount } from 'viem/accounts'
 
 import { TransactionData } from '@infinit-xyz/core'
 
-import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
-import { readArtifact } from '@utils/artifact'
 import { PendleV3Registry } from '../type'
 import { ANVIL_PRIVATE_KEY } from './__mocks__/account'
 import { ARBITRUM_TEST_ADDRESSES } from './__mocks__/address'
 import { DeployPendleV3Action, DeployPendleV3Params } from './deployPendleV3'
+import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
+import { readArtifact } from '@utils/artifact'
 
 describe('deployPendleV3Action', () => {
   let client: TestInfinitWallet
@@ -104,13 +104,13 @@ describe('deployPendleV3Action', () => {
       address: yt,
       abi: yieldTokenArtifact.abi,
       functionName: 'SY',
-      args: []
+      args: [],
     })
     const expectedSy = await client.publicClient.readContract({
       address: '0xA1c32EF8d3c4c30cB596bAb8647e11daF0FA5C94',
       abi: yieldTokenArtifact.abi,
       functionName: 'SY',
-      args: []
+      args: [],
     })
     expect(sy).toBe(expectedSy)
     // use pt from create market
@@ -138,11 +138,8 @@ describe('deployPendleV3Action', () => {
     })
     console.log(eventLog2)
 
-
-
     // test router
     // mint syFromToken
-    
   })
 })
 

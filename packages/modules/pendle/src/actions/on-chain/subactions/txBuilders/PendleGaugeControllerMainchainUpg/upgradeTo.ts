@@ -11,7 +11,7 @@ export type UpgradePendleGaugeControllerMainchainUpgTxBuilderParams = {
 
 export class UpgradePendleGaugeControllerMainchainUpgTxBuilder extends TxBuilder {
   public pendleGaugeControllerMainchainUpg: Address
-    public newImplementation: Address
+  public newImplementation: Address
 
   constructor(client: InfinitWallet, params: UpgradePendleGaugeControllerMainchainUpgTxBuilderParams) {
     super(UpgradePendleGaugeControllerMainchainUpgTxBuilder.name, client)
