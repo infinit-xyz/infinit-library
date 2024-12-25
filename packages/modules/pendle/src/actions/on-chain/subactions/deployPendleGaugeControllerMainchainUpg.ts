@@ -13,7 +13,7 @@ import { PendleV3Registry } from '@/src/type'
 export type DeployPendleGaugeControllerMainchainUpgSubactionParams = DeployPendleGaugeControllerMainchainUpgTxBuilderParams
 
 export type DeployPendleGaugeControllerMainchainUpgSubactionMsg = {
-  pendleGaugeControllerMainchainUpg: Address
+  pendleGaugeControllerMainchainUpgImpl: Address
 }
 export class DeployPendleGaugeControllerMainchainUpgSubaction extends SubAction<
   DeployPendleGaugeControllerMainchainUpgSubactionParams,
@@ -39,10 +39,10 @@ export class DeployPendleGaugeControllerMainchainUpgSubaction extends SubAction<
     if (!pendleGaugeControllerMainchainUpg) {
       throw new ContractNotFoundError(deployPendleGaugeControllerMainchainUpgTxHash, 'PendleGaugeControllerMainchainUpg')
     }
-    registry.pendleGaugeControllerMainchainUpg = pendleGaugeControllerMainchainUpg
+    registry.pendleGaugeControllerMainchainUpgImpl = pendleGaugeControllerMainchainUpg
 
     const newMessage = {
-      pendleGaugeControllerMainchainUpg: pendleGaugeControllerMainchainUpg,
+      pendleGaugeControllerMainchainUpgImpl: pendleGaugeControllerMainchainUpg,
     }
 
     return {

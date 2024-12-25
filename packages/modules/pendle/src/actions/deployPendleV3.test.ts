@@ -1,13 +1,16 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
-import { keccak256, toHex, zeroAddress } from 'viem'
+import { Address, decodeEventLog, encodeFunctionData, keccak256, toHex, zeroAddress } from 'viem'
 import { Account, privateKeyToAccount } from 'viem/accounts'
 
-import { PendleV3Registry } from '../type'
-import { ANVIL_PRIVATE_KEY } from './__mocks__/account'
-import { DeployPendleV3Action, DeployPendleV3Params } from './deployPendleV3'
+import { TransactionData } from '@infinit-xyz/core'
+
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'
+import { PendleV3Registry } from '../type'
+import { ANVIL_PRIVATE_KEY } from './__mocks__/account'
+import { ARBITRUM_TEST_ADDRESSES } from './__mocks__/address'
+import { DeployPendleV3Action, DeployPendleV3Params } from './deployPendleV3'
 
 describe('deployPendleV3Action', () => {
   let client: TestInfinitWallet
@@ -51,12 +54,95 @@ describe('deployPendleV3Action', () => {
     })
 
     // deploy
-    let registry = {}
+    let registry: PendleV3Registry = {}
     registry = await action.run(registry)
 
     // validate
     checkRegistry(registry)
     checkRoles(client, registry, params)
+
+    // test create yt from sy
+    const ytFactoryArtifact = await readArtifact('PendleYieldContractFactory')
+    const block = await client.publicClient.getBlock()
+    let blockTimestamp = Number(block.timestamp) + 86400 * 60
+    blockTimestamp = blockTimestamp - (blockTimestamp % 86400)
+    const createYTData = await encodeFunctionData({
+      abi: ytFactoryArtifact.abi,
+      functionName: 'createYieldContract',
+      args: [ARBITRUM_TEST_ADDRESSES.syAUsdc, blockTimestamp, true],
+    })
+    const createYTTx: TransactionData = {
+      data: createYTData,
+      to: registry.pendleYieldContractFactory!,
+    }
+    const txReceipts = await client.sendTransactions([
+      {
+        name: 'createYieldContract',
+        txData: createYTTx,
+      },
+    ])
+    const txReceipt = txReceipts[0]
+    // get pt and yt address from event
+    const eventLog = decodeEventLog({
+      abi: ytFactoryArtifact.abi,
+      data: txReceipt.logs[1].data,
+      topics: txReceipt.logs[1].topics,
+    })
+    console.log(eventLog)
+    const args: {
+      SY: Address
+      expiry: bigint
+      PT: Address
+      YT: Address
+    } = eventLog.args
+    const pt = args.PT
+    const yt = args.YT
+    // todo: check yt's sy is same with real pendle yt's sy
+    // read yt's SY
+    const yieldTokenArtifact = await readArtifact('PendleYieldToken')
+    const sy = await client.publicClient.readContract({
+      address: yt,
+      abi: yieldTokenArtifact.abi,
+      functionName: 'SY',
+      args: []
+    })
+    const expectedSy = await client.publicClient.readContract({
+      address: '0xA1c32EF8d3c4c30cB596bAb8647e11daF0FA5C94',
+      abi: yieldTokenArtifact.abi,
+      functionName: 'SY',
+      args: []
+    })
+    expect(sy).toBe(expectedSy)
+    // use pt from create market
+    const marketFactoryArtifact = await readArtifact('PendleMarketFactoryV3')
+    const createMarketData = await encodeFunctionData({
+      abi: marketFactoryArtifact.abi,
+      functionName: 'createNewMarket',
+      args: [pt, 112567687675000000000n, 1029547938000000000n, 499875041000000n],
+    })
+    const createMarketTx: TransactionData = {
+      data: createMarketData,
+      to: registry.pendleMarketFactoryV3!,
+    }
+    const txReceipts2 = await client.sendTransactions([
+      {
+        name: 'createNewMarket',
+        txData: createMarketTx,
+      },
+    ])
+    const txReceipt2 = txReceipts2[0]
+    const eventLog2 = decodeEventLog({
+      abi: marketFactoryArtifact.abi,
+      data: txReceipt2.logs[0].data,
+      topics: txReceipt2.logs[0].topics,
+    })
+    console.log(eventLog2)
+
+
+
+    // test router
+    // mint syFromToken
+    
   })
 })
 
@@ -87,7 +173,7 @@ const checkRoles = async (client: TestInfinitWallet, registry: PendleV3Registry,
 const checkRegistry = async (registry: PendleV3Registry) => {
   expect(registry.baseSplitCodeFactoryContract).not.toBe(zeroAddress)
   expect(registry.oracleLib).not.toBe(zeroAddress)
-  expect(registry.pendleGaugeControllerMainchainUpg).not.toBe(zeroAddress)
+  expect(registry.pendleGaugeControllerMainchainUpgImpl).not.toBe(zeroAddress)
   expect(registry.pendleMarketFactoryV3).not.toBe(zeroAddress)
   expect(registry.pendlePYLpOracle).not.toBe(zeroAddress)
   expect(registry.pendleSwap).not.toBe(zeroAddress)
@@ -97,7 +183,7 @@ const checkRegistry = async (registry: PendleV3Registry) => {
   expect(registry.pendleMsgSendEndpointUpgProxy).not.toBe(zeroAddress)
   expect(registry.pendleVotingContollerUpgImpl).not.toBe(zeroAddress)
   expect(registry.pendleVotingControllerUpgProxy).not.toBe(zeroAddress)
-  expect(registry.pendleGaugeControllerMainchainUpg).not.toBe(zeroAddress)
+  expect(registry.pendleGaugeControllerMainchainUpgProxy).not.toBe(zeroAddress)
 
   // check pendleRouterV4 facets
   expect(registry.routerStorageV4).not.toBe(zeroAddress)

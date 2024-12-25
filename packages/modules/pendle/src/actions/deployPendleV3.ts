@@ -11,7 +11,7 @@ import {
 } from '@actions/on-chain/subactions/deployBaseSplitCodeFactoryContract'
 import { DeployMulticall2SubAction } from '@actions/on-chain/subactions/deployMulticall2'
 import { DeployOracleLibSubaction, DeployOracleLibSubactionMsg } from '@actions/on-chain/subactions/deployOracleLib'
-import { DeployPendleGaugeControllerMainchainUpgSubaction } from '@actions/on-chain/subactions/deployPendleGaugeControllerMainchainUpg'
+import { DeployPendleGaugeControllerMainchainUpgSubaction, DeployPendleGaugeControllerMainchainUpgSubactionMsg } from '@actions/on-chain/subactions/deployPendleGaugeControllerMainchainUpg'
 import { DeployPendleLimitRouterMsg, DeployPendleLimitRouterSubAction } from '@actions/on-chain/subactions/deployPendleLimitRouter'
 import {
   DeployPendleLimitRouterProxyMsg,
@@ -73,15 +73,18 @@ import { InitializePendleYieldContractFactorySubaction } from '@actions/on-chain
 import { SetPendleRouterStaticFacetsSubAction } from '@actions/on-chain/subactions/setPendleRouterStaticFacets'
 import { SetPendleRouterV4FacetsSubAction } from '@actions/on-chain/subactions/setPendleRouterV4Facets'
 
+import type { PendleV3Registry } from '@/src/type'
 import { DeployPendleBoringOneracleSubAction } from './on-chain/subactions/deployPendleBoringOneracle'
 import { DeployPendleGovernanceProxyMsg, DeployPendleGovernanceProxySubAction } from './on-chain/subactions/deployPendleGovernanceProxy'
 import {
   DeployProxyPendleGovernanceProxyMsg,
   DeployProxyPendleGovernanceProxySubAction,
 } from './on-chain/subactions/deployProxyPendleGovernanceProxy'
+import { DeployPendleGaugeControllerMainchainUpgProxySubaction, DeployPendleGaugeControllerMainchainUpgProxySubactionMsg } from './on-chain/subactions/deploypendleGaugeControllerMainchainUpgProxy'
 import { GrantRoleGuardianSubAction } from './on-chain/subactions/grantRoleGuardianPendleGovernanceProxy'
+import { InitializePendleGaugeControllerMainchainUpgSubaction } from './on-chain/subactions/initializePendleGaugeControllerMainchainUpgProxy'
 import { InitializePendleGovernanceProxySubAction } from './on-chain/subactions/initializePendleGovernanceProxy'
-import type { PendleV3Registry } from '@/src/type'
+import { UpgradePendleGaugeControllerMainchainUpgSubaction } from './on-chain/subactions/upgradePendleGaugeControllerMainchainUpgProxy'
 
 export const DeployPendleV3ActionParamsSchema = z.object({
   refundAddress: zodAddressNonZero.describe(`The address to refund e.g. '0x123...abc'`),
@@ -202,12 +205,54 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           baseSplitCodeFactoryContact: message.baseSplitCodeFactoryContract,
         })
       },
+      // step 10: deploy PendleVotingControllerUpg
+      // step 10.1: deploy implementation
+      (message: DeployPendleMsgSendEndpointUpgProxySubactionMsg & DeployVotingEscrowPendleMainchainSubactionMsg) =>
+        new DeployPendleVotingContollerUpgSubaction(deployer, {
+          vePendle: message.votingEscrowPendleMainchain,
+          pendleMsgSendEndpoint: message.pendleMsgSendEndpointUpgProxy,
+          initialApproxDestinationGas: params.initialApproxDestinationGas,
+        }),
+      // step 10.2: deploy proxy
+      (message: DeployPendleVotingContollerUpgSubactionMsg) =>
+        new DeployPendleVotingControllerUpgProxySubaction(deployer, {
+          implementation: message.pendleVotingContollerUpgImpl,
+          data: '0x',
+        }),
+      // step 10.3: initialize proxy
+      (message: DeployPendleVotingControllerUpgProxySubactionMsg) =>
+        new InitializePendleVotingControllerUpgSubaction(deployer, {
+          pendleVotingControllerUpg: message.pendleVotingControllerUpgProxy,
+        }),
 
-      // step 10: deploy PendleMarketFactoryV3
+      // step 11: deploy PendleGaugeControllerMainchainUpg
+      // step 11.1: deploy implementation
+      // note: we will deploy the real implementation after the market factory
+      (message: DeployPendleMarketFactoryV3SubactionMsg & DeployPendleVotingControllerUpgProxySubactionMsg) =>
+        new DeployPendleGaugeControllerMainchainUpgSubaction(deployer, {
+          votingController: message.pendleVotingControllerUpgProxy,
+          pendle: params.rewardToken,
+          marketFactory: zeroAddress,
+          marketFactory2: zeroAddress,
+          marketFactory3: zeroAddress,
+          marketFactory4: zeroAddress,
+        }),
+      // step 11.2: deploy proxy
+      (message: DeployPendleGaugeControllerMainchainUpgSubactionMsg) =>
+        new DeployPendleGaugeControllerMainchainUpgProxySubaction(deployer, {
+          implementation: message.pendleGaugeControllerMainchainUpgImpl,
+          data: '0x',
+        }),
+      // step 11.3: initialize proxy
+      (message: DeployPendleGaugeControllerMainchainUpgProxySubactionMsg) =>
+        new InitializePendleGaugeControllerMainchainUpgSubaction(deployer, {
+          pendleGaugeControllerMainchainUpg: message.pendleGaugeControllerMainchainUpgProxy,
+        }),
+      // step 12: deploy PendleMarketFactoryV3
       (
         message: DeployPendleMarketV3CreationCodeSubactionMsg &
           DeployPendleYieldContractFactorySubactionMsg &
-          DeployVotingEscrowPendleMainchainSubactionMsg,
+          DeployVotingEscrowPendleMainchainSubactionMsg & DeployPendleGaugeControllerMainchainUpgProxySubactionMsg,
       ) =>
         new DeployPendleMarketFactoryV3Subaction(deployer, {
           yieldContractFactory: message.pendleYieldContractFactory,
@@ -218,30 +263,10 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           treasury: params.treasury,
           reserveFeePercent: params.marketContractFactory.reserveFeePercent,
           vePendle: message.votingEscrowPendleMainchain,
-          guaugeController: params.marketContractFactory.guaugeController,
+          guaugeController: message.pendleGaugeControllerMainchainUpgProxy,
         }),
-
-      // step 11: deploy PendleVotingControllerUpg
-      // step 11.1: deploy implementation
-      (message: DeployPendleMsgSendEndpointUpgProxySubactionMsg & DeployVotingEscrowPendleMainchainSubactionMsg) =>
-        new DeployPendleVotingContollerUpgSubaction(deployer, {
-          vePendle: message.votingEscrowPendleMainchain,
-          pendleMsgSendEndpoint: message.pendleMsgSendEndpointUpgProxy,
-          initialApproxDestinationGas: params.initialApproxDestinationGas,
-        }),
-      // step 11.2: deploy proxy
-      (message: DeployPendleVotingContollerUpgSubactionMsg) =>
-        new DeployPendleVotingControllerUpgProxySubaction(deployer, {
-          implementation: message.pendleVotingContollerUpgImpl,
-          data: '0x',
-        }),
-      // step 11.3: initialize proxy
-      (message: DeployPendleVotingControllerUpgProxySubactionMsg) =>
-        new InitializePendleVotingControllerUpgSubaction(deployer, {
-          pendleVotingControllerUpg: message.pendleVotingControllerUpgProxy,
-        }),
-
-      // step 12: deploy PendleGaugeControllerMainchainUpg
+      // step 13 upgrade PendleGaugeControllerMainchainUpg to the real implementation
+      // step 13.1: deploy implementation
       (message: DeployPendleMarketFactoryV3SubactionMsg & DeployPendleVotingControllerUpgProxySubactionMsg) =>
         new DeployPendleGaugeControllerMainchainUpgSubaction(deployer, {
           votingController: message.pendleVotingControllerUpgProxy,
@@ -251,18 +276,24 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           marketFactory3: zeroAddress,
           marketFactory4: message.pendleMarketFactoryV3,
         }),
-
-      // step 13 deploy RouterV4 Facets
+      // step 13.2: upgrade to the real implementation
+      (message: DeployPendleGaugeControllerMainchainUpgSubactionMsg & DeployPendleGaugeControllerMainchainUpgProxySubactionMsg) =>
+        new UpgradePendleGaugeControllerMainchainUpgSubaction(deployer, {
+          pendleGaugeControllerMainchainUpg: message.pendleGaugeControllerMainchainUpgProxy,
+          newImplementation: message.pendleGaugeControllerMainchainUpgImpl
+        }),
+      // todo: transfer ownership to the guardian
+      // step 14 deploy RouterV4 Facets
       () => new DeployPendleRouterFacetsSubAction(deployer, {}),
 
-      // step 14 deploy RouterV4
+      // step 15 deploy RouterV4
       (message: DeployPendleRouterFacetsMsg) =>
         new DeployPendleRouterV4SubAction(deployer, {
           owner: deployer.walletClient.account.address,
           routerStorageV4: message.routerStorageV4,
         }),
 
-      // step 15: set pendleRouterV4 selectorToFacets
+      // step 16: set pendleRouterV4 selectorToFacets
       (message: DeployPendleRouterV4Msg & DeployPendleRouterFacetsMsg) =>
         new SetPendleRouterV4FacetsSubAction(deployer, {
           pendleRouterV4: message.pendleRouterV4,
@@ -275,20 +306,20 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           actionSwapYTV3: message.actionSwapYTV3,
         }),
 
-      // step 16: deploy PendleRouterStatic Facets
+      // step 17: deploy PendleRouterStatic Facets
       (message: DeployPendleVotingControllerUpgProxySubactionMsg) =>
         new DeployPendleStaticFacetsSubAction(deployer, {
           owner: deployer.walletClient.account.address,
           vePendle: message.pendleVotingControllerUpgProxy,
         }),
 
-      // step 17: deploy PendleRouterStatic
+      // step 18: deploy PendleRouterStatic
       (message: DeployPendleStaticFacetsMsg) =>
         new DeployPendleRouterStaticSubAction(deployer, {
           actionStorageStatic: message.actionStorageStatic,
         }),
 
-      // step 18: set PendleRouterStatic selectorToFacets
+      // step 19: set PendleRouterStatic selectorToFacets
       (message: DeployPendleRouterStaticMsg) =>
         new SetPendleRouterStaticFacetsSubAction(deployer, {
           pendleRouterStatic: message.pendleRouterStatic,
@@ -300,59 +331,59 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           actionVePendleStatic: message.pendleRouterStatic,
         }),
 
-      // step 19: TODO: find out what is this??? -> deploy reflector
+      // step 20: TODO: find out what is this??? -> deploy reflector
 
-      // step 20: deploy ProxyAdmin
+      // step 21: deploy ProxyAdmin
       () => new DeployProxyAdminSubAction(deployer, {}),
 
-      // step 21: deploy PendleLimitRouter
-      // step 21.1: deploy implementation
+      // step 22: deploy PendleLimitRouter
+      // step 22.1: deploy implementation
       () =>
         new DeployPendleLimitRouterSubAction(deployer, {
           wrappedNativeToken: params.wrappedNativetoken,
         }),
-      // step 21.2: deploy proxy
+      // step 22.2: deploy proxy
       (message: DeployProxyAdminMsg & DeployPendleLimitRouterMsg) =>
         new DeployPendleLimitRouterProxySubAction(deployer, {
           proxyAdmin: message.proxyAdmin,
           pendleLimitRouterImpl: message.pendleLimitRouter,
         }),
-      // step 21.3: initialize proxy
+      // step 22.3: initialize proxy
       (message: DeployPendleLimitRouterProxyMsg) =>
         new InitializePendleLimitRouterSubaction(deployer, {
           pendleLimitRouter: message.pendleLimitRouterProxy,
           feeRecipient: params.feeRecipient,
         }),
 
-      // step 22: deploy PendlePYLpOracle
-      // step 22.1: deploy implementation
+      // step 23: deploy PendlePYLpOracle
+      // step 23.1: deploy implementation
       () => new DeployPendlePYLpOracleSubaction(deployer),
-      // step 22.2: deploy proxy
+      // step 23.2: deploy proxy
       (message: DeployProxyAdminMsg & DeployPendlePYLpOracleMsg) =>
         new DeployPendlePYLpOracleProxySubAction(deployer, {
           proxyAdmin: message.proxyAdmin,
           pendlePYLpOracleImpl: message.pendlePYLpOracle,
         }),
-      // step 22.3: initialize proxy
+      // step 23.3: initialize proxy
       (message: DeployPendlePYLpOracleProxyMsg) =>
         new InitializePendlePYLpOracleSubaction(deployer, {
           pendlePYLpOracle: message.pendlePYLpOracleProxy,
           blockCycleNumerator: params.blockCycleNumerator,
         }),
 
-      // step 23: deploy PendleMulticallV2
+      // step 24: deploy PendleMulticallV2
       () => new DeployPendleMulticallV2SubAction(deployer, {}),
 
-      // step 24: deploy Multicall
+      // step 25: deploy Multicall
       () => new DeployMulticall2SubAction(deployer, {}),
 
-      // step 25: deploy SimulateHelper
+      // step 26: deploy SimulateHelper
       () => new DeploySimulateHelperSubAction(deployer, {}),
 
-      // step 26: deploy SupplyCapReader
+      // step 27: deploy SupplyCapReader
       () => new DeploySupplyCapReaderSubAction(deployer, {}),
 
-      // step 27: deploy PendlePoolDeployHelper
+      // step 28: deploy PendlePoolDeployHelper
       (message: DeployPendleMarketFactoryV3SubactionMsg & DeployPendleRouterV4Msg & DeployPendleYieldContractFactorySubactionMsg) =>
         new DeployPendlePoolDeployHelperSubAction(deployer, {
           marketFactory: message.pendleMarketFactoryV3,
@@ -360,15 +391,15 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           yieldContractFactory: message.pendleYieldContractFactory,
         }),
 
-      // step 28: deploy PendleGovernanceProxy
-      // step 28.1: deploy implementation
+      // step 29: deploy PendleGovernanceProxy
+      // step 29.1: deploy implementation
       () => new DeployPendleGovernanceProxySubAction(deployer, {}),
-      // step 28.2: deploy proxy
+      // step 29.2: deploy proxy
       (message: DeployPendleGovernanceProxyMsg) =>
         new DeployProxyPendleGovernanceProxySubAction(deployer, {
           implementation: message.pendleGovernanceProxyImpl,
         }),
-      // step 28.3: initialize proxy (grant default admin role to the deployer)
+      // step 29.3: initialize proxy (grant default admin role to the deployer)
       // NOTE: the contract uses roles DEFAULT_ADMIN and GUARDIAN for onlyGuardian modifier
       // and DEFAULT_ADMIN for admin
       (message: DeployProxyPendleGovernanceProxyMsg) =>
@@ -377,14 +408,14 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
           governance: deployer.walletClient.account.address,
         }),
 
-      // step 29: grant role guardian
+      // step 30: grant role guardian
       (message: DeployProxyPendleGovernanceProxyMsg) =>
         new GrantRoleGuardianSubAction(deployer, {
           pendleGovernanceProxy: message.pendleGovernanceProxy,
           account: params.guardian,
         }),
 
-      // step 30: deploy BoringOneracle
+      // step 31: deploy BoringOneracle
       () => new DeployPendleBoringOneracleSubAction(deployer, {}),
     ]
   }

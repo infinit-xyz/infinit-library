@@ -28,4 +28,7 @@ export const ARBITRUM_TEST_ADDRESSES = {
   aaveExecutor: '0xFF1137243698CaA18EE364Cc966CF0e02A4e6327',
   aaveEmergencyAdmin: '0xbbd9f90699c1FA0D7A65870D241DD1f1217c96Eb',
   tester: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
+
+  // Pendle
+  syAUsdc: '0x50288c30c37FA1Ec6167a31E575EA8632645dE20'
 } satisfies Record<string, Address>

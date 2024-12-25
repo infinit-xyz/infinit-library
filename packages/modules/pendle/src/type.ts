@@ -21,7 +21,8 @@ export type PendleV3Registry = {
   proxyAdmin?: Address
   baseSplitCodeFactoryContract?: Address
   oracleLib?: Address
-  pendleGaugeControllerMainchainUpg?: Address
+  pendleGaugeControllerMainchainUpgImpl?: Address
+  pendleGaugeControllerMainchainUpgProxy?: Address
   pendleMarketFactoryV3?: Address
   pendlePYLpOracle?: Address
   pendleSwap?: Address

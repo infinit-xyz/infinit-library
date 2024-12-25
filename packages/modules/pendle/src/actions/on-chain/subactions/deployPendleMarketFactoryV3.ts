@@ -45,7 +45,7 @@ export class DeployPendleMarketFactoryV3Subaction extends SubAction<
       pendleMarketFactoryV3: pendleMarketFactoryV3,
     }
 
-    return {
+    return { 
       newRegistry: registry,
       newMessage: newMessage,
     }
