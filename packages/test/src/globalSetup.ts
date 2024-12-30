@@ -16,7 +16,7 @@ export default async function () {
         instance: anvil({
           chainId: chain.id,
           forkUrl: chain.fork.url,
-          timeout: 200000,
+          timeout: 500000,
           // forkBlockNumber: chain.fork.blockNumber,
           // noMining: true,
           // configOut: './anvil-config.json',
