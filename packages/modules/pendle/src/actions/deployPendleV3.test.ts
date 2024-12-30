@@ -142,9 +142,14 @@ describe('deployPendleV3Action', () => {
       topics: txReceipt2.logs[0].topics,
     })
     console.log(eventLog2)
-    const market = eventLog2.args.market!
-    expect(market).not.toBe(zeroAddress)
-    expect(eventLog2.args.PT!).toBe(pt)
+    let market: Address = zeroAddress
+    if ('market' in eventLog2.args && 'PT' in eventLog2.args) {
+      market = eventLog2.args.market
+      expect(market).not.toBe(zeroAddress)
+      expect(eventLog2.args.PT).toBe(pt)
+    } else {
+      throw new Error('Unexpected event log format')
+    }
     // note: we will test market's functionalities in router tests
     // test router
     // rich guy approve usdc to router
