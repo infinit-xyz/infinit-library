@@ -7,15 +7,15 @@ import {
   InitializePendleGovernanceProxySubActionParams,
 } from '@actions/on-chain/subactions/initializePendleGovernanceProxy'
 
-// import { PendleV3Registry } from '@/src/type'
+// import { PendleRegistry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
 describe('InitializePendleGovernanceProxySubAction', () => {
-  // const registry: PendleV3Registry = {}
+  // const registry: PendleRegistry = {}
   let subAction: InitializePendleGovernanceProxySubAction
   let client: TestInfinitWallet
   const tester = ARBITRUM_TEST_ADDRESSES.tester
-  // let result: SubActionExecuteResponse<PendleV3Registry, GrantRoleGuardianMsg>
+  // let result: SubActionExecuteResponse<PendleRegistry, GrantRoleGuardianMsg>
   // const callback = vi.fn()
 
   // TODO: use deployed contract address for implementation

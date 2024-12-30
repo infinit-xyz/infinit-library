@@ -8,7 +8,7 @@ import {
   DeployPendleGaugeControllerMainchainUpgTxBuilderParams,
 } from '@actions/on-chain/subactions/txBuilders/PendleGaugeControllerMainchainUpg/deploy'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type DeployPendleGaugeControllerMainchainUpgSubactionParams = DeployPendleGaugeControllerMainchainUpgTxBuilderParams
 
@@ -17,7 +17,7 @@ export type DeployPendleGaugeControllerMainchainUpgSubactionMsg = {
 }
 export class DeployPendleGaugeControllerMainchainUpgSubaction extends SubAction<
   DeployPendleGaugeControllerMainchainUpgSubactionParams,
-  PendleV3Registry,
+  PendleRegistry,
   DeployPendleGaugeControllerMainchainUpgSubactionMsg
 > {
   constructor(client: InfinitWallet, params: DeployPendleGaugeControllerMainchainUpgTxBuilderParams) {
@@ -29,9 +29,9 @@ export class DeployPendleGaugeControllerMainchainUpgSubaction extends SubAction<
   }
 
   protected async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeployPendleGaugeControllerMainchainUpgSubactionMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployPendleGaugeControllerMainchainUpgSubactionMsg>> {
     const [deployPendleGaugeControllerMainchainUpgTxHash] = txHashes
     const { contractAddress: pendleGaugeControllerMainchainUpg } = await this.client.publicClient.waitForTransactionReceipt({
       hash: deployPendleGaugeControllerMainchainUpgTxHash,

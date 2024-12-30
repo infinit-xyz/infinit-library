@@ -8,7 +8,7 @@ import {
   DeployPendlePoolDeployHelperTxBuilderParams,
 } from '@actions/on-chain/subactions/txBuilders/PendlePoolDeployHelper/deploy'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type DeployPendlePoolDeployHelperSubActionParams = DeployPendlePoolDeployHelperTxBuilderParams
 
@@ -18,7 +18,7 @@ export type DeployPendlePoolDeployHelperMsg = {
 
 export class DeployPendlePoolDeployHelperSubAction extends SubAction<
   DeployPendlePoolDeployHelperSubActionParams,
-  PendleV3Registry,
+  PendleRegistry,
   DeployPendlePoolDeployHelperMsg
 > {
   constructor(client: InfinitWallet, params: DeployPendlePoolDeployHelperSubActionParams) {
@@ -37,9 +37,9 @@ export class DeployPendlePoolDeployHelperSubAction extends SubAction<
   }
 
   public async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeployPendlePoolDeployHelperMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployPendlePoolDeployHelperMsg>> {
     if (txHashes.some((v) => !v)) {
       throw new TxNotFoundError()
     }

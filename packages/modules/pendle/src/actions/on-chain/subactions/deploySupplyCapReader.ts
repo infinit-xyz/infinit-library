@@ -5,7 +5,7 @@ import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors
 
 import { DeploySupplyCapReaderTxBuilder } from '@actions/on-chain/subactions/txBuilders/SupplyCapReader/deploy'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type DeploySupplyCapReaderSubActionParams = {}
 
@@ -15,7 +15,7 @@ export type DeploySupplyCapReaderMsg = {
 
 export class DeploySupplyCapReaderSubAction extends SubAction<
   DeploySupplyCapReaderSubActionParams,
-  PendleV3Registry,
+  PendleRegistry,
   DeploySupplyCapReaderMsg
 > {
   constructor(client: InfinitWallet, params: DeploySupplyCapReaderSubActionParams) {
@@ -28,9 +28,9 @@ export class DeploySupplyCapReaderSubAction extends SubAction<
   }
 
   public async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeploySupplyCapReaderMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry, DeploySupplyCapReaderMsg>> {
     if (txHashes.some((v) => !v)) {
       throw new TxNotFoundError()
     }

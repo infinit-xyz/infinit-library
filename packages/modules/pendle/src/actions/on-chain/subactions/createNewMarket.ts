@@ -7,11 +7,11 @@ import {
   CreateNewMarketTxBuilderParams,
 } from '@actions/on-chain/subactions/txBuilders/PendleMarketFactoryV3/createNewMarket'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type createNewMarketSubactionParams = CreateNewMarketTxBuilderParams
 
-export class createNewMarketSubaction extends SubAction<createNewMarketSubactionParams, PendleV3Registry> {
+export class createNewMarketSubaction extends SubAction<createNewMarketSubactionParams, PendleRegistry> {
   constructor(client: InfinitWallet, params: CreateNewMarketTxBuilderParams) {
     super(createNewMarketSubaction.name, client, params)
   }
@@ -21,9 +21,9 @@ export class createNewMarketSubaction extends SubAction<createNewMarketSubaction
   }
 
   protected async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry>> {
     return {
       newRegistry: registry,
       newMessage: {},

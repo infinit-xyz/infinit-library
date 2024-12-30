@@ -5,7 +5,7 @@ import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors
 
 import { DeployMulticall2TxBuilder } from '@actions/on-chain/subactions/txBuilders/Multicall2/deploy'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type DeployMulticall2SubActionParams = {}
 
@@ -13,7 +13,7 @@ export type DeployMulticall2Msg = {
   multicall: Address
 }
 
-export class DeployMulticall2SubAction extends SubAction<DeployMulticall2SubActionParams, PendleV3Registry, DeployMulticall2Msg> {
+export class DeployMulticall2SubAction extends SubAction<DeployMulticall2SubActionParams, PendleRegistry, DeployMulticall2Msg> {
   constructor(client: InfinitWallet, params: DeployMulticall2SubActionParams) {
     super(DeployMulticall2SubAction.name, client, params)
   }
@@ -24,9 +24,9 @@ export class DeployMulticall2SubAction extends SubAction<DeployMulticall2SubActi
   }
 
   public async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeployMulticall2Msg>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployMulticall2Msg>> {
     if (txHashes.some((v) => !v)) {
       throw new TxNotFoundError()
     }

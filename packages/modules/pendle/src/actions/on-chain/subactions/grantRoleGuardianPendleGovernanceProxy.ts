@@ -4,7 +4,7 @@ import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz
 
 import { GrantRolePendleGovernanceProxyTxBuilder } from '@actions/on-chain/subactions/txBuilders/PendleGovernanceProxy/grantRole'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type GrantRoleGuardianPendleGovernanceProxySubActionParams = {
   pendleGovernanceProxy: Address
@@ -15,7 +15,7 @@ export type GrantRoleGuardianMsg = {}
 
 export class GrantRoleGuardianSubAction extends SubAction<
   GrantRoleGuardianPendleGovernanceProxySubActionParams,
-  PendleV3Registry,
+  PendleRegistry,
   GrantRoleGuardianMsg
 > {
   constructor(client: InfinitWallet, params: GrantRoleGuardianPendleGovernanceProxySubActionParams) {
@@ -33,7 +33,7 @@ export class GrantRoleGuardianSubAction extends SubAction<
     )
   }
 
-  public async updateRegistryAndMessage(registry: PendleV3Registry, _txHashes: Hex[]): Promise<SubActionExecuteResponse<PendleV3Registry>> {
+  public async updateRegistryAndMessage(registry: PendleRegistry, _txHashes: Hex[]): Promise<SubActionExecuteResponse<PendleRegistry>> {
     // no new address, do nothing
     return {
       newRegistry: registry,

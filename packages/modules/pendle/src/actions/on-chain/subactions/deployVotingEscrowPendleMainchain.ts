@@ -8,7 +8,7 @@ import {
   DeployVotingEscrowPendleMainchainTxBuilderParams,
 } from '@actions/on-chain/subactions/txBuilders/VotingEscrowPendleMainchain/deploy'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type DeployVotingEscrowPendleMainchainSubactionParams = DeployVotingEscrowPendleMainchainTxBuilderParams
 
@@ -17,7 +17,7 @@ export type DeployVotingEscrowPendleMainchainSubactionMsg = {
 }
 export class DeployVotingEscrowPendleMainchainSubaction extends SubAction<
   DeployVotingEscrowPendleMainchainSubactionParams,
-  PendleV3Registry,
+  PendleRegistry,
   DeployVotingEscrowPendleMainchainSubactionMsg
 > {
   constructor(client: InfinitWallet, params: DeployVotingEscrowPendleMainchainTxBuilderParams) {
@@ -29,9 +29,9 @@ export class DeployVotingEscrowPendleMainchainSubaction extends SubAction<
   }
 
   protected async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeployVotingEscrowPendleMainchainSubactionMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployVotingEscrowPendleMainchainSubactionMsg>> {
     const [DeployVotingEscrowPendleMainchainTxHash] = txHashes
     const { contractAddress: votingEscrowPendleMainchain } = await this.client.publicClient.waitForTransactionReceipt({
       hash: DeployVotingEscrowPendleMainchainTxHash,

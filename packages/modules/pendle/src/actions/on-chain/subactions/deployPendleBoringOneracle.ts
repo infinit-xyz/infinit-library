@@ -5,13 +5,13 @@ import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors
 
 import { DeployPendleBoringOneracleTxBuilder } from '@actions/on-chain/subactions/txBuilders/PendleBoringOneracle/deploy'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type DeployPendleBoringOneracleMsg = {
   pendleBoringOneracle: Address
 }
 
-export class DeployPendleBoringOneracleSubAction extends SubAction<{}, PendleV3Registry, DeployPendleBoringOneracleMsg> {
+export class DeployPendleBoringOneracleSubAction extends SubAction<{}, PendleRegistry, DeployPendleBoringOneracleMsg> {
   constructor(client: InfinitWallet, params: {}) {
     super(DeployPendleBoringOneracleSubAction.name, client, params)
   }
@@ -22,9 +22,9 @@ export class DeployPendleBoringOneracleSubAction extends SubAction<{}, PendleV3R
   }
 
   public async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeployPendleBoringOneracleMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployPendleBoringOneracleMsg>> {
     if (txHashes.some((v) => !v)) {
       throw new TxNotFoundError()
     }

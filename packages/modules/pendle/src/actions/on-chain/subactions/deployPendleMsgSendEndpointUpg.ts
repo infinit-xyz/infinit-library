@@ -8,7 +8,7 @@ import {
   DeployPendleMsgSendEndpointUpgTxBuilderParams,
 } from '@actions/on-chain/subactions/txBuilders/PendleMsgSendEndpointUpg/deploy'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type DeployPendleMsgSendEndpointUpgSubactionParams = DeployPendleMsgSendEndpointUpgTxBuilderParams
 
@@ -16,7 +16,7 @@ export type DeployPendleMsgSendEndpointUpgSubactionMsg = {
   pendleMsgSendEndpointUpg: Address
 }
 
-export class DeployPendleMsgSendEndpointUpgSubaction extends SubAction<DeployPendleMsgSendEndpointUpgSubactionParams, PendleV3Registry> {
+export class DeployPendleMsgSendEndpointUpgSubaction extends SubAction<DeployPendleMsgSendEndpointUpgSubactionParams, PendleRegistry> {
   constructor(client: InfinitWallet, params: DeployPendleMsgSendEndpointUpgSubactionParams) {
     super(DeployPendleMsgSendEndpointUpgSubaction.name, client, params)
   }
@@ -26,9 +26,9 @@ export class DeployPendleMsgSendEndpointUpgSubaction extends SubAction<DeployPen
   }
 
   protected async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry>> {
     const [deployPendleSwapTxHash] = txHashes
     const { contractAddress: pendleMsgSendEndpointUpg } = await this.client.publicClient.waitForTransactionReceipt({
       hash: deployPendleSwapTxHash,

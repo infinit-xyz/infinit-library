@@ -93,7 +93,7 @@ import { SetPendleRouterStaticFacetsSubAction } from '@actions/on-chain/subactio
 import { SetPendleRouterV4FacetsSubAction } from '@actions/on-chain/subactions/setPendleRouterV4Facets'
 import { UpgradePendleGaugeControllerMainchainUpgSubaction } from '@actions/on-chain/subactions/upgradePendleGaugeControllerMainchainUpgProxy'
 
-import type { PendleV3Registry } from '@/src/type'
+import type { PendleRegistry } from '@/src/type'
 
 export const DeployPendleV3ActionParamsSchema = z.object({
   refundAddress: zodAddressNonZero.describe(`The address to refund e.g. '0x123...abc'`),
@@ -133,7 +133,7 @@ export type DeployPendleV3ActionData = {
   signer: Record<'deployer', InfinitWallet>
 }
 
-export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, PendleV3Registry> {
+export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, PendleRegistry> {
   constructor(data: DeployPendleV3ActionData) {
     validateActionData(data, DeployPendleV3ActionParamsSchema, ['deployer'])
     super(DeployPendleV3Action.name, data)

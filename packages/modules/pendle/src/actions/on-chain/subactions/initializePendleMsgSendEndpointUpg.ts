@@ -7,12 +7,12 @@ import {
   InitializePendleMsgSendEndpointUpgTxBuilderParams,
 } from '@actions/on-chain/subactions/txBuilders/PendleMsgSendEndpointUpg/initialize'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type InitializePendleMsgSendEndpointUpgSubactionParams = InitializePendleMsgSendEndpointUpgTxBuilderParams
 export class InitializePendleMsgSendEndpointUpgSubaction extends SubAction<
   InitializePendleMsgSendEndpointUpgSubactionParams,
-  PendleV3Registry
+  PendleRegistry
 > {
   constructor(client: InfinitWallet, params: InitializePendleMsgSendEndpointUpgSubactionParams) {
     super(InitializePendleMsgSendEndpointUpgSubaction.name, client, params)
@@ -23,9 +23,9 @@ export class InitializePendleMsgSendEndpointUpgSubaction extends SubAction<
   }
 
   protected async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry>> {
     return {
       newRegistry: registry,
       newMessage: {},

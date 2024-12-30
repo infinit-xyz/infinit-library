@@ -7,11 +7,11 @@ import {
   DeployCreationCodeTxBuilderParams,
 } from '@actions/on-chain/subactions/txBuilders/BaseSplitCodeFactoryContract/deployCreationCode'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type DeployCreationCodeSubactionParams = DeployCreationCodeTxBuilderParams
 
-export class DeployCreationCodeSubaction extends SubAction<DeployCreationCodeSubactionParams, PendleV3Registry> {
+export class DeployCreationCodeSubaction extends SubAction<DeployCreationCodeSubactionParams, PendleRegistry> {
   constructor(client: InfinitWallet, params: DeployCreationCodeSubactionParams) {
     super(DeployCreationCodeSubaction.name, client, params)
   }
@@ -21,9 +21,9 @@ export class DeployCreationCodeSubaction extends SubAction<DeployCreationCodeSub
   }
 
   protected async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry>> {
     return {
       newRegistry: registry,
       newMessage: {},

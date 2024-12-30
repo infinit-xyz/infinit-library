@@ -5,7 +5,7 @@ import { Account, privateKeyToAccount } from 'viem/accounts'
 
 import { TransactionData } from '@infinit-xyz/core'
 
-import { PendleV3Registry } from '../type'
+import { PendleRegistry } from '../type'
 import { ANVIL_PRIVATE_KEY } from './__mocks__/account'
 import { ARBITRUM_TEST_ADDRESSES } from './__mocks__/address'
 import { DeployPendleV3Action, DeployPendleV3Params } from './deployPendleV3'
@@ -54,7 +54,7 @@ describe('deployPendleV3Action', () => {
     })
 
     // deploy
-    let registry: PendleV3Registry = {}
+    let registry: PendleRegistry = {}
     registry = await action.run(registry)
 
     // validate
@@ -355,7 +355,7 @@ describe('deployPendleV3Action', () => {
 })
 
 // --- Validate Functions ---
-const checkRoles = async (client: TestInfinitWallet, registry: PendleV3Registry, params: DeployPendleV3Params) => {
+const checkRoles = async (client: TestInfinitWallet, registry: PendleRegistry, params: DeployPendleV3Params) => {
   const [pendleGovernanceProxyArtifact] = await Promise.all([readArtifact('PendleGovernanceProxy')])
   const DEFAULT_ADMIN = toHex(0x00, { size: 32 })
   const GUARDIAN = keccak256(toHex('GUARDIAN'))
@@ -378,7 +378,7 @@ const checkRoles = async (client: TestInfinitWallet, registry: PendleV3Registry,
   })
   expect(hasRoleGuardian).toBe(true)
 }
-const checkRegistry = async (registry: PendleV3Registry) => {
+const checkRegistry = async (registry: PendleRegistry) => {
   expect(registry.baseSplitCodeFactoryContract).not.toBe(zeroAddress)
   expect(registry.oracleLib).not.toBe(zeroAddress)
   expect(registry.pendleGaugeControllerMainchainUpgImpl).not.toBe(zeroAddress)

@@ -7,13 +7,13 @@ import {
   InitializePendleGaugeControllerMainchainUpgTxBuilderParams,
 } from '@actions/on-chain/subactions/txBuilders/PendleGaugeControllerMainchainUpg/initialize'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type InitializePendleGaugeControllerMainchainUpgSubActionParams = InitializePendleGaugeControllerMainchainUpgTxBuilderParams
 
 export class InitializePendleGaugeControllerMainchainUpgSubaction extends SubAction<
   InitializePendleGaugeControllerMainchainUpgSubActionParams,
-  PendleV3Registry
+  PendleRegistry
 > {
   constructor(client: InfinitWallet, params: InitializePendleGaugeControllerMainchainUpgSubActionParams) {
     super(InitializePendleGaugeControllerMainchainUpgSubaction.name, client, params)
@@ -24,9 +24,9 @@ export class InitializePendleGaugeControllerMainchainUpgSubaction extends SubAct
   }
 
   protected async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry>> {
     return {
       newRegistry: registry,
       newMessage: {},

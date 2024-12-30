@@ -8,7 +8,7 @@ import {
   DeployPendleMarketV3CreationCodeTxBuilderParams,
 } from '@actions/on-chain/subactions/txBuilders/BaseSplitCodeFactoryContract/deployPendleMarketV3CreationCode'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 import { readArtifact } from '@utils/artifact'
 
 export type DeployPendleMarketV3CreationCodeSubactionParams = DeployPendleMarketV3CreationCodeTxBuilderParams
@@ -22,7 +22,7 @@ export type DeployPendleMarketV3CreationCodeSubactionMsg = {
 
 export class DeployPendleMarketV3CreationCodeSubaction extends SubAction<
   DeployPendleMarketV3CreationCodeSubactionParams,
-  PendleV3Registry,
+  PendleRegistry,
   {}
 > {
   constructor(client: InfinitWallet, params: DeployPendleMarketV3CreationCodeTxBuilderParams) {
@@ -34,9 +34,9 @@ export class DeployPendleMarketV3CreationCodeSubaction extends SubAction<
   }
 
   protected async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry, {}>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry, {}>> {
     const [deployYTV3CreationCodeTxHash] = txHashes
 
     const [baseSplitCodeFactoryContractArtifact, txReceipt] = await Promise.all([

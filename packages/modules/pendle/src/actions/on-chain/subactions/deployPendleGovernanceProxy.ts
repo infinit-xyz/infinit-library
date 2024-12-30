@@ -5,7 +5,7 @@ import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors
 
 import { DeployPendleGovernanceProxyTxBuilder } from '@actions/on-chain/subactions/txBuilders/PendleGovernanceProxy/deploy'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type DeployPendleGovernanceProxySubActionParams = {}
 
@@ -15,7 +15,7 @@ export type DeployPendleGovernanceProxyMsg = {
 
 export class DeployPendleGovernanceProxySubAction extends SubAction<
   DeployPendleGovernanceProxySubActionParams,
-  PendleV3Registry,
+  PendleRegistry,
   DeployPendleGovernanceProxyMsg
 > {
   constructor(client: InfinitWallet, params: DeployPendleGovernanceProxySubActionParams) {
@@ -28,9 +28,9 @@ export class DeployPendleGovernanceProxySubAction extends SubAction<
   }
 
   public async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeployPendleGovernanceProxyMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployPendleGovernanceProxyMsg>> {
     if (txHashes.some((v) => !v)) {
       throw new TxNotFoundError()
     }

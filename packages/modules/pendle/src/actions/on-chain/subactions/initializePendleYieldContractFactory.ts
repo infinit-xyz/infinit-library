@@ -7,13 +7,13 @@ import {
   InitializePendleYieldContractFactoryTxBuilderParams,
 } from '@actions/on-chain/subactions/txBuilders/PendleYieldContractFactory/initialize'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type InitializePendleYieldContractFactorySubactionParams = InitializePendleYieldContractFactoryTxBuilderParams
 
 export class InitializePendleYieldContractFactorySubaction extends SubAction<
   InitializePendleYieldContractFactorySubactionParams,
-  PendleV3Registry
+  PendleRegistry
 > {
   constructor(client: InfinitWallet, params: InitializePendleYieldContractFactorySubactionParams) {
     super(InitializePendleYieldContractFactorySubaction.name, client, params)
@@ -24,9 +24,9 @@ export class InitializePendleYieldContractFactorySubaction extends SubAction<
   }
 
   protected async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry>> {
     return {
       newRegistry: registry,
       newMessage: {},

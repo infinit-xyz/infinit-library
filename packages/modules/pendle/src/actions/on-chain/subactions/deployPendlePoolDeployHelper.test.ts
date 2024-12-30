@@ -11,14 +11,14 @@ import {
   DeployPendlePoolDeployHelperSubActionParams,
 } from '@actions/on-chain/subactions/deployPendlePoolDeployHelper'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
 describe('DeployPendlePoolDeployHelperSubAction', () => {
-  const registry: PendleV3Registry = {}
+  const registry: PendleRegistry = {}
   let subAction: DeployPendlePoolDeployHelperSubAction
   let client: TestInfinitWallet
-  let result: SubActionExecuteResponse<PendleV3Registry, DeployPendlePoolDeployHelperMsg>
+  let result: SubActionExecuteResponse<PendleRegistry, DeployPendlePoolDeployHelperMsg>
   const callback = vi.fn()
 
   const tester = ARBITRUM_TEST_ADDRESSES.tester

@@ -4,15 +4,15 @@ import { BaseContractVerifier, BlockExplorerParams, ContractInfo } from '@infini
 
 import { Artifacts } from 'hardhat/types'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 import { getArtifacts } from '@/src/utils/artifact'
 
-export class TokenContractVerifier extends BaseContractVerifier<PendleV3Registry> {
+export class TokenContractVerifier extends BaseContractVerifier<PendleRegistry> {
   constructor(client: PublicClient, params: BlockExplorerParams) {
     super(client, params)
   }
 
-  protected override async getContracts(_registry: PendleV3Registry): Promise<ContractInfo[]> {
+  protected override async getContracts(_registry: PendleRegistry): Promise<ContractInfo[]> {
     const contracts: ContractInfo[] = []
 
     return contracts

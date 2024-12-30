@@ -7,7 +7,7 @@ import {
   InitializePendleGovernanceProxyTxBuilderParams,
 } from '@actions/on-chain/subactions/txBuilders/PendleGovernanceProxy/initialize'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type InitializePendleGovernanceProxySubActionParams = InitializePendleGovernanceProxyTxBuilderParams
 
@@ -15,7 +15,7 @@ export type DeployPendleGovernanceProxyImplMsg = {
   pendleGovernanceProxyImpl: Address
 }
 
-export class InitializePendleGovernanceProxySubAction extends SubAction<InitializePendleGovernanceProxySubActionParams, PendleV3Registry> {
+export class InitializePendleGovernanceProxySubAction extends SubAction<InitializePendleGovernanceProxySubActionParams, PendleRegistry> {
   constructor(client: InfinitWallet, params: InitializePendleGovernanceProxySubActionParams) {
     super(InitializePendleGovernanceProxySubAction.name, client, params)
   }
@@ -30,7 +30,7 @@ export class InitializePendleGovernanceProxySubAction extends SubAction<Initiali
     )
   }
 
-  public async updateRegistryAndMessage(registry: PendleV3Registry, _txHashes: Hex[]): Promise<SubActionExecuteResponse<PendleV3Registry>> {
+  public async updateRegistryAndMessage(registry: PendleRegistry, _txHashes: Hex[]): Promise<SubActionExecuteResponse<PendleRegistry>> {
     // no new address, do nothing
     return {
       newRegistry: registry,

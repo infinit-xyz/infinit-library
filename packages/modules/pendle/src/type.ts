@@ -1,6 +1,6 @@
 import { Address } from 'viem'
 
-export type PendleV3Registry = {
+export type PendleRegistry = {
   pendleRouterV4?: Address
   routerStorageV4?: Address
   actionAddRemoveLiqV3?: Address

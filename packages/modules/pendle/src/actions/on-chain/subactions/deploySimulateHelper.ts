@@ -5,7 +5,7 @@ import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors
 
 import { DeploySimulateHelperTxBuilder } from '@actions/on-chain/subactions/txBuilders/SimulateHelper/deploy'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type DeploySimulateHelperSubActionParams = {}
 
@@ -15,7 +15,7 @@ export type DeploySimulateHelperMsg = {
 
 export class DeploySimulateHelperSubAction extends SubAction<
   DeploySimulateHelperSubActionParams,
-  PendleV3Registry,
+  PendleRegistry,
   DeploySimulateHelperMsg
 > {
   constructor(client: InfinitWallet, params: DeploySimulateHelperSubActionParams) {
@@ -28,9 +28,9 @@ export class DeploySimulateHelperSubAction extends SubAction<
   }
 
   public async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeploySimulateHelperMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry, DeploySimulateHelperMsg>> {
     if (txHashes.some((v) => !v)) {
       throw new TxNotFoundError()
     }

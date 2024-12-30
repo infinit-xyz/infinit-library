@@ -7,10 +7,10 @@ import {
   InitializePendlePYLpOracleTxBuilderParams,
 } from '@actions/on-chain/subactions/txBuilders/PendlePYLpOracle/initialize'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type InitializePendlePYLpOracleSubactionParams = InitializePendlePYLpOracleTxBuilderParams
-export class InitializePendlePYLpOracleSubaction extends SubAction<InitializePendlePYLpOracleSubactionParams, PendleV3Registry> {
+export class InitializePendlePYLpOracleSubaction extends SubAction<InitializePendlePYLpOracleSubactionParams, PendleRegistry> {
   constructor(client: InfinitWallet, params: InitializePendlePYLpOracleSubactionParams) {
     super(InitializePendlePYLpOracleSubaction.name, client, params)
   }
@@ -20,9 +20,9 @@ export class InitializePendlePYLpOracleSubaction extends SubAction<InitializePen
   }
 
   protected async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry>> {
     return {
       newRegistry: registry,
       newMessage: {},

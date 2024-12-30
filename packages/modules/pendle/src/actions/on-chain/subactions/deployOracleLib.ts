@@ -5,13 +5,13 @@ import { ContractNotFoundError } from '@infinit-xyz/core/errors'
 
 import { DeployOracleLibTxBuilder } from '@actions/on-chain/subactions/txBuilders/OracleLib/deploy'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type DeployOracleLibSubactionMsg = {
   oracleLib: Address
 }
 
-export class DeployOracleLibSubaction extends SubAction<object, PendleV3Registry, DeployOracleLibSubactionMsg> {
+export class DeployOracleLibSubaction extends SubAction<object, PendleRegistry, DeployOracleLibSubactionMsg> {
   constructor(client: InfinitWallet) {
     super(DeployOracleLibSubaction.name, client, {})
   }
@@ -21,9 +21,9 @@ export class DeployOracleLibSubaction extends SubAction<object, PendleV3Registry
   }
 
   protected async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeployOracleLibSubactionMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployOracleLibSubactionMsg>> {
     const [deployOracleLibTxHash] = txHashes
     const { contractAddress: oracleLib } = await this.client.publicClient.waitForTransactionReceipt({
       hash: deployOracleLibTxHash,

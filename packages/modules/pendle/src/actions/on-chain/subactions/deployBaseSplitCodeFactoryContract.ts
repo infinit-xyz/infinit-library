@@ -5,14 +5,14 @@ import { ContractNotFoundError } from '@infinit-xyz/core/errors'
 
 import { DeployBaseSplitCodeFactoryContractTxBuilder } from '@actions/on-chain/subactions/txBuilders/BaseSplitCodeFactoryContract/deploy'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type DeployBaseSplitCodeFactoryContractSubactionMsg = {
   baseSplitCodeFactoryContract: Address
 }
 export class DeployBaseSplitCodeFactoryContractSubaction extends SubAction<
   object,
-  PendleV3Registry,
+  PendleRegistry,
   DeployBaseSplitCodeFactoryContractSubactionMsg
 > {
   constructor(client: InfinitWallet) {
@@ -24,9 +24,9 @@ export class DeployBaseSplitCodeFactoryContractSubaction extends SubAction<
   }
 
   protected async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeployBaseSplitCodeFactoryContractSubactionMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployBaseSplitCodeFactoryContractSubactionMsg>> {
     const [deployBaseSplitCodeFactoryContractTxHash] = txHashes
     const { contractAddress: baseSplitCodeFactoryContract } = await this.client.publicClient.waitForTransactionReceipt({
       hash: deployBaseSplitCodeFactoryContractTxHash,

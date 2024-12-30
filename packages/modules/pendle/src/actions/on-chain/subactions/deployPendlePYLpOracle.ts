@@ -5,12 +5,12 @@ import { ContractNotFoundError } from '@infinit-xyz/core/errors'
 
 import { DeployPendlePYLpOracleTxBuilder } from '@actions/on-chain/subactions/txBuilders/PendlePYLpOracle/deploy'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type DeployPendlePYLpOracleMsg = {
   pendlePYLpOracle: Address
 }
-export class DeployPendlePYLpOracleSubaction extends SubAction<object, PendleV3Registry, DeployPendlePYLpOracleMsg> {
+export class DeployPendlePYLpOracleSubaction extends SubAction<object, PendleRegistry, DeployPendlePYLpOracleMsg> {
   constructor(client: InfinitWallet) {
     super(DeployPendlePYLpOracleSubaction.name, client, {})
   }
@@ -20,9 +20,9 @@ export class DeployPendlePYLpOracleSubaction extends SubAction<object, PendleV3R
   }
 
   protected async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeployPendlePYLpOracleMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployPendlePYLpOracleMsg>> {
     const [deployPendleMarketFactoryV3TxHash] = txHashes
     const { contractAddress: pendlePYLpOracle } = await this.client.publicClient.waitForTransactionReceipt({
       hash: deployPendleMarketFactoryV3TxHash,

@@ -10,7 +10,7 @@ import { DeployActionMintRedeemStaticTxBuilder } from '@actions/on-chain/subacti
 import { DeployActionStorageStaticTxBuilder } from '@actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionStorageStatic/deploy'
 import { DeployActionVePendleStaticTxBuilder } from '@actions/on-chain/subactions/txBuilders/PendleRouterStatic/facets/ActionVePendleStatic/deploy'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type DeployPendleStaticFacetsSubactionParams = {
   owner: Address
@@ -28,7 +28,7 @@ export type DeployPendleStaticFacetsMsg = {
 
 export class DeployPendleStaticFacetsSubAction extends SubAction<
   DeployPendleStaticFacetsSubactionParams,
-  PendleV3Registry,
+  PendleRegistry,
   DeployPendleStaticFacetsMsg
 > {
   constructor(client: InfinitWallet, params: DeployPendleStaticFacetsSubactionParams) {
@@ -45,9 +45,9 @@ export class DeployPendleStaticFacetsSubAction extends SubAction<
   }
 
   public async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeployPendleStaticFacetsMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployPendleStaticFacetsMsg>> {
     if (txHashes.some((v) => !v)) {
       throw new TxNotFoundError()
     }

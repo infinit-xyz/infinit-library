@@ -5,7 +5,7 @@ import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors
 
 import { DeployTransparentUpgradeableProxyTxBuilder } from '@actions/on-chain/subactions/txBuilders/TransparentUpgradeableProxy/deploy'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type DeployPendleLimitRouterProxySubActionParams = {
   proxyAdmin: Address
@@ -18,7 +18,7 @@ export type DeployPendleLimitRouterProxyMsg = {
 
 export class DeployPendleLimitRouterProxySubAction extends SubAction<
   DeployPendleLimitRouterProxySubActionParams,
-  PendleV3Registry,
+  PendleRegistry,
   DeployPendleLimitRouterProxyMsg
 > {
   constructor(client: InfinitWallet, params: DeployPendleLimitRouterProxySubActionParams) {
@@ -37,9 +37,9 @@ export class DeployPendleLimitRouterProxySubAction extends SubAction<
   }
 
   public async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeployPendleLimitRouterProxyMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployPendleLimitRouterProxyMsg>> {
     if (txHashes.some((v) => !v)) {
       throw new TxNotFoundError()
     }

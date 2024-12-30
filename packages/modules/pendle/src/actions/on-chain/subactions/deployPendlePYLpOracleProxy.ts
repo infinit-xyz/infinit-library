@@ -5,7 +5,7 @@ import { ContractNotFoundError, TxNotFoundError } from '@infinit-xyz/core/errors
 
 import { DeployTransparentUpgradeableProxyTxBuilder } from '@actions/on-chain/subactions/txBuilders/TransparentUpgradeableProxy/deploy'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type DeployPendlePYLpOracleProxySubActionParams = {
   proxyAdmin: Address
@@ -18,7 +18,7 @@ export type DeployPendlePYLpOracleProxyMsg = {
 
 export class DeployPendlePYLpOracleProxySubAction extends SubAction<
   DeployPendlePYLpOracleProxySubActionParams,
-  PendleV3Registry,
+  PendleRegistry,
   DeployPendlePYLpOracleProxyMsg
 > {
   constructor(client: InfinitWallet, params: DeployPendlePYLpOracleProxySubActionParams) {
@@ -37,9 +37,9 @@ export class DeployPendlePYLpOracleProxySubAction extends SubAction<
   }
 
   public async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     txHashes: Hex[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeployPendlePYLpOracleProxyMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployPendlePYLpOracleProxyMsg>> {
     if (txHashes.some((v) => !v)) {
       throw new TxNotFoundError()
     }

@@ -7,14 +7,14 @@ import { SubActionExecuteResponse } from '@infinit-xyz/core'
 import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mocks__/address'
 import { DeploySimulateHelperMsg, DeploySimulateHelperSubAction } from '@actions/on-chain/subactions/deploySimulateHelper'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
 describe('DeploySimulateHelperSubAction', () => {
-  const registry: PendleV3Registry = {}
+  const registry: PendleRegistry = {}
   let subAction: DeploySimulateHelperSubAction
   let client: TestInfinitWallet
-  let result: SubActionExecuteResponse<PendleV3Registry, DeploySimulateHelperMsg>
+  let result: SubActionExecuteResponse<PendleRegistry, DeploySimulateHelperMsg>
   const callback = vi.fn()
 
   const tester = ARBITRUM_TEST_ADDRESSES.tester

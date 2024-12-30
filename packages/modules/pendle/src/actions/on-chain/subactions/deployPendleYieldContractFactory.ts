@@ -8,7 +8,7 @@ import {
   DeployPendleYieldContractFactoryTxBuilderParams,
 } from '@actions/on-chain/subactions/txBuilders/PendleYieldContractFactory/deploy'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type DeployPendleYieldContractFactorySubactionParams = DeployPendleYieldContractFactoryTxBuilderParams
 
@@ -18,7 +18,7 @@ export type DeployPendleYieldContractFactorySubactionMsg = {
 
 export class DeployPendleYieldContractFactorySubaction extends SubAction<
   DeployPendleYieldContractFactorySubactionParams,
-  PendleV3Registry,
+  PendleRegistry,
   DeployPendleYieldContractFactorySubactionMsg
 > {
   constructor(client: InfinitWallet, params: DeployPendleYieldContractFactoryTxBuilderParams) {
@@ -30,9 +30,9 @@ export class DeployPendleYieldContractFactorySubaction extends SubAction<
   }
 
   protected async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeployPendleYieldContractFactorySubactionMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployPendleYieldContractFactorySubactionMsg>> {
     const [deployPendleYieldContractFactoryTxHash] = txHashes
     const { contractAddress: pendleYieldContractFactory } = await this.client.publicClient.waitForTransactionReceipt({
       hash: deployPendleYieldContractFactoryTxHash,

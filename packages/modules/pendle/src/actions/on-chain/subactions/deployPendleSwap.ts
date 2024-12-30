@@ -5,13 +5,13 @@ import { ContractNotFoundError } from '@infinit-xyz/core/errors'
 
 import { DeployPendleSwapTxBuilder } from '@actions/on-chain/subactions/txBuilders/PendleSwap/deploy'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type DeployPendleSwapSubactionMsg = {
   pendleSwap: Address
 }
 
-export class DeployPendleSwapSubaction extends SubAction<object, PendleV3Registry, DeployPendleSwapSubactionMsg> {
+export class DeployPendleSwapSubaction extends SubAction<object, PendleRegistry, DeployPendleSwapSubactionMsg> {
   constructor(client: InfinitWallet) {
     super(DeployPendleSwapSubaction.name, client, {})
   }
@@ -21,9 +21,9 @@ export class DeployPendleSwapSubaction extends SubAction<object, PendleV3Registr
   }
 
   protected async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeployPendleSwapSubactionMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployPendleSwapSubactionMsg>> {
     const [deployPendleSwapTxHash] = txHashes
     const { contractAddress: pendleSwap } = await this.client.publicClient.waitForTransactionReceipt({
       hash: deployPendleSwapTxHash,

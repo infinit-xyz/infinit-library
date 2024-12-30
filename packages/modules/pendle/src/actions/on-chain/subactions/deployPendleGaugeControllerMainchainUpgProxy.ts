@@ -5,7 +5,7 @@ import { ContractNotFoundError } from '@infinit-xyz/core/errors'
 
 import { DeployERC1967ProxyTxBuilder } from '@actions/on-chain/subactions/txBuilders/ERC1967Proxy/deploy'
 
-import { PendleV3Registry } from '@/src/type'
+import { PendleRegistry } from '@/src/type'
 
 export type DeployPendleGaugeControllerMainchainUpgProxySubactionParams = {
   implementation: Address
@@ -17,7 +17,7 @@ export type DeployPendleGaugeControllerMainchainUpgProxySubactionMsg = {
 
 export class DeployPendleGaugeControllerMainchainUpgProxySubaction extends SubAction<
   DeployPendleGaugeControllerMainchainUpgProxySubactionParams,
-  PendleV3Registry,
+  PendleRegistry,
   DeployPendleGaugeControllerMainchainUpgProxySubactionMsg
 > {
   constructor(client: InfinitWallet, params: DeployPendleGaugeControllerMainchainUpgProxySubactionParams) {
@@ -29,9 +29,9 @@ export class DeployPendleGaugeControllerMainchainUpgProxySubaction extends SubAc
   }
 
   protected async updateRegistryAndMessage(
-    registry: PendleV3Registry,
+    registry: PendleRegistry,
     txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleV3Registry, DeployPendleGaugeControllerMainchainUpgProxySubactionMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployPendleGaugeControllerMainchainUpgProxySubactionMsg>> {
     const [deployPendleGaugeControllerMainchainUpgProxyTxHash] = txHashes
     const { contractAddress: erc1967Proxy } = await this.client.publicClient.waitForTransactionReceipt({
       hash: deployPendleGaugeControllerMainchainUpgProxyTxHash,
