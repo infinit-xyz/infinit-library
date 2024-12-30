@@ -5,12 +5,12 @@ import { Account, privateKeyToAccount } from 'viem/accounts'
 
 import { TransactionData } from '@infinit-xyz/core'
 
-import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
-import { readArtifact } from '@utils/artifact'
 import { PendleV3Registry } from '../type'
 import { ANVIL_PRIVATE_KEY } from './__mocks__/account'
 import { ARBITRUM_TEST_ADDRESSES } from './__mocks__/address'
 import { DeployPendleV3Action, DeployPendleV3Params } from './deployPendleV3'
+import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
+import { readArtifact } from '@utils/artifact'
 
 describe('deployPendleV3Action', () => {
   let client: TestInfinitWallet
