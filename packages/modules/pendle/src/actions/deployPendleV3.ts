@@ -278,10 +278,10 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
         new DeployPendleGaugeControllerMainchainUpgSubaction(deployer, {
           votingController: message.pendleVotingControllerUpgProxy,
           pendle: params.rewardToken,
-          marketFactory: zeroAddress,
+          marketFactory: message.pendleMarketFactoryV3,
           marketFactory2: zeroAddress,
           marketFactory3: zeroAddress,
-          marketFactory4: message.pendleMarketFactoryV3,
+          marketFactory4: zeroAddress,
         }),
       // step 13.2: upgrade to the real implementation
       (message: DeployPendleGaugeControllerMainchainUpgSubactionMsg & DeployPendleGaugeControllerMainchainUpgProxySubactionMsg) =>
