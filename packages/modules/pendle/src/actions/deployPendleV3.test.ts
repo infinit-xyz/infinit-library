@@ -5,12 +5,12 @@ import { Account, privateKeyToAccount } from 'viem/accounts'
 
 import { TransactionData } from '@infinit-xyz/core'
 
+import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
+import { readArtifact } from '@utils/artifact'
 import { PendleV3Registry } from '../type'
 import { ANVIL_PRIVATE_KEY } from './__mocks__/account'
 import { ARBITRUM_TEST_ADDRESSES } from './__mocks__/address'
 import { DeployPendleV3Action, DeployPendleV3Params } from './deployPendleV3'
-import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
-import { readArtifact } from '@utils/artifact'
 
 describe('deployPendleV3Action', () => {
   let client: TestInfinitWallet
@@ -60,7 +60,6 @@ describe('deployPendleV3Action', () => {
     // validate
     checkRegistry(registry)
     checkRoles(client, registry, params)
-    console.log(registry)
 
     // test create yt from sy
     const ytFactoryArtifact = await readArtifact('PendleYieldContractFactory')
@@ -89,7 +88,6 @@ describe('deployPendleV3Action', () => {
       data: txReceipt.logs[1].data,
       topics: txReceipt.logs[1].topics,
     })
-    console.log(eventLog)
     const {
       PT: pt,
       YT: yt,
@@ -141,7 +139,6 @@ describe('deployPendleV3Action', () => {
       data: txReceipt2.logs[0].data,
       topics: txReceipt2.logs[0].topics,
     })
-    console.log(eventLog2)
     let market: Address = zeroAddress
     if ('market' in eventLog2.args && 'PT' in eventLog2.args) {
       market = eventLog2.args.market
@@ -192,7 +189,6 @@ describe('deployPendleV3Action', () => {
     ])
     let syBalanceAfter = await balanceOf(richGuy, sy, richGuy.impersonatedUser)
     expect(syBalanceAfter).toBeGreaterThan(syBalanceBefore)
-    console.log('syBalance', syBalanceAfter)
     // rich guy transfer half of sy to yt
     syBalanceBefore = await balanceOf(richGuy, sy, richGuy.impersonatedUser)
     let ytBalanceBefore = await balanceOf(richGuy, yt, richGuy.impersonatedUser)
@@ -278,7 +274,6 @@ describe('deployPendleV3Action', () => {
     ])
     const lpBalanceAfter = await balanceOf(richGuy, market, richGuy.impersonatedUser)
     expect(lpBalanceAfter).toBeGreaterThan(lpBalanceBefore)
-    console.log('lpBalance', lpBalanceAfter)
     ptBalanceBefore = await balanceOf(richGuy, pt, richGuy.impersonatedUser)
     syBalanceBefore = await balanceOf(richGuy, sy, richGuy.impersonatedUser)
     // swapExactPtForSy
