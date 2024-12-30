@@ -23,10 +23,7 @@ export class InitializePendleVotingControllerUpgSubaction extends SubAction<
     this.txBuilders = [new InitializePendleVotingControllerUpgTxBuilder(this.client, this.params)]
   }
 
-  protected async updateRegistryAndMessage(
-    registry: PendleRegistry,
-    _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleRegistry>> {
+  protected async updateRegistryAndMessage(registry: PendleRegistry, _txHashes: Hash[]): Promise<SubActionExecuteResponse<PendleRegistry>> {
     return {
       newRegistry: registry,
       newMessage: {},

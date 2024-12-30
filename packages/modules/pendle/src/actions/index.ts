@@ -1,15 +1,15 @@
 import { ActionDetailRecord } from '@infinit-xyz/core'
 
-import { DeployPendleV3Action, DeployPendleV3ActionParamsSchema } from '@actions/deployPendleV3'
+import { DeployPendleAction, DeployPendleActionParamsSchema } from '@actions/deployPendle'
 
 export const actions = {
-  DeployPendleV3: {
+  DeployPendle: {
     type: 'on-chain',
     name: 'Deploy Pendle V3',
-    actionClassName: DeployPendleV3Action.name,
-    paramsSchema: DeployPendleV3ActionParamsSchema,
+    actionClassName: DeployPendleAction.name,
+    paramsSchema: DeployPendleActionParamsSchema,
     signers: ['deployer'],
   },
 } satisfies ActionDetailRecord
 
-export { DeployPendleV3Action }
+export { DeployPendleAction }

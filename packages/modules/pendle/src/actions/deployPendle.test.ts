@@ -8,11 +8,11 @@ import { TransactionData } from '@infinit-xyz/core'
 import { PendleRegistry } from '../type'
 import { ANVIL_PRIVATE_KEY } from './__mocks__/account'
 import { ARBITRUM_TEST_ADDRESSES } from './__mocks__/address'
-import { DeployPendleV3Action, DeployPendleV3Params } from './deployPendleV3'
+import { DeployPendleAction, DeployPendleParams } from './deployPendle'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 import { readArtifact } from '@utils/artifact'
 
-describe('deployPendleV3Action', () => {
+describe('deployPendleAction', () => {
   let client: TestInfinitWallet
   let account: Account
   const bnAddress = '0xBE0eB53F46cd790Cd13851d5EFf43D12404d33E8'
@@ -22,8 +22,8 @@ describe('deployPendleV3Action', () => {
     client = new TestInfinitWallet(TestChain.arbitrum, account.address)
   })
 
-  test('deployPendleV3Action', async () => {
-    const params: DeployPendleV3Params = {
+  test('deployPendleAction', async () => {
+    const params: DeployPendleParams = {
       refundAddress: bnAddress,
       lzEndpoint: bnAddress,
       governanceToken: bnAddress,
@@ -46,7 +46,7 @@ describe('deployPendleV3Action', () => {
       blockCycleNumerator: 1000,
     }
 
-    const action = new DeployPendleV3Action({
+    const action = new DeployPendleAction({
       params: params,
       signer: {
         deployer: client,
@@ -355,7 +355,7 @@ describe('deployPendleV3Action', () => {
 })
 
 // --- Validate Functions ---
-const checkRoles = async (client: TestInfinitWallet, registry: PendleRegistry, params: DeployPendleV3Params) => {
+const checkRoles = async (client: TestInfinitWallet, registry: PendleRegistry, params: DeployPendleParams) => {
   const [pendleGovernanceProxyArtifact] = await Promise.all([readArtifact('PendleGovernanceProxy')])
   const DEFAULT_ADMIN = toHex(0x00, { size: 32 })
   const GUARDIAN = keccak256(toHex('GUARDIAN'))

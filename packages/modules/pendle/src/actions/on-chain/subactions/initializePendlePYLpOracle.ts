@@ -19,10 +19,7 @@ export class InitializePendlePYLpOracleSubaction extends SubAction<InitializePen
     this.txBuilders = [new InitializePendlePYLpOracleTxBuilder(this.client, this.params)]
   }
 
-  protected async updateRegistryAndMessage(
-    registry: PendleRegistry,
-    _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleRegistry>> {
+  protected async updateRegistryAndMessage(registry: PendleRegistry, _txHashes: Hash[]): Promise<SubActionExecuteResponse<PendleRegistry>> {
     return {
       newRegistry: registry,
       newMessage: {},

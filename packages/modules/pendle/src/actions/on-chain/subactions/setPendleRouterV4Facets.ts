@@ -19,11 +19,7 @@ export type SetPendleRouterV4FacetsParams = {
 
 export type SetPendleRouterV4FacetsMsg = {}
 
-export class SetPendleRouterV4FacetsSubAction extends SubAction<
-  SetPendleRouterV4FacetsParams,
-  PendleRegistry,
-  SetPendleRouterV4FacetsMsg
-> {
+export class SetPendleRouterV4FacetsSubAction extends SubAction<SetPendleRouterV4FacetsParams, PendleRegistry, SetPendleRouterV4FacetsMsg> {
   constructor(client: InfinitWallet, params: SetPendleRouterV4FacetsParams) {
     super(SetPendleRouterV4FacetsSubAction.name, client, params)
   }

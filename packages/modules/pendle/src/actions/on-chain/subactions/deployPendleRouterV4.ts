@@ -16,11 +16,7 @@ export type DeployPendleRouterV4Msg = {
   pendleRouterV4: Address
 }
 
-export class DeployPendleRouterV4SubAction extends SubAction<
-  DeployPendleRouterV4SubactionParams,
-  PendleRegistry,
-  DeployPendleRouterV4Msg
-> {
+export class DeployPendleRouterV4SubAction extends SubAction<DeployPendleRouterV4SubactionParams, PendleRegistry, DeployPendleRouterV4Msg> {
   constructor(client: InfinitWallet, params: DeployPendleRouterV4SubactionParams) {
     super(DeployPendleRouterV4SubAction.name, client, params)
   }

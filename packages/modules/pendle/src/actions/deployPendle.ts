@@ -95,7 +95,7 @@ import { UpgradePendleGaugeControllerMainchainUpgSubaction } from '@actions/on-c
 
 import type { PendleRegistry } from '@/src/type'
 
-export const DeployPendleV3ActionParamsSchema = z.object({
+export const DeployPendleActionParamsSchema = z.object({
   refundAddress: zodAddressNonZero.describe(`The address to refund e.g. '0x123...abc'`),
   lzEndpoint: zodAddress.describe(`The address of the LZ endpoint e.g. '0x123...abc'`),
   governanceToken: zodAddress.describe(`The address of the governance token e.g. '0x123...abc'`),
@@ -127,16 +127,16 @@ export const DeployPendleV3ActionParamsSchema = z.object({
   blockCycleNumerator: z.number().describe(`The block cycle numerator`),
 })
 
-export type DeployPendleV3Params = z.infer<typeof DeployPendleV3ActionParamsSchema>
-export type DeployPendleV3ActionData = {
-  params: DeployPendleV3Params
+export type DeployPendleParams = z.infer<typeof DeployPendleActionParamsSchema>
+export type DeployPendleActionData = {
+  params: DeployPendleParams
   signer: Record<'deployer', InfinitWallet>
 }
 
-export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, PendleRegistry> {
-  constructor(data: DeployPendleV3ActionData) {
-    validateActionData(data, DeployPendleV3ActionParamsSchema, ['deployer'])
-    super(DeployPendleV3Action.name, data)
+export class DeployPendleAction extends Action<DeployPendleActionData, PendleRegistry> {
+  constructor(data: DeployPendleActionData) {
+    validateActionData(data, DeployPendleActionParamsSchema, ['deployer'])
+    super(DeployPendleAction.name, data)
   }
 
   protected override getSubActions(): ((message: any) => SubAction)[] {

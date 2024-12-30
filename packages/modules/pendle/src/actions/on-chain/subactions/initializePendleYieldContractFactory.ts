@@ -23,10 +23,7 @@ export class InitializePendleYieldContractFactorySubaction extends SubAction<
     this.txBuilders = [new InitializePendleYieldContractFactoryTxBuilder(this.client, this.params)]
   }
 
-  protected async updateRegistryAndMessage(
-    registry: PendleRegistry,
-    _txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleRegistry>> {
+  protected async updateRegistryAndMessage(registry: PendleRegistry, _txHashes: Hash[]): Promise<SubActionExecuteResponse<PendleRegistry>> {
     return {
       newRegistry: registry,
       newMessage: {},

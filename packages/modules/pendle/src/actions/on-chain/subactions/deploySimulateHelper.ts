@@ -13,11 +13,7 @@ export type DeploySimulateHelperMsg = {
   simulateHelper: Address
 }
 
-export class DeploySimulateHelperSubAction extends SubAction<
-  DeploySimulateHelperSubActionParams,
-  PendleRegistry,
-  DeploySimulateHelperMsg
-> {
+export class DeploySimulateHelperSubAction extends SubAction<DeploySimulateHelperSubActionParams, PendleRegistry, DeploySimulateHelperMsg> {
   constructor(client: InfinitWallet, params: DeploySimulateHelperSubActionParams) {
     super(DeploySimulateHelperSubAction.name, client, params)
   }
