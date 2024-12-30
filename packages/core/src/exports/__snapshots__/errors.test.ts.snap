@@ -10,6 +10,7 @@ exports[`exports - errors: should match snapshot 1`] = `
   "TransactionError",
   "ContractNotFoundError",
   "TxNotFoundError",
+  "InvalidEventError",
   "ValidateInputValueError",
   "ValidateLengthError",
   "ValidateInputZeroAddressError",

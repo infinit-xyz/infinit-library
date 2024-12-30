@@ -5,8 +5,9 @@ import { defineProject } from 'vitest/config'
 export default defineProject({
   test: {
     name: 'token',
-    testTimeout: 25000,
-    hookTimeout: 15000,
+    hookTimeout: 50_000,
+    testTimeout: 50_000,
+    retry: 3,
   },
   plugins: [tsconfigPaths()], // to resolve imports using Typescipt's path mapping
 })

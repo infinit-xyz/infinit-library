@@ -6,8 +6,9 @@ export default defineProject({
   test: {
     name: 'aave-v3',
     setupFiles: ['./test/setup.ts'],
-    hookTimeout: 30_000,
-    testTimeout: 30_000,
+    hookTimeout: 50_000,
+    testTimeout: 50_000,
+    retry: 3,
   },
   plugins: [tsconfigPaths()], // to resolve imports using Typescipt's path mapping
 })

@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 import { ActionDetailRecord } from '@infinit-xyz/core'
 
+import { AddNewModesAction, AddNewModesActionParamsSchema } from '@actions/addNewModes'
 import { ChangeIrmAction, ChangeIrmActionParamsSchema } from '@actions/changeIrm'
 import { DeployApi3ProxyOracleReaderAction } from '@actions/deployApi3ProxyOracleReader'
 import { DeployDoubleSlopeIRMsAction, DeployDoubleSlopeIRMsActionParamsSchema } from '@actions/deployDoubleSlopeIRMs'
@@ -11,6 +12,7 @@ import {
   SetApi3ProxyOracleReaderTokensInfoAction,
   SetApi3ProxyOracleReaderTokensInfoActionParamsSchema,
 } from '@actions/setApi3ProxyOracleReaderTokensInfo'
+import { SetInitOracleSourcesAction, SetInitOracleSourcesActionParamsSchema } from '@actions/setInitOracleSources'
 import { SetIrmAction, SetIrmActionParamsSchema } from '@actions/setIrm'
 import { SetMaxPriceDeviationAction, SetMaxPriceDeviationActionParamsSchema } from '@actions/setMaxPriceDeviation'
 import { SetModeFactorsAction, SetModeFactorsActionParamsSchema } from '@actions/setModeFactors'
@@ -122,6 +124,20 @@ export const actions = {
     paramsSchema: ChangeIrmActionParamsSchema,
     signers: ['deployer', 'guardian'],
   },
+  addNewModes: {
+    type: 'on-chain',
+    name: 'Add New Modes',
+    actionClassName: AddNewModesAction.name,
+    paramsSchema: AddNewModesActionParamsSchema,
+    signers: ['guardian', 'governor'],
+  },
+  setInitOracleSources: {
+    type: 'on-chain',
+    name: 'Set Init Oracle Sources',
+    actionClassName: SetInitOracleSourcesAction.name,
+    paramsSchema: SetInitOracleSourcesActionParamsSchema,
+    signers: ['governor'],
+  },
 } satisfies ActionDetailRecord
 
 export {
@@ -139,4 +155,6 @@ export {
   SetPoolConfigAction,
   SetPythOracleReaderTokensInfoAction,
   SupportNewPoolsAction,
+  AddNewModesAction,
+  SetInitOracleSourcesAction,
 }
