@@ -53,10 +53,10 @@ describe('SetCollFactorsE18', async () => {
     txBuilder = new SetCollFactorE18TxBuilder(client, {
       config: configProxy,
       mode: 1,
-      pools: ['0x0000000000000000000000000000000000000001', '0x0000000000000000000000000000000000000000'],
+      pools: ['0x0000000000000000000000000000000000000000', '0x0000000000000000000000000000000000000001'],
       factors_e18: [1n, 1n],
     })
-    expect(txBuilder.validate()).rejects.toThrowError('POOL (INDEX:1) SHOULD_NOT_BE_ZERO_ADDRESS')
+    expect(txBuilder.validate()).rejects.toThrowError('POOL (INDEX:0) SHOULD_NOT_BE_ZERO_ADDRESS')
   })
 
   test('test negative factor should thorw error on validation', async () => {
@@ -89,5 +89,15 @@ describe('SetCollFactorsE18', async () => {
       factors_e18: [parseUnits('1', 18), 0n],
     })
     expect(txBuilder.validate()).resolves.not.toThrow()
+  })
+  test('test validate not sorted should failed', async () => {
+    expect(registry.configProxy).toBeTruthy()
+    txBuilder = new SetCollFactorE18TxBuilder(governor, {
+      config: registry.configProxy!,
+      mode: 2,
+      pools: ['0x0000000000000000000000000000000000000002', '0x0000000000000000000000000000000000000001'],
+      factors_e18: [parseUnits('1', 18), 0n],
+    })
+    expect(txBuilder.validate()).rejects.toThrowError('Please check your input params\nPools should be sorted')
   })
 })
