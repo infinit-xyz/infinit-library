@@ -1,5 +1,41 @@
 # @infinit-xyz/init-capital
 
+## 0.0.0-alpha.9
+
+### Minor Changes
+
+- [#144](https://github.com/infinit-xyz/infinit-library/pull/144)
+  [`40dbcc6`](https://github.com/infinit-xyz/infinit-library/commit/40dbcc6c90b9e1b184556cccec475a5e58c41cff) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - fix logic for setModeAndTokenLiqMultiplierSubAction and add tests
+
+- [#152](https://github.com/infinit-xyz/infinit-library/pull/152)
+  [`7d43c7e`](https://github.com/infinit-xyz/infinit-library/commit/7d43c7e4b344ce202d29fddcb2c5c256f531e95b) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - - add "addNewMode" action
+
+  - add "setInitOracleSources" action
+
+- [#146](https://github.com/infinit-xyz/infinit-library/pull/146)
+  [`9a5022f`](https://github.com/infinit-xyz/infinit-library/commit/9a5022f7d2f102dd14afb2e29b91a5dab250ab05) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - support lsdApi3
+
+- [#141](https://github.com/infinit-xyz/infinit-library/pull/141)
+  [`5a5dfad`](https://github.com/infinit-xyz/infinit-library/commit/5a5dfadaeeb9b2a1dd4fe15a12091d9046eb650f) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - - add more init capital add new pool tests
+
+  - fix txBuilder validations variable range e.g. handle input over uint128 for bigint
+  - fix registry typo error on initialize pool
+
+- [#150](https://github.com/infinit-xyz/infinit-library/pull/150)
+  [`c3b0158`](https://github.com/infinit-xyz/infinit-library/commit/c3b01581aba636b87b07bbd6340a7afde3ac4900) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - change to read contract address from registry
+
+### Patch Changes
+
+- Updated dependencies [[`3fdf05c`](https://github.com/infinit-xyz/infinit-library/commit/3fdf05c6df689f6544cba0e42119036c721a8812),
+  [`9a5022f`](https://github.com/infinit-xyz/infinit-library/commit/9a5022f7d2f102dd14afb2e29b91a5dab250ab05),
+  [`31701a7`](https://github.com/infinit-xyz/infinit-library/commit/31701a753cf76bec2a575ce95f7e26ad3b551baa)]:
+  - @infinit-xyz/core@0.1.0-alpha.11
+
 ## 0.0.0-alpha.8
 
 ### Patch Changes

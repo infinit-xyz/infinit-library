@@ -1,5 +1,23 @@
 # @infinit-xyz/core
 
+## 0.1.0-alpha.11
+
+### Minor Changes
+
+- [#146](https://github.com/infinit-xyz/infinit-library/pull/146)
+  [`9a5022f`](https://github.com/infinit-xyz/infinit-library/commit/9a5022f7d2f102dd14afb2e29b91a5dab250ab05) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - pass registry to the subaction validate
+
+### Patch Changes
+
+- [#164](https://github.com/infinit-xyz/infinit-library/pull/164)
+  [`3fdf05c`](https://github.com/infinit-xyz/infinit-library/commit/3fdf05c6df689f6544cba0e42119036c721a8812) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - add prool timeout
+
+- [#163](https://github.com/infinit-xyz/infinit-library/pull/163)
+  [`31701a7`](https://github.com/infinit-xyz/infinit-library/commit/31701a753cf76bec2a575ce95f7e26ad3b551baa) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - add invalid event error
+
 ## 0.1.0-alpha.10
 
 ### Minor Changes
