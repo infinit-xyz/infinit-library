@@ -17,9 +17,8 @@ describe('actions/index.ts', () => {
     }
   })
 
-  test('should have init action', () => {
+  test('should have pendle action', () => {
     const actionKeys = Object.keys(index['actions'])
-
-    expect(actionKeys).toContain('init')
+    actionKeys.forEach((actionKey) => expect(actionKey).toContain('Pendle'))
   })
 })
