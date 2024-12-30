@@ -11,10 +11,19 @@ import {
 } from '@actions/on-chain/subactions/deployBaseSplitCodeFactoryContract'
 import { DeployMulticall2SubAction } from '@actions/on-chain/subactions/deployMulticall2'
 import { DeployOracleLibSubaction, DeployOracleLibSubactionMsg } from '@actions/on-chain/subactions/deployOracleLib'
+import { DeployPendleBoringOneracleSubAction } from '@actions/on-chain/subactions/deployPendleBoringOneracle'
 import {
   DeployPendleGaugeControllerMainchainUpgSubaction,
   DeployPendleGaugeControllerMainchainUpgSubactionMsg,
 } from '@actions/on-chain/subactions/deployPendleGaugeControllerMainchainUpg'
+import {
+  DeployPendleGaugeControllerMainchainUpgProxySubaction,
+  DeployPendleGaugeControllerMainchainUpgProxySubactionMsg,
+} from '@actions/on-chain/subactions/deployPendleGaugeControllerMainchainUpgProxy'
+import {
+  DeployPendleGovernanceProxyMsg,
+  DeployPendleGovernanceProxySubAction,
+} from '@actions/on-chain/subactions/deployPendleGovernanceProxy'
 import { DeployPendleLimitRouterMsg, DeployPendleLimitRouterSubAction } from '@actions/on-chain/subactions/deployPendleLimitRouter'
 import {
   DeployPendleLimitRouterProxyMsg,
@@ -59,6 +68,10 @@ import {
   DeployPendleYieldContractFactorySubactionMsg,
 } from '@actions/on-chain/subactions/deployPendleYieldContractFactory'
 import { DeployProxyAdminMsg, DeployProxyAdminSubAction } from '@actions/on-chain/subactions/deployProxyAdmin'
+import {
+  DeployProxyPendleGovernanceProxyMsg,
+  DeployProxyPendleGovernanceProxySubAction,
+} from '@actions/on-chain/subactions/deployProxyPendleGovernanceProxy'
 import { DeployPendleRouterFacetsMsg, DeployPendleRouterFacetsSubAction } from '@actions/on-chain/subactions/deployRouterFacets'
 import { DeployPendleStaticFacetsMsg, DeployPendleStaticFacetsSubAction } from '@actions/on-chain/subactions/deployRouterStaticFacets'
 import { DeploySimulateHelperSubAction } from '@actions/on-chain/subactions/deploySimulateHelper'
@@ -68,6 +81,9 @@ import {
   DeployVotingEscrowPendleMainchainSubactionMsg,
 } from '@actions/on-chain/subactions/deployVotingEscrowPendleMainchain'
 import { DeployYTV3CreationCodeSubaction, DeployYTV3CreationCodeSubactionMsg } from '@actions/on-chain/subactions/deployYTV3CreationCode'
+import { GrantRoleGuardianSubAction } from '@actions/on-chain/subactions/grantRoleGuardianPendleGovernanceProxy'
+import { InitializePendleGaugeControllerMainchainUpgSubaction } from '@actions/on-chain/subactions/initializePendleGaugeControllerMainchainUpgProxy'
+import { InitializePendleGovernanceProxySubAction } from '@actions/on-chain/subactions/initializePendleGovernanceProxy'
 import { InitializePendleLimitRouterSubaction } from '@actions/on-chain/subactions/initializePendleLimitRouter'
 import { InitializePendleMsgSendEndpointUpgSubaction } from '@actions/on-chain/subactions/initializePendleMsgSendEndpointUpg'
 import { InitializePendlePYLpOracleSubaction } from '@actions/on-chain/subactions/initializePendlePYLpOracle'
@@ -75,21 +91,8 @@ import { InitializePendleVotingControllerUpgSubaction } from '@actions/on-chain/
 import { InitializePendleYieldContractFactorySubaction } from '@actions/on-chain/subactions/initializePendleYieldContractFactory'
 import { SetPendleRouterStaticFacetsSubAction } from '@actions/on-chain/subactions/setPendleRouterStaticFacets'
 import { SetPendleRouterV4FacetsSubAction } from '@actions/on-chain/subactions/setPendleRouterV4Facets'
+import { UpgradePendleGaugeControllerMainchainUpgSubaction } from '@actions/on-chain/subactions/upgradePendleGaugeControllerMainchainUpgProxy'
 
-import { DeployPendleBoringOneracleSubAction } from './on-chain/subactions/deployPendleBoringOneracle'
-import { DeployPendleGovernanceProxyMsg, DeployPendleGovernanceProxySubAction } from './on-chain/subactions/deployPendleGovernanceProxy'
-import {
-  DeployProxyPendleGovernanceProxyMsg,
-  DeployProxyPendleGovernanceProxySubAction,
-} from './on-chain/subactions/deployProxyPendleGovernanceProxy'
-import {
-  DeployPendleGaugeControllerMainchainUpgProxySubaction,
-  DeployPendleGaugeControllerMainchainUpgProxySubactionMsg,
-} from './on-chain/subactions/deploypendleGaugeControllerMainchainUpgProxy'
-import { GrantRoleGuardianSubAction } from './on-chain/subactions/grantRoleGuardianPendleGovernanceProxy'
-import { InitializePendleGaugeControllerMainchainUpgSubaction } from './on-chain/subactions/initializePendleGaugeControllerMainchainUpgProxy'
-import { InitializePendleGovernanceProxySubAction } from './on-chain/subactions/initializePendleGovernanceProxy'
-import { UpgradePendleGaugeControllerMainchainUpgSubaction } from './on-chain/subactions/upgradePendleGaugeControllerMainchainUpgProxy'
 import type { PendleV3Registry } from '@/src/type'
 
 export const DeployPendleV3ActionParamsSchema = z.object({
@@ -278,10 +281,10 @@ export class DeployPendleV3Action extends Action<DeployPendleV3ActionData, Pendl
         new DeployPendleGaugeControllerMainchainUpgSubaction(deployer, {
           votingController: message.pendleVotingControllerUpgProxy,
           pendle: params.rewardToken,
-          marketFactory: zeroAddress,
+          marketFactory: message.pendleMarketFactoryV3,
           marketFactory2: zeroAddress,
           marketFactory3: zeroAddress,
-          marketFactory4: message.pendleMarketFactoryV3,
+          marketFactory4: zeroAddress,
         }),
       // step 13.2: upgrade to the real implementation
       (message: DeployPendleGaugeControllerMainchainUpgSubactionMsg & DeployPendleGaugeControllerMainchainUpgProxySubactionMsg) =>

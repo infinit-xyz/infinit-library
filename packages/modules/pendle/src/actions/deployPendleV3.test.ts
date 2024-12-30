@@ -37,7 +37,7 @@ describe('deployPendleV3Action', () => {
         interestFeeRate: 30000000000000000n,
         rewardFeeRate: 30000000000000000n,
       },
-      rewardToken: bnAddress,
+      rewardToken: ARBITRUM_TEST_ADDRESSES.pendle,
       guardian: bnAddress,
       marketContractFactory: {
         reserveFeePercent: 10,
@@ -71,14 +71,14 @@ describe('deployPendleV3Action', () => {
       functionName: 'createYieldContract',
       args: [ARBITRUM_TEST_ADDRESSES.syAUsdc, blockTimestamp, true],
     })
-    const createYTTx: TransactionData = {
+    const createYTTxData: TransactionData = {
       data: createYTData,
       to: registry.pendleYieldContractFactory!,
     }
     const txReceipts = await client.sendTransactions([
       {
         name: 'createYieldContract',
-        txData: createYTTx,
+        txData: createYTTxData,
       },
     ])
     const txReceipt = txReceipts[0]
@@ -88,19 +88,21 @@ describe('deployPendleV3Action', () => {
       data: txReceipt.logs[1].data,
       topics: txReceipt.logs[1].topics,
     })
-    console.log(eventLog)
-    const args: {
+    const {
+      PT: pt,
+      YT: yt,
+      SY: sy,
+    } = eventLog.args as {
       SY: Address
       expiry: bigint
       PT: Address
       YT: Address
-    } = eventLog.args
-    const pt = args.PT
-    const yt = args.YT
+    }
+
     // todo: check yt's sy is same with real pendle yt's sy
     // read yt's SY
     const yieldTokenArtifact = await readArtifact('PendleYieldToken')
-    const sy = await client.publicClient.readContract({
+    const syFromYT = await client.publicClient.readContract({
       address: yt,
       abi: yieldTokenArtifact.abi,
       functionName: 'SY',
@@ -112,7 +114,8 @@ describe('deployPendleV3Action', () => {
       functionName: 'SY',
       args: [],
     })
-    expect(sy).toBe(expectedSy)
+    expect(syFromYT).toBe(expectedSy)
+
     // use pt from create market
     const marketFactoryArtifact = await readArtifact('PendleMarketFactoryV3')
     const createMarketData = await encodeFunctionData({
@@ -120,14 +123,14 @@ describe('deployPendleV3Action', () => {
       functionName: 'createNewMarket',
       args: [pt, 112567687675000000000n, 1029547938000000000n, 499875041000000n],
     })
-    const createMarketTx: TransactionData = {
+    const createMarketTxData: TransactionData = {
       data: createMarketData,
       to: registry.pendleMarketFactoryV3!,
     }
     const txReceipts2 = await client.sendTransactions([
       {
         name: 'createNewMarket',
-        txData: createMarketTx,
+        txData: createMarketTxData,
       },
     ])
     const txReceipt2 = txReceipts2[0]
@@ -136,10 +139,218 @@ describe('deployPendleV3Action', () => {
       data: txReceipt2.logs[0].data,
       topics: txReceipt2.logs[0].topics,
     })
-    console.log(eventLog2)
-
+    let market: Address = zeroAddress
+    if ('market' in eventLog2.args && 'PT' in eventLog2.args) {
+      market = eventLog2.args.market
+      expect(market).not.toBe(zeroAddress)
+      expect(eventLog2.args.PT).toBe(pt)
+    } else {
+      throw new Error('Unexpected event log format')
+    }
+    // note: we will test market's functionalities in router tests
     // test router
+    // rich guy approve usdc to router
+    const richGuy = new TestInfinitWallet(TestChain.arbitrum, '0x2Df1c51E09aECF9cacB7bc98cB1742757f163dF7')
+    const netTokenIn = BigInt(1_000_000 * 10 ** 6)
+    await ensureApprove(richGuy, ARBITRUM_TEST_ADDRESSES.usdc, registry.pendleRouterV4!, netTokenIn)
     // mint syFromToken
+    let syBalanceBefore = await balanceOf(richGuy, sy, richGuy.impersonatedUser)
+    const actionMiscV3Artifact = await readArtifact('ActionMiscV3')
+    const mintSyData = await encodeFunctionData({
+      abi: actionMiscV3Artifact.abi,
+      functionName: 'mintSyFromToken',
+      args: [
+        richGuy.impersonatedUser,
+        sy,
+        0n,
+        {
+          tokenIn: ARBITRUM_TEST_ADDRESSES.usdc,
+          netTokenIn: netTokenIn,
+          tokenMintSy: ARBITRUM_TEST_ADDRESSES.usdc,
+          pendleSwap: zeroAddress,
+          swapData: {
+            swapType: 0,
+            extRouter: zeroAddress,
+            extCalldata: '0x',
+            needScale: false,
+          },
+        },
+      ],
+    })
+    const mintSyTxData: TransactionData = {
+      data: mintSyData,
+      to: registry.pendleRouterV4!,
+    }
+    await richGuy.sendTransactions([
+      {
+        name: 'mintSyFromToken',
+        txData: mintSyTxData,
+      },
+    ])
+    let syBalanceAfter = await balanceOf(richGuy, sy, richGuy.impersonatedUser)
+    expect(syBalanceAfter).toBeGreaterThan(syBalanceBefore)
+    // rich guy transfer half of sy to yt
+    syBalanceBefore = await balanceOf(richGuy, sy, richGuy.impersonatedUser)
+    let ytBalanceBefore = await balanceOf(richGuy, yt, richGuy.impersonatedUser)
+    let ptBalanceBefore = await balanceOf(richGuy, pt, richGuy.impersonatedUser)
+    const netSyIn = syBalanceAfter / 2n
+    const transferSyData = await encodeFunctionData({
+      abi: yieldTokenArtifact.abi,
+      functionName: 'transfer',
+      args: [yt, netSyIn],
+    })
+    const transferSyTxData: TransactionData = {
+      data: transferSyData,
+      to: sy,
+    }
+    await richGuy.sendTransactions([
+      {
+        name: 'transfer',
+        txData: transferSyTxData,
+      },
+    ])
+    // rich guy mint yt pt
+    const mintYtData = await encodeFunctionData({
+      abi: yieldTokenArtifact.abi,
+      functionName: 'mintPY',
+      args: [richGuy.impersonatedUser, richGuy.impersonatedUser],
+    })
+    const mintYtTxData: TransactionData = {
+      data: mintYtData,
+      to: yt,
+    }
+    await richGuy.sendTransactions([
+      {
+        name: 'mintPY',
+        txData: mintYtTxData,
+      },
+    ])
+    syBalanceAfter = await balanceOf(richGuy, sy, richGuy.impersonatedUser)
+    let ytBalanceAfter = await balanceOf(richGuy, yt, richGuy.impersonatedUser)
+    let ptBalanceAfter = await balanceOf(richGuy, pt, richGuy.impersonatedUser)
+    expect(syBalanceAfter).toBe(syBalanceBefore - netSyIn)
+    expect(ytBalanceAfter).toBeGreaterThan(ytBalanceBefore)
+    expect(ptBalanceAfter).toBeGreaterThan(ptBalanceBefore)
+    // rich guy approve pt & sy to router
+    await ensureApprove(richGuy, pt, registry.pendleRouterV4!, ptBalanceAfter)
+    await ensureApprove(richGuy, sy, registry.pendleRouterV4!, syBalanceAfter)
+    const lpBalanceBefore = await balanceOf(richGuy, market, richGuy.impersonatedUser)
+    // addLiquiditySingleSy
+    const actionAddRemoveLiqV3Artifact = await readArtifact('ActionAddRemoveLiqV3')
+    const addLiquidityDualSyAndPtData = await encodeFunctionData({
+      abi: actionAddRemoveLiqV3Artifact.abi,
+      functionName: 'addLiquidityDualSyAndPt',
+      args: [
+        richGuy.impersonatedUser,
+        market,
+        syBalanceAfter / 2n,
+        ptBalanceAfter / 2n,
+        0n,
+        // {
+        //   guessMax: 0n,
+        //   guessMin: 0n,
+        //   guessOffchain: 0n,
+        //   maxIteration: 0n,
+        //   eps: 0n,
+        // },
+        // {
+        //   limitRouter: zeroAddress,
+        //   epsSkipMarket: 0n,
+        //   normalFills: [],
+        //   flashFills: [],
+        //   optData: '0x'
+        // }
+      ],
+    })
+    const addLiquidityDualSyAndPtTxData: TransactionData = {
+      data: addLiquidityDualSyAndPtData,
+      to: registry.pendleRouterV4!,
+    }
+    await richGuy.sendTransactions([
+      {
+        name: 'addLiquidityDualSyAndPt',
+        txData: addLiquidityDualSyAndPtTxData,
+      },
+    ])
+    const lpBalanceAfter = await balanceOf(richGuy, market, richGuy.impersonatedUser)
+    expect(lpBalanceAfter).toBeGreaterThan(lpBalanceBefore)
+    ptBalanceBefore = await balanceOf(richGuy, pt, richGuy.impersonatedUser)
+    syBalanceBefore = await balanceOf(richGuy, sy, richGuy.impersonatedUser)
+    // swapExactPtForSy
+    const actionSwapPTV3Artifact = await readArtifact('ActionSwapPTV3')
+    const swapExactPtForSyData = await encodeFunctionData({
+      abi: actionSwapPTV3Artifact.abi,
+      functionName: 'swapExactPtForSy',
+      args: [
+        richGuy.impersonatedUser,
+        market,
+        BigInt(1000 * 10 ** 6),
+        0n,
+        {
+          limitRouter: zeroAddress,
+          epsSkipMarket: 0n,
+          normalFills: [],
+          flashFills: [],
+          optData: '0x',
+        },
+      ],
+    })
+    const swapExactPtForSyTxData: TransactionData = {
+      data: swapExactPtForSyData,
+      to: registry.pendleRouterV4!,
+    }
+    await richGuy.sendTransactions([
+      {
+        name: 'swapExactPtForSy',
+        txData: swapExactPtForSyTxData,
+      },
+    ])
+    ptBalanceAfter = await balanceOf(richGuy, pt, richGuy.impersonatedUser)
+    syBalanceAfter = await balanceOf(richGuy, sy, richGuy.impersonatedUser)
+    expect(ptBalanceAfter).toBeLessThan(ptBalanceBefore)
+    expect(syBalanceAfter).toBeGreaterThan(syBalanceBefore)
+    // swapExactPtForYt
+    syBalanceBefore = await balanceOf(richGuy, sy, richGuy.impersonatedUser)
+    ytBalanceBefore = await balanceOf(richGuy, yt, richGuy.impersonatedUser)
+    const actionSwapYTV3Artifact = await readArtifact('ActionSwapYTV3')
+    const swapExactPtForYtData = await encodeFunctionData({
+      abi: actionSwapYTV3Artifact.abi,
+      functionName: 'swapExactSyForYt',
+      args: [
+        richGuy.impersonatedUser,
+        market,
+        BigInt(1000 * 10 ** 6),
+        0n,
+        {
+          guessMax: 0n,
+          guessMin: 0n,
+          guessOffchain: 0n,
+          maxIteration: 0n,
+          eps: 0n,
+        },
+        {
+          limitRouter: zeroAddress,
+          epsSkipMarket: 0n,
+          normalFills: [],
+          flashFills: [],
+          optData: '0x',
+        },
+      ],
+    })
+    const swapExactPtForYtTxData: TransactionData = {
+      data: swapExactPtForYtData,
+      to: registry.pendleRouterV4!,
+    }
+    await richGuy.sendTransactions([
+      {
+        name: 'swapExactSyForYt',
+        txData: swapExactPtForYtTxData,
+      },
+    ])
+    syBalanceAfter = await balanceOf(richGuy, sy, richGuy.impersonatedUser)
+    ytBalanceAfter = await balanceOf(richGuy, yt, richGuy.impersonatedUser)
+    expect(syBalanceAfter).toBeLessThan(syBalanceBefore)
+    expect(ytBalanceAfter).toBeGreaterThan(ytBalanceBefore)
   })
 })
 
@@ -218,4 +429,37 @@ const checkRegistry = async (registry: PendleV3Registry) => {
   expect(registry.pendleGovernanceProxyImpl).not.toBe(zeroAddress)
   expect(registry.pendleGovernanceProxy).not.toBe(zeroAddress)
   expect(registry.pendleBoringOneracle).not.toBe(zeroAddress)
+}
+
+const ensureApprove = async (client: TestInfinitWallet, token: Address, spender: Address, amount: bigint) => {
+  const erc20Artifact = await readArtifact('@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20')
+  const allowance = await client.publicClient.readContract({
+    address: token,
+    abi: erc20Artifact.abi,
+    functionName: 'allowance',
+    args: [client.walletClient.account.address, spender],
+  })
+  if (allowance < amount) {
+    const approveData = await encodeFunctionData({
+      abi: erc20Artifact.abi,
+      functionName: 'approve',
+      args: [spender, amount],
+    })
+    const txData: TransactionData = {
+      data: approveData,
+      to: token,
+    }
+    await client.sendTransactions([{ name: 'approve', txData: txData }])
+  }
+}
+
+const balanceOf = async (client: TestInfinitWallet, token: Address, account: Address) => {
+  const erc20Artifact = await readArtifact('@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20')
+  const balance = await client.publicClient.readContract({
+    address: token,
+    abi: erc20Artifact.abi,
+    functionName: 'balanceOf',
+    args: [account],
+  })
+  return balance
 }
