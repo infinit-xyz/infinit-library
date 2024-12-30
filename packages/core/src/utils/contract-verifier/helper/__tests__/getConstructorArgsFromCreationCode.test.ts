@@ -16,7 +16,7 @@ describe('getConstructorArgsFromCreationCode', () => {
   const url = 'https://sepolia.arbiscan.io'
   const withParams = '0x9a3c2b73adac0f85e04ea049df31ffc2a8e35401'
   const withoutParams = '0xe426a3c7d8e769d617859ffe57d2fb407b778864'
-  const rpc = 'https://arbitrum-sepolia.blockpi.network/v1/rpc/public'
+  const rpc = 'https://arbitrum-sepolia-rpc.publicnode.com'
   const artifacts = new ArtifactsFromPath(
     path.join(process.cwd(), 'packages/core/src/utils/contract-verifier/helper/__mocks__/mock-artifacts'),
   )
