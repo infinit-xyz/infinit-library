@@ -37,7 +37,7 @@ describe('deployPendleV3Action', () => {
         interestFeeRate: 30000000000000000n,
         rewardFeeRate: 30000000000000000n,
       },
-      rewardToken: '0x0c880f6761f1af8d9aa9c466984b80dab9a8c9e8',
+      rewardToken: ARBITRUM_TEST_ADDRESSES.pendle,
       guardian: bnAddress,
       marketContractFactory: {
         reserveFeePercent: 10,

@@ -31,5 +31,6 @@ export const ARBITRUM_TEST_ADDRESSES = {
   tester: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
 
   // Pendle
-  syAUsdc: '0x50288c30c37FA1Ec6167a31E575EA8632645dE20'
+  syAUsdc: '0x50288c30c37FA1Ec6167a31E575EA8632645dE20',
+  pendle: '0x0c880f6761f1af8d9aa9c466984b80dab9a8c9e8'
 } satisfies Record<string, Address>
