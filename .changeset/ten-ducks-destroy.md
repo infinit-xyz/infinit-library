@@ -1,6 +1,6 @@
 ---
 '@infinit-xyz/pendle': minor
 ---
-
-- add deployPendle for pendle module
+- add pendle module
+- add deployPendle
 - add tests
