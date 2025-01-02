@@ -355,7 +355,10 @@ describe('deployPendleAction', () => {
 
 // --- Validate Functions ---
 const checkRoles = async (client: TestInfinitWallet, registry: PendleRegistry, params: DeployPendleParams) => {
-  const [pendleGovernanceProxyArtifact] = await Promise.all([readArtifact('PendleGovernanceProxy')])
+  const [pendleGovernanceProxyArtifact, pendleGaugeControllerMainchainUpgArtifact] = await Promise.all([
+    readArtifact('PendleGovernanceProxy'),
+    readArtifact('PendleGaugeControllerMainchainUpg'),
+  ])
   const DEFAULT_ADMIN = toHex(0x00, { size: 32 })
   const GUARDIAN = keccak256(toHex('GUARDIAN'))
 
@@ -376,7 +379,17 @@ const checkRoles = async (client: TestInfinitWallet, registry: PendleRegistry, p
     args: [GUARDIAN, params.guardian],
   })
   expect(hasRoleGuardian).toBe(true)
+
+  // check owner for PendleGaugeControllerMainchainUpgProxy should be guardian
+  const pendleGaugeControllerMainchainUpgOwner = await client.publicClient.readContract({
+    address: registry.pendleGaugeControllerMainchainUpgProxy!,
+    abi: pendleGaugeControllerMainchainUpgArtifact.abi,
+    functionName: 'owner',
+    args: [],
+  })
+  expect(pendleGaugeControllerMainchainUpgOwner).toBe(params.guardian)
 }
+
 const checkRegistry = async (registry: PendleRegistry) => {
   expect(registry.baseSplitCodeFactoryContract).not.toBe(zeroAddress)
   expect(registry.oracleLib).not.toBe(zeroAddress)

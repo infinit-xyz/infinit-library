@@ -82,7 +82,7 @@ import {
 } from '@actions/on-chain/subactions/deployVotingEscrowPendleMainchain'
 import { DeployYTV3CreationCodeSubaction, DeployYTV3CreationCodeSubactionMsg } from '@actions/on-chain/subactions/deployYTV3CreationCode'
 import { GrantRoleGuardianSubAction } from '@actions/on-chain/subactions/grantRoleGuardianPendleGovernanceProxy'
-import { InitializePendleGaugeControllerMainchainUpgSubaction } from '@actions/on-chain/subactions/initializePendleGaugeControllerMainchainUpgProxy'
+import { InitializePendleGaugeControllerMainchainUpgSubaction } from '@actions/on-chain/subactions/initializePendleGaugeControllerMainchainUpg'
 import { InitializePendleGovernanceProxySubAction } from '@actions/on-chain/subactions/initializePendleGovernanceProxy'
 import { InitializePendleLimitRouterSubaction } from '@actions/on-chain/subactions/initializePendleLimitRouter'
 import { InitializePendleMsgSendEndpointUpgSubaction } from '@actions/on-chain/subactions/initializePendleMsgSendEndpointUpg'
@@ -91,7 +91,8 @@ import { InitializePendleVotingControllerUpgSubaction } from '@actions/on-chain/
 import { InitializePendleYieldContractFactorySubaction } from '@actions/on-chain/subactions/initializePendleYieldContractFactory'
 import { SetPendleRouterStaticFacetsSubAction } from '@actions/on-chain/subactions/setPendleRouterStaticFacets'
 import { SetPendleRouterV4FacetsSubAction } from '@actions/on-chain/subactions/setPendleRouterV4Facets'
-import { UpgradePendleGaugeControllerMainchainUpgSubaction } from '@actions/on-chain/subactions/upgradePendleGaugeControllerMainchainUpgProxy'
+import { TransferOwnershipPendleGaugeControllerMainchainUpgSubAction } from '@actions/on-chain/subactions/transferOwnershipPendleGaugeControllerMainchainUpg'
+import { UpgradePendleGaugeControllerMainchainUpgSubaction } from '@actions/on-chain/subactions/upgradePendleGaugeControllerMainchainUpg'
 
 import type { PendleRegistry } from '@/src/type'
 
@@ -291,7 +292,13 @@ export class DeployPendleAction extends Action<DeployPendleActionData, PendleReg
           pendleGaugeControllerMainchainUpg: message.pendleGaugeControllerMainchainUpgProxy,
           newImplementation: message.pendleGaugeControllerMainchainUpgImpl,
         }),
-      // todo: transfer ownership to the guardian
+      // step 13.3: transfer ownership to the guardian
+      (message: DeployPendleGaugeControllerMainchainUpgProxySubactionMsg) =>
+        new TransferOwnershipPendleGaugeControllerMainchainUpgSubAction(deployer, {
+          pendleGaugeControllerMainchainUpg: message.pendleGaugeControllerMainchainUpgProxy,
+          newOwner: params.guardian,
+        }),
+
       // step 14 deploy RouterV4 Facets
       () => new DeployPendleRouterFacetsSubAction(deployer, {}),
 
