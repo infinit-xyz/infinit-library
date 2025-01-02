@@ -33,7 +33,7 @@ export class DeployPendleMsgSendEndpointUpgSubaction extends SubAction<DeployPen
     if (!pendleMsgSendEndpointUpg) {
       throw new ContractNotFoundError(deployPendleSwapTxHash, 'PendleSwap')
     }
-    registry.pendleMsgSendEndpointUpgImpl = pendleMsgSendEndpointUpg
+    registry['pendleMsgSendEndpointUpgImpl'] = pendleMsgSendEndpointUpg
 
     const newMessage = {
       pendleMsgSendEndpointUpg: pendleMsgSendEndpointUpg,

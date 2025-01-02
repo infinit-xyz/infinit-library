@@ -40,7 +40,7 @@ export class DeployPendleVotingContollerUpgSubaction extends SubAction<
     if (!pendleVotingContollerUpg) {
       throw new ContractNotFoundError(deployPendleSwapTxHash, 'PendleSwap')
     }
-    registry.pendleVotingContollerUpgImpl = pendleVotingContollerUpg
+    registry['pendleVotingContollerUpgImpl'] = pendleVotingContollerUpg
 
     const newMessage = {
       pendleVotingContollerUpgImpl: pendleVotingContollerUpg,

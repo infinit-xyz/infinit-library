@@ -31,7 +31,7 @@ export class DeployPendleSwapSubaction extends SubAction<object, PendleRegistry,
     if (!pendleSwap) {
       throw new ContractNotFoundError(deployPendleSwapTxHash, 'PendleSwap')
     }
-    registry.pendleSwap = pendleSwap
+    registry['pendleSwap'] = pendleSwap
 
     const newMessage = {
       pendleSwap: pendleSwap,

@@ -31,7 +31,7 @@ export class DeployOracleLibSubaction extends SubAction<object, PendleRegistry, 
     if (!oracleLib) {
       throw new ContractNotFoundError(deployOracleLibTxHash, 'OracleLib')
     }
-    registry.oracleLib = oracleLib
+    registry['oracleLib'] = oracleLib
 
     const newMessage = {
       oracleLib: oracleLib,

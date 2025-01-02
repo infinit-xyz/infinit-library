@@ -39,7 +39,7 @@ export class DeployPendleMsgSendEndpointUpgProxySubaction extends SubAction<
     if (!erc1967Proxy) {
       throw new ContractNotFoundError(deployPendleMsgSendEndpointUpgProxyTxHash, 'erc1967')
     }
-    registry.pendleMsgSendEndpointUpgProxy = erc1967Proxy
+    registry['pendleMsgSendEndpointUpgProxy'] = erc1967Proxy
 
     const newMessage = {
       pendleMsgSendEndpointUpgProxy: erc1967Proxy,

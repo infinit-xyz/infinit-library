@@ -39,7 +39,7 @@ export class DeployVotingEscrowPendleMainchainSubaction extends SubAction<
     if (!votingEscrowPendleMainchain) {
       throw new ContractNotFoundError(DeployVotingEscrowPendleMainchainTxHash, 'VotingEscrowPendleMainchain')
     }
-    registry.votingEscrowPendleMainchain = votingEscrowPendleMainchain
+    registry['votingEscrowPendleMainchain'] = votingEscrowPendleMainchain
 
     const newMessage = {
       votingEscrowPendleMainchain: votingEscrowPendleMainchain,

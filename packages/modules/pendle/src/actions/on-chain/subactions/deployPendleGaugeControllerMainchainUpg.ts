@@ -39,7 +39,7 @@ export class DeployPendleGaugeControllerMainchainUpgSubaction extends SubAction<
     if (!pendleGaugeControllerMainchainUpg) {
       throw new ContractNotFoundError(deployPendleGaugeControllerMainchainUpgTxHash, 'PendleGaugeControllerMainchainUpg')
     }
-    registry.pendleGaugeControllerMainchainUpgImpl = pendleGaugeControllerMainchainUpg
+    registry['pendleGaugeControllerMainchainUpgImpl'] = pendleGaugeControllerMainchainUpg
 
     const newMessage = {
       pendleGaugeControllerMainchainUpgImpl: pendleGaugeControllerMainchainUpg,

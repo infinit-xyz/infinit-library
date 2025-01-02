@@ -39,7 +39,7 @@ export class DeployPendleGaugeControllerMainchainUpgProxySubaction extends SubAc
     if (!erc1967Proxy) {
       throw new ContractNotFoundError(deployPendleGaugeControllerMainchainUpgProxyTxHash, 'erc1967')
     }
-    registry.pendleGaugeControllerMainchainUpgProxy = erc1967Proxy
+    registry['pendleGaugeControllerMainchainUpgProxy'] = erc1967Proxy
 
     const newMessage = {
       pendleGaugeControllerMainchainUpgProxy: erc1967Proxy,
