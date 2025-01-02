@@ -48,21 +48,21 @@ export class DeployPendlePoolDeployHelperSubAction extends SubAction<
     const [deployPendlePoolDeployHelperHash] = txHashes
 
     // get the deployed address from the txHash
-    const { contractAddress: pendleGovernanceProxy } = await this.client.publicClient.waitForTransactionReceipt({
+    const { contractAddress: pendlePoolDeployHelper } = await this.client.publicClient.waitForTransactionReceipt({
       hash: deployPendlePoolDeployHelperHash,
     })
 
     // check if the contract address is not found
-    if (!pendleGovernanceProxy) {
+    if (!pendlePoolDeployHelper) {
       throw new ContractNotFoundError(deployPendlePoolDeployHelperHash, 'PendlePoolDeployHelper')
     }
 
     // assign the contract address to the registry
-    registry['pendlePoolDeployHelper'] = pendleGovernanceProxy
+    registry['pendlePoolDeployHelper'] = pendlePoolDeployHelper
 
     // construct the new message
     const newMessage: DeployPendlePoolDeployHelperMsg = {
-      pendlePoolDeployHelper: pendleGovernanceProxy,
+      pendlePoolDeployHelper: pendlePoolDeployHelper,
     }
 
     return {
