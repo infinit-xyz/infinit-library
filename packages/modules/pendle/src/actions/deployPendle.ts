@@ -122,7 +122,6 @@ export const DeployPendleActionParamsSchema = z.object({
     reserveFeePercent: z
       .number()
       .describe(`The reserve fee percent in 1e18 unit, e.g. BigInt(0.1e18) is 10%. NOTE: should be between 0-100 `),
-    guaugeController: zodAddressNonZero.describe(`The address of the guage controller e.g. '0x123...abc'`),
   }),
   blockCycleNumerator: z.number().describe(`The block cycle numerator`),
 })

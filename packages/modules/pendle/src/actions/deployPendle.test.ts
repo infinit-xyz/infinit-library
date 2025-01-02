@@ -41,7 +41,6 @@ describe('deployPendleAction', () => {
       guardian: bnAddress,
       marketContractFactory: {
         reserveFeePercent: 10,
-        guaugeController: bnAddress,
       },
       blockCycleNumerator: 1000,
     }
@@ -66,7 +65,7 @@ describe('deployPendleAction', () => {
     const block = await client.publicClient.getBlock()
     let blockTimestamp = Number(block.timestamp) + 86400 * 60
     blockTimestamp = blockTimestamp - (blockTimestamp % 86400)
-    const createYTData = await encodeFunctionData({
+    const createYTData = encodeFunctionData({
       abi: ytFactoryArtifact.abi,
       functionName: 'createYieldContract',
       args: [ARBITRUM_TEST_ADDRESSES.syAUsdc, blockTimestamp, true],
@@ -118,7 +117,7 @@ describe('deployPendleAction', () => {
 
     // use pt from create market
     const marketFactoryArtifact = await readArtifact('PendleMarketFactoryV3')
-    const createMarketData = await encodeFunctionData({
+    const createMarketData = encodeFunctionData({
       abi: marketFactoryArtifact.abi,
       functionName: 'createNewMarket',
       args: [pt, 112567687675000000000n, 1029547938000000000n, 499875041000000n],
@@ -156,7 +155,7 @@ describe('deployPendleAction', () => {
     // mint syFromToken
     let syBalanceBefore = await balanceOf(richGuy, sy, richGuy.impersonatedUser)
     const actionMiscV3Artifact = await readArtifact('ActionMiscV3')
-    const mintSyData = await encodeFunctionData({
+    const mintSyData = encodeFunctionData({
       abi: actionMiscV3Artifact.abi,
       functionName: 'mintSyFromToken',
       args: [
@@ -194,7 +193,7 @@ describe('deployPendleAction', () => {
     let ytBalanceBefore = await balanceOf(richGuy, yt, richGuy.impersonatedUser)
     let ptBalanceBefore = await balanceOf(richGuy, pt, richGuy.impersonatedUser)
     const netSyIn = syBalanceAfter / 2n
-    const transferSyData = await encodeFunctionData({
+    const transferSyData = encodeFunctionData({
       abi: yieldTokenArtifact.abi,
       functionName: 'transfer',
       args: [yt, netSyIn],
@@ -210,7 +209,7 @@ describe('deployPendleAction', () => {
       },
     ])
     // rich guy mint yt pt
-    const mintYtData = await encodeFunctionData({
+    const mintYtData = encodeFunctionData({
       abi: yieldTokenArtifact.abi,
       functionName: 'mintPY',
       args: [richGuy.impersonatedUser, richGuy.impersonatedUser],
@@ -237,7 +236,7 @@ describe('deployPendleAction', () => {
     const lpBalanceBefore = await balanceOf(richGuy, market, richGuy.impersonatedUser)
     // addLiquiditySingleSy
     const actionAddRemoveLiqV3Artifact = await readArtifact('ActionAddRemoveLiqV3')
-    const addLiquidityDualSyAndPtData = await encodeFunctionData({
+    const addLiquidityDualSyAndPtData = encodeFunctionData({
       abi: actionAddRemoveLiqV3Artifact.abi,
       functionName: 'addLiquidityDualSyAndPt',
       args: [
@@ -278,7 +277,7 @@ describe('deployPendleAction', () => {
     syBalanceBefore = await balanceOf(richGuy, sy, richGuy.impersonatedUser)
     // swapExactPtForSy
     const actionSwapPTV3Artifact = await readArtifact('ActionSwapPTV3')
-    const swapExactPtForSyData = await encodeFunctionData({
+    const swapExactPtForSyData = encodeFunctionData({
       abi: actionSwapPTV3Artifact.abi,
       functionName: 'swapExactPtForSy',
       args: [
@@ -313,7 +312,7 @@ describe('deployPendleAction', () => {
     syBalanceBefore = await balanceOf(richGuy, sy, richGuy.impersonatedUser)
     ytBalanceBefore = await balanceOf(richGuy, yt, richGuy.impersonatedUser)
     const actionSwapYTV3Artifact = await readArtifact('ActionSwapYTV3')
-    const swapExactPtForYtData = await encodeFunctionData({
+    const swapExactPtForYtData = encodeFunctionData({
       abi: actionSwapYTV3Artifact.abi,
       functionName: 'swapExactSyForYt',
       args: [
@@ -440,7 +439,7 @@ const ensureApprove = async (client: TestInfinitWallet, token: Address, spender:
     args: [client.walletClient.account.address, spender],
   })
   if (allowance < amount) {
-    const approveData = await encodeFunctionData({
+    const approveData = encodeFunctionData({
       abi: erc20Artifact.abi,
       functionName: 'approve',
       args: [spender, amount],
