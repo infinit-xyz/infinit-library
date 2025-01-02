@@ -4,8 +4,8 @@ import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz
 import { ContractNotFoundError } from '@infinit-xyz/core/errors'
 
 import {
-  DeployPendleVotingControllerUpgTxBuilderParams,
   DeployPendleVotingControllerUpgTxBuilder,
+  DeployPendleVotingControllerUpgTxBuilderParams,
 } from '@actions/on-chain/subactions/txBuilders/PendleVotingControllerUpg/deploy'
 
 import { PendleRegistry } from '@/src/type'
@@ -33,7 +33,6 @@ export class DeployPendleVotingControllerUpgSubaction extends SubAction<
     registry: PendleRegistry,
     txHashes: Hash[],
   ): Promise<SubActionExecuteResponse<PendleRegistry, DeployPendleVotingControllerUpgSubactionMsg>> {
-
     const [deployPendleVotingControllerUpgTxHash] = txHashes
     const { contractAddress: pendleVotingControllerUpg } = await this.client.publicClient.waitForTransactionReceipt({
       hash: deployPendleVotingControllerUpgTxHash,
