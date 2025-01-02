@@ -401,7 +401,7 @@ const checkRegistry = async (registry: PendleRegistry) => {
   expect(registry.votingEscrowPendleMainchain).not.toBe(zeroAddress)
   expect(registry.pendleMsgSendEndpointUpgImpl).not.toBe(zeroAddress)
   expect(registry.pendleMsgSendEndpointUpgProxy).not.toBe(zeroAddress)
-  expect(registry.pendleVotingContollerUpgImpl).not.toBe(zeroAddress)
+  expect(registry.pendleVotingControllerUpgImpl).not.toBe(zeroAddress)
   expect(registry.pendleVotingControllerUpgProxy).not.toBe(zeroAddress)
   expect(registry.pendleGaugeControllerMainchainUpgProxy).not.toBe(zeroAddress)
 

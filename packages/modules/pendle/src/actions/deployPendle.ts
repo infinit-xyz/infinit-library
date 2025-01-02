@@ -56,8 +56,8 @@ import { DeployPendleRouterStaticMsg, DeployPendleRouterStaticSubAction } from '
 import { DeployPendleRouterV4Msg, DeployPendleRouterV4SubAction } from '@actions/on-chain/subactions/deployPendleRouterV4'
 import { DeployPendleSwapSubaction } from '@actions/on-chain/subactions/deployPendleSwap'
 import {
-  DeployPendleVotingContollerUpgSubaction,
-  DeployPendleVotingContollerUpgSubactionMsg,
+  DeployPendleVotingControllerUpgSubaction,
+  DeployPendleVotingControllerUpgSubactionMsg,
 } from '@actions/on-chain/subactions/deployPendleVotingControllerUpg'
 import {
   DeployPendleVotingControllerUpgProxySubaction,
@@ -217,15 +217,15 @@ export class DeployPendleAction extends Action<DeployPendleActionData, PendleReg
       // step 10: deploy PendleVotingControllerUpg
       // step 10.1: deploy implementation
       (message: DeployPendleMsgSendEndpointUpgProxySubactionMsg & DeployVotingEscrowPendleMainchainSubactionMsg) =>
-        new DeployPendleVotingContollerUpgSubaction(deployer, {
+        new DeployPendleVotingControllerUpgSubaction(deployer, {
           vePendle: message.votingEscrowPendleMainchain,
           pendleMsgSendEndpoint: message.pendleMsgSendEndpointUpgProxy,
           initialApproxDestinationGas: params.initialApproxDestinationGas,
         }),
       // step 10.2: deploy proxy
-      (message: DeployPendleVotingContollerUpgSubactionMsg) =>
+      (message: DeployPendleVotingControllerUpgSubactionMsg) =>
         new DeployPendleVotingControllerUpgProxySubaction(deployer, {
-          implementation: message.pendleVotingContollerUpgImpl,
+          implementation: message.pendleVotingControllerUpgImpl,
           data: '0x',
         }),
       // step 10.3: initialize proxy

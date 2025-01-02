@@ -4,7 +4,7 @@ import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 
 import { readArtifact } from '@/src/utils/artifact'
 
-export type DeployPendleVotingContollerUpgTxBuilderParams = {
+export type DeployPendleVotingControllerUpgTxBuilderParams = {
   vePendle: Address
   pendleMsgSendEndpoint: Address
   initialApproxDestinationGas: bigint
@@ -15,7 +15,7 @@ export class DeployPendleVotingControllerUpgTxBuilder extends TxBuilder {
   public pendleMsgSendEndpoint: Address
   public initialApproxDestinationGas: bigint
 
-  constructor(client: InfinitWallet, params: DeployPendleVotingContollerUpgTxBuilderParams) {
+  constructor(client: InfinitWallet, params: DeployPendleVotingControllerUpgTxBuilderParams) {
     super(DeployPendleVotingControllerUpgTxBuilder.name, client)
 
     this.vePendle = getAddress(params.vePendle)
