@@ -1,4 +1,4 @@
-import { Address, Hex, encodeDeployData } from 'viem'
+import { Address, Hex, encodeDeployData, getAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 
@@ -15,8 +15,8 @@ export class DeployPendleMsgSendEndpointUpgTxBuilder extends TxBuilder {
   constructor(client: InfinitWallet, params: DeployPendleMsgSendEndpointUpgTxBuilderParams) {
     super(DeployPendleMsgSendEndpointUpgTxBuilder.name, client)
 
-    this.refundAddress = params.refundAddress
-    this.lzEndpoint = params.lzEndpoint
+    this.refundAddress = getAddress(params.refundAddress)
+    this.lzEndpoint = getAddress(params.lzEndpoint)
   }
 
   async buildTx(): Promise<TransactionData> {

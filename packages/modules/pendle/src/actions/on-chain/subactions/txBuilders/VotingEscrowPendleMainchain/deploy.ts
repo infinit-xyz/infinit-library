@@ -23,11 +23,11 @@ export class DeployVotingEscrowPendleMainchainTxBuilder extends TxBuilder {
   }
 
   async buildTx(): Promise<TransactionData> {
-    const VotingEscrowPendleMainchainArtifact = await readArtifact('VotingEscrowPendleMainchain')
+    const votingEscrowPendleMainchainArtifact = await readArtifact('VotingEscrowPendleMainchain')
 
     const deployData: Hex = encodeDeployData({
-      abi: VotingEscrowPendleMainchainArtifact.abi,
-      bytecode: VotingEscrowPendleMainchainArtifact.bytecode,
+      abi: votingEscrowPendleMainchainArtifact.abi,
+      bytecode: votingEscrowPendleMainchainArtifact.bytecode,
       args: [this.pendle, this.pendleMsgSendEndpoint, this.initialApproxDestinationGas],
     })
     const tx: TransactionData = {

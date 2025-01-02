@@ -32,12 +32,12 @@ export class DeployVotingEscrowPendleMainchainSubaction extends SubAction<
     registry: PendleRegistry,
     txHashes: Hash[],
   ): Promise<SubActionExecuteResponse<PendleRegistry, DeployVotingEscrowPendleMainchainSubactionMsg>> {
-    const [DeployVotingEscrowPendleMainchainTxHash] = txHashes
+    const [deployVotingEscrowPendleMainchainTxHash] = txHashes
     const { contractAddress: votingEscrowPendleMainchain } = await this.client.publicClient.waitForTransactionReceipt({
-      hash: DeployVotingEscrowPendleMainchainTxHash,
+      hash: deployVotingEscrowPendleMainchainTxHash,
     })
     if (!votingEscrowPendleMainchain) {
-      throw new ContractNotFoundError(DeployVotingEscrowPendleMainchainTxHash, 'VotingEscrowPendleMainchain')
+      throw new ContractNotFoundError(deployVotingEscrowPendleMainchainTxHash, 'VotingEscrowPendleMainchain')
     }
     registry['votingEscrowPendleMainchain'] = votingEscrowPendleMainchain
 

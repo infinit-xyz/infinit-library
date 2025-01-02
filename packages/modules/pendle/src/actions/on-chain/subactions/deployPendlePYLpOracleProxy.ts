@@ -45,16 +45,16 @@ export class DeployPendlePYLpOracleProxySubAction extends SubAction<
     }
 
     // destruct the tx hashes
-    const [deployPendleLimitRouterProxyHash] = txHashes
+    const [deployPendlePYLpOracleProxyHash] = txHashes
 
     // get the deployed address from the txHash
     const { contractAddress: pendlePYLpOracleProxy } = await this.client.publicClient.waitForTransactionReceipt({
-      hash: deployPendleLimitRouterProxyHash,
+      hash: deployPendlePYLpOracleProxyHash,
     })
 
     // check if the contract address is not found
     if (!pendlePYLpOracleProxy) {
-      throw new ContractNotFoundError(deployPendleLimitRouterProxyHash, 'PendlePYLpOracleProxy')
+      throw new ContractNotFoundError(deployPendlePYLpOracleProxyHash, 'PendlePYLpOracleProxy')
     }
 
     // assign the contract address to the registry

@@ -1,4 +1,4 @@
-import { Address, Hex, encodeDeployData } from 'viem'
+import { Address, Hex, encodeDeployData, getAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 
@@ -13,7 +13,7 @@ export class DeployActionVePendleStaticTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: DeployActionVePendleStaticTxBuilderParams) {
     super(DeployActionVePendleStaticTxBuilder.name, client)
-    this.vePendle = params.vePendle
+    this.vePendle = getAddress(params.vePendle)
   }
 
   async buildTx(): Promise<TransactionData> {

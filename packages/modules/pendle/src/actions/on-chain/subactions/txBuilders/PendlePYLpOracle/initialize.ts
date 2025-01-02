@@ -1,4 +1,4 @@
-import { Address, Hex, encodeFunctionData } from 'viem'
+import { Address, Hex, encodeFunctionData, getAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ValidateInputValueError } from '@infinit-xyz/core/errors'
@@ -15,7 +15,7 @@ export class InitializePendlePYLpOracleTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: InitializePendlePYLpOracleTxBuilderParams) {
     super(InitializePendlePYLpOracleTxBuilder.name, client)
-    this.pendlePYLpOracle = params.pendlePYLpOracle
+    this.pendlePYLpOracle = getAddress(params.pendlePYLpOracle)
     this.blockCycleNumerator = params.blockCycleNumerator
   }
 

@@ -1,4 +1,4 @@
-import { Address, Hex, encodeFunctionData } from 'viem'
+import { Address, Hex, encodeFunctionData, getAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 
@@ -15,8 +15,8 @@ export class UpgradePendleGaugeControllerMainchainUpgTxBuilder extends TxBuilder
 
   constructor(client: InfinitWallet, params: UpgradePendleGaugeControllerMainchainUpgTxBuilderParams) {
     super(UpgradePendleGaugeControllerMainchainUpgTxBuilder.name, client)
-    this.pendleGaugeControllerMainchainUpg = params.pendleGaugeControllerMainchainUpg
-    this.newImplementation = params.newImplementation
+    this.pendleGaugeControllerMainchainUpg = getAddress(params.pendleGaugeControllerMainchainUpg)
+    this.newImplementation = getAddress(params.newImplementation)
   }
 
   async buildTx(): Promise<TransactionData> {

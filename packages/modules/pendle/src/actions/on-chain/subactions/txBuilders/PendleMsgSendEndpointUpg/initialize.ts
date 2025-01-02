@@ -1,4 +1,4 @@
-import { Address, Hex, encodeFunctionData } from 'viem'
+import { Address, Hex, encodeFunctionData, getAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 
@@ -8,11 +8,11 @@ export type InitializePendleMsgSendEndpointUpgTxBuilderParams = {
   pendleMsgSendEndpointUpg: Address
 }
 export class InitializePendleMsgSendEndpointUpgTxBuilder extends TxBuilder {
-  public PendleMsgSendEndpointUpg: Address
+  public pendleMsgSendEndpointUpg: Address
 
   constructor(client: InfinitWallet, params: InitializePendleMsgSendEndpointUpgTxBuilderParams) {
     super(InitializePendleMsgSendEndpointUpgTxBuilder.name, client)
-    this.PendleMsgSendEndpointUpg = params.pendleMsgSendEndpointUpg
+    this.pendleMsgSendEndpointUpg = getAddress(params.pendleMsgSendEndpointUpg)
   }
 
   async buildTx(): Promise<TransactionData> {
@@ -26,7 +26,7 @@ export class InitializePendleMsgSendEndpointUpgTxBuilder extends TxBuilder {
 
     const tx: TransactionData = {
       data: deployData,
-      to: this.PendleMsgSendEndpointUpg,
+      to: this.pendleMsgSendEndpointUpg,
     }
     return tx
   }

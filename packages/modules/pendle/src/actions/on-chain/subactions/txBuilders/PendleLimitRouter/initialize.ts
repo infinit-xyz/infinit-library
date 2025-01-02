@@ -1,4 +1,4 @@
-import { Address, Hex, encodeFunctionData, zeroAddress } from 'viem'
+import { Address, Hex, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
@@ -15,8 +15,8 @@ export class InitializePendleLimitRouterTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: InitializePendleLimitRouterTxBuilderParams) {
     super(InitializePendleLimitRouterTxBuilder.name, client)
-    this.pendleLimitRouter = params.pendleLimitRouter
-    this.feeRecipient = params.feeRecipient
+    this.pendleLimitRouter = getAddress(params.pendleLimitRouter)
+    this.feeRecipient = getAddress(params.feeRecipient)
   }
 
   async buildTx(): Promise<TransactionData> {

@@ -1,4 +1,4 @@
-import { Address, Hex, encodeDeployData } from 'viem'
+import { Address, Hex, encodeDeployData, getAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ContractValidateError } from '@infinit-xyz/core/errors'
@@ -20,9 +20,9 @@ export class DeployPendleYieldContractFactoryTxBuilder extends TxBuilder {
   constructor(client: InfinitWallet, params: DeployPendleYieldContractFactoryTxBuilderParams) {
     super(DeployPendleYieldContractFactoryTxBuilder.name, client)
 
-    this.ytCreationCodeContractA = params.ytCreationCodeContractA
+    this.ytCreationCodeContractA = getAddress(params.ytCreationCodeContractA)
     this.ytCreationCodeSizeA = params.ytCreationCodeSizeA
-    this.ytCreationCodeContractB = params.ytCreationCodeContractB
+    this.ytCreationCodeContractB = getAddress(params.ytCreationCodeContractB)
     this.ytCreationCodeSizeB = params.ytCreationCodeSizeB
   }
 

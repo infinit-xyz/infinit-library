@@ -1,7 +1,5 @@
 require('hardhat-contract-sizer')
 
-// import '@typechain/hardhat'
-
 const { baseHardhatUserConfig } = require('@infinit-xyz/core/internal/hardhat-base-config')
 const { name } = require('../../package.json')
 

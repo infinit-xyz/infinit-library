@@ -10,10 +10,10 @@ export class DeployActionStorageV4TxBuilder extends TxBuilder {
   }
 
   async buildTx(): Promise<TransactionData> {
-    const ActionStorageV4Artifact = await readArtifact('ActionStorageV4')
+    const actionStorageV4Artifact = await readArtifact('ActionStorageV4')
 
     const tx: TransactionData = {
-      data: ActionStorageV4Artifact.bytecode as Hex,
+      data: actionStorageV4Artifact.bytecode as Hex,
       to: null,
     }
     return tx
