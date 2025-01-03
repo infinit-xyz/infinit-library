@@ -20,11 +20,5 @@ export class DeployPendleSwapTxBuilder extends TxBuilder {
     return tx
   }
 
-  public async validate(): Promise<void> {
-    const code = await this.client.publicClient.getCode({ address: '0x2f577A41BeC1BE1152AeEA12e73b7391d15f655D' })
-
-    if (!code) {
-      throw new ContractValidateError('PendleSwap contract is not deployed')
-    }
-  }
+  public async validate(): Promise<void> {}
 }
