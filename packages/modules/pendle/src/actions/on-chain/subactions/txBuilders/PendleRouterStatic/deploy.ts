@@ -20,8 +20,6 @@ export class DeployPendleRouterStaticTxBuilder extends TxBuilder {
   async buildTx(): Promise<TransactionData> {
     const PendleRouterStaticArtifact = await readArtifact('PendleRouterStatic')
 
-    if (this.storageLayout === zeroAddress) throw new ValidateInputZeroAddressError('STORAGE_LAYOUT')
-
     const deployData: Hex = encodeDeployData({
       abi: PendleRouterStaticArtifact.abi,
       bytecode: PendleRouterStaticArtifact.bytecode as Hex,
@@ -35,5 +33,7 @@ export class DeployPendleRouterStaticTxBuilder extends TxBuilder {
     return tx
   }
 
-  public async validate(): Promise<void> {}
+  public async validate(): Promise<void> {
+    if (this.storageLayout === zeroAddress) throw new ValidateInputZeroAddressError('STORAGE_LAYOUT')
+  }
 }

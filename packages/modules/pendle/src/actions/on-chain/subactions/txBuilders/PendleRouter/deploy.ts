@@ -23,9 +23,6 @@ export class DeployPendleRouterV4TxBuilder extends TxBuilder {
   async buildTx(): Promise<TransactionData> {
     const PendleRouterV4Artifact = await readArtifact('PendleRouterV4')
 
-    if (this.owner === zeroAddress) throw new ValidateInputZeroAddressError('OWNER')
-    if (this.actionStorage === zeroAddress) throw new ValidateInputZeroAddressError('ACTION_STORAGE')
-
     const deployData: Hex = encodeDeployData({
       abi: PendleRouterV4Artifact.abi,
       bytecode: PendleRouterV4Artifact.bytecode as Hex,
@@ -39,5 +36,8 @@ export class DeployPendleRouterV4TxBuilder extends TxBuilder {
     return tx
   }
 
-  public async validate(): Promise<void> {}
+  public async validate(): Promise<void> {
+    if (this.owner === zeroAddress) throw new ValidateInputZeroAddressError('OWNER')
+    if (this.actionStorage === zeroAddress) throw new ValidateInputZeroAddressError('ACTION_STORAGE')
+  }
 }
