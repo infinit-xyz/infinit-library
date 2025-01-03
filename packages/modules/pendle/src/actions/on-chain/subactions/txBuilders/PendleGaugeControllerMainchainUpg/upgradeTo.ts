@@ -1,6 +1,7 @@
 import { Address, Hex, encodeFunctionData, getAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
+import { ContractValidateError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -35,5 +36,18 @@ export class UpgradePendleGaugeControllerMainchainUpgTxBuilder extends TxBuilder
     return tx
   }
 
-  public async validate(): Promise<void> {}
+  public async validate(): Promise<void> {
+    const pendleGaugeControllerMainchainUpgArtifact = await readArtifact('PendleGaugeControllerMainchainUpg')
+
+    const owner = await this.client.publicClient.readContract({
+      address: this.pendleGaugeControllerMainchainUpg,
+      abi: pendleGaugeControllerMainchainUpgArtifact.abi,
+      functionName: 'owner',
+      args: [],
+    })
+
+    if (owner !== this.client.walletClient.account.address) {
+      throw new ContractValidateError('CALLER_NOT_OWNER')
+    }
+  }
 }
