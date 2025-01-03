@@ -1,6 +1,7 @@
-import { Address, Hex, encodeDeployData, getAddress } from 'viem'
+import { Address, Hex, encodeDeployData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -39,5 +40,8 @@ export class DeployPendleVotingControllerUpgTxBuilder extends TxBuilder {
     return tx
   }
 
-  public async validate(): Promise<void> {}
+  public async validate(): Promise<void> {
+    if (this.vePendle === zeroAddress) throw new ValidateInputZeroAddressError('VE_PENDLE')
+    if (this.pendleMsgSendEndpoint === zeroAddress) throw new ValidateInputZeroAddressError('PENDLE_MSG_SEND_ENDPOINT')
+  }
 }

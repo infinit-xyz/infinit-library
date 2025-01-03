@@ -59,8 +59,7 @@ export class InitializePendleYieldContractFactoryTxBuilder extends TxBuilder {
       throw new ValidateInputValueError('RewardFeeRate must be less than 2e17(20%)')
     }
 
-    if (this.treasury === zeroAddress) {
-      throw new ValidateInputZeroAddressError('TREASURY')
-    }
+    if (this.treasury === zeroAddress) throw new ValidateInputZeroAddressError('TREASURY')
+    if (this.pendleYieldContractFactory === zeroAddress) throw new ValidateInputZeroAddressError('PENDLE_YIELD_CONTRACT_FACTORY')
   }
 }
