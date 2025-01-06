@@ -7,7 +7,8 @@
     "@infinit-xyz/aave-v3": "0.0.0",
     "@infinit-xyz/token": "0.0.0",
     "@infinit-xyz/test": "0.0.0",
-    "@infinit-xyz/init-capital": "0.0.0-alpha.0"
+    "@infinit-xyz/init-capital": "0.0.0-alpha.0",
+    "@infinit-xyz/pendle": "0.0.0-alpha.1"
   },
   "changesets": [
     "afraid-mugs-confess",
@@ -72,6 +73,7 @@
     "sharp-shrimps-shake",
     "short-eels-worry",
     "six-stingrays-play",
+    "sixty-cougars-vanish",
     "slimy-gorillas-play",
     "small-donuts-tease",
     "small-insects-train",
@@ -85,6 +87,7 @@
     "stale-kids-drop",
     "tame-pugs-marry",
     "ten-dolphins-provide",
+    "ten-ducks-destroy",
     "tender-donuts-nail",
     "thick-eyes-fold",
     "thick-garlics-remember",
