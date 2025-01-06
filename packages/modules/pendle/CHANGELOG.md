@@ -1,5 +1,13 @@
 # @infinit-xyz/pendle
 
+## 0.0.0-alpha.4
+
+### Patch Changes
+
+- [#170](https://github.com/infinit-xyz/infinit-library/pull/170)
+  [`96089af`](https://github.com/infinit-xyz/infinit-library/commit/96089afb26d7d58fd30e07741a079fde57404e9d) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - fix init action
+
 ## 0.0.0-alpha.3
 
 ### Patch Changes
