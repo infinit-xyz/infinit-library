@@ -10,7 +10,7 @@ export type SetDefaultApproxParamsTxBuilderParams = {
   approxParams: ApproxParams
 }
 
-type ApproxParams = {
+export type ApproxParams = {
   guessMin: bigint
   guessMax: bigint
   guessOffchain: bigint
