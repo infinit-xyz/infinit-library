@@ -1,11 +1,11 @@
 {
-  "name": "@infinit-xyz/token",
-  "version": "0.0.0-alpha.22",
+  "name": "@infinit-xyz/pendle",
+  "version": "0.0.0-alpha.1",
   "homepage": "https://infinit.tech",
   "repository": {
     "type": "git",
     "url": "https://github.com/infinit-xyz/infinit-library.git",
-    "directory": "packages/modules/token"
+    "directory": "packages/modules/init-capital"
   },
   "bugs": {
     "url": "https://github.com/infinit-xyz/infinit-library/issues"
@@ -30,8 +30,7 @@
   "scripts": {
     "postinstall": "bun ./scripts/postInstall.ts",
     "build": "tsup",
-    "clean": "rm -rf cache artifacts node_modules dist && find . -type l -delete",
-    "typecheck_temp": "tsc --noEmit",
+    "clean": "rm -rf cache artifacts node_modules dist",
     "compile": "ENABLE_HARDHAT_TOOLBOX=true bun ../../../node_modules/@infinit-xyz/core/dist/exports/internal/hardhat-compile.js $PWD",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
@@ -46,22 +45,22 @@
     "extends": "../../../.eslintrc.js"
   },
   "dependencies": {
-    "@infinit-xyz/core": "^0.1.0-alpha.10",
-    "@openzeppelin/merkle-tree": "^1.0.7",
-    "@openzeppelin/contracts-5.0.0": "npm:@openzeppelin/contracts@5.0.0",
-    "infinit-erc20-contracts": "https://github.com/infinit-xyz/infinit-erc20-contracts.git",
-    "lodash": "^4.17.21"
+    "@infinit-xyz/core": "^0.1.0-alpha.11",
+    "@openzeppelin/contracts-4.9.3": "npm:@openzeppelin/contracts@4.9.3",
+    "@openzeppelin/contracts-upgradeable-4.9.3": "npm:@openzeppelin/contracts-upgradeable@4.9.3",
+    "tsup": "^8.2.4",
+    "viem": "2.21.28",
+    "zod": "^3.23.8",
+    "@pendle/core-v2": "5.2.0"
+    
   },
   "devDependencies": {
-    "tsup": "^8.2.4",
-    "@types/lodash": "^4.17.7",
-    "typescript": "^5.6.2"
-  },
-  "peerDependencies": {
-    "zod": "^3.23.8",
-    "viem": "2.21.28"
+    "hardhat": "^2.22.5",
+    "typescript": "^5.6.2",
+    "hardhat-contract-sizer": "^2.10.0"
+
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=20"
   }
 }
