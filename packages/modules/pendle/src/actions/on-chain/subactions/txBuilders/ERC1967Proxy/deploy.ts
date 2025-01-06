@@ -44,9 +44,6 @@ export class DeployERC1967ProxyTxBuilder extends TxBuilder {
     // check zero address
     if (this.implementation === zeroAddress) throw new ValidateInputZeroAddressError('PENDLE_GOVERNANCE_PROXY_IMPLEMENTATION')
 
-    // check no value when no data
-    if (this.data === '0x' && this.value !== 0n) throw new ValidateInputValueError('If data is not provided, value should not be provided')
-
     // check implementation should has bytecode
     const bytecode = await this.client.publicClient.getCode({
       address: this.implementation,

@@ -1,6 +1,7 @@
-import { Address, Hex, encodeFunctionData, getAddress } from 'viem'
+import { Address, Hex, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -32,5 +33,8 @@ export class InitializePendleGaugeControllerMainchainUpgTxBuilder extends TxBuil
     return tx
   }
 
-  public async validate(): Promise<void> {}
+  public async validate(): Promise<void> {
+    if (this.pendleGaugeControllerMainchainUpg === zeroAddress)
+      throw new ValidateInputZeroAddressError('PENDLE_GAUGE_CONTROLLER_MAINCHAIN_UPG')
+  }
 }
