@@ -1,5 +1,13 @@
 # @infinit-xyz/pendle
 
+## 0.0.0-alpha.3
+
+### Patch Changes
+
+- [#168](https://github.com/infinit-xyz/infinit-library/pull/168)
+  [`0d3740d`](https://github.com/infinit-xyz/infinit-library/commit/0d3740d3dd882f9ab35cffea3cdee2e042740326) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - fix export utils contract verifier name
+
 ## 0.0.0-alpha.2
 
 ### Minor Changes
