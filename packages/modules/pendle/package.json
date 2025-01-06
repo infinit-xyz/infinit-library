@@ -51,7 +51,7 @@
     "tsup": "^8.2.4",
     "viem": "2.21.28",
     "zod": "^3.23.8",
-    "@pendle/core-v2": "5.2.0"
+    "@pendle/core-v2": "5.4.3"
   },
   "devDependencies": {
     "hardhat": "^2.22.5",
