@@ -18,7 +18,7 @@ describe('UpgradePendleGaugeControllerMainchainUpgTxBuilder', () => {
       newImplementation: zeroAddress,
     })
     const bt = await txBuilder.buildTx()
-    expect(bt.to).toBeNull()
+    expect(bt.to).not.toBeNull()
     expect(bt.data).not.toBe('0x')
   })
 })

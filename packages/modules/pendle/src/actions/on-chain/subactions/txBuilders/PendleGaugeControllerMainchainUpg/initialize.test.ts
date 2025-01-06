@@ -11,9 +11,11 @@ describe('InitializePendleGaugeControllerMainchainUpgTxBuilder', () => {
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
 
   test('test tx correct to address and has data', async () => {
-    txBuilder = new InitializePendleGaugeControllerMainchainUpgTxBuilder(client, {})
+    txBuilder = new InitializePendleGaugeControllerMainchainUpgTxBuilder(client, {
+      pendleGaugeControllerMainchainUpg: '0x0000000000000000000000000000000000000002',
+    })
     const bt = await txBuilder.buildTx()
-    expect(bt.to).toBeNull()
+    expect(bt.to).not.toBeNull()
     expect(bt.data).not.toBe('0x')
   })
 })
