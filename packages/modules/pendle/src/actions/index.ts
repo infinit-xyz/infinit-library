@@ -3,7 +3,7 @@ import { ActionDetailRecord } from '@infinit-xyz/core'
 import { DeployPendleAction, DeployPendleActionParamsSchema } from '@actions/deployPendle'
 
 export const actions = {
-  DeployPendle: {
+  init: {
     type: 'on-chain',
     name: 'Deploy Pendle V3',
     actionClassName: DeployPendleAction.name,
