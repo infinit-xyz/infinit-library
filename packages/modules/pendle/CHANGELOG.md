@@ -1,5 +1,13 @@
 # @infinit-xyz/pendle
 
+## 0.0.0-alpha.5
+
+### Minor Changes
+
+- [#174](https://github.com/infinit-xyz/infinit-library/pull/174)
+  [`717e4f1`](https://github.com/infinit-xyz/infinit-library/commit/717e4f1c28c8197cdab703db459cb7b9b37cb86f) Thanks
+  [@Kittikornl](https://github.com/Kittikornl)! - add contract verifier
+
 ## 0.0.0-alpha.4
 
 ### Patch Changes
