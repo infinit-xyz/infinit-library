@@ -15,6 +15,7 @@ describe('DeployBaseSplitCodeFactoryContractTxBuilder', () => {
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
 
   test('test tx correct to address and has data', async () => {
+    txBuilder = new DeployBaseSplitCodeFactoryContractTxBuilder(client)
     const bt = await txBuilder.buildTx()
     expect(bt.to).toBeNull()
     expect(bt.data).not.toBe('0x')
