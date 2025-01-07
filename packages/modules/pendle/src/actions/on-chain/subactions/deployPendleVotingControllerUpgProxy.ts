@@ -39,7 +39,7 @@ export class DeployPendleVotingControllerUpgProxySubaction extends SubAction<
     if (!erc1967Proxy) {
       throw new ContractNotFoundError(deployPendleVotingControllerUpgProxyTxHash, 'erc1967')
     }
-    registry.pendleVotingControllerUpgProxy = erc1967Proxy
+    registry['pendleVotingControllerUpgProxy'] = erc1967Proxy
 
     const newMessage = {
       pendleVotingControllerUpgProxy: erc1967Proxy,

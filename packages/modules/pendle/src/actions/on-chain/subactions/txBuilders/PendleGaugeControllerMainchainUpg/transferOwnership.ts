@@ -1,6 +1,7 @@
-import { Address, Hex, encodeFunctionData } from 'viem'
+import { Address, Hex, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -15,8 +16,8 @@ export class TransferOwnershipPendleGaugeControllerMainchainUpgTxBuilder extends
 
   constructor(client: InfinitWallet, params: TransferOwnershipPendleGaugeControllerMainchainUpgTxBuilderParams) {
     super(TransferOwnershipPendleGaugeControllerMainchainUpgTxBuilder.name, client)
-    this.pendleGaugeControllerMainchainUpg = params.pendleGaugeControllerMainchainUpg
-    this.newOwner = params.newOwner
+    this.pendleGaugeControllerMainchainUpg = getAddress(params.pendleGaugeControllerMainchainUpg)
+    this.newOwner = getAddress(params.newOwner)
   }
 
   async buildTx(): Promise<TransactionData> {
@@ -35,5 +36,9 @@ export class TransferOwnershipPendleGaugeControllerMainchainUpgTxBuilder extends
     return tx
   }
 
-  public async validate(): Promise<void> {}
+  public async validate(): Promise<void> {
+    if (this.newOwner === zeroAddress) throw new ValidateInputZeroAddressError('NEW_OWNER')
+    if (this.pendleGaugeControllerMainchainUpg === zeroAddress)
+      throw new ValidateInputZeroAddressError('PENDLE_GAUGE_CONTROLLER_MAINCHAIN_UPG')
+  }
 }

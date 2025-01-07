@@ -1,6 +1,7 @@
-import { Address, Hex, encodeDeployData, getAddress } from 'viem'
+import { Address, Hex, encodeDeployData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
+import { ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
 
 import { readArtifact } from '@/src/utils/artifact'
 
@@ -32,5 +33,8 @@ export class DeployPendleLimitRouterTxBuilder extends TxBuilder {
     return tx
   }
 
-  public async validate(): Promise<void> {}
+  public async validate(): Promise<void> {
+    // check zero address
+    if (this.wrappedNativeToken === zeroAddress) throw new ValidateInputZeroAddressError('WRAPPED_NATIVE_TOKEN')
+  }
 }

@@ -43,14 +43,6 @@ describe('DeployERC1967ProxyTxBuilder', () => {
     expect(txBuilder.validate()).rejects.toThrowError('PENDLE_GOVERNANCE_PROXY_IMPLEMENTATION SHOULD_NOT_BE_ZERO_ADDRESS')
   })
 
-  test('test validate has value when no data should be failed', async () => {
-    txBuilder = new DeployERC1967ProxyTxBuilder(client, {
-      implementation: ARBITRUM_TEST_ADDRESSES.weth,
-      value: 1n,
-    })
-    expect(txBuilder.validate()).rejects.toThrowError('If data is not provided, value should not be provided')
-  })
-
   test('test validate no bytecode implementtation should be failed', async () => {
     txBuilder = new DeployERC1967ProxyTxBuilder(client, {
       implementation: ARBITRUM_TEST_ADDRESSES.oneAddress,

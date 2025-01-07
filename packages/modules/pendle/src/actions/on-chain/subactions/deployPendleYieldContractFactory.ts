@@ -40,7 +40,7 @@ export class DeployPendleYieldContractFactorySubaction extends SubAction<
     if (!pendleYieldContractFactory) {
       throw new ContractNotFoundError(deployPendleYieldContractFactoryTxHash, 'PendleYieldContractFactory')
     }
-    registry.pendleYieldContractFactory = pendleYieldContractFactory
+    registry['pendleYieldContractFactory'] = pendleYieldContractFactory
 
     const newMessage = {
       pendleYieldContractFactory: pendleYieldContractFactory,

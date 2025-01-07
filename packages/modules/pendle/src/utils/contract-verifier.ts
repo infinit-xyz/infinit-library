@@ -7,7 +7,7 @@ import { Artifacts } from 'hardhat/types'
 import { PendleRegistry } from '@/src/type'
 import { getArtifacts } from '@/src/utils/artifact'
 
-export class TokenContractVerifier extends BaseContractVerifier<PendleRegistry> {
+export class PendleContractVerifier extends BaseContractVerifier<PendleRegistry> {
   constructor(client: PublicClient, params: BlockExplorerParams) {
     super(client, params)
   }

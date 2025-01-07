@@ -34,7 +34,7 @@ export class DeployBaseSplitCodeFactoryContractSubaction extends SubAction<
     if (!baseSplitCodeFactoryContract) {
       throw new ContractNotFoundError(deployBaseSplitCodeFactoryContractTxHash, 'baseSplitCodeFactoryContract')
     }
-    registry.baseSplitCodeFactoryContract = baseSplitCodeFactoryContract
+    registry['baseSplitCodeFactoryContract'] = baseSplitCodeFactoryContract
 
     const newMessage = {
       baseSplitCodeFactoryContract: baseSplitCodeFactoryContract,

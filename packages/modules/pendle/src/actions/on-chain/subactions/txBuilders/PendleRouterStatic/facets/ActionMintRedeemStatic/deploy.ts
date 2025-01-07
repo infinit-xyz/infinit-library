@@ -10,10 +10,10 @@ export class DeployActionMintRedeemStaticTxBuilder extends TxBuilder {
   }
 
   async buildTx(): Promise<TransactionData> {
-    const ActionMintRedeemStaticArtifact = await readArtifact('ActionMintRedeemStatic')
+    const actionMintRedeemStaticArtifact = await readArtifact('ActionMintRedeemStatic')
 
     const tx: TransactionData = {
-      data: ActionMintRedeemStaticArtifact.bytecode as Hex,
+      data: actionMintRedeemStaticArtifact.bytecode as Hex,
       to: null,
     }
     return tx

@@ -30,7 +30,7 @@ export class DeployPendlePYLpOracleSubaction extends SubAction<object, PendleReg
     if (!pendlePYLpOracle) {
       throw new ContractNotFoundError(deployPendleMarketFactoryV3TxHash, 'PendleMarketFactoryV3')
     }
-    registry.pendlePYLpOracle = pendlePYLpOracle
+    registry['pendlePYLpOracle'] = pendlePYLpOracle
 
     const newMessage = {
       pendlePYLpOracle: pendlePYLpOracle,

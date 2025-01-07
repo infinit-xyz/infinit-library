@@ -1,4 +1,4 @@
-import { Address, Hex, encodeFunctionData, zeroAddress } from 'viem'
+import { Address, Hex, encodeFunctionData, getAddress, zeroAddress } from 'viem'
 
 import { InfinitWallet, TransactionData, TxBuilder } from '@infinit-xyz/core'
 import { ValidateInputValueError, ValidateInputZeroAddressError } from '@infinit-xyz/core/errors'
@@ -21,11 +21,11 @@ export class InitializePendleYieldContractFactoryTxBuilder extends TxBuilder {
 
   constructor(client: InfinitWallet, params: InitializePendleYieldContractFactoryTxBuilderParams) {
     super(InitializePendleYieldContractFactoryTxBuilder.name, client)
-    this.pendleYieldContractFactory = params.pendleYieldContractFactory
+    this.pendleYieldContractFactory = getAddress(params.pendleYieldContractFactory)
     this.expiryDivisor = params.expiryDivisor
     this.interestFeeRate = params.interestFeeRate
     this.rewardFeeRate = params.rewardFeeRate
-    this.treasury = params.treasury
+    this.treasury = getAddress(params.treasury)
   }
 
   async buildTx(): Promise<TransactionData> {
@@ -59,8 +59,7 @@ export class InitializePendleYieldContractFactoryTxBuilder extends TxBuilder {
       throw new ValidateInputValueError('RewardFeeRate must be less than 2e17(20%)')
     }
 
-    if (this.treasury === zeroAddress) {
-      throw new ValidateInputZeroAddressError('TREASURY')
-    }
+    if (this.treasury === zeroAddress) throw new ValidateInputZeroAddressError('TREASURY')
+    if (this.pendleYieldContractFactory === zeroAddress) throw new ValidateInputZeroAddressError('PENDLE_YIELD_CONTRACT_FACTORY')
   }
 }

@@ -39,7 +39,7 @@ export class DeployPendleMarketFactoryV3Subaction extends SubAction<
     if (!pendleMarketFactoryV3) {
       throw new ContractNotFoundError(deployPendleMarketFactoryV3TxHash, 'PendleMarketFactoryV3')
     }
-    registry.pendleMarketFactoryV3 = pendleMarketFactoryV3
+    registry['pendleMarketFactoryV3'] = pendleMarketFactoryV3
 
     const newMessage = {
       pendleMarketFactoryV3: pendleMarketFactoryV3,

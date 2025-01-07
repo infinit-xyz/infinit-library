@@ -30,7 +30,7 @@ export type PendleRegistry = {
   votingEscrowPendleMainchain?: Address
   pendleMsgSendEndpointUpgImpl?: Address
   pendleMsgSendEndpointUpgProxy?: Address
-  pendleVotingContollerUpgImpl?: Address
+  pendleVotingControllerUpgImpl?: Address
   pendleVotingControllerUpgProxy?: Address
   multicall?: Address
   pendleMulticallV2?: Address

@@ -1,4 +1,4 @@
-import { Address, Hex } from 'viem'
+import { Hex } from 'viem'
 
 import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz/core'
 
@@ -10,10 +10,6 @@ import {
 import { PendleRegistry } from '@/src/type'
 
 export type InitializePendleGovernanceProxySubActionParams = InitializePendleGovernanceProxyTxBuilderParams
-
-export type DeployPendleGovernanceProxyImplMsg = {
-  pendleGovernanceProxyImpl: Address
-}
 
 export class InitializePendleGovernanceProxySubAction extends SubAction<InitializePendleGovernanceProxySubActionParams, PendleRegistry> {
   constructor(client: InfinitWallet, params: InitializePendleGovernanceProxySubActionParams) {

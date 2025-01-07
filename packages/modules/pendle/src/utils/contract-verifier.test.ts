@@ -4,10 +4,10 @@ import { createPublicClient, http } from 'viem'
 import { holesky } from 'viem/chains'
 
 import { PendleRegistry } from '../type'
-import { TokenContractVerifier } from './contract-verifier'
+import { PendleContractVerifier } from './contract-verifier'
 
 // Create a subclass to expose the protected method for testing
-class TestTokenContractVerifier extends TokenContractVerifier {
+class TestPendleContractVerifier extends PendleContractVerifier {
   public async testGetContracts(registry: PendleRegistry) {
     return this.getContracts(registry)
   }
@@ -17,8 +17,8 @@ describe('TokenContractVerifier.ts', () => {
   const registry: PendleRegistry = {}
 
   test('getContracts: should match snapshot', async () => {
-    const verifier = new TestTokenContractVerifier(
-      await createPublicClient({
+    const verifier = new TestPendleContractVerifier(
+      createPublicClient({
         chain: holesky,
         transport: http('https://1rpc.io/holesky'),
       }),

@@ -45,7 +45,7 @@ export class DeploySupplyCapReaderSubAction extends SubAction<
 
     // check if the contract address is not found
     if (!supplyCapReader) {
-      throw new ContractNotFoundError(deploySupplyCapReaderHash, 'SimulateHelper')
+      throw new ContractNotFoundError(deploySupplyCapReaderHash, 'SupplyCapReader')
     }
 
     // assign the contract address to the registry

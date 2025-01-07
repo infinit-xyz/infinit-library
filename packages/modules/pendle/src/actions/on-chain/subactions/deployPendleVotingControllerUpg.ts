@@ -4,25 +4,25 @@ import { InfinitWallet, SubAction, SubActionExecuteResponse } from '@infinit-xyz
 import { ContractNotFoundError } from '@infinit-xyz/core/errors'
 
 import {
-  DeployPendleVotingContollerUpgTxBuilderParams,
   DeployPendleVotingControllerUpgTxBuilder,
+  DeployPendleVotingControllerUpgTxBuilderParams,
 } from '@actions/on-chain/subactions/txBuilders/PendleVotingControllerUpg/deploy'
 
 import { PendleRegistry } from '@/src/type'
 
-export type DeployPendleVotingContollerUpgSubactionParams = DeployPendleVotingContollerUpgTxBuilderParams
+export type DeployPendleVotingControllerUpgSubactionParams = DeployPendleVotingControllerUpgTxBuilderParams
 
-export type DeployPendleVotingContollerUpgSubactionMsg = {
-  pendleVotingContollerUpgImpl: Address
+export type DeployPendleVotingControllerUpgSubactionMsg = {
+  pendleVotingControllerUpgImpl: Address
 }
 
-export class DeployPendleVotingContollerUpgSubaction extends SubAction<
-  DeployPendleVotingContollerUpgSubactionParams,
+export class DeployPendleVotingControllerUpgSubaction extends SubAction<
+  DeployPendleVotingControllerUpgSubactionParams,
   PendleRegistry,
-  DeployPendleVotingContollerUpgSubactionMsg
+  DeployPendleVotingControllerUpgSubactionMsg
 > {
-  constructor(client: InfinitWallet, params: DeployPendleVotingContollerUpgSubactionParams) {
-    super(DeployPendleVotingContollerUpgSubaction.name, client, params)
+  constructor(client: InfinitWallet, params: DeployPendleVotingControllerUpgSubactionParams) {
+    super(DeployPendleVotingControllerUpgSubaction.name, client, params)
   }
 
   protected setTxBuilders(): void {
@@ -32,18 +32,18 @@ export class DeployPendleVotingContollerUpgSubaction extends SubAction<
   protected async updateRegistryAndMessage(
     registry: PendleRegistry,
     txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployPendleVotingContollerUpgSubactionMsg>> {
-    const [deployPendleSwapTxHash] = txHashes
-    const { contractAddress: pendleVotingContollerUpg } = await this.client.publicClient.waitForTransactionReceipt({
-      hash: deployPendleSwapTxHash,
+  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployPendleVotingControllerUpgSubactionMsg>> {
+    const [deployPendleVotingControllerUpgTxHash] = txHashes
+    const { contractAddress: pendleVotingControllerUpg } = await this.client.publicClient.waitForTransactionReceipt({
+      hash: deployPendleVotingControllerUpgTxHash,
     })
-    if (!pendleVotingContollerUpg) {
-      throw new ContractNotFoundError(deployPendleSwapTxHash, 'PendleSwap')
+    if (!pendleVotingControllerUpg) {
+      throw new ContractNotFoundError(deployPendleVotingControllerUpgTxHash, 'PendleVotingControllerUpg')
     }
-    registry.pendleVotingContollerUpgImpl = pendleVotingContollerUpg
+    registry['pendleVotingControllerUpgImpl'] = pendleVotingControllerUpg
 
     const newMessage = {
-      pendleVotingContollerUpgImpl: pendleVotingContollerUpg,
+      pendleVotingControllerUpgImpl: pendleVotingControllerUpg,
     }
 
     return {
