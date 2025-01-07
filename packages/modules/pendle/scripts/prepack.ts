@@ -2,7 +2,7 @@
 import { $ } from 'bun'
 import fs from 'fs'
 
-const targetRepositories: string[] = ['core-v2', 'openzeppelin']
+const targetRepositories: string[] = ['core-v2']
 
 const symLinks: string[] = []
 
