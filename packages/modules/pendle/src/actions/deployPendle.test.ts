@@ -404,6 +404,7 @@ const checkRegistry = async (registry: PendleRegistry) => {
   expect(registry.pendleVotingControllerUpgImpl).not.toBe(zeroAddress)
   expect(registry.pendleVotingControllerUpgProxy).not.toBe(zeroAddress)
   expect(registry.pendleGaugeControllerMainchainUpgProxy).not.toBe(zeroAddress)
+  expect(registry.feeVault).not.toBe(zeroAddress)
 
   // check pendleRouterV4 facets
   expect(registry.routerStorageV4).not.toBe(zeroAddress)

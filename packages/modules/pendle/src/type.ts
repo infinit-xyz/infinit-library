@@ -41,4 +41,5 @@ export type PendleRegistry = {
   pendleGovernanceProxyImpl?: Address
   pendlePYLpOracleProxy?: Address
   pendleBoringOneracle?: Address
+  feeVault?: Address
 }
