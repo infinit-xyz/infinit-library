@@ -9,6 +9,7 @@ import {
   DeployBaseSplitCodeFactoryContractSubaction,
   DeployBaseSplitCodeFactoryContractSubactionMsg,
 } from '@actions/on-chain/subactions/deployBaseSplitCodeFactoryContract'
+import { DeployFeeVaultMsg, DeployFeeVaultSubAction } from '@actions/on-chain/subactions/deployFeeVault'
 import { DeployMulticall2SubAction } from '@actions/on-chain/subactions/deployMulticall2'
 import { DeployOracleLibSubaction, DeployOracleLibSubactionMsg } from '@actions/on-chain/subactions/deployOracleLib'
 import { DeployPendleBoringOneracleSubAction } from '@actions/on-chain/subactions/deployPendleBoringOneracle'
@@ -177,8 +178,13 @@ export class DeployPendleAction extends Action<DeployPendleActionData, PendleReg
           initialApproxDestinationGas: params.initialApproxDestinationGas,
         }),
 
-      // TODO: step 5: deploy unverified contract
-
+      // step 5: deploy fee vault
+      () =>
+        new DeployFeeVaultSubAction(deployer, {
+          wrappedNativeToken: params.wrappedNativetoken,
+          admin: params.guardian,
+          treasury: params.treasury,
+        }),
       // step 6: deploy v3-yt in BaseSplitContractFactory
       (message: DeployBaseSplitCodeFactoryContractSubactionMsg) =>
         new DeployYTV3CreationCodeSubaction(deployer, {
@@ -195,13 +201,13 @@ export class DeployPendleAction extends Action<DeployPendleActionData, PendleReg
           ytCreationCodeSizeB: message.ytCreationCodeSizeB,
         }),
       // step 7.2: initialize PendleYieldContractFactory
-      (message: DeployPendleYieldContractFactorySubactionMsg) =>
+      (message: DeployPendleYieldContractFactorySubactionMsg & DeployFeeVaultMsg) =>
         new InitializePendleYieldContractFactorySubaction(deployer, {
           pendleYieldContractFactory: message.pendleYieldContractFactory,
           expiryDivisor: params.yieldContractFactory.expiryDivisor,
           interestFeeRate: params.yieldContractFactory.interestFeeRate,
           rewardFeeRate: params.yieldContractFactory.rewardFeeRate,
-          treasury: params.treasury,
+          treasury: message.feeVault,
         }),
 
       // step 8: deploy oracleLib
@@ -262,7 +268,8 @@ export class DeployPendleAction extends Action<DeployPendleActionData, PendleReg
         message: DeployPendleMarketV3CreationCodeSubactionMsg &
           DeployPendleYieldContractFactorySubactionMsg &
           DeployVotingEscrowPendleMainchainSubactionMsg &
-          DeployPendleGaugeControllerMainchainUpgProxySubactionMsg,
+          DeployPendleGaugeControllerMainchainUpgProxySubactionMsg &
+          DeployFeeVaultMsg,
       ) =>
         new DeployPendleMarketFactoryV3Subaction(deployer, {
           yieldContractFactory: message.pendleYieldContractFactory,
@@ -270,7 +277,7 @@ export class DeployPendleAction extends Action<DeployPendleActionData, PendleReg
           marketCreationCodeSizeA: message.pendleMarketV3CreationCodeSizeA,
           marketCreationCodeContractB: message.pendleMarketV3CreationCodeContractB,
           marketCreationCodeSizeB: message.pendleMarketV3CreationCodeSizeB,
-          treasury: params.treasury,
+          treasury: message.feeVault,
           reserveFeePercent: params.marketContractFactory.reserveFeePercent,
           vePendle: message.votingEscrowPendleMainchain,
           guaugeController: message.pendleGaugeControllerMainchainUpgProxy,
