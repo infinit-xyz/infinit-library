@@ -47,7 +47,7 @@
   "dependencies": {
     "@infinit-xyz/core": "^0.1.0-alpha.11",
     "tsup": "^8.2.4",
-    "viem": "2.21.28",
+    "viem": "2.22.4",
     "zod": "^3.23.8",
     "@openzeppelin/contracts-4.9.3": "npm:@openzeppelin/contracts@4.9.3",
     "@openzeppelin/contracts-upgradeable-4.9.3": "npm:@openzeppelin/contracts-upgradeable@4.9.3",
