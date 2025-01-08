@@ -1,5 +1,13 @@
 # @infinit-xyz/pendle
 
+## 0.0.0-alpha.6
+
+### Minor Changes
+
+- [#179](https://github.com/infinit-xyz/infinit-library/pull/179)
+  [`50f9f48`](https://github.com/infinit-xyz/infinit-library/commit/50f9f48e4df4bd26482ef268707e50abe7fd6e48) Thanks
+  [@Kittikornl](https://github.com/Kittikornl)! - add fee vault
+
 ## 0.0.0-alpha.5
 
 ### Minor Changes
