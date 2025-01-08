@@ -9,6 +9,7 @@ import {
   DeployBaseSplitCodeFactoryContractSubaction,
   DeployBaseSplitCodeFactoryContractSubactionMsg,
 } from '@actions/on-chain/subactions/deployBaseSplitCodeFactoryContract'
+import { DeployFeeVaultMsg, DeployFeeVaultSubAction } from '@actions/on-chain/subactions/deployFeeVault'
 import { DeployMulticall2SubAction } from '@actions/on-chain/subactions/deployMulticall2'
 import { DeployOracleLibSubaction, DeployOracleLibSubactionMsg } from '@actions/on-chain/subactions/deployOracleLib'
 import { DeployPendleBoringOneracleSubAction } from '@actions/on-chain/subactions/deployPendleBoringOneracle'
@@ -94,7 +95,6 @@ import { SetPendleRouterV4FacetsSubAction } from '@actions/on-chain/subactions/s
 import { TransferOwnershipPendleGaugeControllerMainchainUpgSubAction } from '@actions/on-chain/subactions/transferOwnershipPendleGaugeControllerMainchainUpg'
 import { UpgradePendleGaugeControllerMainchainUpgSubaction } from '@actions/on-chain/subactions/upgradePendleGaugeControllerMainchainUpg'
 
-import { DeployFeeVaultMsg, DeployFeeVaultSubAction } from './on-chain/subactions/deployFeeVault'
 import type { PendleRegistry } from '@/src/type'
 
 export const DeployPendleActionParamsSchema = z.object({
