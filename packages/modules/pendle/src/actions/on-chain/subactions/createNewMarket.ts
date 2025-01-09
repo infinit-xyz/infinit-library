@@ -9,11 +9,11 @@ import {
 
 import { PendleRegistry } from '@/src/type'
 
-export type createNewMarketSubactionParams = CreateNewMarketTxBuilderParams
+export type CreateNewMarketSubactionParams = CreateNewMarketTxBuilderParams
 
-export class createNewMarketSubaction extends SubAction<createNewMarketSubactionParams, PendleRegistry> {
+export class CreateNewMarketSubaction extends SubAction<CreateNewMarketSubactionParams, PendleRegistry> {
   constructor(client: InfinitWallet, params: CreateNewMarketTxBuilderParams) {
-    super(createNewMarketSubaction.name, client, params)
+    super(CreateNewMarketSubaction.name, client, params)
   }
 
   protected setTxBuilders(): void {

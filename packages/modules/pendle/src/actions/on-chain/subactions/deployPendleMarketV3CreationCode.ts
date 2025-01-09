@@ -23,7 +23,7 @@ export type DeployPendleMarketV3CreationCodeSubactionMsg = {
 export class DeployPendleMarketV3CreationCodeSubaction extends SubAction<
   DeployPendleMarketV3CreationCodeSubactionParams,
   PendleRegistry,
-  {}
+  DeployPendleMarketV3CreationCodeSubactionMsg
 > {
   constructor(client: InfinitWallet, params: DeployPendleMarketV3CreationCodeTxBuilderParams) {
     super(DeployPendleMarketV3CreationCodeSubaction.name, client, params)
@@ -36,7 +36,7 @@ export class DeployPendleMarketV3CreationCodeSubaction extends SubAction<
   protected async updateRegistryAndMessage(
     registry: PendleRegistry,
     txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleRegistry, {}>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployPendleMarketV3CreationCodeSubactionMsg>> {
     const [deployYTV3CreationCodeTxHash] = txHashes
 
     const [baseSplitCodeFactoryContractArtifact, txReceipt] = await Promise.all([

@@ -54,7 +54,7 @@ import {
 import { DeployPendlePoolDeployHelperSubAction } from '@actions/on-chain/subactions/deployPendlePoolDeployHelper'
 import { DeployPendleRouterStaticMsg, DeployPendleRouterStaticSubAction } from '@actions/on-chain/subactions/deployPendleRouterStatic'
 import { DeployPendleRouterV4Msg, DeployPendleRouterV4SubAction } from '@actions/on-chain/subactions/deployPendleRouterV4'
-import { DeployPendleSwapSubaction } from '@actions/on-chain/subactions/deployPendleSwap'
+import { DeployPendleSwapSubAction } from '@actions/on-chain/subactions/deployPendleSwap'
 import {
   DeployPendleVotingControllerUpgSubaction,
   DeployPendleVotingControllerUpgSubactionMsg,
@@ -148,7 +148,7 @@ export class DeployPendleAction extends Action<DeployPendleActionData, PendleReg
       () => new DeployBaseSplitCodeFactoryContractSubaction(deployer),
 
       // step 2: deploy PendleSwap
-      () => new DeployPendleSwapSubaction(deployer),
+      () => new DeployPendleSwapSubAction(deployer),
 
       // step 3: deploy PendleMsgSendEndpointUpg
       // step 3.1: deploy implementation
