@@ -1,11 +1,44 @@
-import { Address, PublicClient } from 'viem'
+import { PublicClient } from 'viem'
 
+import { ContractInfo } from '@/types/callback'
 import type { Artifacts } from 'hardhat/types/artifacts'
 
-import { ContractInformation, extractMatchingContractInformation } from '@nomicfoundation/hardhat-verify/internal/solc/artifacts.js'
+import { extractMatchingContractInformation } from '@nomicfoundation/hardhat-verify/internal/solc/artifacts'
 import { Bytecode } from '@nomicfoundation/hardhat-verify/internal/solc/bytecode.js'
+import { parseFullyQualifiedName } from 'hardhat/utils/contract-names'
 
-export const getContractInformation = async (client: PublicClient, artifacts: Artifacts, contract: { address: Address }) => {
+const extractContractInformation = async (artifacts: Artifacts, fqName: string, bytecode: Bytecode) => {
+  const buildInfo = await artifacts.getBuildInfo(fqName)
+  if (buildInfo === undefined) return null
+
+  const { sourceName, contractName } = parseFullyQualifiedName(fqName)
+  const contractOutput = buildInfo.output.contracts[sourceName][contractName]
+  return {
+    compilerInput: buildInfo.input,
+    solcLongVersion: buildInfo.solcLongVersion,
+    sourceName,
+    contractName,
+    contractOutput,
+    deployedBytecode: bytecode.stringify(),
+  }
+}
+
+const findContractInformation = async (artifacts: Artifacts, bytecode: Bytecode) => {
+  const fqNames = await artifacts.getAllFullyQualifiedNames()
+  for (const fqName of fqNames) {
+    const buildInfo = await artifacts.getBuildInfo(fqName)
+    if (buildInfo === undefined) continue
+    const contractInformation = await extractMatchingContractInformation(fqName, buildInfo, bytecode)
+
+    if (contractInformation !== null) {
+      return contractInformation
+    }
+  }
+
+  return null
+}
+
+export const getContractInformation = async (client: PublicClient, artifacts: Artifacts, contract: ContractInfo) => {
   // get deploy bytecode from chain
   const code = await client.getCode({ address: contract.address })
   if (!code) {
@@ -14,20 +47,10 @@ export const getContractInformation = async (client: PublicClient, artifacts: Ar
   const deployedBytecode = code.replace(/^0x/, '')
   const bytecode = new Bytecode(deployedBytecode)
 
-  let contractInformation: ContractInformation | null = null
-  const fqNames = await artifacts.getAllFullyQualifiedNames()
+  const contractInformation = contract.fqName
+    ? await extractContractInformation(artifacts, contract.fqName, bytecode)
+    : await findContractInformation(artifacts, bytecode)
 
-  for (const fqName of fqNames) {
-    const buildInfo = await artifacts.getBuildInfo(fqName)
-    if (buildInfo === undefined) continue
-
-    // Normalize deployed bytecode according to this object
-    contractInformation = extractMatchingContractInformation(fqName, buildInfo, bytecode)
-
-    if (contractInformation !== null) {
-      break
-    }
-  }
   if (contractInformation === null) {
     throw new Error(`No matching contract found for address ${contract.address}`)
   }
