@@ -40,7 +40,13 @@ describe('verifyContract', () => {
       isSuccess: vi.fn().mockReturnValue(true),
       isAlreadyVerified: vi.fn().mockReturnValue(false),
     } as any)
-    await verifyContract(client, instanceEtherscan, artifacts, { address: address }, '')
+    await verifyContract(
+      client,
+      instanceEtherscan,
+      artifacts,
+      { address: address },
+      'packages/modules/aave-v3/contracts/aave-v3-core/contracts',
+    )
     expect(isVerifiedSpy).toHaveBeenCalled()
     expect(verifySpy).toHaveBeenCalled()
     expect(getVerificationStatusSpy).toHaveBeenCalled()
@@ -64,7 +70,7 @@ describe('verifyContract', () => {
       instanceBlockscout,
       artifacts,
       { address: '0x67e2eb9e8c38b2597e835a3914822f92bb43a193' },
-      '',
+      'packages/modules/aave-v3/contracts/aave-v3-core/contracts',
     )
     expect(isVerifiedSpy).toHaveBeenCalled()
     expect(verifySpy).toHaveBeenCalled()
@@ -72,11 +78,15 @@ describe('verifyContract', () => {
   })
 
   test('verify eoa address', async () => {
-    expect(verifyContract(client, instanceEtherscan, artifacts, { address: eoaAddress }, '')).rejects.toThrowError()
+    expect(
+      verifyContract(client, instanceEtherscan, artifacts, { address: eoaAddress }, 'packages/modules/aave-v3/contracts'),
+    ).rejects.toThrowError()
   })
 
   test('verify without artifact', async () => {
-    expect(verifyContract(client, instanceEtherscan, artifacts, { address: invalidAddress }, '')).rejects.toThrowError()
+    expect(
+      verifyContract(client, instanceEtherscan, artifacts, { address: invalidAddress }, 'packages/modules/aave-v3/contracts'),
+    ).rejects.toThrowError()
   })
 
   test('verify verified contract', async () => {
@@ -88,7 +98,13 @@ describe('verifyContract', () => {
       isSuccess: vi.fn().mockReturnValue(true),
       isAlreadyVerified: vi.fn().mockReturnValue(false),
     } as any)
-    await verifyContract(client, instanceEtherscan, artifacts, { address: address }, '')
+    await verifyContract(
+      client,
+      instanceEtherscan,
+      artifacts,
+      { address: address },
+      path.join(process.cwd(), 'packages/modules/aave-v3/contracts'),
+    )
     expect(isVerifiedSpy).toHaveBeenCalled()
     expect(verifySpy).not.toHaveBeenCalled()
     expect(getVerificationStatusSpy).not.toHaveBeenCalled()

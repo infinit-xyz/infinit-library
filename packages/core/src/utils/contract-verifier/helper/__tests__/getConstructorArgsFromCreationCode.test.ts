@@ -23,7 +23,7 @@ describe('getConstructorArgsFromCreationCode', () => {
   const instance = new Etherscan(apiKey, apiUrl, url)
 
   test('have constructor params', async () => {
-    const client = await createPublicClient({
+    const client = createPublicClient({
       chain: arbitrumSepolia,
       transport: http(rpc),
     })
@@ -34,7 +34,7 @@ describe('getConstructorArgsFromCreationCode', () => {
   })
 
   test("don't have constructor params", async () => {
-    const client = await createPublicClient({
+    const client = createPublicClient({
       chain: arbitrumSepolia,
       transport: http(rpc),
     })
