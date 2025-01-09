@@ -33,7 +33,6 @@ describe('verifyContract', () => {
     })
   })
 
-
   test('verify contract (etherscan)', async () => {
     const isVerifiedSpy = vi.spyOn(instanceEtherscan, 'isVerified').mockResolvedValue(false)
     const verifySpy = vi.spyOn(instanceEtherscan, 'verify').mockReturnValue({
@@ -43,13 +42,7 @@ describe('verifyContract', () => {
       isSuccess: vi.fn().mockReturnValue(true),
       isAlreadyVerified: vi.fn().mockReturnValue(false),
     } as any)
-    await verifyContract(
-      client,
-      instanceEtherscan,
-      artifacts,
-      { address: address },
-      projectRoot,
-    )
+    await verifyContract(client, instanceEtherscan, artifacts, { address: address }, projectRoot)
     expect(isVerifiedSpy).toHaveBeenCalled()
     expect(verifySpy).toHaveBeenCalled()
     expect(getVerificationStatusSpy).toHaveBeenCalled()
@@ -81,15 +74,11 @@ describe('verifyContract', () => {
   })
 
   test('verify eoa address', async () => {
-    expect(
-      verifyContract(client, instanceEtherscan, artifacts, { address: eoaAddress }, projectRoot),
-    ).rejects.toThrowError()
+    expect(verifyContract(client, instanceEtherscan, artifacts, { address: eoaAddress }, projectRoot)).rejects.toThrowError()
   })
 
   test('verify without artifact', async () => {
-    expect(
-      verifyContract(client, instanceEtherscan, artifacts, { address: invalidAddress }, projectRoot),
-    ).rejects.toThrowError()
+    expect(verifyContract(client, instanceEtherscan, artifacts, { address: invalidAddress }, projectRoot)).rejects.toThrowError()
   })
 
   test('verify verified contract', async () => {
@@ -101,13 +90,7 @@ describe('verifyContract', () => {
       isSuccess: vi.fn().mockReturnValue(true),
       isAlreadyVerified: vi.fn().mockReturnValue(false),
     } as any)
-    await verifyContract(
-      client,
-      instanceEtherscan,
-      artifacts,
-      { address: address },
-      path.join(process.cwd(), projectRoot),
-    )
+    await verifyContract(client, instanceEtherscan, artifacts, { address: address }, path.join(process.cwd(), projectRoot))
     expect(isVerifiedSpy).toHaveBeenCalled()
     expect(verifySpy).not.toHaveBeenCalled()
     expect(getVerificationStatusSpy).not.toHaveBeenCalled()
