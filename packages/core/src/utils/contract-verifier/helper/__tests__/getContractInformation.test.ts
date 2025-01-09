@@ -17,7 +17,7 @@ describe('getCreationInformation', () => {
   )
 
   test('have artifact', async () => {
-    const client = await createPublicClient({
+    const client = createPublicClient({
       chain: arbitrumSepolia,
       transport: http(rpc),
     })
@@ -27,7 +27,7 @@ describe('getCreationInformation', () => {
 
   test("don't have aritifact", async () => {
     const expectedError = 'No matching contract found for address 0x87646Ac012AC9ffbBc3A37ec516Bd0d661b408ed'
-    const client = await createPublicClient({
+    const client = createPublicClient({
       chain: arbitrumSepolia,
       transport: http(rpc),
     })

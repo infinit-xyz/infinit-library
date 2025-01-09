@@ -5,6 +5,7 @@ import type { Artifacts } from 'hardhat/types/artifacts'
 
 import { getConstructorArgsFromCreationCode } from './getConstructorArgsFromCreationCode'
 import { getContractInformation } from './getContractInformation'
+import { getMinimalSources } from './getMinimalSources'
 import { isBlockscout } from './isBlockscout'
 import { resolveLinkedLibraries } from './resolveLinkedLibraries'
 import { BaseError } from '@/errors/base'
@@ -18,6 +19,7 @@ export const verifyContract = async (
   instance: Etherscan,
   artifacts: Artifacts,
   contract: ContractInfo,
+  contractRoot: string,
   callback?: ContractVerifierCallback,
 ): Promise<void> => {
   let contractInformation: ContractInformation
@@ -98,6 +100,10 @@ export const verifyContract = async (
   // verify contract
   const contractFQN = `${contractInformation.sourceName}:${contractInformation.contractName}`
   let guid: string
+
+  // use minimal sources
+  const minimalSources = await getMinimalSources(contractInformation.sourceName, contractRoot)
+  contractInformation.compilerInput.sources = minimalSources
 
   try {
     const response = await instance.verify(

@@ -40,7 +40,7 @@ describe('BaseContractVerifier', () => {
     const callback: ContractVerifierCallback = vi.fn()
     const verifyContractSpy = vi.mocked(verifyContract)
 
-    await verifier.verify({}, callback)
+    await verifier.verify({}, '', callback)
 
     expect(verifyContractSpy).toHaveBeenCalledTimes(2)
     expect(callback).toHaveBeenCalledWith('contractVerificationInfo', { totalContracts: 2 })

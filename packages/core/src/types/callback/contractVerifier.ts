@@ -12,6 +12,10 @@ type ContractInfo = {
    * Optional constructor arguments for the contract.
    */
   constructorArgs?: any[]
+  /**
+   * Optional contract's fqName for getting the contract information.
+   */
+  fqName?: string
 }
 
 /**

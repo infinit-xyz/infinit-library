@@ -51,17 +51,18 @@ export abstract class BaseContractVerifier<R extends object> {
    * Verifies the contracts in the registry.
    *
    * @param registry - The registry object.
+   * @param contractRoot - root folder of the module's contracts.
    * @param callback - Optional callback for contract verification events.
    * @returns A promise that resolves when the verification is complete.
    */
-  public async verify(registry: R, callback?: ContractVerifierCallback): Promise<void> {
+  public async verify(registry: R, contractRoot: string, callback?: ContractVerifierCallback): Promise<void> {
     const contracts = await this.getContracts(registry)
     const artifacts = await this.getArtifacts()
 
     callback?.('contractVerificationInfo', { totalContracts: contracts.length })
 
     for (const contract of contracts) {
-      await verifyContract(this.client, this.etherscan, artifacts, contract, callback)
+      await verifyContract(this.client, this.etherscan, artifacts, contract, contractRoot, callback)
     }
   }
 }
