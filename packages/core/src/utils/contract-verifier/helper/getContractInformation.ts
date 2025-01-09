@@ -26,10 +26,10 @@ const extractContractInformation = async (artifacts: Artifacts, fqName: string, 
 const findContractInformation = async (artifacts: Artifacts, bytecode: Bytecode) => {
   const fqNames = await artifacts.getAllFullyQualifiedNames()
   for (const fqName of fqNames) {
-      const buildInfo = await artifacts.getBuildInfo(fqName)
-      if (buildInfo === undefined) continue
-      const contractInformation = await extractMatchingContractInformation(fqName, buildInfo, bytecode)
-    
+    const buildInfo = await artifacts.getBuildInfo(fqName)
+    if (buildInfo === undefined) continue
+    const contractInformation = await extractMatchingContractInformation(fqName, buildInfo, bytecode)
+
     if (contractInformation !== null) {
       return contractInformation
     }
