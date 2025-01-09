@@ -1,5 +1,16 @@
 # @infinit-xyz/core
 
+## 0.1.0-alpha.12
+
+### Minor Changes
+
+- [#183](https://github.com/infinit-xyz/infinit-library/pull/183)
+  [`f9f488b`](https://github.com/infinit-xyz/infinit-library/commit/f9f488b0182bf0f50b97fecfc4e6678f034dd324) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - add verify contract methods
+
+  - use minimal sources to verify contract
+  - use fqName to get buildInfo for contract verification
+
 ## 0.1.0-alpha.11
 
 ### Minor Changes
