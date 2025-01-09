@@ -3,6 +3,7 @@ import { PublicClient } from 'viem'
 import { ContractInfo } from '@/types/callback'
 import type { Artifacts } from 'hardhat/types/artifacts'
 
+import { extractMatchingContractInformation } from '@nomicfoundation/hardhat-verify/internal/solc/artifacts'
 import { Bytecode } from '@nomicfoundation/hardhat-verify/internal/solc/bytecode.js'
 import { parseFullyQualifiedName } from 'hardhat/utils/contract-names'
 
@@ -25,8 +26,10 @@ const extractContractInformation = async (artifacts: Artifacts, fqName: string, 
 const findContractInformation = async (artifacts: Artifacts, bytecode: Bytecode) => {
   const fqNames = await artifacts.getAllFullyQualifiedNames()
   for (const fqName of fqNames) {
-    const contractInformation = await extractContractInformation(artifacts, fqName, bytecode)
-
+      const buildInfo = await artifacts.getBuildInfo(fqName)
+      if (buildInfo === undefined) continue
+      const contractInformation = await extractMatchingContractInformation(fqName, buildInfo, bytecode)
+    
     if (contractInformation !== null) {
       return contractInformation
     }
