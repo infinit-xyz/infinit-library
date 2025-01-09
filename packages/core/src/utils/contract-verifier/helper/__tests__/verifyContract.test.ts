@@ -25,7 +25,7 @@ describe('verifyContract', () => {
   )
 
   beforeAll(async () => {
-    client = await createPublicClient({
+    client = createPublicClient({
       chain: arbitrumSepolia,
       transport: http(rpc),
     })
@@ -40,7 +40,7 @@ describe('verifyContract', () => {
       isSuccess: vi.fn().mockReturnValue(true),
       isAlreadyVerified: vi.fn().mockReturnValue(false),
     } as any)
-    await verifyContract(client, instanceEtherscan, artifacts, { address: address })
+    await verifyContract(client, instanceEtherscan, artifacts, { address: address }, '')
     expect(isVerifiedSpy).toHaveBeenCalled()
     expect(verifySpy).toHaveBeenCalled()
     expect(getVerificationStatusSpy).toHaveBeenCalled()
@@ -57,13 +57,14 @@ describe('verifyContract', () => {
       isAlreadyVerified: vi.fn().mockReturnValue(false),
     } as any)
     await verifyContract(
-      await createPublicClient({
+      createPublicClient({
         chain: holesky,
         transport: http('https://holesky.drpc.org'),
       }),
       instanceBlockscout,
       artifacts,
       { address: '0x67e2eb9e8c38b2597e835a3914822f92bb43a193' },
+      '',
     )
     expect(isVerifiedSpy).toHaveBeenCalled()
     expect(verifySpy).toHaveBeenCalled()
@@ -71,11 +72,11 @@ describe('verifyContract', () => {
   })
 
   test('verify eoa address', async () => {
-    expect(verifyContract(client, instanceEtherscan, artifacts, { address: eoaAddress })).rejects.toThrowError()
+    expect(verifyContract(client, instanceEtherscan, artifacts, { address: eoaAddress }, '')).rejects.toThrowError()
   })
 
   test('verify without artifact', async () => {
-    expect(verifyContract(client, instanceEtherscan, artifacts, { address: invalidAddress })).rejects.toThrowError()
+    expect(verifyContract(client, instanceEtherscan, artifacts, { address: invalidAddress }, '')).rejects.toThrowError()
   })
 
   test('verify verified contract', async () => {
@@ -87,7 +88,7 @@ describe('verifyContract', () => {
       isSuccess: vi.fn().mockReturnValue(true),
       isAlreadyVerified: vi.fn().mockReturnValue(false),
     } as any)
-    await verifyContract(client, instanceEtherscan, artifacts, { address: address })
+    await verifyContract(client, instanceEtherscan, artifacts, { address: address }, '')
     expect(isVerifiedSpy).toHaveBeenCalled()
     expect(verifySpy).not.toHaveBeenCalled()
     expect(getVerificationStatusSpy).not.toHaveBeenCalled()
