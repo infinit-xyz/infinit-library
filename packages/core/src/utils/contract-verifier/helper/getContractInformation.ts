@@ -3,9 +3,9 @@ import { PublicClient } from 'viem'
 import { ContractInfo } from '@/types/callback'
 import type { Artifacts } from 'hardhat/types/artifacts'
 
-import { extractMatchingContractInformation } from '@nomicfoundation/hardhat-verify/internal/solc/artifacts'
+import { extractMatchingContractInformation } from '@nomicfoundation/hardhat-verify/internal/solc/artifacts.js'
 import { Bytecode } from '@nomicfoundation/hardhat-verify/internal/solc/bytecode.js'
-import { parseFullyQualifiedName } from 'hardhat/utils/contract-names'
+import { parseFullyQualifiedName } from 'hardhat/utils/contract-names.js'
 
 const extractContractInformation = async (artifacts: Artifacts, fqName: string, bytecode: Bytecode) => {
   const buildInfo = await artifacts.getBuildInfo(fqName)
