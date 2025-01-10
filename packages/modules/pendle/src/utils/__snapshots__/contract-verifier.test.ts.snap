@@ -3,120 +3,6 @@
 exports[`TokenContractVerifier.ts > getContracts: should match snapshot 1`] = `
 [
   {
-    "address": "0xa1c1c280822a70e414bf69ba137f6357b44f52a2",
-  },
-  {
-    "address": "0xc3d11902938ba2fd41b78328c0422f7eecc95cab",
-  },
-  {
-    "address": "0xc34980bebe8502664ccf7d737d0a0a9b449df27d",
-  },
-  {
-    "address": "0x06d46b95bcd056ba2f71c7b5c5d59518b2e5261e",
-  },
-  {
-    "address": "0xba76b089119c9b9a1cfebbfbb6f9af1517f492ab",
-  },
-  {
-    "address": "0xb9404bf03c9470aefa6f76d2d6143569487201cd",
-  },
-  {
-    "address": "0x52746b8730db3f563fa247ad1ae8107c1c55fbbe",
-  },
-  {
-    "address": "0xf498122e6ad20478e2f7f43a4f71c1f14fa913d5",
-  },
-  {
-    "address": "0x906c6be1476d5ebe1131f90bdc88aae7fe512a0f",
-  },
-  {
-    "address": "0xbd12bd428660046f56301ddc4c0cdeca9b53e742",
-  },
-  {
-    "address": "0xdc4ee48d889cb5b578cda7698bdc5f9f2266a9b8",
-  },
-  {
-    "address": "0xed208208c60e27562cbee83d75cafdfb3feaefda",
-  },
-  {
-    "address": "0x57f575e1714e136ae10a5cec2845e1330224a918",
-  },
-  {
-    "address": "0x7b97f317de3ecf0a91cad83b4700edd0cc4d1f89",
-  },
-  {
-    "address": "0x2c04da4d8606494da2efb8c1cbb4ef729b5162e2",
-  },
-  {
-    "address": "0x25f41915852b41782c5fcd15f0d63924bf50a752",
-  },
-  {
-    "address": "0x6b939c4ccb22526a1989df2dcea49d36fa097de2",
-  },
-  {
-    "address": "0xd661062002d9319d2fdabe21d9e0fbe9ba4d5ba6",
-  },
-  {
-    "address": "0xc61802f976c88307291b494c3105614c3c073960",
-  },
-  {
-    "address": "0xf6051261d4e5fad492a4501c04174881c226166c",
-  },
-  {
-    "address": "0x8c2f12783b9adf4affec321e488ccd1d40298c8d",
-  },
-  {
-    "address": "0x12b83df96e6e2dd315e3fbad3439fd1aad34bfc6",
-  },
-  {
-    "address": "0x26c58376f164ff680d370f969d7f701d233d699f",
-  },
-  {
-    "address": "0x26ddc808243300f1285528e356f02b07d8f4420d",
-  },
-  {
-    "address": "0xc9569e07bb5e4e8ac6cca49d7b520b98532066ad",
-  },
-  {
-    "address": "0x595225975dde6f422328617c4c55b14010470991",
-  },
-  {
-    "address": "0xd6dd32a87bca870819d0bfea12058ccb2d3d0dc8",
-  },
-  {
-    "address": "0x89fa9681fb808f02b47235924f503937486ee280",
-  },
-  {
-    "address": "0xd3b31da7317cd1cf8fa1398d485061513515e4ef",
-  },
-  {
-    "address": "0xb71309e4d3e653c5830a2cf2af5a0a8ad41488b0",
-  },
-  {
-    "address": "0xd45d1550b1b3e730fdf37a43cd963614513616c1",
-  },
-  {
-    "address": "0x3059dc23ca80f575d518d13276b20b6cd71734ea",
-  },
-  {
-    "address": "0x36e3ee95a0e62911d40f7cf058c378d75c94d31e",
-  },
-  {
-    "address": "0x27e0f7a59eca46dff3b2a9de07385e237867df65",
-  },
-  {
-    "address": "0x05e0a84b5effa7bf2350f3cd14633c8df6544339",
-  },
-  {
-    "address": "0x214c233fa5bd380c8e9602d7b7dfb9a3d3e0f07f",
-  },
-  {
-    "address": "0x9af271d3cc828c87d2b0f6b1eb3943e2f4e0a8fd",
-  },
-  {
-    "address": "0xda27654ccbb33ac3b7253add434afec793a8b4ab",
-  },
-  {
     "address": "0x7c4ffd0cbcc09adcb44ad742af3e17a19e3a2725",
     "constructorArgs": [
       "0x23027b0220380615480f2E219E65fc75082cde64",
@@ -124,6 +10,7 @@ exports[`TokenContractVerifier.ts > getContracts: should match snapshot 1`] = `
       "0xDFbdF029b9B07D1C6cD3eb38ffC80931E424A18a",
       8996n,
     ],
+    "fqName": "core-v2/contracts/core/YieldContracts/PendleYieldContractFactory.sol:PendleYieldContractFactory",
   },
   {
     "address": "0x3885c047f7a5b4266aa4f7dc55694494eec4845b",
@@ -138,6 +25,159 @@ exports[`TokenContractVerifier.ts > getContracts: should match snapshot 1`] = `
       "0xBa76b089119C9b9a1cfeBbFBb6F9Af1517F492aB",
       "0xbd12bd428660046f56301ddc4c0cdeca9b53e742",
     ],
+    "fqName": "core-v2/contracts/core/Market/v3/PendleMarketFactoryV3.sol:PendleMarketFactoryV3",
+  },
+  {
+    "address": "0xa1c1c280822a70e414bf69ba137f6357b44f52a2",
+    "fqName": "core-v2/contracts/offchain-helpers/BaseSplitCodeFactoryContract.sol:BaseSplitCodeFactoryContract",
+  },
+  {
+    "address": "0xc3d11902938ba2fd41b78328c0422f7eecc95cab",
+    "fqName": "core-v2/contracts/router/swap-aggregator/PendleSwap.sol:PendleSwap",
+  },
+  {
+    "address": "0xc34980bebe8502664ccf7d737d0a0a9b449df27d",
+    "fqName": "core-v2/contracts/LiquidityMining/CrossChainMsg/PendleMsgSendEndpointUpg.sol:PendleMsgSendEndpointUpg",
+  },
+  {
+    "address": "0x06d46b95bcd056ba2f71c7b5c5d59518b2e5261e",
+    "fqName": "openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol:ERC1967Proxy",
+  },
+  {
+    "address": "0xba76b089119c9b9a1cfebbfbb6f9af1517f492ab",
+    "fqName": "core-v2/contracts/LiquidityMining/VotingEscrow/VotingEscrowPendleMainchain.sol:VotingEscrowPendleMainchain",
+  },
+  {
+    "address": "0xb9404bf03c9470aefa6f76d2d6143569487201cd",
+    "fqName": "core-v2/contracts/core/Market/OracleLib.sol:OracleLib",
+  },
+  {
+    "address": "0x52746b8730db3f563fa247ad1ae8107c1c55fbbe",
+    "fqName": "core-v2/contracts/LiquidityMining/VotingController/PendleVotingControllerUpg.sol:PendleVotingControllerUpg",
+  },
+  {
+    "address": "0xf498122e6ad20478e2f7f43a4f71c1f14fa913d5",
+    "fqName": "openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol:ERC1967Proxy",
+  },
+  {
+    "address": "0x906c6be1476d5ebe1131f90bdc88aae7fe512a0f",
+    "fqName": "core-v2/contracts/LiquidityMining/GaugeController/PendleGaugeControllerMainchainUpg.sol:PendleGaugeControllerMainchainUpg",
+  },
+  {
+    "address": "0xbd12bd428660046f56301ddc4c0cdeca9b53e742",
+    "fqName": "openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol:ERC1967Proxy",
+  },
+  {
+    "address": "0xdc4ee48d889cb5b578cda7698bdc5f9f2266a9b8",
+    "fqName": "core-v2/contracts/router/ActionStorageV4.sol:ActionStorageV4",
+  },
+  {
+    "address": "0xed208208c60e27562cbee83d75cafdfb3feaefda",
+    "fqName": "core-v2/contracts/router/ActionAddRemoveLiqV3.sol:ActionAddRemoveLiqV3",
+  },
+  {
+    "address": "0x57f575e1714e136ae10a5cec2845e1330224a918",
+    "fqName": "core-v2/contracts/router/ActionCallbackV3.sol:ActionCallbackV3",
+  },
+  {
+    "address": "0x7b97f317de3ecf0a91cad83b4700edd0cc4d1f89",
+    "fqName": "core-v2/contracts/router/ActionMiscV3.sol:ActionMiscV3",
+  },
+  {
+    "address": "0x2c04da4d8606494da2efb8c1cbb4ef729b5162e2",
+    "fqName": "core-v2/contracts/router/ActionSimple.sol:ActionSimple",
+  },
+  {
+    "address": "0x25f41915852b41782c5fcd15f0d63924bf50a752",
+    "fqName": "core-v2/contracts/router/ActionSwapPTV3.sol:ActionSwapPTV3",
+  },
+  {
+    "address": "0x6b939c4ccb22526a1989df2dcea49d36fa097de2",
+    "fqName": "core-v2/contracts/router/ActionSwapYTV3.sol:ActionSwapYTV3",
+  },
+  {
+    "address": "0xd661062002d9319d2fdabe21d9e0fbe9ba4d5ba6",
+    "fqName": "core-v2/contracts/router/PendleRouterV4.sol:PendleRouterV4",
+  },
+  {
+    "address": "0xc61802f976c88307291b494c3105614c3c073960",
+    "fqName": "core-v2/contracts/offchain-helpers/router-static/base/ActionStorageStatic.sol:ActionStorageStatic",
+  },
+  {
+    "address": "0xf6051261d4e5fad492a4501c04174881c226166c",
+    "fqName": "core-v2/contracts/offchain-helpers/router-static/base/ActionInfoStatic.sol:ActionInfoStatic",
+  },
+  {
+    "address": "0x8c2f12783b9adf4affec321e488ccd1d40298c8d",
+    "fqName": "core-v2/contracts/offchain-helpers/router-static/base/ActionMarketAuxStatic.sol:ActionMarketAuxStatic",
+  },
+  {
+    "address": "0x12b83df96e6e2dd315e3fbad3439fd1aad34bfc6",
+    "fqName": "core-v2/contracts/offchain-helpers/router-static/base/ActionMarketCoreStatic.sol:ActionMarketCoreStatic",
+  },
+  {
+    "address": "0x26c58376f164ff680d370f969d7f701d233d699f",
+    "fqName": "core-v2/contracts/offchain-helpers/router-static/base/ActionMintRedeemStatic.sol:ActionMintRedeemStatic",
+  },
+  {
+    "address": "0x26ddc808243300f1285528e356f02b07d8f4420d",
+    "fqName": "core-v2/contracts/offchain-helpers/router-static/base/ActionVePendleStatic.sol:ActionVePendleStatic",
+  },
+  {
+    "address": "0xc9569e07bb5e4e8ac6cca49d7b520b98532066ad",
+    "fqName": "core-v2/contracts/offchain-helpers/router-static/PendleRouterStatic.sol:PendleRouterStatic",
+  },
+  {
+    "address": "0x595225975dde6f422328617c4c55b14010470991",
+    "fqName": "openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol:ProxyAdmin",
+  },
+  {
+    "address": "0xd6dd32a87bca870819d0bfea12058ccb2d3d0dc8",
+    "fqName": "core-v2/contracts/limit/PendleLimitRouter.sol:PendleLimitRouter",
+  },
+  {
+    "address": "0x89fa9681fb808f02b47235924f503937486ee280",
+    "fqName": "openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol:TransparentUpgradeableProxy",
+  },
+  {
+    "address": "0xd3b31da7317cd1cf8fa1398d485061513515e4ef",
+    "fqName": "core-v2/contracts/oracles/PendlePYLpOracle.sol:PendlePYLpOracle",
+  },
+  {
+    "address": "0xb71309e4d3e653c5830a2cf2af5a0a8ad41488b0",
+    "fqName": "openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol:TransparentUpgradeableProxy",
+  },
+  {
+    "address": "0xd45d1550b1b3e730fdf37a43cd963614513616c1",
+    "fqName": "core-v2/contracts/offchain-helpers/PendleMulticallV2.sol:PendleMulticallV2",
+  },
+  {
+    "address": "0x3059dc23ca80f575d518d13276b20b6cd71734ea",
+    "fqName": "core-v2/contracts/offchain-helpers/Multicall2.sol:Multicall2",
+  },
+  {
+    "address": "0x36e3ee95a0e62911d40f7cf058c378d75c94d31e",
+    "fqName": "core-v2/contracts/offchain-helpers/SimulateHelper.sol:SimulateHelper",
+  },
+  {
+    "address": "0x27e0f7a59eca46dff3b2a9de07385e237867df65",
+    "fqName": "core-v2/contracts/offchain-helpers/SupplyCapReader.sol:SupplyCapReader",
+  },
+  {
+    "address": "0x05e0a84b5effa7bf2350f3cd14633c8df6544339",
+    "fqName": "core-v2/contracts/offchain-helpers/PendlePoolDeployHelper.sol:PendlePoolDeployHelper",
+  },
+  {
+    "address": "0x214c233fa5bd380c8e9602d7b7dfb9a3d3e0f07f",
+    "fqName": "core-v2/contracts/offchain-helpers/PendleGovernanceProxy.sol:PendleGovernanceProxy",
+  },
+  {
+    "address": "0x9af271d3cc828c87d2b0f6b1eb3943e2f4e0a8fd",
+    "fqName": "openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol:ERC1967Proxy",
+  },
+  {
+    "address": "0xda27654ccbb33ac3b7253add434afec793a8b4ab",
+    "fqName": "core-v2/contracts/oracles/PendleBoringOneracle.sol:PendleBoringOneracle",
   },
 ]
 `;
