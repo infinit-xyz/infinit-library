@@ -1,5 +1,13 @@
 # @infinit-xyz/token
 
+## 0.0.0-alpha.24
+
+### Minor Changes
+
+- [#189](https://github.com/infinit-xyz/infinit-library/pull/189)
+  [`1cc1699`](https://github.com/infinit-xyz/infinit-library/commit/1cc1699b2a550fec5783686c96dd07da941f0eba) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - bump core version
+
 ## 0.0.0-alpha.23
 
 ### Minor Changes
