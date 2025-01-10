@@ -155,11 +155,13 @@ export class PendleContractVerifier extends BaseContractVerifier<PendleRegistry>
       feeVault: 'fee-vault/contracts/FeeVault.sol:FeeVault',
     }
     contractMappings.pendleGovernanceProxy = 'openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol:ERC1967Proxy'
-    contractMappings.pendleLimitRouterProxy = 'openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol:ERC1967Proxy'
     contractMappings.pendleGaugeControllerMainchainUpgProxy = 'openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol:ERC1967Proxy'
     contractMappings.pendleMsgSendEndpointUpgProxy = 'openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol:ERC1967Proxy'
     contractMappings.pendleVotingControllerUpgProxy = 'openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol:ERC1967Proxy'
-    contractMappings.pendlePYLpOracleProxy = 'openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol:ERC1967Proxy'
+    contractMappings.pendleLimitRouterProxy =
+      'openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol:TransparentUpgradeableProxy'
+    contractMappings.pendlePYLpOracleProxy =
+      'openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol:TransparentUpgradeableProxy'
 
     for (const key of Object.keys(registry)) {
       if (key === 'pendleYieldContractFactory') continue
