@@ -1,5 +1,14 @@
 # @infinit-xyz/pendle
 
+## 0.0.0-alpha.7
+
+### Patch Changes
+
+- [#185](https://github.com/infinit-xyz/infinit-library/pull/185)
+  [`5c20d49`](https://github.com/infinit-xyz/infinit-library/commit/5c20d49774293c2db19190a7bcf61474eb7f55f5) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - - improve getContracts logic
+  - bump core version
+
 ## 0.0.0-alpha.6
 
 ### Minor Changes
