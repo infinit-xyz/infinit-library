@@ -16,7 +16,11 @@ export type DeployPendleMsgSendEndpointUpgSubactionMsg = {
   pendleMsgSendEndpointUpg: Address
 }
 
-export class DeployPendleMsgSendEndpointUpgSubaction extends SubAction<DeployPendleMsgSendEndpointUpgSubactionParams, PendleRegistry> {
+export class DeployPendleMsgSendEndpointUpgSubaction extends SubAction<
+  DeployPendleMsgSendEndpointUpgSubactionParams,
+  PendleRegistry,
+  DeployPendleMsgSendEndpointUpgSubactionMsg
+> {
   constructor(client: InfinitWallet, params: DeployPendleMsgSendEndpointUpgSubactionParams) {
     super(DeployPendleMsgSendEndpointUpgSubaction.name, client, params)
   }
@@ -25,7 +29,10 @@ export class DeployPendleMsgSendEndpointUpgSubaction extends SubAction<DeployPen
     this.txBuilders = [new DeployPendleMsgSendEndpointUpgTxBuilder(this.client, this.params)]
   }
 
-  protected async updateRegistryAndMessage(registry: PendleRegistry, txHashes: Hash[]): Promise<SubActionExecuteResponse<PendleRegistry>> {
+  protected async updateRegistryAndMessage(
+    registry: PendleRegistry,
+    txHashes: Hash[],
+  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployPendleMsgSendEndpointUpgSubactionMsg>> {
     const [deployPendleSwapTxHash] = txHashes
     const { contractAddress: pendleMsgSendEndpointUpg } = await this.client.publicClient.waitForTransactionReceipt({
       hash: deployPendleSwapTxHash,

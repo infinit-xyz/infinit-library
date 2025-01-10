@@ -7,13 +7,13 @@ import { DeployPendleSwapTxBuilder } from '@actions/on-chain/subactions/txBuilde
 
 import { PendleRegistry } from '@/src/type'
 
-export type DeployPendleSwapSubactionMsg = {
+export type DeployPendleSwapSubActionMsg = {
   pendleSwap: Address
 }
 
-export class DeployPendleSwapSubaction extends SubAction<object, PendleRegistry, DeployPendleSwapSubactionMsg> {
+export class DeployPendleSwapSubAction extends SubAction<object, PendleRegistry, DeployPendleSwapSubActionMsg> {
   constructor(client: InfinitWallet) {
-    super(DeployPendleSwapSubaction.name, client, {})
+    super(DeployPendleSwapSubAction.name, client, {})
   }
 
   protected setTxBuilders(): void {
@@ -23,7 +23,7 @@ export class DeployPendleSwapSubaction extends SubAction<object, PendleRegistry,
   protected async updateRegistryAndMessage(
     registry: PendleRegistry,
     txHashes: Hash[],
-  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployPendleSwapSubactionMsg>> {
+  ): Promise<SubActionExecuteResponse<PendleRegistry, DeployPendleSwapSubActionMsg>> {
     const [deployPendleSwapTxHash] = txHashes
     const { contractAddress: pendleSwap } = await this.client.publicClient.waitForTransactionReceipt({
       hash: deployPendleSwapTxHash,

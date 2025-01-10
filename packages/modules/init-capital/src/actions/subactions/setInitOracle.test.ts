@@ -10,7 +10,7 @@ import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
 const tester = ARBITRUM_TEST_ADDRESSES.tester
 
-describe('SetInitOracleConfigSubActionParams', async () => {
+describe('SetInitOracleConfigSubAction', async () => {
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
 
   test('test correct calldata', async () => {
