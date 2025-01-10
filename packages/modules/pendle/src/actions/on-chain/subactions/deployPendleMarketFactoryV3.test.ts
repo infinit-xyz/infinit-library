@@ -8,7 +8,6 @@ import {
   DeployPendleMarketFactoryV3SubactionMsg,
 } from '@actions/on-chain/subactions/deployPendleMarketFactoryV3'
 
-import { DeployPendleLimitRouterSubAction } from './deployPendleLimitRouter'
 import { PendleRegistry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
@@ -23,9 +22,6 @@ describe('DeployPendleMarketFactoryV3', () => {
 
   beforeAll(async () => {
     client = new TestInfinitWallet(TestChain.arbitrum, tester)
-    const deployLimitRouterSubAction = new DeployPendleLimitRouterSubAction(client, {
-      wrappedNativeToken: '0x0000000000000000000000000000000000000002',
-    })
     subAction = new DeployPendleMarketFactoryV3Subaction(client, {
       yieldContractFactory: '0x0000000000000000000000000000000000000002',
       marketCreationCodeContractA: '0x0000000000000000000000000000000000000003',
