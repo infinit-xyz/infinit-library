@@ -1,10 +1,9 @@
 import { getDependencyGraph } from './getDependencyGraph'
-import { DependencyGraph } from 'hardhat/internal/solidity/dependencyGraph.js'
 
 type Sources = { [sourceName: string]: { content: string } }
 
 export const getMinimalSources = async (sourceName: string, projectRoot: string): Promise<Sources> => {
-  const dependencyGraph: DependencyGraph = await getDependencyGraph([sourceName], projectRoot)
+  const dependencyGraph = await getDependencyGraph(sourceName, projectRoot)
 
   const resolvedFiles = dependencyGraph.getResolvedFiles().filter((resolvedFile) => resolvedFile.sourceName === sourceName)
 
