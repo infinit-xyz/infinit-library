@@ -10,9 +10,11 @@ export const getDependencyGraph = async (sourceName: string, projectRoot: string
 
   // NOTE: quick fix here
   // TODO: Need to recheck why fee-vault not remapped
-  const remappings: Record<string, string> = sourceName.includes("FeeVault.sol")?{
-    "@openzeppelin-contracts/": "node_modules/@openzeppelin/contracts-5.0.2/",
-  }:{}
+  const remappings: Record<string, string> = sourceName.includes('FeeVault.sol')
+    ? {
+        '@openzeppelin-contracts/': '@openzeppelin/contracts-5.0.2/',
+      }
+    : {}
 
   const resolver = new Resolver(
     projectRoot,
