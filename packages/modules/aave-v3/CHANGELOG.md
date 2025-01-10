@@ -1,5 +1,13 @@
 # @infinit-xyz/aave-v3
 
+## 0.0.0-alpha.27
+
+### Minor Changes
+
+- [#186](https://github.com/infinit-xyz/infinit-library/pull/186)
+  [`0d41d7b`](https://github.com/infinit-xyz/infinit-library/commit/0d41d7bf120ca69c4ba92085ff55ac0b8f2baa29) Thanks
+  [@Kittikornl](https://github.com/Kittikornl)! - update to core version & add missing package
+
 ## 0.0.0-alpha.26
 
 ### Minor Changes
