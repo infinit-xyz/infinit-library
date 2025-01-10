@@ -11,7 +11,7 @@ import { DeployBaseSplitCodeFactoryContractSubaction } from './deployBaseSplitCo
 import { PendleRegistry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
-describe('DeployPendleMarketFactoryV3', () => {
+describe('DeployYTV3CreationCodeSubaction', () => {
   const registry: PendleRegistry = {}
   let subAction: DeployYTV3CreationCodeSubaction
   let client: TestInfinitWallet

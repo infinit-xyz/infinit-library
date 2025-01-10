@@ -11,7 +11,7 @@ import {
 import { PendleRegistry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
-describe('DeployPendleMarketFactoryV3', () => {
+describe('DeployPendleMsgSendEndpointUpgSubaction', () => {
   const registry: PendleRegistry = {}
   let subAction: DeployPendleMsgSendEndpointUpgSubaction
   let client: TestInfinitWallet

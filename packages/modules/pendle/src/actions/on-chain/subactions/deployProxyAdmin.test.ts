@@ -8,7 +8,7 @@ import { DeployProxyAdminMsg, DeployProxyAdminSubAction } from '@actions/on-chai
 import { PendleRegistry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
-describe('DeployPendleMarketFactoryV3', () => {
+describe('DeployProxyAdminSubAction', () => {
   const registry: PendleRegistry = {}
   let subAction: DeployProxyAdminSubAction
   let client: TestInfinitWallet

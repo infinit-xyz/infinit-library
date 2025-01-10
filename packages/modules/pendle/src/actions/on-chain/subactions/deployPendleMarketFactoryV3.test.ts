@@ -26,8 +26,6 @@ describe('DeployPendleMarketFactoryV3', () => {
     const deployLimitRouterSubAction = new DeployPendleLimitRouterSubAction(client, {
       wrappedNativeToken: '0x0000000000000000000000000000000000000002',
     })
-    const deployLimitRouterResult = await deployLimitRouterSubAction.execute(registry, {}, callback)
-    // pendleLimitRouterImpl = deployLimitRouterResult.newMessage!.pendleLimitRouter
     subAction = new DeployPendleMarketFactoryV3Subaction(client, {
       yieldContractFactory: '0x0000000000000000000000000000000000000002',
       marketCreationCodeContractA: '0x0000000000000000000000000000000000000003',
@@ -73,16 +71,16 @@ describe('DeployPendleMarketFactoryV3', () => {
 
   test('registry should not be zero address', async () => {
     result = await subAction.execute(registry, {}, callback)
-    const pendleLimitRouterImpl = result.newRegistry.pendleLimitRouterImpl!
+    const pendleMarketFactoryV3 = result.newRegistry.pendleMarketFactoryV3!
     // check not undefined address
-    expect(pendleLimitRouterImpl).not.toBeUndefined()
+    expect(pendleMarketFactoryV3).not.toBeUndefined()
   })
 
   test('message should not be zero address', async () => {
     result = await subAction.execute(registry, {}, callback)
-    const messagePendleLimitRouterImpl = result.newRegistry.pendleLimitRouterImpl!
+    const messagependleMarketFactoryV3 = result.newRegistry.pendleMarketFactoryV3!
     // check messages
-    expect(messagePendleLimitRouterImpl).not.toBeUndefined()
+    expect(messagependleMarketFactoryV3).not.toBeUndefined()
   })
 
   test('registry and message should be matched', async () => {

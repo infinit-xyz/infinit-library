@@ -8,7 +8,7 @@ import { CreateNewMarketSubaction } from '@actions/on-chain/subactions/createNew
 import { PendleRegistry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
-describe('CreateNewMarketTxBuilder', () => {
+describe('CreateNewMarketSubaction', () => {
   const registry: PendleRegistry = {}
   let subAction: CreateNewMarketSubaction
   let client: TestInfinitWallet

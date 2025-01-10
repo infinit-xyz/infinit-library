@@ -5,7 +5,7 @@ import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mocks__/address'
 import { UpgradePendleGaugeControllerMainchainUpgSubaction } from './upgradePendleGaugeControllerMainchainUpg'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
-describe('TransferOwnershipPendleGaugeControllerMainchainUpgSubAction', () => {
+describe('UpgradePendleGaugeControllerMainchainUpgSubaction', () => {
   let subAction: UpgradePendleGaugeControllerMainchainUpgSubaction
   let client: TestInfinitWallet
 

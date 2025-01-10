@@ -5,7 +5,7 @@ import { InitializePendleYieldContractFactoryTxBuilder } from '@actions/on-chain
 
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
-describe('InitializePendleYieldContractFactoryTxBuilderParamsParams', () => {
+describe('InitializePendleYieldContractFactoryTxBuilder', () => {
   const tester = TEST_ADDRESSES.bob
   let txBuilder: InitializePendleYieldContractFactoryTxBuilder
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)

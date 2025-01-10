@@ -10,7 +10,6 @@ import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
 describe('DeployPendleMarketV3CreationCode', () => {
   const tester = ARBITRUM_TEST_ADDRESSES.tester
-  // const txBuilder: DeployBaseSplitCodeFactoryContractTxBuilder
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
 
   const txBuilder = new DeployBaseSplitCodeFactoryContractTxBuilder(client)

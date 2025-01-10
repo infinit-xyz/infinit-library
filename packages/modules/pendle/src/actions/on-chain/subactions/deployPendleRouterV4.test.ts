@@ -8,7 +8,7 @@ import { DeployPendleRouterV4Msg, DeployPendleRouterV4SubAction } from '@actions
 import { PendleRegistry } from '@/src/type'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
-describe('DeployPendleMarketFactoryV3', () => {
+describe('DeployPendleRouterV4SubAction', () => {
   const registry: PendleRegistry = {}
   let subAction: DeployPendleRouterV4SubAction
   let client: TestInfinitWallet

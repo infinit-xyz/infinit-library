@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test, vi } from 'vitest'
 
 import { zeroAddress } from 'viem'
 
@@ -19,7 +19,7 @@ describe('DeployPendleMarketFactoryV3TxBuilder', () => {
       marketCreationCodeSizeA: 1n,
       marketCreationCodeContractB: zeroAddress,
       marketCreationCodeSizeB: 1n,
-      treasury: zeroAddress,
+      treasury: '0x0000000000000000000000000000000000000003',
       reserveFeePercent: 1,
       vePendle: zeroAddress,
       guaugeController: zeroAddress,
@@ -27,5 +27,30 @@ describe('DeployPendleMarketFactoryV3TxBuilder', () => {
     const bt = await txBuilder.buildTx()
     expect(bt.to).toBeNull()
     expect(bt.data).not.toBe('0x')
+  })
+
+  test('test validate should be pass', async () => {
+    vi.spyOn(txBuilder.client.publicClient, 'getCode').mockImplementation(async () => {
+      return '0x0000000000000000000000000000000000000002'
+    })
+    expect(txBuilder.validate()).resolves.not.toThrowError()
+  })
+
+  test('test validate treasury should fail', async () => {
+    txBuilder = new DeployPendleMarketFactoryV3TxBuilder(client, {
+      yieldContractFactory: zeroAddress,
+      marketCreationCodeContractA: zeroAddress,
+      marketCreationCodeSizeA: 1n,
+      marketCreationCodeContractB: zeroAddress,
+      marketCreationCodeSizeB: 1n,
+      treasury: zeroAddress,
+      reserveFeePercent: 1,
+      vePendle: zeroAddress,
+      guaugeController: zeroAddress,
+    })
+    vi.spyOn(txBuilder.client.publicClient, 'getCode').mockImplementation(async () => {
+      return '0x0000000000000000000000000000000000000002'
+    })
+    expect(txBuilder.validate()).rejects.toThrowError('TREASURY')
   })
 })

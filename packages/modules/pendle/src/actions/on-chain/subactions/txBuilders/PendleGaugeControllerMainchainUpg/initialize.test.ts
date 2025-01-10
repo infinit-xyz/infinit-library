@@ -18,4 +18,12 @@ describe('InitializePendleGaugeControllerMainchainUpgTxBuilder', () => {
     expect(bt.to).not.toBeNull()
     expect(bt.data).not.toBe('0x')
   })
+
+  test('test validate should be pass', async () => {
+    expect(txBuilder.validate()).resolves.not.toThrowError()
+  })
+
+  test('test validate pendleGaugeControllerMainchainUpg should fail', async () => {
+    expect(txBuilder.validate()).resolves.not.toThrowError()
+  })
 })

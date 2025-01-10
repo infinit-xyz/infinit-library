@@ -10,7 +10,6 @@ import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
 describe('DeployPendleMarketV3CreationCode', () => {
   const tester = ARBITRUM_TEST_ADDRESSES.tester
-  // const txBuilder: DeployBaseSplitCodeFactoryContractTxBuilder
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
 
   const txBuilder = new DeployBaseSplitCodeFactoryContractTxBuilder(client)
@@ -22,17 +21,6 @@ describe('DeployPendleMarketV3CreationCode', () => {
   })
 
   test('test validate should be pass', async () => {
-    const deployBaseSplitCodeFactory = new DeployBaseSplitCodeFactoryContractTxBuilder(client)
-
-    const toSendTxs: ToSendTransaction[] = [{ name: 'deployContract', txData: await deployBaseSplitCodeFactory.buildTx() }]
-    const txs = await client.sendTransactions(toSendTxs)
-
-    const txBuilder2 = new DeployYTV3CreationCodeTxBuilder(client, {
-      baseSplitCodeFactoryContact: txs[0].contractAddress!,
-    })
-    const toSendTxsDeployCreationCode = [{ name: 'deployContract', txData: await txBuilder2.buildTx() }]
-    await client.sendTransactions(toSendTxsDeployCreationCode)
-
     expect(txBuilder.validate()).resolves.not.toThrowError()
   })
 

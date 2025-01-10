@@ -14,10 +14,21 @@ describe('InitializePendleMsgSendEndpointUpgTxBuilder', () => {
 
   test('test tx correct to address and has data', async () => {
     txBuilder = new InitializePendleMsgSendEndpointUpgTxBuilder(client, {
-      pendleMsgSendEndpointUpg: zeroAddress,
+      pendleMsgSendEndpointUpg: '0x0000000000000000000000000000000000000002',
     })
     const bt = await txBuilder.buildTx()
     expect(bt.to).not.toBeNull()
     expect(bt.data).not.toBe('0x')
+  })
+
+  test('test validate should be pass', async () => {
+    expect(txBuilder.validate()).resolves.not.toThrowError()
+  })
+
+  test('test validate should be pass', async () => {
+    txBuilder = new InitializePendleMsgSendEndpointUpgTxBuilder(client, {
+      pendleMsgSendEndpointUpg: zeroAddress,
+    })
+    expect(txBuilder.validate()).rejects.toThrowError('PENDLE_MSG_SEND_ENDPOINT_UPG')
   })
 })

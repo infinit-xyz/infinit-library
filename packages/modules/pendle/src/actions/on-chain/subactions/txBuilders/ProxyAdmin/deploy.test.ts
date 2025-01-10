@@ -5,7 +5,7 @@ import { DeployProxyAdminTxBuilder } from '@actions/on-chain/subactions/txBuilde
 
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
-describe('DeployProxyAdminTxBuilderParams', () => {
+describe('DeployProxyAdminTxBuilder', () => {
   const tester = TEST_ADDRESSES.bob
   let txBuilder: DeployProxyAdminTxBuilder
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)
@@ -15,5 +15,9 @@ describe('DeployProxyAdminTxBuilderParams', () => {
     const bt = await txBuilder.buildTx()
     expect(bt.to).toBeNull()
     expect(bt.data).not.toBe('0x')
+  })
+
+  test('test validate should be pass', async () => {
+    expect(txBuilder.validate()).resolves.not.toThrowError()
   })
 })

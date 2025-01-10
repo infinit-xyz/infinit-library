@@ -5,7 +5,7 @@ import { ARBITRUM_TEST_ADDRESSES } from '@actions/__mocks__/address'
 import { SetPendleRouterV4FacetsSubAction } from './setPendleRouterV4Facets'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
-describe('InitializePendleVotingControllerUpgSubaction', () => {
+describe('SetPendleRouterV4FacetsSubAction', () => {
   let subAction: SetPendleRouterV4FacetsSubAction
   let client: TestInfinitWallet
 

@@ -6,7 +6,7 @@ import { TransferOwnerTxBuilder } from '@actions/on-chain/subactions/txBuilders/
 import { DeployProxyAdminTxBuilder } from './deploy'
 import { TestChain, TestInfinitWallet } from '@infinit-xyz/test'
 
-describe('TransferOwnerTxBuilderParams', () => {
+describe('TransferOwnerTxBuilder', () => {
   const tester = TEST_ADDRESSES.bob
   let txBuilder: TransferOwnerTxBuilder
   const client = new TestInfinitWallet(TestChain.arbitrum, tester)

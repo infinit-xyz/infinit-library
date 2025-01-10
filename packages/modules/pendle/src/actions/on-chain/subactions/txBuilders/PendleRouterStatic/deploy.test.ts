@@ -1,5 +1,7 @@
 import { describe, expect, test } from 'vitest'
 
+import { zeroAddress } from 'viem'
+
 import { TEST_ADDRESSES } from '@actions/__mocks__/address'
 import { DeployPendleRouterStaticTxBuilder } from '@actions/on-chain/subactions/txBuilders/PendleRouterStatic/deploy'
 
@@ -17,5 +19,16 @@ describe('DeployPendleRouterStaticTxBuilder', () => {
     const bt = await txBuilder.buildTx()
     expect(bt.to).toBeNull()
     expect(bt.data).not.toBe('0x')
+  })
+
+  test('test validate should be pass', async () => {
+    expect(txBuilder.validate()).resolves.not.toThrowError()
+  })
+
+  test('test validate storageLayout should fail', async () => {
+    txBuilder = new DeployPendleRouterStaticTxBuilder(client, {
+      storageLayout: zeroAddress,
+    })
+    expect(txBuilder.validate()).rejects.toThrowError('STORAGE_LAYOUT')
   })
 })
