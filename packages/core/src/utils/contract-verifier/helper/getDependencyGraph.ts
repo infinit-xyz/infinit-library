@@ -1,9 +1,8 @@
-import fs from 'fs'
-
 import { DirectoryNotFoundError } from '@/errors'
 import { DependencyGraph } from 'hardhat/internal/solidity/dependencyGraph.js'
 import { Parser } from 'hardhat/internal/solidity/parse.js'
 import { Resolver } from 'hardhat/internal/solidity/resolver.js'
+import * as fs from 'node:fs/promises'
 
 export const getDependencyGraph = async (sourceName: string, projectRoot: string): Promise<DependencyGraph> => {
   const parser = new Parser()
@@ -39,17 +38,18 @@ export const getDependencyGraph = async (sourceName: string, projectRoot: string
 
 const compileSolidityReadFile = async ({ absolutePath }: { absolutePath: string }): Promise<string> => {
   try {
-    return await fs.promises.readFile(absolutePath, {
+    return await fs.readFile(absolutePath, {
       encoding: 'utf8',
     })
   } catch (e) {
-    if (fs.lstatSync(absolutePath).isDirectory()) {
+    const stats = await fs.lstat(absolutePath)
+    if (stats.isDirectory()) {
       throw new DirectoryNotFoundError(absolutePath)
     }
-
     throw e
   }
 }
+
 const transformImportName = async ({ importName }: { importName: string }): Promise<string> => {
   return importName
 }
