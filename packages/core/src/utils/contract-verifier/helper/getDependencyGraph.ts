@@ -10,11 +10,19 @@ export const getDependencyGraph = async (sourceName: string, projectRoot: string
 
   // NOTE: quick fix here
   // TODO: Need to recheck why fee-vault not remapped
-  const remappings: Record<string, string> = sourceName.includes('FeeVault.sol')
-    ? {
-        '@openzeppelin-contracts/': '@openzeppelin/contracts-5.0.2/',
-      }
-    : {}
+  let remappings: Record<string, string> = {}
+
+  // fee-vault's remappings
+  if (sourceName.startsWith('fee-vault')) {
+    remappings = { '@openzeppelin-contracts/': '@openzeppelin/contracts-5.0.2/' }
+  }
+  // init-capital's remappings
+  else if (sourceName.startsWith('init-capital')) {
+    remappings = {
+      '@openzeppelin-contracts/': '@openzeppelin/contracts-4.9.3/',
+      '@openzeppelin-contracts-upgradeable/': '@openzeppelin/contracts-upgradeable-4.9.3/',
+    }
+  }
 
   const resolver = new Resolver(
     projectRoot,
