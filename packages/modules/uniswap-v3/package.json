@@ -46,7 +46,7 @@
     "extends": "../../../.eslintrc.js"
   },
   "dependencies": {
-    "@infinit-xyz/core": "^0.1.0-alpha.12",
+    "@infinit-xyz/core": "^0.1.0-alpha.13",
     "@openzeppelin/contracts-3.4.1-solc-0.7-2": "npm:@openzeppelin/contracts@3.4.1-solc-0.7-2",
     "@openzeppelin/contracts-3.4.2-solc-0.7": "npm:@openzeppelin/contracts@3.4.2-solc-0.7",
     "@openzeppelin/contracts-4.7.0": "npm:@openzeppelin/contracts@4.7.0",
