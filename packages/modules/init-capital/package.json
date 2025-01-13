@@ -45,7 +45,7 @@
     "extends": "../../../.eslintrc.js"
   },
   "dependencies": {
-    "@infinit-xyz/core": "^0.1.0-alpha.13",
+    "@infinit-xyz/core": "^0.1.0-alpha.14",
     "tsup": "^8.2.4",
     "viem": "2.21.28",
     "zod": "^3.23.8",
