@@ -82,7 +82,7 @@ const getRemappings = async (sourceName: string): Promise<Record<string, string>
   }
 
   // uniswap-v3: universal router's remappings
-  else if (sourceName.startsWith('openzeppelin@3.4.1')) {
+  else if (sourceName.startsWith('universal-router')) {
     remappings = {
       '@openzeppelin/contracts': '@openzeppelin/contracts-4.7.0',
       'permit2/src': 'permit2/contracts',
