@@ -1,5 +1,13 @@
 # @infinit-xyz/core
 
+## 0.1.0-alpha.13
+
+### Patch Changes
+
+- [#192](https://github.com/infinit-xyz/infinit-library/pull/192)
+  [`3015c0a`](https://github.com/infinit-xyz/infinit-library/commit/3015c0a79502a549238ee0aae3f64ab17ab14d45) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - fix verifier error on fee-vault
+
 ## 0.1.0-alpha.12
 
 ### Minor Changes
