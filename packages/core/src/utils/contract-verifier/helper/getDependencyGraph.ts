@@ -1,12 +1,15 @@
-import fs from 'fs'
+import path from 'path'
 
+import { DirectoryNotFoundError } from '@/errors'
 import { DependencyGraph } from 'hardhat/internal/solidity/dependencyGraph.js'
 import { Parser } from 'hardhat/internal/solidity/parse.js'
 import { Resolver } from 'hardhat/internal/solidity/resolver.js'
+import * as fs from 'node:fs/promises'
 
-export const getDependencyGraph = async (sourceNames: string[], projectRoot: string): Promise<DependencyGraph> => {
+export const getDependencyGraph = async (sourceName: string, projectRoot: string): Promise<DependencyGraph> => {
   const parser = new Parser()
-  const remappings: Record<string, string> = {}
+  const remappings = await getRemappings(projectRoot, sourceName)
+
   const resolver = new Resolver(
     projectRoot,
     parser,
@@ -14,23 +17,95 @@ export const getDependencyGraph = async (sourceNames: string[], projectRoot: str
     (absolutePath: string) => compileSolidityReadFile({ absolutePath }),
     (importName: string) => transformImportName({ importName }),
   )
-  const resolvedFiles = await Promise.all(sourceNames.map((sn) => resolver.resolveSourceName(sn)))
-  return DependencyGraph.createFromResolvedFiles(resolver, resolvedFiles)
+
+  const resolvedFile = await resolver.resolveSourceName(sourceName)
+
+  return DependencyGraph.createFromResolvedFiles(resolver, [resolvedFile])
 }
 
 const compileSolidityReadFile = async ({ absolutePath }: { absolutePath: string }): Promise<string> => {
   try {
-    return await fs.promises.readFile(absolutePath, {
+    return await fs.readFile(absolutePath, {
       encoding: 'utf8',
     })
   } catch (e) {
-    if (fs.lstatSync(absolutePath).isDirectory()) {
-      throw new Error('adf')
+    const stats = await fs.lstat(absolutePath)
+    if (stats.isDirectory()) {
+      throw new DirectoryNotFoundError(absolutePath)
     }
-
     throw e
   }
 }
+
 const transformImportName = async ({ importName }: { importName: string }): Promise<string> => {
   return importName
+}
+
+// NOTE: quick fix here
+// TODO: use remappings from remappings file in contract project along with hardhatconfig
+const getRemappings = async (projectRoot: string, sourceName: string): Promise<Record<string, string>> => {
+  const sourceNameWithRoot = path.resolve(path.basename(projectRoot), sourceName)
+  let remappings: Record<string, string> = {}
+
+  // fee-vault's remappings
+  if (sourceName.startsWith('fee-vault')) {
+    remappings = { '@openzeppelin-contracts/': '@openzeppelin/contracts-5.0.2/' }
+  }
+
+  // init-capital: init-capital's remappings
+  else if (sourceNameWithRoot.startsWith('init-capital/init-capital')) {
+    remappings = {
+      '@openzeppelin-contracts/': '@openzeppelin/contracts-4.9.3/',
+      '@openzeppelin-contracts-upgradeable/': '@openzeppelin/contracts-upgradeable-4.9.3/',
+    }
+  }
+
+  // init-capital: openzeppelin's remappings
+  else if (sourceNameWithRoot.startsWith('init-capital/openzeppelin')) {
+    remappings = {
+      '@openzeppelin-contracts/': '@openzeppelin/contracts-4.9.3/',
+      '@openzeppelin-contracts-upgradeable/': '@openzeppelin/contracts-upgradeable-4.9.3/',
+    }
+  }
+
+  // token: infinit-erc20-contracts's remappings
+  else if (sourceNameWithRoot.startsWith('token/infinit-erc20-contracts')) {
+    remappings = {
+      '@openzeppelin/contracts/': '@openzeppelin/contracts-5.0.0/',
+    }
+  }
+
+  // uniswap-v3: openzeppelins@3.4.1 and swap router contract's remappings
+  else if (
+    sourceNameWithRoot.startsWith('uniswap-v3/openzeppelin@3.4.1') ||
+    sourceNameWithRoot.startsWith('uniswap-v3/swap-router-contracts')
+  ) {
+    remappings = {
+      '@openzeppelin/contracts': '@openzeppelin/contracts-3.4.1-solc-0.7-2',
+    }
+  }
+
+  // uniswap-v3: universal router's remappings
+  else if (sourceNameWithRoot.startsWith('uniswap-v3/universal-router')) {
+    remappings = {
+      '@openzeppelin/contracts': '@openzeppelin/contracts-4.7.0',
+      'permit2/src': 'permit2/contracts',
+    }
+  }
+
+  // uniswap-v3: v3-periphery's remappings
+  else if (sourceNameWithRoot.startsWith('uniswap-v3/v3-periphery')) {
+    remappings = {
+      '@openzeppelin/contracts': '@openzeppelin/contracts-3.4.2-solc-0.7',
+    }
+  }
+
+  // uniswap-v3: v3-staker's remappings
+  else if (sourceNameWithRoot.startsWith('uniswap-v3/v3-staker')) {
+    remappings = {
+      '@openzeppelin/contracts': 'openzeppelin/contracts-3.4.1-solc-0.7-2`',
+    }
+  }
+
+  return remappings
 }
