@@ -1,5 +1,17 @@
 # @infinit-xyz/core
 
+## 0.1.0-alpha.14
+
+### Patch Changes
+
+- [#199](https://github.com/infinit-xyz/infinit-library/pull/199)
+  [`a8ce80a`](https://github.com/infinit-xyz/infinit-library/commit/a8ce80ae965632a9582a320ba24d7cc2d2fe9af8) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - fix resolve
+
+- [#197](https://github.com/infinit-xyz/infinit-library/pull/197)
+  [`6af06c5`](https://github.com/infinit-xyz/infinit-library/commit/6af06c578349065c67c07f37cb6740e140e6ea45) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - remove projectRoot from sourceName
+
 ## 0.1.0-alpha.13
 
 ### Patch Changes
