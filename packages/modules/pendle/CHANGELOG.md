@@ -1,5 +1,13 @@
 # @infinit-xyz/pendle
 
+## 0.0.0-alpha.9
+
+### Minor Changes
+
+- [#194](https://github.com/infinit-xyz/infinit-library/pull/194)
+  [`7209eef`](https://github.com/infinit-xyz/infinit-library/commit/7209eef908d3c796b089730c35bad5264369db46) Thanks
+  [@mewpawee](https://github.com/mewpawee)! - bump core version
+
 ## 0.0.0-alpha.8
 
 ### Patch Changes
