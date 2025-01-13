@@ -59,7 +59,7 @@ const getRemappings = async (sourceName: string): Promise<Record<string, string>
   }
 
   // init-capital: openzeppelin's remappings
-  // TODO: need to handle if there are openzeppelin contracts under the
+  // TODO: need to handle if there are openzeppelin under the
   // different modules that use the different version of openzeppelin mappings
   else if (sourceName.startsWith('openzeppelin')) {
     remappings = {
