@@ -1,4 +1,3 @@
-import path from 'path'
 
 import { DirectoryNotFoundError } from '@/errors'
 import { DependencyGraph } from 'hardhat/internal/solidity/dependencyGraph.js'
@@ -77,10 +76,7 @@ const getRemappings = async (sourceName: string): Promise<Record<string, string>
   }
 
   // uniswap-v3: openzeppelins@3.4.1 and swap router contract's remappings
-  else if (
-    sourceName.startsWith('openzeppelin@3.4.1') ||
-    sourceName.startsWith('swap-router-contracts')
-  ) {
+  else if (sourceName.startsWith('openzeppelin@3.4.1') || sourceName.startsWith('swap-router-contracts')) {
     remappings = {
       '@openzeppelin/contracts': '@openzeppelin/contracts-3.4.1-solc-0.7-2',
     }
