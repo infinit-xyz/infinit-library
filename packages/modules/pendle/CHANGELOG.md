@@ -1,5 +1,17 @@
 # @infinit-xyz/pendle
 
+## 0.0.0-alpha.8
+
+### Patch Changes
+
+- [#172](https://github.com/infinit-xyz/infinit-library/pull/172)
+  [`602a986`](https://github.com/infinit-xyz/infinit-library/commit/602a98699ef9864070ad289268fac6ca1247c6bb) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - test subactions
+
+- [#172](https://github.com/infinit-xyz/infinit-library/pull/172)
+  [`602a986`](https://github.com/infinit-xyz/infinit-library/commit/602a98699ef9864070ad289268fac6ca1247c6bb) Thanks
+  [@tapakornl](https://github.com/tapakornl)! - test & fix export type & checksum addr"
+
 ## 0.0.0-alpha.7
 
 ### Patch Changes
