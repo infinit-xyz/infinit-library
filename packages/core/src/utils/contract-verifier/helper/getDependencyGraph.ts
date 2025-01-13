@@ -45,7 +45,8 @@ const transformImportName = async ({ importName }: { importName: string }): Prom
 // NOTE: quick fix here
 // TODO: use remappings from remappings file in contract project along with hardhatconfig
 const getRemappings = async (projectRoot: string, sourceName: string): Promise<Record<string, string>> => {
-  const sourceNameWithRoot = path.resolve(path.basename(projectRoot), sourceName)
+  const sourceNameWithRoot = path.basename(path.resolve(projectRoot, '..')) + '/' + sourceName;
+
   let remappings: Record<string, string> = {}
 
   // fee-vault's remappings
