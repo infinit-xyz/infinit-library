@@ -8,7 +8,7 @@ export const getDependencyGraph = async (sourceName: string, projectRoot: string
   const parser = new Parser()
 
   // NOTE: quick fix here
-  // TODO: Need to recheck why fee-vault not remapped
+  // TODO: Need to recheck why fee-vault and init-capital not remapped
   let remappings: Record<string, string> = {}
 
   // fee-vault's remappings
