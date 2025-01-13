@@ -52,7 +52,7 @@
     "tsup": "^8.2.4",
     "viem": "2.21.28",
     "zod": "^3.23.8",
-    "@pendle/core-v2": "5.2.0",
+    "@pendle/core-v2": "5.5.0",
     "hardhat-contract-sizer": "^2.10.0",
     "fee-vault": "https://github.com/infinit-xyz/fee-vault-contracts.git#e61ae298cd78ee9d25086e35fdaba10bfe2768e9"
   },
