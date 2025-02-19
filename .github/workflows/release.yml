@@ -16,7 +16,6 @@ jobs:
 
   changesets:
     name: Changesets
-    needs: check
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
