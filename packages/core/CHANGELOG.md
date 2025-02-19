@@ -1,5 +1,12 @@
 # @infinit-xyz/core
 
+## 0.1.0-alpha.15
+
+### Patch Changes
+
+- [`fa64136`](https://github.com/infinit-xyz/infinit-library/commit/fa641366c0b5ebdfe927feb67c7b2435cde113fa) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - bump viem version to v2.23.3
+
 ## 0.1.0-alpha.14
 
 ### Patch Changes

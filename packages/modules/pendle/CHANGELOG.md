@@ -1,5 +1,15 @@
 # @infinit-xyz/pendle
 
+## 0.0.0-alpha.11
+
+### Patch Changes
+
+- [`fa64136`](https://github.com/infinit-xyz/infinit-library/commit/fa641366c0b5ebdfe927feb67c7b2435cde113fa) Thanks
+  [@melvinmcrn](https://github.com/melvinmcrn)! - bump viem version to v2.23.3
+
+- Updated dependencies [[`fa64136`](https://github.com/infinit-xyz/infinit-library/commit/fa641366c0b5ebdfe927feb67c7b2435cde113fa)]:
+  - @infinit-xyz/core@0.1.0-alpha.15
+
 ## 0.0.0-alpha.10
 
 ### Patch Changes
