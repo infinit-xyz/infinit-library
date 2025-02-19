@@ -1,6 +1,6 @@
 {
   "name": "@infinit-xyz/aave-v3",
-  "version": "0.0.0-alpha.29",
+  "version": "0.0.0-alpha.30",
   "homepage": "https://infinit.tech",
   "repository": {
     "type": "git",
@@ -46,7 +46,7 @@
     "extends": "../../../.eslintrc.js"
   },
   "dependencies": {
-    "@infinit-xyz/core": "^0.1.0-alpha.14",
+    "@infinit-xyz/core": "^0.1.0-alpha.15",
     "aave-v3-core": "https://github.com/aave/aave-v3-core#b74526a7bc67a3a117a1963fc871b3eb8cea8435",
     "aave-v3-periphery": "https://github.com/aave/aave-v3-periphery#803c3e7d6d1c6da8d91411f4d085494f7189ea0b",
     "fee-vault": "https://github.com/infinit-xyz/fee-vault-contracts.git#e61ae298cd78ee9d25086e35fdaba10bfe2768e9",
