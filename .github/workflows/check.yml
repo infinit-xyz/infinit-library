@@ -35,6 +35,6 @@ jobs:
           HOLESKY_ETHERSCAN_API_KEY: ${{ secrets.HOLESKY_ETHERSCAN_API_KEY }}
 
       - name: Upload results to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
